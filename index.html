@@ -10,157 +10,283 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    /* ----------------- متغيرات التصميم (Soft UI) ----------------- */
-    :root{
-      --primary: #1e40af; 
-      --accent: #10b981; 
-      --bg-start: #f0f9ff;
-      --bg-end: #ffffff;
-      --card-bg: #ffffff;
-      --text-color: #1f2937;
-      --muted: #6b7280;
-      --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-      --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.05);
-      --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.05);
-    }
+<style>
+/* 🌈✨ تصميم أسطوري متحرك لنظام صحي (Animated + Gradient Effects) ✨🌈 */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
-    /* ----------------- BASE & LAYOUT ----------------- */
-    html,body{height:100%;}
-    body{
-      font-family: 'Cairo', sans-serif;
-      font-weight: 400;
-      background: linear-gradient(135deg,var(--bg-start),var(--bg-end));
-      color: var(--text-color);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      display: flex;
-      flex-direction: column;
-    }
-    h4,h5,h6{ font-weight:700; color: var(--primary); }
-    .container-app{max-width:1000px;margin:35px auto;padding:18px;}
+/* ----------------- الألوان والمتغيرات ----------------- */
+:root {
+  --primary: #00b4d8;
+  --secondary: #0077b6;
+  --accent: #90e0ef;
+  --glow: #caf0f8;
+  --bg-dark: #03045e;
+  --text-light: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.1);
+}
 
-    /* ----------------- NAVBAR ----------------- */
-    nav.navbar{
-      background: var(--primary);
-      border-radius:16px;
-      box-shadow: var(--shadow-md);
-      margin-bottom:30px;
-      padding: 12px 20px;
-    }
-    .navbar-brand{font-weight:800;font-size:1.4rem;color:#fff}
-    .nav-link{color:rgba(255,255,255,0.9) !important; font-weight: 600; transition: color .2s ease;}
-    .nav-link:hover { color: #fff !important; }
+/* ----------------- القاعدة العامة ----------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
+}
 
-    /* ----------------- CARD / PANELS ----------------- */
-    .panel-card{
-      background:var(--card-bg);
-      border-radius:20px;
-      padding: 25px;
-      box-shadow: var(--shadow-md);
-      border: 1px solid #e5e7eb;
-    }
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
 
-    /* ----------------- LANDING PAGE ----------------- */
-    .landing-card {
-      background: var(--card-bg);
-      border-radius: 25px;
-      box-shadow: var(--shadow-lg);
-      padding: 3rem;
-      margin-top: 5rem;
-      animation: slideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      text-align: center;
-    }
-    @keyframes slideIn {
-      from {opacity: 0; transform: translateY(50px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
+body {
+  background: linear-gradient(-45deg, var(--primary), var(--secondary), var(--accent), var(--bg-dark));
+  background-size: 400% 400%;
+  animation: bgMove 10s ease infinite;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    /* ----------------- NAVIGATION & STEPS ----------------- */
-    .step-pill{
-      display:inline-block;
-      padding:10px 14px;
-      border-radius:999px;
-      background:#e0e7ff;
-      margin:6px 6px 6px 0;
-      color:var(--primary);
-      font-weight:700;
-      transition: background .3s, color .3s;
-    }
-    .step-pill.active{background:var(--primary);color:#fff;box-shadow:0 6px 16px rgba(30, 64, 175, 0.2);}
-    .step-pill.text-success{background:var(--accent); color:#fff !important;}
+/* حركة الخلفية */
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    /* ----------------- CARD SELECTABLE ----------------- */
-    .select-card{
-      cursor:pointer;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      padding: 16px;
-      background-color: #f9fafb;
-      text-align: start;
-      box-shadow: var(--shadow-sm);
-    }
-    .select-card:hover{transform:translateY(-2px);box-shadow: var(--shadow-md); border-color: #d1d5db;}
-    .select-card.selected{
-      transform: translateY(-4px);
-      outline: 3px solid rgba(30, 64, 175, 0.1);
-      box-shadow: 0 12px 30px rgba(30, 64, 175, 0.15);
-      border-color: var(--primary);
-      background-color: #eff6ff;
-    }
-    .select-card strong { color: var(--text-color); }
-    .select-card .small.text-muted { color: var(--muted) !important; }
+/* ----------------- NAVBAR ----------------- */
+nav.navbar {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 15px 25px;
+  box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+  animation: fadeInDown 1s ease forwards;
+}
 
-    /* ----------------- TIME SLOTS ----------------- */
-    .time-slot{
-      border-radius:10px; padding:8px 12px; border:1px solid #d1d5db; cursor:pointer; margin:6px 4px; font-weight: 600; background-color: #fff; transition: all .2s ease;
-    }
-    .time-slot:hover:not(:disabled){ background-color: #f3f4f6; border-color: var(--primary); }
-    .time-slot.selected{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow: var(--shadow-sm)}
-    .time-slot.disabled, .time-slot.disabled:hover{
-      cursor: not-allowed; background-color: #fef2f2 !important; border-color: #fca5a5 !important; color: #b91c1c !important; text-decoration: line-through;
-    }
+.navbar-brand {
+  color: var(--glow);
+  font-weight: 800;
+  font-size: 1.6rem;
+  text-shadow: 0 0 10px var(--accent);
+}
 
-    /* ----------------- BUTTONS & FORMS ----------------- */
-    .btn-main{
-      background:var(--primary);
-      color:#fff;
-      border-radius:12px;
-      padding:12px 20px;
-      font-weight:700;
-      transition: transform .15s ease, box-shadow .15s ease;
-      border: none;
-    }
-    .btn-main:hover {
-      background: #1e40af;
-      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3);
-      transform: translateY(-1px);
-      color: #fff;
-    }
-    .btn-outline-main{
-      border-radius:10px; padding:12px 20px; font-weight:600; border: 1px solid #d1d5db; color: var(--text-color);
-    }
-    .form-control, .form-select {
-      border-radius: 8px; padding: 10px 15px; border-color: #d1d5db; box-shadow: none !important;
-    }
-    .form-control:focus, .form-select:focus {
-      border-color: var(--primary); box-shadow: 0 0 0 0.25rem rgba(30, 64, 175, 0.25) !important;
-    }
+.nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.nav-link:hover {
+  color: var(--glow) !important;
+  text-shadow: 0 0 8px var(--accent);
+}
 
-    /* ----------------- FOOTER ----------------- */
-    footer{
-      margin-top: auto;
-      background: var(--card-bg);
-      box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-      border-top: 1px solid #e5e7eb;
-      z-index: 1000;
-      padding: 1rem 0;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-  </style>
+/* ----------------- CONTAINER ----------------- */
+.container-app {
+  width: 100%;
+  max-width: 1000px;
+  padding: 25px;
+  margin: 40px auto;
+  animation: fadeInUp 1.2s ease forwards;
+}
+
+/* ----------------- CARDS ----------------- */
+.panel-card, .landing-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  border-radius: 25px;
+  padding: 2.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.15);
+  transition: 0.4s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.panel-card:hover, .landing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 35px rgba(0, 255, 255, 0.3);
+}
+
+/* ----------------- عناوين ونصوص ----------------- */
+h1, h4, h5, h6 {
+  color: var(--glow);
+  text-shadow: 0 0 10px var(--accent);
+}
+
+p {
+  color: #dbeafe;
+  line-height: 1.7;
+}
+
+/* ----------------- أزرار ----------------- */
+.btn-main {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border: none;
+  color: #fff;
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-main:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+.btn-outline-main {
+  background: transparent;
+  color: var(--glow);
+  border: 2px solid var(--glow);
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+.btn-outline-main:hover {
+  background: var(--glow);
+  color: var(--bg-dark);
+  transform: scale(1.05);
+}
+
+/* ----------------- FORMS ----------------- */
+.form-control, .form-select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  transition: 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* ----------------- STEPS ----------------- */
+.step-pill {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--glow);
+  font-weight: 700;
+  margin: 6px 4px;
+  transition: 0.3s;
+}
+.step-pill.active {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  color: #fff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+/* ----------------- FOOTER ----------------- */
+footer {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  color: var(--glow);
+  box-shadow: 0 -5px 15px rgba(0, 255, 255, 0.15);
+}
+
+/* ----------------- ANIMATIONS ----------------- */
+@keyframes fadeInUp {
+  from {opacity: 0; transform: translateY(40px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+@keyframes fadeInDown {
+  from {opacity: 0; transform: translateY(-40px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+@media (max-width: 992px) {
+  .container-app {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .panel-card, .landing-card {
+    padding: 2rem;
+    margin: 1rem 0;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .btn-main, .btn-outline-main {
+    padding: 10px 22px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  nav.navbar {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .navbar-brand {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+
+  .nav-link {
+    display: block;
+    margin: 5px 0;
+  }
+
+  .landing-card, .panel-card {
+    padding: 1.8rem;
+    border-radius: 18px;
+  }
+
+  .form-control, .form-select {
+    font-size: 0.95rem;
+    padding: 10px 12px;
+  }
+
+  .btn-main, .btn-outline-main {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container-app {
+    padding: 15px;
+  }
+
+  .landing-card {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  .btn-main, .btn-outline-main {
+    font-size: 0.9rem;
+  }
+}
+</style>
+
 </head>
 
   <nav class="navbar navbar-expand-lg navbar-dark px-3">
@@ -238,6 +364,7 @@
         <div id="step-1" class="step-block"> <h5 class="mb-3">اختر المحافظة</h5> <div id="govList" class="row g-3"></div> </div>
         <div id="step-2" class="step-block d-none"> <h5 class="mb-3">اختر نوع المنشأة</h5> <div class="row g-3">
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى حكومي</div></div>
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى عسكري</div></div>
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="خاص"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> مستشفى خاص</div></div>
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز صحي"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> مركز صحي</div></div>
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز طبي"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> مركز طبي</div></div>
