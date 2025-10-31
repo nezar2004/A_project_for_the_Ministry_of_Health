@@ -1,1240 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>نظام الحجز الطبي — واجهة عصرية</title>
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    /* ----------------- متغيرات التصميم (Soft UI) ----------------- */
-    :root{
-      --primary: #1e40af; 
-      --accent: #10b981; 
-      --bg-start: #f0f9ff;
-      --bg-end: #ffffff;
-      --card-bg: #ffffff;
-      --text-color: #1f2937;
-      --muted: #6b7280;
-      --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-      --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -4px rgba(0,0,0,0.05);
-      --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.05);
-    }
-
-    /* ----------------- BASE & LAYOUT ----------------- */
-    html,body{height:100%;}
-    body{
-      font-family: 'Cairo', sans-serif;
-      font-weight: 400;
-      background: linear-gradient(135deg,var(--bg-start),var(--bg-end));
-      color: var(--text-color);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      display: flex;
-      flex-direction: column;
-    }
-    h4,h5,h6{ font-weight:700; color: var(--primary); }
-    .container-app{max-width:1000px;margin:35px auto;padding:18px;}
-
-    /* ----------------- NAVBAR ----------------- */
-    nav.navbar{
-      background: var(--primary);
-      border-radius:16px;
-      box-shadow: var(--shadow-md);
-      margin-bottom:30px;
-      padding: 12px 20px;
-    }
-    .navbar-brand{font-weight:800;font-size:1.4rem;color:#fff}
-    .nav-link{color:rgba(255,255,255,0.9) !important; font-weight: 600; transition: color .2s ease;}
-    .nav-link:hover { color: #fff !important; }
-
-    /* ----------------- CARD / PANELS ----------------- */
-    .panel-card{
-      background:var(--card-bg);
-      border-radius:20px;
-      padding: 25px;
-      box-shadow: var(--shadow-md);
-      border: 1px solid #e5e7eb;
-    }
-
-    /* ----------------- LANDING PAGE ----------------- */
-    .landing-card {
-      background: var(--card-bg);
-      border-radius: 25px;
-      box-shadow: var(--shadow-lg);
-      padding: 3rem;
-      margin-top: 5rem;
-      animation: slideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      text-align: center;
-    }
-    @keyframes slideIn {
-      from {opacity: 0; transform: translateY(50px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    /* ----------------- NAVIGATION & STEPS ----------------- */
-    .step-pill{
-      display:inline-block;
-      padding:10px 14px;
-      border-radius:999px;
-      background:#e0e7ff;
-      margin:6px 6px 6px 0;
-      color:var(--primary);
-      font-weight:700;
-      transition: background .3s, color .3s;
-    }
-    .step-pill.active{background:var(--primary);color:#fff;box-shadow:0 6px 16px rgba(30, 64, 175, 0.2);}
-    .step-pill.text-success{background:var(--accent); color:#fff !important;}
-
-    /* ----------------- CARD SELECTABLE ----------------- */
-    .select-card{
-      cursor:pointer;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      padding: 16px;
-      background-color: #f9fafb;
-      text-align: start;
-      box-shadow: var(--shadow-sm);
-    }
-    .select-card:hover{transform:translateY(-2px);box-shadow: var(--shadow-md); border-color: #d1d5db;}
-    .select-card.selected{
-      transform: translateY(-4px);
-      outline: 3px solid rgba(30, 64, 175, 0.1);
-      box-shadow: 0 12px 30px rgba(30, 64, 175, 0.15);
-      border-color: var(--primary);
-      background-color: #eff6ff;
-    }
-    .select-card strong { color: var(--text-color); }
-    .select-card .small.text-muted { color: var(--muted) !important; }
-
-    /* ----------------- TIME SLOTS ----------------- */
-    .time-slot{
-      border-radius:10px; padding:8px 12px; border:1px solid #d1d5db; cursor:pointer; margin:6px 4px; font-weight: 600; background-color: #fff; transition: all .2s ease;
-    }
-    .time-slot:hover:not(:disabled){ background-color: #f3f4f6; border-color: var(--primary); }
-    .time-slot.selected{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow: var(--shadow-sm)}
-    .time-slot.disabled, .time-slot.disabled:hover{
-      cursor: not-allowed; background-color: #fef2f2 !important; border-color: #fca5a5 !important; color: #b91c1c !important; text-decoration: line-through;
-    }
-
-    /* ----------------- BUTTONS & FORMS ----------------- */
-    .btn-main{
-      background:var(--primary);
-      color:#fff;
-      border-radius:12px;
-      padding:12px 20px;
-      font-weight:700;
-      transition: transform .15s ease, box-shadow .15s ease;
-      border: none;
-    }
-    .btn-main:hover {
-      background: #1e40af;
-      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3);
-      transform: translateY(-1px);
-      color: #fff;
-    }
-    .btn-outline-main{
-      border-radius:10px; padding:12px 20px; font-weight:600; border: 1px solid #d1d5db; color: var(--text-color);
-    }
-    .form-control, .form-select {
-      border-radius: 8px; padding: 10px 15px; border-color: #d1d5db; box-shadow: none !important;
-    }
-    .form-control:focus, .form-select:focus {
-      border-color: var(--primary); box-shadow: 0 0 0 0.25rem rgba(30, 64, 175, 0.25) !important;
-    }
-
-    /* ----------------- FOOTER ----------------- */
-    footer{
-      margin-top: auto;
-      background: var(--card-bg);
-      box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-      border-top: 1px solid #e5e7eb;
-      z-index: 1000;
-      padding: 1rem 0;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-  </style>
-</head>
-
-  <nav class="navbar navbar-expand-lg navbar-dark px-3">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#" id="homeBtn">🏥 صحتك أولًا</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
-              <i class="fas fa-calendar-alt me-1"></i> حجوزاتي
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- النافذة (Modal) -->
-  <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="bookingsModalLabel">حجوزاتي الحالية</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-        </div>
-        <div class="modal-body">
-          لا توجد حجوزات حالية.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- الصفحة الرئيسية -->
-  <div class="container" id="landingPage">
-    <div class="landing-card text-center">
-      <h3 class="mb-3 text-primary" style="font-weight: 800;">مرحبًا بك في نظام صحتك أولًا</h3>
-      <p class="text-muted mb-4" style="font-size: 1.1rem;">احجز موعدك مع طبيبك المفضل بسهولة وسرعة من أي مكان.</p>
-      <div class="text-center mb-3">
-        <button id="startBookingBtn" class="btn btn-main btn-lg">
-          <i class="fas fa-stethoscope me-2"></i> ابدأ الحجز الآن
-        </button>
-      </div>	
-    </div>
-  </div>
-
-
-    <div class="container-app d-none" id="bookingApp">
-    <div class="panel-card">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h4 class="mb-0">احجز موعدك بسهولة</h4>
-          <div class="small text-muted">اتبع الخطوات لاختيار موعدك.</div>
-        </div>
-        <div>
-          <span class="step-pill" data-step="1">1</span>
-          <span class="step-pill" data-step="2">2</span>
-          <span class="step-pill" data-step="3">3</span>
-          <span class="step-pill" data-step="4">4</span>
-          <span class="step-pill" data-step="5">5</span>
-          <span class="step-pill" data-step="6">6</span>
-          <span class="step-pill" data-step="7">7</span>
-          <span class="step-pill" data-step="8">8</span>
-          <span class="step-pill" data-step="9">9</span>
-        </div>
-        
-      </div>
-
-            <div id="stepsArea">
-        <div id="step-1" class="step-block"> <h5 class="mb-3">اختر المحافظة</h5> <div id="govList" class="row g-3"></div> </div>
-        <div id="step-2" class="step-block d-none"> <h5 class="mb-3">اختر نوع المنشأة</h5> <div class="row g-3">
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى حكومي</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="خاص"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> مستشفى خاص</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز صحي"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> مركز صحي</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز طبي"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> مركز طبي</div></div>
-          </div> </div>
-        <div id="step-3" class="step-block d-none"> <h5 class="mb-3">المستشفيات / المراكز المتاحة</h5> <div id="hospList" class="row g-3"></div> </div>
-        <div id="step-4" class="step-block d-none"> <h5 class="mb-3">اختر القسم</h5> <div id="deptList" class="row g-3"></div> </div>
-        <div id="step-5" class="step-block d-none"> <h5 class="mb-3">هل لديك تأمين صحي؟</h5> <div class="mt-3 d-flex gap-2">
-            <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> لا</button> <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> نعم</button>
-          </div> </div>
-        <div id="step-6" class="step-block d-none"> <h5 class="mb-3">معلومات التأمين</h5> <form id="insForm" class="row g-3">
-            <div class="col-md-6"><label class="form-label">شركة التأمين</label><input id="insCompany" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label">رقم البوليصة</label><input id="insPolicy" class="form-control" required></div>
-            <div class="col-12"><label class="form-label">ملاحظة (اختياري)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
-            <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> حفظ ومتابعة</button></div>
-          </form> </div>
-        <div id="step-7" class="step-block d-none"> <h5 class="mb-3">اختر الطبيب</h5> <div id="docList" class="row g-3"></div> </div>
-        <div id="step-8" class="step-block d-none"> <h5 class="mb-3">اختر التاريخ والوقت</h5> <div class="row">
-            <div class="col-md-6 mt-2"><label class="form-label">التاريخ</label><input type="date" id="apptDate" class="form-control" /></div>
-            <div class="col-md-6 mt-2"><label class="form-label">الأوقات المتاحة</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
-          </div> <div class="mt-2 small text-muted">ملاحظة: اختيار التاريخ والوقت ينقلك للخطوة التالية.</div> </div>
-        <div id="step-9" class="step-block d-none"> <h5 class="mb-3">مراجعة البيانات</h5> <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
-          <h5 class="mb-3">بيانات العميل</h5> <form id="custForm" class="row g-3">
-            <div class="col-md-6"><label class="form-label">الاسم الكامل</label><input id="custName" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label">البريد الإلكتروني</label><input id="custEmail" type="email" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label">الهاتف</label><input id="custPhone" class="form-control" required></div>
-            <div class="col-12"><label class="form-label">ملاحظة</label><textarea id="custNote" class="form-control" rows="2"></textarea></div>
-          </form> </div>
-      </div>
-
-      <hr class="my-4">
-      <div class="d-flex justify-content-between">
-        <button id="prevBtn" class="btn btn-outline-main" disabled><i class="fas fa-arrow-right me-2"></i> السابق</button>
-        <button id="nextBtn" class="btn btn-main"><i class="fas fa-arrow-left me-2"></i> التالي</button>
-      </div>
-    </div>
-  </div>
-
-    <div class="modal fade" id="successModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> تم تأكيد الحجز</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        <div class="modal-body" id="modalContent"></div>
-        <div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">إغلاق</button></div>
-      </div>
-      
-    </div>
-  </div>
-
-    <footer>
-    <div class="container text-center small text-muted">© 2025 نظام الحجز الطبي - AppointEase.</div>
-  </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // -------------------------------
-    // البيانات الأساسية
-    // -------------------------------
-    function confirmBooking() {
-      alert("تم تأكيد حجزك بنجاح ✅");
-    }
-	
-	const governorates = [ 'عمان', 'إربد', 'الزرقاء', 'البلقاء', 'الكرك', 'معان', 'الطفيلة', 'جرش', 'عجلون', 'مأدبا', 'العقبة', 'المفرق' ];
-
-	// 1. قائمة المستشفيات الحكومية (governmentalHospitals)
-	// تم إعادة تسميتها من 'hospitals' لتصبح 'governmentalHospitals'
-	const governmentalHospitals = [
-			   // عمان
-			  {id:1, name:'مستشفى البشير', gov:'عمان', type:'حكومي'},
-			  {id:2, name:'المستشفى الأردني', gov:'عمان', type:'حكومي'},
-			  {id:3, name:'مستشفى الجامعة الأردنية', gov:'عمان', type:'حكومي'},
-			  {id:4, name:'مستشفى ابن الهيثم', gov:'عمان', type:'حكومي'},
-			  {id:5, name:'مستشفى الأردن', gov:'عمان', type:'حكومي'},
-			  {id:6, name:'المستشفى الاستشاري', gov:'عمان', type:'حكومي'},
-			  {id:7, name:'مستشفى الاستقلال', gov:'عمان', type:'حكومي'},
-			  {id:8, name:'مستشفى الملكة علياء', gov:'عمان', type:'حكومي'},
-			  {id:9, name:'مستشفى الإسراء', gov:'عمان', type:'حكومي'},
-			  {id:10, name:'مدينة الحسين الطبية', gov:'عمان', type:'حكومي'},
-			  {id:11, name:'مركز التأهيل الأردني', gov:'عمان', type:'حكومي'},
-			  {id:12, name:'المستشفى الإسلامي / عمّان', gov:'عمان', type:'حكومي'},
-			  {id:13, name:'مستشفى الأقصى', gov:'عمان', type:'حكومي'},
-			  {id:14, name:'مركز الملكة علياء لأمراض وجراحة القلب', gov:'عمان', type:'حكومي'},
-			  {id:15, name:'مستشفى الأمل', gov:'عمان', type:'حكومي'},
-			  {id:16, name:'مستشفى الدكتور جميل التوتنجي', gov:'عمان', type:'حكومي'},
-			  {id:17, name:'المستشفى الأهلي', gov:'عمان', type:'حكومي'},
-			  {id:18, name:'مستشفى الحسين', gov:'عمان', type:'حكومي'},
-			  {id:19, name:'المستشفى الإيطالي / عمّان', gov:'عمان', type:'حكومي'},
-			  {id:20, name:'مستشفى الملكة رانيا للأطفال', gov:'عمان', type:'حكومي'},
-			  {id:21, name:'مستشفى البيادر', gov:'عمان', type:'حكومي'},
-			  {id:22, name:'مستشفى الكرامة', gov:'عمان', type:'حكومي'},
-			  {id:23, name:'المستشفى التخصصي', gov:'عمان', type:'حكومي'},
-			  {id:24, name:'مستشفى الجاردنز', gov:'عمان', type:'حكومي'},
-			  {id:25, name:'مستشفى الجزيرة', gov:'عمان', type:'حكومي'},
-			  {id:26, name:'مستشفى الحرمين', gov:'عمان', type:'حكومي'},
-			  {id:27, name:'مستشفى الحمايدة', gov:'عمان', type:'حكومي'},
-			  {id:28, name:'مستشفى الحنان', gov:'عمان', type:'حكومي'},
-			  {id:29, name:'مستشفى الحياة', gov:'عمان', type:'حكومي'},
-			  {id:30, name:'مستشفى الأمير حمزة', gov:'عمان', type:'حكومي'},
-			  {id:31, name:'مستشفى الخالدي', gov:'عمان', type:'حكومي'},
-			  {id:32, name:'مستشفى الخنساء', gov:'عمان', type:'حكومي'},
-			  {id:33, name:'المركز الوطني لتأهيل المدمنين', gov:'عمان', type:'حكومي'},
-			  {id:34, name:'مستشفى الشميساني', gov:'عمان', type:'حكومي'},
-			  {id:35, name:'مستشفى الشهيد أبو دية', gov:'عمان', type:'حكومي'},
-			  {id:36, name:'مستشفى العيون التخصصي', gov:'عمان', type:'حكومي'},
-			  {id:37, name:'مستشفى القدس', gov:'عمان', type:'حكومي'},
-			  {id:38, name:'المستشفى العربي الطبي', gov:'عمان', type:'حكومي'},
-			  {id:39, name:'مستشفى المقاصد الخيرية', gov:'عمان', type:'حكومي'},
-			  {id:40, name:'مستشفى المواساة', gov:'عمان', type:'حكومي'},
-			  {id:41, name:'مستشفى النخبة / ميلاد', gov:'عمان', type:'حكومي'},
-			  {id:42, name:'مستشفى الهلال الأحمر', gov:'عمان', type:'حكومي'},
-			  {id:43, name:'مستشفى تلاع العلي', gov:'عمان', type:'حكومي'},
-			  {id:44, name:'مستشفى جبل عمّان', gov:'عمان', type:'حكومي'},
-			  {id:45, name:'مستشفى دار السلام', gov:'عمان', type:'حكومي'},
-			  {id:46, name:'مستشفى رويال', gov:'عمان', type:'حكومي'},
-			  {id:47, name:'مستشفى عاقلة', gov:'عمان', type:'حكومي'},
-			  {id:48, name:'مستشفى عبد الهادي', gov:'عمان', type:'حكومي'},
-			  {id:49, name:'مستشفى عمّان الجراحي', gov:'عمان', type:'حكومي'},
-			  {id:50, name:'مستشفى فرح', gov:'عمان', type:'حكومي'},
-			  {id:51, name:'مستشفى فلسطين', gov:'عمان', type:'حكومي'},
-			  {id:52, name:'مستشفى فيلادلفيا', gov:'عمان', type:'حكومي'},
-			  {id:53, name:'مستشفى لوزميلا', gov:'عمان', type:'حكومي'},
-			  {id:54, name:'مستشفى ماركا التخصصي الإسلامي / الرحمة', gov:'عمان', type:'حكومي'},
-			  {id:55, name:'مركز الحسين للسرطان', gov:'عمان', type:'حكومي'},
-			  {id:56, name:'مستشفى هبة للتوليد', gov:'عمان', type:'حكومي'},
-
-			  // إربد
-			  {id:57, name:'مستشفى ابن النفيس', gov:'إربد', type:'حكومي'},
-			  {id:58, name:'مستشفى أبو عبيدة', gov:'إربد', type:'حكومي'},
-			  {id:59, name:'مستشفى الأمير راشد بن الحسن', gov:'إربد', type:'حكومي'},
-			  {id:60, name:'مستشفى الملك المؤسس عبدالله الجامعي', gov:'إربد', type:'حكومي'},
-			  {id:61, name:'مستشفى إربد الإسلامي', gov:'إربد', type:'حكومي'},
-			  {id:62, name:'مستشفى الأميرة بديعة', gov:'إربد', type:'حكومي'},
-			  {id:63, name:'مستشفى إربد التخصصي', gov:'إربد', type:'حكومي'},
-			  {id:64, name:'مستشفى الأميرة بسمة', gov:'إربد', type:'حكومي'},
-			  {id:65, name:'مستشفى الأميرة راية', gov:'إربد', type:'حكومي'},
-			  {id:66, name:'مستشفى اليرموك', gov:'إربد', type:'حكومي'},
-			  {id:67, name:'مستشفى الرمثا', gov:'إربد', type:'حكومي'},
-			  {id:68, name:'مستشفى معاذ بن جبل', gov:'إربد', type:'حكومي'},
-			  {id:69, name:'مستشفى الروم الكاثوليك', gov:'إربد', type:'حكومي'},
-			  {id:70, name:'مستشفى القواسمي التخصصي', gov:'إربد', type:'حكومي'},
-			  {id:71, name:'مستشفى النجاح', gov:'إربد', type:'حكومي'},
-			  {id:72, name:'مستشفى راهبات الوردية', gov:'إربد', type:'حكومي'},
-			  {id:73, name:'مستشفى الأميرة رحمة', gov:'إربد', type:'حكومي'},
-
-			  // الزرقاء
-			  {id:74, name:'مستشفى الأمير فيصل', gov:'الزرقاء', type:'حكومي'},
-			  {id:75, name:'مستشفى الأمير هاشم بن الحسين', gov:'الزرقاء', type:'حكومي'},
-			  {id:76, name:'مستشفى الزرقاء', gov:'الزرقاء', type:'حكومي'},
-			  {id:77, name:'مستشفى الحكمة', gov:'الزرقاء', type:'حكومي'},
-			  {id:78, name:'مستشفى الرازي الجديد', gov:'الزرقاء', type:'حكومي'},
-			  {id:79, name:'مستشفى الضليل', gov:'الزرقاء', type:'حكومي'},
-			  {id:80, name:'مستشفى جبل الزيتون', gov:'الزرقاء', type:'حكومي'},
-			  {id:81, name:'مستشفى قصر شبيب', gov:'الزرقاء', type:'حكومي'},
-
-			  // المفرق
-			  {id:82, name:'مستشفى الرويشد', gov:'المفرق', type:'حكومي'},
-			  {id:83, name:'مستشفى الملك طلال', gov:'المفرق', type:'حكومي'},
-			  {id:84, name:'مستشفى المفرق', gov:'المفرق', type:'حكومي'},
-			  {id:85, name:'مستشفى النسائية والأطفال / المفرق', gov:'المفرق', type:'حكومي'},
-			  {id:86, name:'مستشفى البادية الشمالية', gov:'المفرق', type:'حكومي'},
-			  {id:87, name:'مستشفى سارا', gov:'المفرق', type:'حكومي'},
-			  {id:88, name:'مستشفى مصح النور', gov:'المفرق', type:'حكومي'},
-
-			  // جرش
-			  {id:89, name:'مستشفى جرش', gov:'جرش', type:'حكومي'},
-			  {id:90, name:'مستشفى الصفاء التخصصي', gov:'جرش', type:'حكومي'},
-
-			  // عجلون
-			  {id:91, name:'مستشفى الأميرة هيا بنت الحسين', gov:'عجلون', type:'حكومي'},
-			  {id:92, name:'مستشفى الإيمان / عجلون', gov:'عجلون', type:'حكومي'},
-
-			  // البلقاء
-			  {id:93, name:'مستشفى الأميرة إيمان / معدي', gov:'البلقاء', type:'حكومي'},
-			  {id:94, name:'مستشفى الحسين / السلط', gov:'البلقاء', type:'حكومي'},
-			  {id:95, name:'مستشفى الشونة الجنوبية', gov:'البلقاء', type:'حكومي'},
-			  {id:96, name:'مستشفى الرشيد النفسي', gov:'البلقاء', type:'حكومي'},
-			  {id:97, name:'المركز الوطني للصحة النفسية', gov:'البلقاء', type:'حكومي'},
-			  {id:98, name:'مستشفى الأمير حسين بن عبدالله الثاني', gov:'البلقاء', type:'حكومي'},
-
-			  // مادبا
-			  {id:99, name:'مستشفى النديم', gov:'مأدبا', type:'حكومي'},
-			  {id:100, name:'مستشفى المحبة', gov:'مأدبا', type:'حكومي'},
-
-			  // الكرك
-			  {id:101, name:'مستشفى الأمير علي بن الحسين / الكرك', gov:'الكرك', type:'حكومي'},
-			  {id:102, name:'المستشفى الإيطالي / الكرك', gov:'الكرك', type:'حكومي'},
-			  {id:103, name:'مستشفى البوتاس', gov:'الكرك', type:'حكومي'},
-			  {id:104, name:'مستشفى الكرك', gov:'الكرك', type:'حكومي'},
-			  {id:105, name:'مستشفى غور الصافي', gov:'الكرك', type:'حكومي'},
-			  {id:106, name:'مستشفى السلام', gov:'الكرك', type:'حكومي'},
-
-			  // الطفيلة
-			  {id:107, name:'مستشفى الطفيلة', gov:'الطفيلة', type:'حكومي'},
-			  {id:108, name:'مستشفى الأمير زيد بن الحسين', gov:'الطفيلة', type:'حكومي'},
-
-			  // معان
-			  {id:109, name:'مستشفى الملكة رانيا', gov:'معان', type:'حكومي'},
-			  {id:110, name:'مستشفى معان', gov:'معان', type:'حكومي'},
-
-			  // العقبة
-			  {id:111, name:'المستشفى الإسلامي / العقبة', gov:'العقبة', type:'حكومي'},
-			  {id:112, name:'مستشفى الأمير هاشم بن عبدالله الثاني', gov:'العقبة', type:'حكومي'},
-			  {id:113, name:'المستشفى الحديث / العقبة', gov:'العقبة', type:'حكومي'}
-	];
-
-	const privateHospitals = [
-		 // عمان (ID: 114 - 156)
-			 {id:114, name:'المستشفى الإسلامي', gov:'عمان', type:'خاص'},
-			 {id:115, name:'مستشفى الإسراء', gov:'عمان', type:'خاص'},
-			 {id:116, name:'مستشفى الأردن', gov:'عمان', type:'خاص'},
-			 {id:117, name:'المستشفى الإيطالي', gov:'عمان', type:'خاص'},
-			 {id:118, name:'مستشفى الأمل للتوليد والجراحة النسائية', gov:'عمان', type:'خاص'},
-			 {id:119, name:'المستشفى الاستشاري', gov:'عمان', type:'خاص'},
-			 {id:120, name:'المستشفى الأهلي', gov:'عمان', type:'خاص'},
-			 {id:121, name:'مستشفى البيادر التخصصي', gov:'عمان', type:'خاص'},
-			 {id:122, name:'المستشفى التخصصي', gov:'عمان', type:'خاص'},
-			 {id:123, name:'مستشفى تلاع العلي', gov:'عمان', type:'خاص'},
-			 {id:124, name:'مستشفى جبل عمان للتوليد', gov:'عمان', type:'خاص'},
-			 {id:125, name:'مستشفى الحرمين التخصصي', gov:'عمان', type:'خاص'},
-			 {id:126, name:'مركز الحسين للسرطان', gov:'عمان', type:'خاص'},
-			 {id:127, name:'مستشفى الحنان العام', gov:'عمان', type:'خاص'},
-			 {id:128, name:'مستشفى ومركز الخالدي الطبي', gov:'عمان', type:'خاص'},
-			 {id:129, name:'مستشفى دار السلام', gov:'عمان', type:'خاص'},
-			 {id:130, name:'مركز مستشفى الرشيد للطب النفسي والإدمان', gov:'عمان', type:'خاص'},
-			 {id:131, name:'مستشفى الاستقلال', gov:'عمان', type:'خاص'},
-			 {id:132, name:'مستشفى الحياة العام', gov:'عمان', type:'خاص'},
-			 {id:133, name:'مستشفى لوزميلا', gov:'عمان', type:'خاص'},
-			 {id:134, name:'مستشفى الرويال', gov:'عمان', type:'خاص'},
-			 {id:135, name:'مستشفى الدكتور أحمد الحمايدة', gov:'عمان', type:'خاص'},
-			 {id:136, name:'مستشفى عبد الهادي العام', gov:'عمان', type:'خاص'},
-			 {id:137, name:'مستشفى الشميساني', gov:'عمان', type:'خاص'},
-			 {id:138, name:'مستشفى الأقصى', gov:'عمان', type:'خاص'},
-			 {id:139, name:'مجمع فرح الطبي', gov:'عمان', type:'خاص'},
-			 {id:140, name:'مستشفى الشرق الأوسط للعيون', gov:'عمان', type:'خاص'},
-			 {id:141, name:'مستشفى ابن الهيثم', gov:'عمان', type:'خاص'},
-			 {id:142, name:'المركز العربي الطبي', gov:'عمان', type:'خاص'},
-			 {id:143, name:'مستشفى الكندي', gov:'عمان', type:'خاص'},
-			 {id:144, name:'مستشفى فيلادلفيا التخصصي', gov:'عمان', type:'خاص'},
-			 {id:145, name:'مستشفى عمان', gov:'عمان', type:'خاص'},
-			 {id:146, name:'مستشفى ماركا التخصصي الإسلامي', gov:'عمان', type:'خاص'},
-			 {id:147, name:'مستشفى المواساة', gov:'عمان', type:'خاص'},
-			 {id:148, name:'مستشفى فلسطين', gov:'عمان', type:'خاص'},
-			 {id:149, name:'مستشفى الجزيرة', gov:'عمان', type:'خاص'},
-			 {id:150, name:'مستشفى المقاصد الخيرية', gov:'عمان', type:'خاص'},
-			 {id:151, name:'مستشفى السعودي', gov:'عمان', type:'خاص'},
-			 {id:152, name:'مستشفى العيون التخصصي', gov:'عمان', type:'خاص'},
-			 {id:153, name:'مستشفى هبة للولادة والجراحة النسائية', gov:'عمان', type:'خاص'},
-			 {id:154, name:'مستشفى الجاردنز', gov:'عمان', type:'خاص'},
-			 {id:155, name:'مستشفى العبدلي', gov:'عمان', type:'خاص'},
-			 {id:156, name:'مستشفى الخنساء', gov:'عمان', type:'خاص'},
-
-			 // الكرك (ID: 157 - 158)
-			 {id:157, name:'المستشفى الإيطالي (الكرك)', gov:'الكرك', type:'خاص'},
-			 {id:158, name:'مستشفى السلام', gov:'الكرك', type:'خاص'},
-
-			 // إربد (ID: 159 - 163)
-			 {id:159, name:'مستشفى ابن النفيس', gov:'إربد', type:'خاص'},
-			 {id:160, name:'مستشفى الروم الكاثوليك', gov:'إربد', type:'خاص'},
-			 {id:161, name:'مستشفى النجاح للتوليد', gov:'إربد', type:'خاص'},
-			 {id:162, name:'مستشفى إربد الإسلامي', gov:'إربد', type:'خاص'},
-			 {id:163, name:'مستشفى إربد التخصصي', gov:'إربد', type:'خاص'},
-
-			 // مادبا (ID: 164)
-			 {id:164, name:'مستشفى المحبة', gov:'مأدبا', type:'خاص'},
-
-			 // العقبة (ID: 165)
-			 {id:165, name:'المستشفى الإسلامي - العقبة', gov:'العقبة', type:'خاص'},
-
-			 // المفرق (ID: 166)
-			 {id:166, name:'مستشفى سارة التخصصي', gov:'المفرق', type:'خاص'},
-
-			 // الزرقاء (ID: 167 - 170)
-			 {id:167, name:'مستشفى قصر شبيب', gov:'الزرقاء', type:'خاص'},
-			 {id:168, name:'مستشفى جبل الزيتون', gov:'الزرقاء', type:'خاص'},
-			 {id:169, name:'مستشفى الرازي الجديد', gov:'الزرقاء', type:'خاص'},
-			 {id:170, name:'مستشفى الحكمة الحديث', gov:'الزرقاء', type:'خاص'}
-		];
-		const healthCenters = [
-			// مراكز صحية - محافظة عمان (IDs: 171 - 267)
-			{ id: 171, name: "مركز صحي اصلاح وتأهيل سواقه", gov: "عمان", type: "مركز صحي" },
-			{ id: 172, name: "مركز صحي اصلاح وتأهيل / ماركا العسكري", gov: "عمان", type: "مركز صحي" },
-			{ id: 173, name: "مركز صحي ابو صياح", gov: "عمان", type: "مركز صحي" },
-			{ id: 174, name: "مركز الاستقلال الاولي", gov: "عمان", type: "مركز صحي" },
-			{ id: 175, name: "مركز صحي ابو السوس", gov: "عمان", type: "مركز صحي" },
-			{ id: 176, name: "مركز صحي العرين", gov: "عمان", type: "مركز صحي" },
-			{ id: 177, name: "مركز صحي اصلاح و تأهيل الجويدة / ذكور", gov: "عمان", type: "مركز صحي" },
-			{ id: 178, name: "مركز صحي اصلاح و تأهيل الجويدة / اناث", gov: "عمان", type: "مركز صحي" },
-			{ id: 179, name: "مركز صحي الجبيهة الشامل", gov: "عمان", type: "مركز صحي" },
-			{ id: 180, name: "م . صحي القسطل", gov: "عمان", type: "مركز صحي" },
-			{ id: 181, name: "مركز صحي ابو علندا/سكن كريم", gov: "عمان", type: "مركز صحي" },
-			{ id: 182, name: "مركز صحي احد", gov: "عمان", type: "مركز صحي" },
-			{ id: 183, name: "مركز صحي اصلاح وتأهيل الموقر", gov: "عمان", type: "مركز صحي" },
-			{ id: 184, name: "مركز صحي مطار الملكة علياء", gov: "عمان", type: "مركز صحي" },
-			{ id: 185, name: "مركز صحي اليادودة", gov: "عمان", type: "مركز صحي" },
-			{ id: 186, name: "مركز صحي الياهون", gov: "عمان", type: "مركز صحي" },
-			{ id: 187, name: "مركز صحي المستندة", gov: "عمان", type: "مركز صحي" },
-			{ id: 188, name: "مركز صحي الطيبة/ شرق عمان", gov: "عمان", type: "مركز صحي" },
-			{ id: 189, name: "مركز صحي الرميل", gov: "عمان", type: "مركز صحي" },
-			{ id: 190, name: "مركز صحي الجويدة", gov: "عمان", type: "مركز صحي" },
-			{ id: 191, name: "مركز صحي ام نوارة", gov: "عمان", type: "مركز صحي" },
-			{ id: 192, name: "مركز صحي ام قصير/ المقابلين", gov: "عمان", type: "مركز صحي" },
-			{ id: 193, name: "مركز صحي القويسمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 194, name: "مركز صحي خريبة السوق", gov: "عمان", type: "مركز صحي" },
-			{ id: 195, name: "مركز صحي ابو علندا", gov: "عمان", type: "مركز صحي" },
-			{ id: 196, name: "مركز صحي ارينبة الغربية", gov: "عمان", type: "مركز صحي" },
-			{ id: 197, name: "مركز صحي المشيرفة/ شرق عمان", gov: "عمان", type: "مركز صحي" },
-			{ id: 198, name: "مركز صحي ام الرصاص", gov: "عمان", type: "مركز صحي" },
-			{ id: 199, name: "مركز صحي ام الوليد", gov: "عمان", type: "مركز صحي" },
-			{ id: 200, name: "مركز صحي الزميلة", gov: "عمان", type: "مركز صحي" },
-			{ id: 201, name: "مركز صحي منجا", gov: "عمان", type: "مركز صحي" },
-			{ id: 202, name: "مركز صحي ام بطمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 203, name: "مركز صحي الكتيفة", gov: "عمان", type: "مركز صحي" },
-			{ id: 204, name: "مركز صحي الذهيبة الشرقية", gov: "عمان", type: "مركز صحي" },
-			{ id: 205, name: "مركز صحي الذهيبة الغربية", gov: "عمان", type: "مركز صحي" },
-			{ id: 206, name: "مركز صحي خشافية الدبايبة", gov: "عمان", type: "مركز صحي" },
-			{ id: 207, name: "مركز صحي رجم الشامي", gov: "عمان", type: "مركز صحي" },
-			{ id: 208, name: "مركز صحي ابو حليليفة", gov: "عمان", type: "مركز صحي" },
-			{ id: 209, name: "مركز صحي ام العمد/ شرق عمان", gov: "عمان", type: "مركز صحي" },
-			{ id: 210, name: "مركز صحي ضبعة", gov: "عمان", type: "مركز صحي" },
-			{ id: 211, name: "مركز صحي الجميل", gov: "عمان", type: "مركز صحي" },
-			{ id: 212, name: "مركز صحي الرامة/ شرق عمان", gov: "عمان", type: "مركز صحي" },
-			{ id: 213, name: "مركز صحي النقيرة", gov: "عمان", type: "مركز صحي" },
-			{ id: 214, name: "مركز صحي الفيصلية/ شرق عمان", gov: "عمان", type: "مركز صحي" },
-			{ id: 215, name: "مركز صحي اللبن", gov: "عمان", type: "مركز صحي" },
-			{ id: 216, name: "مركز صحي نزهة سحاب", gov: "عمان", type: "مركز صحي" },
-			{ id: 217, name: "مركز صحي نتل", gov: "عمان", type: "مركز صحي" },
-			{ id: 218, name: "مركز صحي الجيزة", gov: "عمان", type: "مركز صحي" },
-			{ id: 219, name: "مركز صحي سحاب", gov: "عمان", type: "مركز صحي" },
-			{ id: 220, name: "مركز صحي اصلاح و تأهيل ماركا", gov: "عمان", type: "مركز صحي" },
-			{ id: 221, name: "مركز صحي النظيف", gov: "عمان", type: "مركز صحي" },
-			{ id: 222, name: "مركز صحي صويلح الشامل", gov: "عمان", type: "مركز صحي" },
-			{ id: 223, name: "مركز صحي ام الحسين", gov: "عمان", type: "مركز صحي" },
-			{ id: 224, name: "مركز صحي البنيات / العاصمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 225, name: "مركز صحي قصر العدل", gov: "عمان", type: "مركز صحي" },
-			{ id: 226, name: "مركز صحي مطار ماركا المدني", gov: "عمان", type: "مركز صحي" },
-			{ id: 227, name: "مركز صحي زبود", gov: "عمان", type: "مركز صحي" },
-			{ id: 228, name: "مركز صحي أم القطين", gov: "عمان", type: "مركز صحي" },
-			{ id: 229, name: "مركز صحي صالحية العابد", gov: "عمان", type: "مركز صحي" },
-			{ id: 230, name: "مركز صحي عمان الشامل ( الشميساني )", gov: "عمان", type: "مركز صحي" },
-			{ id: 231, name: "مركز صحي حسبان", gov: "عمان", type: "مركز صحي" },
-			{ id: 232, name: "مركز صحي المرقب", gov: "عمان", type: "مركز صحي" },
-			{ id: 233, name: "مركز صحي الزهور", gov: "عمان", type: "مركز صحي" },
-			{ id: 234, name: "مركز صحي بدر", gov: "عمان", type: "مركز صحي" },
-			{ id: 235, name: "مركز صحي الجوفة", gov: "عمان", type: "مركز صحي" },
-			{ id: 236, name: "مركز صحي الهاشمية", gov: "عمان", type: "مركز صحي" },
-			{ id: 237, name: "مركز صحي العدسية/ العاصمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 238, name: "مركز صحي القصور (الهاشمي الجنوبي)", gov: "عمان", type: "مركز صحي" },
-			{ id: 239, name: "مركز صحي كوم ياجوز", gov: "عمان", type: "مركز صحي" },
-			{ id: 240, name: "مركز صحي طبربور", gov: "عمان", type: "مركز صحي" },
-			{ id: 241, name: "مركز صحي ضاحية الحسين/ العاصمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 242, name: "مركز صحي البصة", gov: "عمان", type: "مركز صحي" },
-			{ id: 243, name: "مركز صحي شفا بدران", gov: "عمان", type: "مركز صحي" },
-			{ id: 244, name: "مركز صحي النظيف(المريخ)", gov: "عمان", type: "مركز صحي" },
-			{ id: 245, name: "مركز صحي الاميرة بسمة (رأس العين) / شامل", gov: "عمان", type: "مركز صحي" },
-			{ id: 246, name: "مركز صحي الهاشمي الشمالي", gov: "عمان", type: "مركز صحي" },
-			{ id: 247, name: "مركز صحي النزهة", gov: "عمان", type: "مركز صحي" },
-			{ id: 248, name: "مركز صحي ام الاسود", gov: "عمان", type: "مركز صحي" },
-			{ id: 249, name: "مركز صحي جبل عمان / اولي", gov: "عمان", type: "مركز صحي" },
-			{ id: 250, name: "مركز صحي العال", gov: "عمان", type: "مركز صحي" },
-			{ id: 251, name: "مركز صحي الربوة_هملان", gov: "عمان", type: "مركز صحي" },
-			{ id: 252, name: "مركز صحي الروضة/ العاصمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 253, name: "مركز صحي ام البساتين", gov: "عمان", type: "مركز صحي" },
-			{ id: 254, name: "مركز صحي ناعور", gov: "عمان", type: "مركز صحي" },
-			{ id: 255, name: "مركز صحي النصر", gov: "عمان", type: "مركز صحي" },
-			{ id: 256, name: "مركز صحي مرج الحمام", gov: "عمان", type: "مركز صحي" },
-			{ id: 257, name: "مركز صحي وادي السير", gov: "عمان", type: "مركز صحي" },
-			{ id: 258, name: "مركز صحي عراق الامير", gov: "عمان", type: "مركز صحي" },
-			{ id: 259, name: "مركز صحي ام عبهرة", gov: "عمان", type: "مركز صحي" },
-			{ id: 260, name: "مركز صحي العودة (أم تينة) / اولي", gov: "عمان", type: "مركز صحي" },
-			{ id: 261, name: "مركز صحي حي نزال", gov: "عمان", type: "مركز صحي" },
-			{ id: 262, name: "مركز صحي اللويبدة الشرقي / شامل", gov: "عمان", type: "مركز صحي" },
-			{ id: 263, name: "مركز صحي التاج / اولي", gov: "عمان", type: "مركز صحي" },
-			{ id: 264, name: "مركز صحي المنارة/ العاصمة", gov: "عمان", type: "مركز صحي" },
-			{ id: 265, name: "مركز صحي اسكان أبو نصير الشامل التدريبي", gov: "عمان", type: "مركز صحي" },
-			{ id: 266, name: "مركز صحي التطوير الحضري ماركا", gov: "عمان", type: "مركز صحي" },
-			{ id: 267, name: "مركز صحي أبو أيوب الانصاري (الهلال) / اولي", gov: "عمان", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة إربد (IDs: 268 - 363)
-			{ id: 268, name: "مركز صحي الحصن", gov: "إربد", type: "مركز صحي" },
-			{ id: 269, name: "مركز صحي الرمثا", gov: "إربد", type: "مركز صحي" },
-			{ id: 270, name: "مركز صحي خرجا", gov: "إربد", type: "مركز صحي" },
-			{ id: 271, name: "مركز صحي سمر", gov: "إربد", type: "مركز صحي" },
-			{ id: 272, name: "مركز صحي حرثا", gov: "إربد", type: "مركز صحي" },
-			{ id: 273, name: "مركز صحي سحم", gov: "إربد", type: "مركز صحي" },
-			{ id: 274, name: "مركز صحي الحمه الأردنية", gov: "إربد", type: "مركز صحي" },
-			{ id: 275, name: "مركز صحي أم قيس", gov: "إربد", type: "مركز صحي" },
-			{ id: 276, name: "مركز صحي اليرموك", gov: "إربد", type: "مركز صحي" },
-			{ id: 277, name: "مركز صحي كفر سوم", gov: "إربد", type: "مركز صحي" },
-			{ id: 278, name: "مركز صحي يبلا", gov: "إربد", type: "مركز صحي" },
-			{ id: 279, name: "مركز صحي أبدر", gov: "إربد", type: "مركز صحي" },
-			{ id: 280, name: "مركز صحي حبراص", gov: "إربد", type: "مركز صحي" },
-			{ id: 281, name: "مركز صحي حريما", gov: "إربد", type: "مركز صحي" },
-			{ id: 282, name: "مركز صحي الرفيد", gov: "إربد", type: "مركز صحي" },
-			{ id: 283, name: "مركز صحي زمال", gov: "إربد", type: "مركز صحي" },
-			{ id: 284, name: "مركز صحي جفين", gov: "إربد", type: "مركز صحي" },
-			{ id: 285, name: "مركز صحي تبنة", gov: "إربد", type: "مركز صحي" },
-			{ id: 286, name: "مركز صحي جنين الصفا", gov: "إربد", type: "مركز صحي" },
-			{ id: 287, name: "مركز صحي جديتا", gov: "إربد", type: "مركز صحي" },
-			{ id: 288, name: "مركز صحي سموع", gov: "إربد", type: "مركز صحي" },
-			{ id: 289, name: "مركز صحي كفر ابيل", gov: "إربد", type: "مركز صحي" },
-			{ id: 290, name: "مركز صحي كفر عوان", gov: "إربد", type: "مركز صحي" },
-			{ id: 291, name: "مركز صحي بيت أيدس", gov: "إربد", type: "مركز صحي" },
-			{ id: 292, name: "مركز صحي كفر راكب", gov: "إربد", type: "مركز صحي" },
-			{ id: 293, name: "مركز صحي الأشرفية/ الكـــورة", gov: "إربد", type: "مركز صحي" },
-			{ id: 294, name: "مركز صحي كفر الماء", gov: "إربد", type: "مركز صحي" },
-			{ id: 295, name: "مركز صحي دير أبي سعيد", gov: "إربد", type: "مركز صحي" },
-			{ id: 296, name: "مركز صحي الرمثا الشامل", gov: "إربد", type: "مركز صحي" },
-			{ id: 297, name: "مركز صحي سهل حوران الشامل", gov: "إربد", type: "مركز صحي" },
-			{ id: 298, name: "مركز صحي الشجرة الحنوبي / اولي", gov: "إربد", type: "مركز صحي" },
-			{ id: 299, name: "مركز صحي الطرة الجنوبي", gov: "إربد", type: "مركز صحي" },
-			{ id: 300, name: "مركز صحي الذنيبة", gov: "إربد", type: "مركز صحي" },
-			{ id: 301, name: "مركز صحي الطرة الشمالي", gov: "إربد", type: "مركز صحي" },
-			{ id: 302, name: "مركز صحي عمراوة", gov: "إربد", type: "مركز صحي" },
-			{ id: 303, name: "مركز صحي البويضة", gov: "إربد", type: "مركز صحي" },
-			{ id: 304, name: "مركز صحي الشجرة", gov: "إربد", type: "مركز صحي" },
-			{ id: 305, name: "مركز صحي الرمثا الشمالي", gov: "إربد", type: "مركز صحي" },
-			{ id: 306, name: "مركز صحي الرمثا الغربي", gov: "إربد", type: "مركز صحي" },
-			{ id: 307, name: "مركز صحي معبر وادي الاردن", gov: "إربد", type: "مركز صحي" },
-			{ id: 308, name: "مركز صحي كريمة", gov: "إربد", type: "مركز صحي" },
-			{ id: 309, name: "مركز صحي ابو سيدو", gov: "إربد", type: "مركز صحي" },
-			{ id: 310, name: "مركز صحي ابو هابيل", gov: "إربد", type: "مركز صحي" },
-			{ id: 311, name: "مركز صحي وادي الريان", gov: "إربد", type: "مركز صحي" },
-			{ id: 312, name: "مركز صحي المشارع", gov: "إربد", type: "مركز صحي" },
-			{ id: 313, name: "مركز صحي المنشية / الاغوار الشمالية", gov: "إربد", type: "مركز صحي" },
-			{ id: 314, name: "مركز صحي الشونة الشمالية", gov: "إربد", type: "مركز صحي" },
-			{ id: 315, name: "مركز صحي وقاص", gov: "إربد", type: "مركز صحي" },
-			{ id: 316, name: "مركز صحي الشيخ حسين", gov: "إربد", type: "مركز صحي" },
-			{ id: 317, name: "مركز صحي اصلاح و تأهيل اربد / اربد", gov: "إربد", type: "مركز صحي" },
-			{ id: 318, name: "مركز صحي تقبل و أم الجدايل", gov: "إربد", type: "مركز صحي" },
-			{ id: 319, name: "مركز صحي التطوير الحضري", gov: "إربد", type: "مركز صحي" },
-			{ id: 320, name: "مركز صحي الطوال", gov: "إربد", type: "مركز صحي" },
-			{ id: 321, name: "مركز صحي جامعة اليرموك", gov: "إربد", type: "مركز صحي" },
-			{ id: 322, name: "مركز صحي الرازي/ اربـــد", gov: "إربد", type: "مركز صحي" },
-			{ id: 323, name: "مركز صحي ججين", gov: "إربد", type: "مركز صحي" },
-			{ id: 324, name: "مركز صحي جحفيه", gov: "إربد", type: "مركز صحي" },
-			{ id: 325, name: "مركز صحي حوفا", gov: "إربد", type: "مركز صحي" },
-			{ id: 326, name: "مركز صحي زحر", gov: "إربد", type: "مركز صحي" },
-			{ id: 327, name: "مركز صحي حوارة اربد", gov: "إربد", type: "مركز صحي" },
-			{ id: 328, name: "مركز صحي شطنا", gov: "إربد", type: "مركز صحي" },
-			{ id: 329, name: "مركز صحي مخربا", gov: "إربد", type: "مركز صحي" },
-			{ id: 330, name: "مركز صحي النعيمة", gov: "إربد", type: "مركز صحي" },
-			{ id: 331, name: "مركز صحي حور", gov: "إربد", type: "مركز صحي" },
-			{ id: 332, name: "مركز صحي زوبيا", gov: "إربد", type: "مركز صحي" },
-			{ id: 333, name: "مركز صحي فوعرا", gov: "إربد", type: "مركز صحي" },
-			{ id: 334, name: "مركز صحي سوم", gov: "إربد", type: "مركز صحي" },
-			{ id: 335, name: "مركز صحي الخراج", gov: "إربد", type: "مركز صحي" },
-			{ id: 336, name: "مركز صحي كفر اسد", gov: "إربد", type: "مركز صحي" },
-			{ id: 337, name: "مركز صحي قميم", gov: "إربد", type: "مركز صحي" },
-			{ id: 338, name: "مركز صحي كفرعان", gov: "إربد", type: "مركز صحي" },
-			{ id: 339, name: "مركز صحي صما", gov: "إربد", type: "مركز صحي" },
-			{ id: 340, name: "مركز صحي الطيبة/ اربـــد", gov: "إربد", type: "مركز صحي" },
-			{ id: 341, name: "مركز صحي دير السعنة", gov: "إربد", type: "مركز صحي" },
-			{ id: 342, name: "مركز صحي بيت يافا", gov: "إربد", type: "مركز صحي" },
-			{ id: 343, name: "مركز صحي كفريوبا", gov: "إربد", type: "مركز صحي" },
-			{ id: 344, name: "مركز صحي عنبة", gov: "إربد", type: "مركز صحي" },
-			{ id: 345, name: "مركز صحي المزار", gov: "إربد", type: "مركز صحي" },
-			{ id: 346, name: "مركز صحي الفاروق", gov: "إربد", type: "مركز صحي" },
-			{ id: 347, name: "مركز صحي ديريوسف", gov: "إربد", type: "مركز صحي" },
-			{ id: 348, name: "مركز صحي ارحابا", gov: "إربد", type: "مركز صحي" },
-			{ id: 349, name: "مركز صحي صمد والزعترة", gov: "إربد", type: "مركز صحي" },
-			{ id: 350, name: "مركز صحي حبكا", gov: "إربد", type: "مركز صحي" },
-			{ id: 351, name: "مركز صحي ايدون", gov: "إربد", type: "مركز صحي" },
-			{ id: 352, name: "مركز صحي كتم", gov: "إربد", type: "مركز صحي" },
-			{ id: 353, name: "مركز صحي الصريح", gov: "إربد", type: "مركز صحي" },
-			{ id: 354, name: "مركز صحي كفرجايز", gov: "إربد", type: "مركز صحي" },
-			{ id: 355, name: "مركز صحي بشرى", gov: "إربد", type: "مركز صحي" },
-			{ id: 356, name: "مركز صحي المغير", gov: "إربد", type: "مركز صحي" },
-			{ id: 357, name: "مركز صحي سال", gov: "إربد", type: "مركز صحي" },
-			{ id: 358, name: "مركز صحي بيت راس", gov: "إربد", type: "مركز صحي" },
-			{ id: 359, name: "مركز صحي علعال", gov: "إربد", type: "مركز صحي" },
-			{ id: 360, name: "مركز صحي حكما", gov: "إربد", type: "مركز صحي" },
-			{ id: 361, name: "مركز صحي الزهراوي", gov: "إربد", type: "مركز صحي" },
-			{ id: 362, name: "مركز صحي حنينا/ اربـــد", gov: "إربد", type: "مركز صحي" },
-			{ id: 363, name: "مركز صحي بيت يافا", gov: "إربد", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة جرش (IDs: 364 - 374)
-			{ id: 364, name: "مركز صحي دير الليات", gov: "جرش", type: "مركز صحي" },
-			{ id: 365, name: "مركز صحي كفر خل", gov: "جرش", type: "مركز صحي" },
-			{ id: 366, name: "مركز صحي جبة", gov: "جرش", type: "مركز صحي" },
-			{ id: 367, name: "مركز صحي المصطبة", gov: "جرش", type: "مركز صحي" },
-			{ id: 368, name: "مركز صحي بليلا", gov: "جرش", type: "مركز صحي" },
-			{ id: 369, name: "مركز صحي قفقفا", gov: "جرش", type: "مركز صحي" },
-			{ id: 370, name: "مركز صحي برما", gov: "جرش", type: "مركز صحي" },
-			{ id: 371, name: "مركز صحي الرازي/ جرش", gov: "جرش", type: "مركز صحي" },
-			{ id: 372, name: "مركز صحي ساكب", gov: "جرش", type: "مركز صحي" },
-			{ id: 373, name: "مركز صحي سوف", gov: "جرش", type: "مركز صحي" },
-			{ id: 374, name: "مركز صحي جرش", gov: "جرش", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة عجلون (IDs: 375 - 397)
-			{ id: 375, name: "مركز صحي الأمير هاشم", gov: "عجلون", type: "مركز صحي" },
-			{ id: 376, name: "مركز صحي عنجرة", gov: "عجلون", type: "مركز صحي" },
-			{ id: 377, name: "مركز صحي عجلون", gov: "عجلون", type: "مركز صحي" },
-			{ id: 378, name: "مركز صحي الهاشمية", gov: "عجلون", type: "مركز صحي" },
-			{ id: 379, name: "مركز صحي دير الصماديه", gov: "عجلون", type: "مركز صحي" },
-			{ id: 380, name: "مركز صحي اشتفينا", gov: "عجلون", type: "مركز صحي" },
-			{ id: 381, name: "مركز صحي ديرينة", gov: "عجلون", type: "مركز صحي" },
-			{ id: 382, name: "مركز صحي الروابي", gov: "عجلون", type: "مركز صحي" },
-			{ id: 383, name: "مركز صحي المرجم", gov: "عجلون", type: "مركز صحي" },
-			{ id: 384, name: "مركز صحي صخر", gov: "عجلون", type: "مركز صحي" },
-			{ id: 385, name: "مركز صحي راس منيف (عفنا)", gov: "عجلون", type: "مركز صحي" },
-			{ id: 386, name: "مركز صحي الصفا الجديد (الجبل الاخضر)", gov: "عجلون", type: "مركز صحي" },
-			{ id: 387, name: "مركز صحي اوصرة", gov: "عجلون", type: "مركز صحي" },
-			{ id: 388, name: "مركز صحي حلاوة", gov: "عجلون", type: "مركز صحي" },
-			{ id: 389, name: "مركز صحي باعون", gov: "عجلون", type: "مركز صحي" },
-			{ id: 390, name: "مركز صحي راسون", gov: "عجلون", type: "مركز صحي" },
-			{ id: 391, name: "مركز صحي راجب", gov: "عجلون", type: "مركز صحي" },
-			{ id: 392, name: "مركز صحي الوهادنة", gov: "عجلون", type: "مركز صحي" },
-			{ id: 393, name: "مركز صحي عرجان", gov: "عجلون", type: "مركز صحي" },
-			{ id: 394, name: "مركز صحي عين جنا", gov: "عجلون", type: "مركز صحي" },
-			{ id: 395, name: "مركز صحي الهاشمية / عجلون", gov: "عجلون", type: "مركز صحي" },
-			{ id: 396, name: "مركز صحي صخر", gov: "عجلون", type: "مركز صحي" },
-			{ id: 397, name: "مركز صحي وادي الطواحين", gov: "عجلون", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة البلقاء (IDs: 398 - 446)
-			{ id: 398, name: "مركز صحي الجوفه", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 399, name: "مركز صحي الشونة الجنوبية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 400, name: "مركز صحي مثلث العارضة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 401, name: "مركز امومة وطفولة الريادي لخدمات الرعاية الصحية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 402, name: "مركز صحي ام عياش", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 403, name: "مركز صحي ميسرة و فتوش", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 404, name: "مركز صحي ظهرة الرملة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 405, name: "مركز صحي تل المنطح", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 406, name: "مركز صحي داميا", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 407, name: "مركز صحي ابو الزيغان/ ديــر عـلا", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 408, name: "مركز صحي الرويحة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 409, name: "مركز صحي الروضة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 410, name: "مركز صحي معدي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 411, name: "مركز صحي ضرار بن الازور", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 412, name: "مركز صحي العارضة/ الشمالية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 413, name: "مركز صحي القبلان", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 414, name: "مركز صحي ام الدنانير", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 415, name: "مركز صحي موبص", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 416, name: "مركز صحي السحلولية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 417, name: "مركز صحي ام انجاصة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 418, name: "مركز صحي سيحان", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 419, name: "مركز صحي زي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 420, name: "مركز صحي السليحي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 421, name: "مركز صحي بيوضة الشرقية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 422, name: "مركز صحي علان", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 423, name: "مركز صحي الصبيحي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 424, name: "مركز صحي صافوط", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 425, name: "مركز صحي البصة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 426, name: "مركز صحي الباكورة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 427, name: "مركز صحي عيرا", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 428, name: "مركز صحي الرميمين", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 429, name: "مركز صحي الفحيص", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 430, name: "مركز صحي الرميمين الغربي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 431, name: "مركز صحي ماحص", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 432, name: "مركز صحي ام جوزة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 433, name: "مركز صحي البحيرة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 434, name: "مركز صحي الشونة الجنوبية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 435, name: "مركز صحي البقعة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 436, name: "مركز صحي البلقاء الشامل", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 437, name: "مركز صحي التطوير الحضري/ السلط", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 438, name: "مركز صحي السلالم/ السلط", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 439, name: "مركز صحي عين الباشا الشامل", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 440, name: "مركز صحي زي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 441, name: "مركز صحي زي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 442, name: "مركز صحي الروضة", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 443, name: "مركز صحي معدي", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 444, name: "مركز صحي ضرار بن الازور", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 445, name: "مركز صحي العارضة/ الشمالية", gov: "البلقاء", type: "مركز صحي" },
-			{ id: 446, name: "مركز صحي القبلان", gov: "البلقاء", type: "مركز صحي" },
-			// مراكز صحية - محافظة الكرك (IDs: 447 - 463) 
-			{ id: 447, name: "مركز صحي الموجب", gov: "الكرك", type: "مركز صحي" },
-			{ id: 448, name: "مركز صحي غور المزرعة", gov: "الكرك", type: "مركز صحي" },
-			{ id: 449, name: "مركز صحي غور فيفا", gov: "الكرك", type: "مركز صحي" },
-			{ id: 450, name: "مركز صحي عي", gov: "الكرك", type: "مركز صحي" },
-			{ id: 451, name: "مركز صحي الصافي", gov: "الكرك", type: "مركز صحي" },
-			{ id: 452, name: "مركز صحي فقوع", gov: "الكرك", type: "مركز صحي" },
-			{ id: 453, name: "مركز صحي ام الحيران", gov: "الكرك", type: "مركز صحي" },
-			{ id: 454, name: "مركز صحي الكرك الشامل", gov: "الكرك", type: "مركز صحي" },
-			{ id: 455, name: "مركز صحي المزار الجنوبي", gov: "الكرك", type: "مركز صحي" },
-			{ id: 456, name: "مركز صحي مؤتة", gov: "الكرك", type: "مركز صحي" },
-			{ id: 457, name: "مركز صحي ذات راس", gov: "الكرك", type: "مركز صحي" },
-			{ id: 458, name: "مركز صحي منشية ابو حمور", gov: "الكرك", type: "مركز صحي" },
-			{ id: 459, name: "مركز صحي ادر", gov: "الكرك", type: "مركز صحي" },
-			{ id: 460, name: "مركز صحي العدنانية", gov: "الكرك", type: "مركز صحي" },
-			{ id: 461, name: "مركز صحي صرفا", gov: "الكرك", type: "مركز صحي" },
-			{ id: 462, name: "مركز صحي الربة", gov: "الكرك", type: "مركز صحي" },
-			{ id: 463, name: "مركز صحي الحسينية", gov: "الكرك", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة الطفيلة (IDs: 464 - 475)
-			{ id: 464, name: "مركز صحي الطفيلة", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 465, name: "مركز صحي عيمة", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 466, name: "مركز صحي العيص", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 467, name: "مركز صحي غرندل", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 468, name: "مركز صحي القادسية", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 469, name: "مركز صحي عين البيضاء", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 470, name: "مركز صحي بصيرا", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 471, name: "مركز صحي الرشادية", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 472, name: "مركز صحي ارويم", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 473, name: "مركز صحي الحسا", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 474, name: "مركز صحي القادسية", gov: "الطفيلة", type: "مركز صحي" },
-			{ id: 475, name: "مركز صحي التطوير الحضري/ الطفيلة", gov: "الطفيلة", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة معان (IDs: 476 - 500)
-			{ id: 476, name: "مركز صحي الشوبك", gov: "معان", type: "خدمات طبية ملكية" },
-			{ id: 477, name: "خدمات طبية ملكية مركز طبي معان", gov: "معان", type: "خدمات طبية ملكية" },
-			{ id: 478, name: "مركز صحي الثغرة", gov: "معان", type: "مركز صحي" },
-			{ id: 479, name: "مركز صحي الاستقلال", gov: "معان", type: "مركز صحي" },
-			{ id: 480, name: "مركز صحي الشراه", gov: "معان", type: "مركز صحي" },
-			{ id: 481, name: "مركز صحي المدورة الجديد", gov: "معان", type: "مركز صحي" },
-			{ id: 482, name: "مركز صحي معان الغربي", gov: "معان", type: "مركز صحي" },
-			{ id: 483, name: "مركز صحي سمو الاميرة رحمة بنت الحسن", gov: "معان", type: "مركز صحي" },
-			{ id: 484, name: "مركز صحي (مضيبيع) الفيصلية", gov: "معان", type: "مركز صحي" },
-			{ id: 485, name: "مركز صحي المدورة", gov: "معان", type: "مركز صحي" },
-			{ id: 486, name: "مركز صحي الاصلاح والتاهيل معان", gov: "معان", type: "مركز صحي" },
-			{ id: 487, name: "مركز صحي قضاء ايل", gov: "معان", type: "مركز صحي" },
-			{ id: 488, name: "مركز صحي الراجف", gov: "معان", type: "مركز صحي" },
-			{ id: 489, name: "مركز صحي الطيبة", gov: "معان", type: "مركز صحي" },
-			{ id: 490, name: "مركز صحي الحسينية", gov: "معان", type: "مركز صحي" },
-			{ id: 491, name: "مركز صحي اذرح", gov: "معان", type: "مركز صحي" },
-			{ id: 492, name: "مركز صحي قضاء الجفر", gov: "معان", type: "مركز صحي" },
-			{ id: 493, name: "مركز صحي وادي موسى", gov: "معان", type: "مركز صحي" },
-			{ id: 494, name: "مركز صحي العمرة/ معان", gov: "معان", type: "مركز صحي" },
-			{ id: 495, name: "مركز صحي العبدلية/ معان", gov: "معان", type: "مركز صحي" },
-			{ id: 496, name: "مركز صحي الجهير", gov: "معان", type: "مركز صحي" },
-			{ id: 497, name: "مركز صحي مثلث الشوبك", gov: "معان", type: "مركز صحي" },
-			{ id: 498, name: "مركز صحي الشوبك", gov: "معان", type: "مركز صحي" },
-			{ id: 499, name: "مركز صحي المنشية / معان", gov: "معان", type: "مركز صحي" },
-			{ id: 500, name: "مركز صحي معان", gov: "معان", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة العقبة (IDs: 501 - 522) 
-			{ id: 501, name: "مركز صحي الديسة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 502, name: "مركز صحي الراشدية", gov: "العقبة", type: "مركز صحي" },
-			{ id: 503, name: "مركز صحي القويرة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 504, name: "مركز صحي الصالحية", gov: "العقبة", type: "مركز صحي" },
-			{ id: 505, name: "مركز صحي الريشة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 506, name: "مركز صحي اليرموك", gov: "العقبة", type: "مركز صحي" },
-			{ id: 507, name: "مركز صحي القويرة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 508, name: "مركز صحي الخزان", gov: "العقبة", type: "مركز صحي" },
-			{ id: 509, name: "مركز صحي الشامية", gov: "العقبة", type: "مركز صحي" },
-			{ id: 510, name: "مركز صحي الكرامة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 511, name: "مركز صحي فينان / فرعي", gov: "العقبة", type: "مركز صحي" },
-			{ id: 512, name: "مركز صحي البلدة القديمة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 513, name: "مركز صحي السجن", gov: "العقبة", type: "مركز صحي" },
-			{ id: 514, name: "مركز صحي الاميرة بسمة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 515, name: "مركز صحي منيشير", gov: "العقبة", type: "مركز صحي" },
-			{ id: 516, name: "مركز صحي رم", gov: "العقبة", type: "مركز صحي" },
-			{ id: 517, name: "مركز صحي القريقرة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 518, name: "مركز صحي الخزان", gov: "العقبة", type: "مركز صحي" },
-			{ id: 519, name: "مركز صحي الغال", gov: "العقبة", type: "مركز صحي" },
-			{ id: 520, name: "مركز صحي دبة حانوت", gov: "العقبة", type: "مركز صحي" },
-			{ id: 521, name: "مركز صحي الحميمة", gov: "العقبة", type: "مركز صحي" },
-			{ id: 522, name: "مركز صحي الطويل", gov: "العقبة", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة الزرقاء (IDs: 523 - 535) 
-			{ id: 523, name: "مركز صحي الزرقاء الشامل", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 524, name: "مركز صحي الرصيفة الشامل", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 525, name: "مركز صحي الهاشمية", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 526, name: "مركز صحي الضليل", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 527, name: "مركز صحي السخنة", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 528, name: "مركز صحي بيرين", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 529, name: "مركز صحي الغويرية", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 530, name: "مركز صحي جناعة", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 531, name: "مركز صحي الأزرق الشامل", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 532, name: "مركز صحي قضاء الضليل", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 533, name: "مركز صحي جبل طارق", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 534, name: "مركز صحي وادي الحجر", gov: "الزرقاء", type: "مركز صحي" },
-			{ id: 535, name: "مركز صحي القنية", gov: "الزرقاء", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة المفرق (IDs: 536 - 549) 
-			{ id: 536, name: "مركز صحي المفرق الشامل", gov: "المفرق", type: "مركز صحي" },
-			{ id: 537, name: "مركز صحي البادية الشمالية", gov: "المفرق", type: "مركز صحي" },
-			{ id: 538, name: "مركز صحي بلعما", gov: "المفرق", type: "مركز صحي" },
-			{ id: 539, name: "مركز صحي منشية بني حسن", gov: "المفرق", type: "مركز صحي" },
-			{ id: 540, name: "مركز صحي الزعتري", gov: "المفرق", type: "مركز صحي" },
-			{ id: 541, name: "مركز صحي الخالدية", gov: "المفرق", type: "مركز صحي" },
-			{ id: 542, name: "مركز صحي صبحا وصبحية", gov: "المفرق", type: "مركز صحي" },
-			{ id: 543, name: "مركز صحي ام الجمال", gov: "المفرق", type: "مركز صحي" },
-			{ id: 544, name: "مركز صحي الرويشد", gov: "المفرق", type: "مركز صحي" },
-			{ id: 545, name: "مركز صحي الصالحية", gov: "المفرق", type: "مركز صحي" },
-			{ id: 546, name: "مركز صحي حويجة", gov: "المفرق", type: "مركز صحي" },
-			{ id: 547, name: "مركز صحي منشية القريات", gov: "المفرق", type: "مركز صحي" },
-			{ id: 548, name: "مركز صحي ايدون بني حسن", gov: "المفرق", type: "مركز صحي" },
-			{ id: 549, name: "مركز صحي الدجنية", gov: "المفرق", type: "مركز صحي" },
-
-			// مراكز صحية - محافظة مادبا (IDs: 550 - 561)
-			{ id: 550, name: "مركز صحي الفيحاء", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 551, name: "مركز صحي الهيدان", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 552, name: "مركز صحي ادر", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 553, name: "مركز صحي الوالة", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 554, name: "مركز صحي ارحاب", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 555, name: "مركز صحي حنينا", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 556, name: "مركز صحي المريجمة", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 557, name: "مركز صحي عيون الذيب", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 558, name: "مركز صحي المأمونية الشرقية", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 559, name: "مركز صحي جبل نيبو", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 560, name: "مركز صحي مادبا الشامل", gov: "مأدبا", type: "مركز صحي" },
-			{ id: 561, name: "مركز صحي التطوير الحضري / مادبا", gov: "مأدبا", type: "مركز صحي" },
-			];
-	const hospitals = [...governmentalHospitals, ...privateHospitals,...healthCenters];
-    const departments = [
-      {id:1, title:'قسم العظام', basePrice:40, icon:'fas fa-bone'}, {id:2, title:'الباطنية', basePrice:35, icon:'fas fa-stethoscope'}, {id:3, title:'القلب', basePrice:60, icon:'fas fa-heartbeat'},
-      {id:4, title:'الجراحة العامة', basePrice:70, icon:'fas fa-cut'}, {id:5, title:'النساء والولادة', basePrice:50, icon:'fas fa-baby'}
-    ];
-    const doctors = [
-      {id:101, name:'د. سليم العلي', hospital_id:1, dept_id:1, slotDuration:30}, {id:102, name:'د. منال الخطيب', hospital_id:1, dept_id:2, slotDuration:20},
-      {id:103, name:'د. هالة مراد', hospital_id:2, dept_id:5, slotDuration:30}, {id:104, name:'د. رائد الشوابكة', hospital_id:3, dept_id:4, slotDuration:30},
-      {id:105, name:'د. ليلى أبو غوش', hospital_id:7, dept_id:3, slotDuration:20}, {id:106, name:'د. خالد الياسين', hospital_id:8, dept_id:1, slotDuration:30},
-      {id:107, name:'د. ريم الحسيني', hospital_id:9, dept_id:2, slotDuration:20}
-    ];
-
-    // حالة الحجز
-    let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
-    let bookingState = {
-      currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
-      insuranceDetails:null, doctor:null, date:null, time:null, price:null,
-      customer:{name:null, email:null, phone:null, note:null}
-    };
-
-    // -------------------------------
-    // دوال مساعدة
-    // -------------------------------
-
-    function escapeHtml(str){ if(!str && str!==0) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
-    const maxStep = 9;
-
-    // -------------------------------
-    // دوال التنقل الرئيسية
-    // -------------------------------
-    function showStep(n){
-      document.querySelectorAll('#stepsArea .step-block').forEach(el=>el.classList.add('d-none'));
-      const el = document.getElementById('step-' + n); if(el) el.classList.remove('d-none');
-      bookingState.currentStep = n; updateStepPills(); updateNavButtons();
-
-      if(n === 4 && bookingState.hospital){ renderDepartments(); }
-      if(n === 7 && bookingState.department){ renderDoctors(); }
-      if(n === 8 && bookingState.doctor){ autoFillToday(); loadTimeSlotsForSelectedDate(); }
-      if(n === 9 && bookingState.time){ updateSummaryCard(); }
-    }
-
-    function updateStepPills(){
-      document.querySelectorAll('.step-pill').forEach(p=>{
-        const stepNum = Number(p.dataset.step);
-        p.classList.remove('active', 'text-success');
-        if(stepNum === bookingState.currentStep) p.classList.add('active');
-        if(stepNum < bookingState.currentStep) p.classList.add('text-success');
-      });
-    }
-
-    function updateNavButtons(){
-      document.getElementById('prevBtn').disabled = bookingState.currentStep ===1;
-      document.getElementById('nextBtn').innerHTML = bookingState.currentStep === maxStep ? '<i class="fas fa-check me-2"></i> تأكيد الحجز' : '<i class="fas fa-arrow-left me-2"></i> التالي';
-      document.getElementById('prevBtn').innerHTML = '<i class="fas fa-arrow-right me-2"></i> السابق';
-    }
-    
-    // -------------------------------
-    // دوال العرض والمنطق
-    // -------------------------------
-
-    function renderGovernorates(){
-      const container = document.getElementById('govList'); container.innerHTML = '';
-      governorates.forEach(g => {
-        const col = document.createElement('div'); col.className = 'col-6 col-md-3';
-        const card = document.createElement('div'); card.className = 'card select-card p-3 text-center';
-        card.dataset.gov = g; card.innerHTML = `<div class="card-body p-0"><i class="fas fa-map-marker-alt fa-lg mb-2 text-primary"></i><strong>${escapeHtml(g)}</strong></div>`;
-        col.appendChild(card); container.appendChild(col);
-      });
-    }
-    function selectGovernorate(gov){
-      bookingState.gov = gov; bookingState.facilityType = null; bookingState.hospital = null; bookingState.department=null; bookingState.doctor=null;
-      document.querySelectorAll('[data-gov]').forEach(el=>el.classList.remove('selected'));
-      document.querySelectorAll(`[data-gov]`).forEach(el=>{ if(el.dataset.gov===gov) el.classList.add('selected'); });
-      showStep(2);
-    }
-    function selectFacilityType(type){
-      bookingState.facilityType = type; bookingState.hospital=null; bookingState.department=null; bookingState.doctor=null;
-      document.querySelectorAll('[data-type]').forEach(el=>el.classList.remove('selected'));
-      document.querySelectorAll(`[data-type]`).forEach(el=>{ if(el.dataset.type===type) el.classList.add('selected'); });
-      renderHospitals(); showStep(3);
-    }
-    function renderHospitals(){
-      const container = document.getElementById('hospList'); container.innerHTML='';
-      const matched = hospitals.filter(h=> h.gov===bookingState.gov && h.type===bookingState.facilityType);
-      if(!matched.length){ container.innerHTML = '<div class="col-12 p-3 text-muted"><i class="fas fa-info-circle me-2"></i> لا توجد منشآت متاحة حالياً.</div>'; return; }
-      matched.forEach(h => {
-        const col = document.createElement('div'); col.className = 'col-12 col-md-6';
-        const card = document.createElement('div'); card.className = 'card select-card p-3';
-        card.dataset.hosp = h.id; card.innerHTML = `<div class="card-body p-0"><div class="d-flex justify-content-between align-items-center"><div><strong>${escapeHtml(h.name)}</strong><div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div></div><div><i class="fas fa-hospital" style="font-size:1.8rem;color:var(--primary)"></i></div></div></div>`;
-        col.appendChild(card); container.appendChild(col);
-      });
-    }
-    function selectHospital(hospId){
-      const h = hospitals.find(x=>x.id===hospId); if(!h) return;
-      bookingState.hospital = h; bookingState.department=null; bookingState.doctor=null;
-      document.querySelectorAll('[data-hosp]').forEach(el=>el.classList.remove('selected'));
-      document.querySelectorAll(`[data-hosp]`).forEach(el=>{ if(Number(el.dataset.hosp)===hospId) el.classList.add('selected'); });
-      showStep(4);
-    }
-    function renderDepartments(){
-      const c = document.getElementById('deptList'); c.innerHTML = '';
-      departments.forEach(d => {
-        const col = document.createElement('div'); col.className='col-12 col-md-6';
-        const card = document.createElement('div'); card.className='card select-card p-3'; card.dataset.dept = d.id;
-        card.innerHTML = `<div class="card-body p-0 d-flex justify-content-between align-items-center"><div><i class="${d.icon} fa-lg me-2 text-primary"></i><strong>${escapeHtml(d.title)}</strong><div class="small text-muted">سعر أساسي: $${d.basePrice}</div></div><div class="badge-price">${d.basePrice}$</div></div>`;
-        col.appendChild(card); c.appendChild(col);
-      });
-    }
-    function selectDepartment(deptId){
-      bookingState.department = departments.find(d=>d.id===deptId); bookingState.doctor=null;
-      document.querySelectorAll('[data-dept]').forEach(el=>el.classList.remove('selected'));
-      document.querySelectorAll(`[data-dept]`).forEach(el=>{ if(Number(el.dataset.dept)===deptId) el.classList.add('selected'); });
-      showStep(5);
-    }
-    function renderDoctors(){
-      const c = document.getElementById('docList'); c.innerHTML='';
-      if(!bookingState.hospital || !bookingState.department){ c.innerHTML='<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> اختر المستشفى ثم القسم لعرض الأطباء.</div>'; return; }
-      const matched = doctors.filter(d=> d.hospital_id===bookingState.hospital.id && d.dept_id===bookingState.department.id );
-      if(!matched.length){ c.innerHTML='<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> لا يوجد أطباء متاحين للقسم في هذه المنشأة.</div>'; return; }
-      matched.forEach(doc=>{
-        const col = document.createElement('div'); col.className='col-12 col-md-6';
-        const card = document.createElement('div'); card.className='card select-card p-3'; card.dataset.doc = doc.id;
-        card.innerHTML = `<div class="card-body p-0 d-flex justify-content-between align-items-center"><div><strong><i class="fas fa-user-md me-2 text-primary"></i> ${escapeHtml(doc.name)}</strong><div class="small text-muted">المدة: ${doc.slotDuration} دقيقة</div></div><div><i class="fas fa-angle-left" style="font-size:1.6rem;color:var(--primary)"></i></div></div>`;
-        col.appendChild(card); c.appendChild(col);
-      });
-    }
-    function selectDoctor(docId){
-      bookingState.doctor = doctors.find(d=>d.id===docId); bookingState.date=null; bookingState.time=null; bookingState.price=null;
-      document.querySelectorAll('[data-doc]').forEach(el=>el.classList.remove('selected'));
-      document.querySelectorAll(`[data-doc]`).forEach(el=>{ if(Number(el.dataset.doc)===docId) el.classList.add('selected'); });
-      const base = bookingState.department.basePrice;
-      bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
-      showStep(8);
-      setTimeout(()=>{ autoFillToday(); loadTimeSlotsForSelectedDate(); }, 100);
-    }
-    function autoFillToday(){
-      const today = new Date(); const yyyy = today.getFullYear(); const mm = String(today.getMonth()+1).padStart(2,'0'); const dd = String(today.getDate()).padStart(2,'0');
-      const val = `${yyyy}-${mm}-${dd}`; document.getElementById('apptDate').value = val; bookingState.date = val; enforceDateMin();
-    }
-    function enforceDateMin(){
-      const today = new Date(); const yyyy = today.getFullYear(); const mm = String(today.getMonth()+1).padStart(2,'0'); const dd = String(today.getDate()).padStart(2,'0');
-      document.getElementById('apptDate').setAttribute('min', `${yyyy}-${mm}-${dd}`);
-    }
-    function loadTimeSlotsForSelectedDate(){
-      const container = document.getElementById('slotsArea'); container.innerHTML='';
-      if(!bookingState.doctor || !bookingState.date){ container.innerHTML = '<div class="text-muted p-2">اختر الطبيب والتاريخ لعرض الأوقات</div>'; return; }
-      const slotMin = bookingState.doctor.slotDuration || 30;
-      const startH = 9, endH = 17; const slots = [];
-      for(let h = startH; h < endH; h++){
-        for(let m=0; m<60; m+=slotMin){ const hh = String(h).padStart(2,'0'); const mmStr = String(m).padStart(2,'0'); slots.push(`${hh}:${mmStr}`); }
-      }
-      slots.forEach(s=>{
-        const conflict = localBookings.some(b=> b.doctor_id===bookingState.doctor.id && b.date===bookingState.date && b.time===s);
-        const btn = document.createElement('button'); btn.className = 'btn btn-outline-primary time-slot'; btn.dataset.time = s; btn.textContent = s;
-        if(conflict){ btn.disabled = true; btn.textContent = s + ' (محجوز)'; btn.classList.add('disabled'); btn.classList.remove('btn-outline-primary'); btn.classList.add('btn-outline-danger'); }
-        container.appendChild(btn);
-      });
-    }
-    function selectTimeSlot(time){
-      bookingState.time = time;
-      document.querySelectorAll('.time-slot').forEach(el=>el.classList.remove('selected'));
-      document.querySelectorAll(`.time-slot[data-time="${time}"]`).forEach(el=>el.classList.add('selected'));
-      // Auto advance after selection
-      nextStep();
-    }
-    function updateSummaryCard(){
-      const c = document.getElementById('summaryCard');
-      const html = `
-        <div class="row">
-          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i> المحافظة</div><strong>${escapeHtml(bookingState.gov || '-')}</strong></div>
-          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-building me-1"></i> نوع المنشأة</div><strong>${escapeHtml(bookingState.facilityType || '-')}</strong></div>
-        </div>
-        <hr class="my-2">
-        <div class="row">
-          <div class="col-12 mb-2"><div class="small text-muted"><i class="fas fa-hospital me-1"></i> المستشفى</div><strong>${escapeHtml(bookingState.hospital? bookingState.hospital.name : '-')}</strong></div>
-        </div>
-        <div class="row">
-          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clipboard-list me-1"></i> القسم</div><strong>${escapeHtml(bookingState.department? bookingState.department.title : '-')}</strong></div>
-          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-user-md me-1"></i> الطبيب</div><strong>${escapeHtml(bookingState.doctor? bookingState.doctor.name : '-')}</strong></div>
-        </div>
-        <div class="row">
-          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-calendar-alt me-1"></i> التاريخ</div><strong>${escapeHtml(bookingState.date || '-')}</strong></div>
-          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clock me-1"></i> الوقت</div><strong>${escapeHtml(bookingState.time || '-')}</strong></div>
-        </div>
-        <hr class="my-2">
-        <div class="row align-items-center">
-          <div class="col-6"><div class="small text-muted"><i class="fas fa-money-bill-wave me-1"></i> السعر النهائي</div><h4 class="mb-0 text-success">$${escapeHtml(bookingState.price || '-')}</h4></div>
-          <div class="col-6 text-end small text-muted"><i class="fas fa-shield-alt me-1"></i> التأمين: ${bookingState.hasInsurance ? 'نعم' : 'لا'}</div>
-        </div>
-      `;
-      c.innerHTML = html;
-    }
-
-    function validateCurrentStep(){
-      const s = bookingState.currentStep;
-      if(s===1 && !bookingState.gov){ alert('الرجاء اختيار المحافظة.'); return false; }
-      if(s===2 && !bookingState.facilityType){ alert('الرجاء اختيار نوع المنشأة.'); return false; }
-      if(s===3 && !bookingState.hospital){ alert('الرجاء اختيار المستشفى.'); return false; }
-      if(s===4 && !bookingState.department){ alert('الرجاء اختيار القسم.'); return false; }
-      if(s===5 && bookingState.hasInsurance === null){ alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
-      if(s===6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)){ alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
-      if(s===7 && !bookingState.doctor){ alert('الرجاء اختيار الطبيب.'); return false; }
-      if(s===8 && (!bookingState.date || !bookingState.time)){ alert('الرجاء اختيار التاريخ والوقت.'); return false; }
-      if(s===9 && (!document.getElementById('custName').value || !document.getElementById('custEmail').value || !document.getElementById('custPhone').value)){ alert('الرجاء إدخال بيانات العميل كاملة.'); return false; }
-      return true;
-    }
-    
-    function commitBooking(){
-      if(!validateCurrentStep()){ return; }
-      bookingState.customer.name = document.getElementById('custName').value;
-      bookingState.customer.email = document.getElementById('custEmail').value;
-      bookingState.customer.phone = document.getElementById('custPhone').value;
-      bookingState.customer.note = document.getElementById('custNote').value;
-      const payload = {
-        timestamp: new Date().toISOString(), booking_id: 'B' + Date.now(), status: 'PENDING',
-        gov: bookingState.gov, hospital_name: bookingState.hospital.name, department_title: bookingState.department.title,
-        doctor_name: bookingState.doctor.name, date: bookingState.date, time: bookingState.time, price: bookingState.price,
-        customer_name: bookingState.customer.name, customer_email: bookingState.customer.email, customer_phone: bookingState.customer.phone,
-        doctor_id: bookingState.doctor.id, // Needed for time slot conflict check
-      };
-      localBookings.push(payload);
-      localStorage.setItem('localBookings', JSON.stringify(localBookings));
-      document.getElementById('modalContent').innerHTML = `
-        <p>تم حجز موعدك بنجاح!</p><strong>رقم الحجز:</strong> ${payload.booking_id}<p><strong>التاريخ والوقت:</strong> ${payload.date} الساعة ${payload.time}</p><p><strong>المبلغ المستحق:</strong> <span class="text-success">$${payload.price}</span></p>
-      `;
-      const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-      successModal.show();
-      bookingState = { currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null, insuranceDetails:null, doctor:null, date:null, time:null, price:null, customer:{name:null, email:null, phone:null, note:null} };
-      goToLandingPage(); // Go back to landing page after success
-    }
-
-    function nextStep(){
-      if(!validateCurrentStep()) return;
-      if(bookingState.currentStep === maxStep){
-        commitBooking();
-      } else {
-        let targetStep = bookingState.currentStep + 1;
-        if(bookingState.currentStep === 5 && bookingState.hasInsurance === false){ targetStep = 7; }
-        showStep(targetStep);
-      }
-    }
-    
-    // -------------------------------
-    // إدارة عرض الصفحات (Landing vs. App)
-    // -------------------------------
-
-    function goToBookingApp(){
-      document.getElementById('landingPage').classList.add('d-none');
-      document.getElementById('bookingApp').classList.remove('d-none');
-      showStep(1); // Start the booking process
-    }
-    
-    function goToLandingPage(){
-      document.getElementById('landingPage').classList.remove('d-none');
-      document.getElementById('bookingApp').classList.add('d-none');
-      // Reset the state/form if needed
-      bookingState = { currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null, insuranceDetails:null, doctor:null, date:null, time:null, price:null, customer:{name:null, email:null, phone:null, note:null} };
-      renderGovernorates(); // Re-render step 1 for a clean start
-    }
-    
-    // -------------------------------
-    // معالجات الأحداث (Listeners)
-    // -------------------------------
-
-    // التنقل من صفحة البداية
-    document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
-    // التنقل للرئيسية من الـ Navbar
-    document.getElementById('homeBtn').addEventListener('click', (e) => { e.preventDefault(); goToLandingPage(); });
-
-    // Delegate Clicks (Gov, Type, Hosp, Dept, Doc, Slot)
-    document.addEventListener('click', function(e){
-      const govEl = e.target.closest('[data-gov]'); if(govEl){ selectGovernorate(govEl.dataset.gov); return; }
-      const typeEl = e.target.closest('[data-type]'); if(typeEl){ selectFacilityType(typeEl.dataset.type); return; }
-      const hospEl = e.target.closest('[data-hosp]'); if(hospEl){ selectHospital(parseInt(hospEl.dataset.hosp,10)); return; }
-      const deptEl = e.target.closest('[data-dept]'); if(deptEl){ selectDepartment(parseInt(deptEl.dataset.dept,10)); return; }
-      const docEl = e.target.closest('[data-doc]'); if(docEl){ selectDoctor(parseInt(docEl.dataset.doc,10)); return; }
-      const slotEl = e.target.closest('.time-slot'); if(slotEl && !slotEl.disabled){ selectTimeSlot(slotEl.dataset.time); return; }
-    });
-
-    // Date change
-    document.getElementById('apptDate').addEventListener('change', function(){ bookingState.date = this.value; bookingState.time=null; loadTimeSlotsForSelectedDate(); });
-
-    // Insurance handlers
-    document.getElementById('insNo').addEventListener('click', function(){ bookingState.hasInsurance = false; bookingState.insuranceDetails = null; nextStep(); });
-    document.getElementById('insYes').addEventListener('click', function(){ bookingState.hasInsurance = true; nextStep(); });
-    document.getElementById('insForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      if(validateCurrentStep()){
-        bookingState.insuranceDetails = { company: document.getElementById('insCompany').value, policy: document.getElementById('insPolicy').value, note: document.getElementById('insNote').value };
-        nextStep();
-      }
-    });
-
-    // Prev/Next Navigation
-    document.getElementById('prevBtn').addEventListener('click', function(){
-      if(bookingState.currentStep>1){
-        let targetStep = bookingState.currentStep-1;
-        if(bookingState.currentStep === 7 && bookingState.hasInsurance === false){ targetStep = 5; }
-        showStep(targetStep);
-      }
-    });
-
-    document.getElementById('nextBtn').addEventListener('click', nextStep);
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function(){ goToLandingPage(); });
-  </script>
-</body>
-</html>
