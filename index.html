@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>نظام الحجز الطبي — واجهة عصرية</title>
-  
+  <title>صحتك أولاً</title>
+  <!-- أيقونة تبين في التبويب (Favicon) -->
+  <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-/* 🌈✨ تصميم أسطوري متحرك لنظام صحي (Animated + Gradient Effects) ✨🌈 */
+
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
-/* ----------------- الألوان والمتغيرات ----------------- */
+/* ----------------- Colors and Variables ----------------- */
 :root {
   --primary: #00b4d8;
   --secondary: #0077b6;
@@ -25,7 +27,7 @@
   --card-bg: rgba(255, 255, 255, 0.1);
 }
 
-/* ----------------- القاعدة العامة ----------------- */
+/* ----------------- General Rule ----------------- */
 * {
   margin: 0;
   padding: 0;
@@ -109,7 +111,7 @@ nav.navbar {
   box-shadow: 0 0 35px rgba(0, 255, 255, 0.3);
 }
 
-/* ----------------- عناوين ونصوص ----------------- */
+/* ----------------- Titles and Texts ----------------- */
 h1, h4, h5, h6 {
   color: var(--glow);
   text-shadow: 0 0 10px var(--accent);
@@ -120,7 +122,7 @@ p {
   line-height: 1.7;
 }
 
-/* ----------------- أزرار ----------------- */
+/* ----------------- Buttons ----------------- */
 .btn-main {
   background: linear-gradient(90deg, var(--primary), var(--accent));
   border: none;
@@ -307,7 +309,7 @@ footer {
     </div>
   </nav>
 
-  <!-- النافذة (Modal) -->
+<!-- Window (Modal) -->
   <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -325,7 +327,7 @@ footer {
     </div>
   </div>
 
-  <!-- الصفحة الرئيسية -->
+<!-- Home Page -->
   <div class="container" id="landingPage">
     <div class="landing-card text-center">
       <h3 class="mb-3 text-primary" style="font-weight: 800;">مرحبًا بك في نظام صحتك أولًا</h3>
@@ -419,17 +421,17 @@ footer {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // -------------------------------
-    // البيانات الأساسية
-    // -------------------------------
+	// -------------------------------
+	// Basic Data
+	// -------------------------------
     function confirmBooking() {
       alert("تم تأكيد حجزك بنجاح ✅");
     }
 	
 	const governorates = [ 'عمان', 'إربد', 'الزرقاء', 'البلقاء', 'الكرك', 'معان', 'الطفيلة', 'جرش', 'عجلون', 'مأدبا', 'العقبة', 'المفرق' ];
 
-	// 1. قائمة المستشفيات الحكومية (governmentalHospitals)
-	// تم إعادة تسميتها من 'hospitals' لتصبح 'governmentalHospitals'
+	// 1. List of Governmental Hospitals
+	// Renamed from 'hospitals' to 'governmentalHospitals'
 	const governmentalHospitals = [
 			   // عمان
 			  {id:1, name:'مستشفى البشير', gov:'عمان', type:'حكومي'},
@@ -1068,24 +1070,22 @@ footer {
       {id:107, name:'د. ريم الحسيني', hospital_id:9, dept_id:2, slotDuration:20}
     ];
 
-    // حالة الحجز
+ 	// Booking status
     let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
     let bookingState = {
       currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
       insuranceDetails:null, doctor:null, date:null, time:null, price:null,
       customer:{name:null, email:null, phone:null, note:null}
     };
-
-    // -------------------------------
-    // دوال مساعدة
-    // -------------------------------
-
-    function escapeHtml(str){ if(!str && str!==0) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+	// -------------------------------
+	// Helper Functions
+	// -------------------------------
+	    function escapeHtml(str){ if(!str && str!==0) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
     const maxStep = 9;
 
-    // -------------------------------
-    // دوال التنقل الرئيسية
-    // -------------------------------
+	// -------------------------------
+	// Main Navigation Functions
+	// -------------------------------
     function showStep(n){
       document.querySelectorAll('#stepsArea .step-block').forEach(el=>el.classList.add('d-none'));
       const el = document.getElementById('step-' + n); if(el) el.classList.remove('d-none');
@@ -1112,9 +1112,9 @@ footer {
       document.getElementById('prevBtn').innerHTML = '<i class="fas fa-arrow-right me-2"></i> السابق';
     }
     
-    // -------------------------------
-    // دوال العرض والمنطق
-    // -------------------------------
+	// -------------------------------
+	// Display and Logic Functions
+	// -------------------------------
 
     function renderGovernorates(){
       const container = document.getElementById('govList'); container.innerHTML = '';
@@ -1298,9 +1298,9 @@ footer {
       }
     }
     
-    // -------------------------------
-    // إدارة عرض الصفحات (Landing vs. App)
-    // -------------------------------
+	// -------------------------------
+	// Page Display Management (Landing vs. App)
+	// -------------------------------
 
     function goToBookingApp(){
       document.getElementById('landingPage').classList.add('d-none');
@@ -1316,13 +1316,12 @@ footer {
       renderGovernorates(); // Re-render step 1 for a clean start
     }
     
-    // -------------------------------
-    // معالجات الأحداث (Listeners)
-    // -------------------------------
-
-    // التنقل من صفحة البداية
+	 // -------------------------------
+	// Event Handlers (Listeners)
+	// -------------------------------
+	// Navigation from the homepage	
     document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
-    // التنقل للرئيسية من الـ Navbar
+    // Navigate to the main page from the navbar
     document.getElementById('homeBtn').addEventListener('click', (e) => { e.preventDefault(); goToLandingPage(); });
 
     // Delegate Clicks (Gov, Type, Hosp, Dept, Doc, Slot)
