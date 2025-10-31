@@ -398,7 +398,7 @@ footer {
         <div id="step-1" class="step-block"> <h5 class="mb-3">اختر المحافظة</h5> <div id="govList" class="row g-3"></div> </div>
         <div id="step-2" class="step-block d-none"> <h5 class="mb-3">اختر نوع المنشأة</h5> <div class="row g-3">
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى حكومي</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى عسكري</div></div>
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="عسكري"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى عسكري</div></div>
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="خاص"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> مستشفى خاص</div></div>
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز صحي"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> مركز صحي</div></div>
             <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز طبي"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> مركز طبي</div></div>
@@ -1395,6 +1395,7 @@ footer {
     document.addEventListener('DOMContentLoaded', function(){ goToLandingPage(); });
 	document.addEventListener('contextmenu', e => e.preventDefault());
 	document.addEventListener('selectstart', e => e.preventDefault());
+	document.addEventListener('dragstart', e => e.preventDefault());
 
   </script>
 </body>
