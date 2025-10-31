@@ -1076,7 +1076,7 @@ footer {
 			{ id: 548, name: "مركز صحي ايدون بني حسن", gov: "المفرق", type: "مركز صحي" },
 			{ id: 549, name: "مركز صحي الدجنية", gov: "المفرق", type: "مركز صحي" },
 
-			// مراكز صحية - محافظة مادبا (IDs: 550 - 561)
+			// مراكز صحية - محافظة مادبا 
 			{ id: 550, name: "مركز صحي الفيحاء", gov: "مأدبا", type: "مركز صحي" },
 			{ id: 551, name: "مركز صحي الهيدان", gov: "مأدبا", type: "مركز صحي" },
 			{ id: 552, name: "مركز صحي ادر", gov: "مأدبا", type: "مركز صحي" },
@@ -1090,7 +1090,31 @@ footer {
 			{ id: 560, name: "مركز صحي مادبا الشامل", gov: "مأدبا", type: "مركز صحي" },
 			{ id: 561, name: "مركز صحي التطوير الحضري / مادبا", gov: "مأدبا", type: "مركز صحي" },
 			];
-	const hospitals = [...governmentalHospitals, ...privateHospitals,...healthCenters];
+			
+		const militaryHealthCenters = [
+		  // عمان
+		  { id: 562, name: "مدينة الحسين الطبية", gov: "عمان", type: "عسكري" },
+		  { id: 563, name: "مستشفى الحسين", gov: "عمان", type: "عسكري" },
+		  { id: 564, name: "مركز الملكة علياء لأمراض وجراحة القلب", gov: "عمان", type: "عسكري" },
+		  { id: 565, name: "مركز التأهيل الملكي", gov: "عمان", type: "عسكري" },
+		  { id: 566, name: "مركز الأمير حسين بن عبدالله لأمراض وجراحة الكلى وزراعة الأعضاء", gov: "عمان", type: "عسكري" },
+		  { id: 567, name: "مركز الأميرة إيمان بنت عبدالله الثاني للأبحاث والعلوم المخبرية", gov: "عمان", type: "عسكري" },
+		  { id: 568, name: "مستشفى الملكة علياء العسكري", gov: "عمان", type: "عسكري" },
+		  { id: 574, name: "مركز الرعاية النفسية", gov: "عمان / ماركا", type: "عسكري" },
+		  // إربد
+		  { id: 569, name: "مستشفى الأمير راشد بن الحسن", gov: "إربد", type: "عسكري" },
+		  // الزرقاء
+		  { id: 570, name: "مستشفى الأمير هاشم بن الحسين", gov: "الزرقاء", type: "عسكري" },
+		  // العقبة
+		  { id: 571, name: "مستشفى الأميرة هيا بنت الحسين", gov: "العقبة", type: "عسكري" },
+		  // الكرك
+		  { id: 572, name: "مستشفى الأمير علي بن الحسين", gov: "الكرك", type: "عسكري" },
+		  // الطفيلة
+		  { id: 573, name: "مستشفى الأمير زيد بن الحسين", gov: "الطفيلة", type: "عسكري" }
+		];
+
+
+	const hospitals = [...governmentalHospitals, ...privateHospitals,...healthCenters,...militaryHealthCenters];
     const departments = [
       {id:1, title:'قسم العظام', basePrice:40, icon:'fas fa-bone'}, {id:2, title:'الباطنية', basePrice:35, icon:'fas fa-stethoscope'}, {id:3, title:'القلب', basePrice:60, icon:'fas fa-heartbeat'},
       {id:4, title:'الجراحة العامة', basePrice:70, icon:'fas fa-cut'}, {id:5, title:'النساء والولادة', basePrice:50, icon:'fas fa-baby'}
@@ -1400,3 +1424,5 @@ footer {
   </script>
 </body>
 </html>
+
+	
