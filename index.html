@@ -287,6 +287,38 @@ footer {
     font-size: 0.9rem;
   }
 }
+/* ----------------- Buttons Hover & Active Effects ----------------- */
+.btn-main, .btn-outline-main {
+  border-radius: 50px;
+  font-weight: 700;
+  transition: all 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover Effect */
+.btn-main:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 4px 20px rgba(0, 180, 216, 0.4);
+}
+
+.btn-outline-main:hover {
+  background: var(--glow);
+  color: var(--bg-dark);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(202, 240, 248, 0.6), 0 4px 15px rgba(0, 180, 216, 0.3);
+}
+
+/* Active / Click Effect */
+.btn-main:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0,180,216,0.3);
+}
+
+.btn-outline-main:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 12px rgba(202,240,248,0.5), inset 0 0 8px rgba(0,180,216,0.3);
+}
+
 </style>
 
 </head>
@@ -1361,6 +1393,9 @@ footer {
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function(){ goToLandingPage(); });
+	document.addEventListener('contextmenu', e => e.preventDefault());
+	document.addEventListener('selectstart', e => e.preventDefault());
+
   </script>
 </body>
 </html>
