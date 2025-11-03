@@ -1112,19 +1112,165 @@ footer {
 		  // الطفيلة
 		  { id: 573, name: "مستشفى الأمير زيد بن الحسين", gov: "الطفيلة", type: "عسكري" }
 		];
-
-
 	const hospitals = [...governmentalHospitals, ...privateHospitals,...healthCenters,...militaryHealthCenters];
-    const departments = [
-      {id:1, title:'قسم العظام', basePrice:40, icon:'fas fa-bone'}, {id:2, title:'الباطنية', basePrice:35, icon:'fas fa-stethoscope'}, {id:3, title:'القلب', basePrice:60, icon:'fas fa-heartbeat'},
-      {id:4, title:'الجراحة العامة', basePrice:70, icon:'fas fa-cut'}, {id:5, title:'النساء والولادة', basePrice:50, icon:'fas fa-baby'}
-    ];
-    const doctors = [
-      {id:101, name:'د. سليم العلي', hospital_id:1, dept_id:1, slotDuration:30}, {id:102, name:'د. منال الخطيب', hospital_id:1, dept_id:2, slotDuration:20},
-      {id:103, name:'د. هالة مراد', hospital_id:2, dept_id:5, slotDuration:30}, {id:104, name:'د. رائد الشوابكة', hospital_id:3, dept_id:4, slotDuration:30},
-      {id:105, name:'د. ليلى أبو غوش', hospital_id:7, dept_id:3, slotDuration:20}, {id:106, name:'د. خالد الياسين', hospital_id:8, dept_id:1, slotDuration:30},
-      {id:107, name:'د. ريم الحسيني', hospital_id:9, dept_id:2, slotDuration:20}
-    ];
+		//Distribution of departments across hospitals	         7
+		const governmentaldepartments = [
+		  {id:1, title:'قسم العظام', basePrice:40, icon:'fas fa-bone', type:'حكومي'},
+		  {id:2, title:'الباطنية', basePrice:35, icon:'fas fa-stethoscope', type:'حكومي'},
+		  {id:3, title:'القلب', basePrice:60, icon:'fas fa-heartbeat', type:'حكومي'},
+		  {id:4, title:'الجراحة العامة', basePrice:70, icon:'fas fa-cut', type:'حكومي'},
+		  {id:5, title:'النساء والولادة', basePrice:50, icon:'fas fa-baby', type:'حكومي'},
+		  {id:6, title:'عيادة الأطفال', basePrice:30, icon:'fas fa-child', type:'حكومي'},
+		  {id:7, title:'طب الأسنان', basePrice:30, icon:'fas fa-tooth', type:'حكومي'},
+		  {id:8, title:'التحاليل المخبرية', basePrice:25, icon:'fas fa-vials', type:'حكومي'},
+		  {id:9, title:'الأشعة', basePrice:40, icon:'fas fa-x-ray', type:'حكومي'},
+		  {id:10, title:'الصيدلية', basePrice:20, icon:'fas fa-pills', type:'حكومي'},
+		  {id:11, title:'الأمراض المزمنة', basePrice:35, icon:'fas fa-thermometer-half', type:'حكومي'},
+		  {id:12, title:'الصحة النفسية', basePrice:30, icon:'fas fa-brain', type:'حكومي'}
+		];
+	
+		const militaryDepartments = [
+		  {id:1, title:'طوارئ', basePrice:70, icon:'fas fa-ambulance', type:'عسكري'},
+		  {id:2, title:'باطنية', basePrice:50, icon:'fas fa-stethoscope', type:'عسكري'},
+		  {id:3, title:'جراحة', basePrice:80, icon:'fas fa-cut', type:'عسكري'},
+		  {id:4, title:'أطفال', basePrice:45, icon:'fas fa-child', type:'عسكري'},
+		  {id:5, title:'نساء وتوليد', basePrice:60, icon:'fas fa-baby', type:'عسكري'},
+		  {id:6, title:'أشعة', basePrice:55, icon:'fas fa-x-ray', type:'عسكري'},
+		  {id:7, title:'مختبرات', basePrice:50, icon:'fas fa-vials', type:'عسكري'},
+		  {id:8, title:'صيدلية', basePrice:35, icon:'fas fa-pills', type:'عسكري'},
+		  {id:9, title:'تخدير', basePrice:65, icon:'fas fa-procedures', type:'عسكري'},
+		  {id:10, title:'ICU / العناية المركزة', basePrice:90, icon:'fas fa-procedures', type:'عسكري'},
+		  {id:11, title:'إعادة تأهيل (Physical Therapy)', basePrice:60, icon:'fas fa-wheelchair', type:'عسكري'}
+		];
+		
+		const healthCenterDepartments = [
+		  {id:1, title:'عيادة باطنية / عامة', basePrice:30, icon:'fas fa-stethoscope', type:'مركز صحي '},
+		  {id:2, title:'عيادة أطفال', basePrice:30, icon:'fas fa-child', type:'مركز صحي'},
+		  {id:3, title:'عيادة نساء وتوليد', basePrice:35, icon:'fas fa-baby', type:'مركز صحي'},
+		  {id:4, title:'عيادة أسنان', basePrice:25, icon:'fas fa-tooth', type:'مركز صحي'},
+		  {id:5, title:'عيادة وقاية / تطعيمات', basePrice:20, icon:'fas fa-syringe', type:'مركز صحي'},
+		  {id:6, title:'تحاليل مخبرية بسيطة', basePrice:25, icon:'fas fa-vials', type:'مركز صحي'},
+		  {id:7, title:'أشعة بسيطة', basePrice:30, icon:'fas fa-x-ray', type:'مركز صحي'},
+		  {id:8, title:'صيدلية', basePrice:15, icon:'fas fa-pills', type:'مركز صحي'},
+		  {id:9, title:'عيادة أمراض مزمنة', basePrice:35, icon:'fas fa-heartbeat', type:'مركز صحي'},
+		  {id:10, title:'عيادة الصحة النفسية الأساسية', basePrice:30, icon:'fas fa-brain', type:'مركز صحي'}
+		];
+		
+		const privateHospitalsDepartments = [
+		  { id: 1, title: 'طوارئ', basePrice: 50, icon: 'fas fa-ambulance', type: 'خاص' },
+		  { id: 2, title: 'باطنية', basePrice: 40, icon: 'fas fa-stethoscope', type: 'خاص' },
+		  { id: 3, title: 'جراحة عامة', basePrice: 60, icon: 'fas fa-cut', type: 'خاص' },
+		  { id: 4, title: 'أطفال', basePrice: 45, icon: 'fas fa-baby', type: 'خاص' },
+		  { id: 5, title: 'نساء وتوليد', basePrice: 50, icon: 'fas fa-female', type: 'خاص' },
+		  { id: 6, title: 'أشعة', basePrice: 30, icon: 'fas fa-x-ray', type: 'خاص' },
+		  { id: 7, title: 'مختبرات', basePrice: 25, icon: 'fas fa-vials', type: 'خاص' },
+		  { id: 8, title: 'صيدلية', basePrice: 20, icon: 'fas fa-pills', type: 'خاص' },
+		  { id: 9, title: 'تخدير', basePrice: 35, icon: 'fas fa-procedures', type: 'خاص' },
+		  { id: 10, title: 'ICU / العناية المركزة', basePrice: 80, icon: 'fas fa-procedures', type: 'خاص' },
+		  { id: 11, title: 'إعادة تأهيل (Physical Therapy)', basePrice: 40, icon: 'fas fa-dumbbell', type: 'خاص' }
+		];
+	const Departments = [...governmentaldepartments, ...privateHospitalsDepartments,...healthCenterDepartments,...militaryDepartments];
+
+	const doctors = [
+	  // حكومي
+	  {id:101, name:'د. سليم العلي', hospital_id:1, dept_id:1, slotDuration:30},
+	  {id:102, name:'د. منال الخطيب', hospital_id:1, dept_id:1, slotDuration:20},
+	  {id:103, name:'د. هالة مراد', hospital_id:1, dept_id:2, slotDuration:30},
+	  {id:104, name:'د. رائد الشوابكة', hospital_id:1, dept_id:2, slotDuration:25},
+	  {id:105, name:'د. ليلى أبو غوش', hospital_id:1, dept_id:3, slotDuration:20},
+	  {id:106, name:'د. خالد الياسين', hospital_id:1, dept_id:3, slotDuration:30},
+	  {id:107, name:'د. ريم الحسيني', hospital_id:1, dept_id:4, slotDuration:20},
+	  {id:108, name:'د. طارق أبو حسين', hospital_id:1, dept_id:4, slotDuration:25},
+	  {id:109, name:'د. سارة العتيبي', hospital_id:1, dept_id:5, slotDuration:30},
+	  {id:110, name:'د. أحمد الجبالي', hospital_id:1, dept_id:5, slotDuration:20},
+	  {id:111, name:'د. فاطمة السالم', hospital_id:1, dept_id:6, slotDuration:30},
+	  {id:112, name:'د. يوسف ناصر', hospital_id:1, dept_id:6, slotDuration:25},
+	  {id:113, name:'د. ندى شريف', hospital_id:1, dept_id:7, slotDuration:30},
+	  {id:114, name:'د. عماد الزهراني', hospital_id:1, dept_id:7, slotDuration:20},
+	  {id:115, name:'د. ليان خالد', hospital_id:1, dept_id:8, slotDuration:25},
+	  {id:116, name:'د. مازن الحسن', hospital_id:1, dept_id:8, slotDuration:30},
+	  {id:117, name:'د. هناء مصطفى', hospital_id:1, dept_id:9, slotDuration:20},
+	  {id:118, name:'د. طلال أبو ريان', hospital_id:1, dept_id:9, slotDuration:30},
+	  {id:119, name:'د. سلمى حامد', hospital_id:1, dept_id:10, slotDuration:25},
+	  {id:120, name:'د. ناصر يوسف', hospital_id:1, dept_id:10, slotDuration:30},
+	  {id:121, name:'د. مها عابدين', hospital_id:1, dept_id:11, slotDuration:20},
+	  {id:122, name:'د. وليد سليم', hospital_id:1, dept_id:11, slotDuration:30},
+	  {id:123, name:'د. غادة رامي', hospital_id:1, dept_id:12, slotDuration:25},
+	  {id:124, name:'د. عمار فوزي', hospital_id:1, dept_id:12, slotDuration:30},
+	]
+	// العسكري
+	doctors.push(
+	  {id:125, name:'د. مازن الحمود', hospital_id:2, dept_id:1, slotDuration:30},
+	  {id:126, name:'د. رنا الخالدي', hospital_id:2, dept_id:1, slotDuration:25},
+	  {id:127, name:'د. سامي المراشدة', hospital_id:2, dept_id:2, slotDuration:30},
+	  {id:128, name:'د. هدى القيسي', hospital_id:2, dept_id:2, slotDuration:20},
+	  {id:129, name:'د. طلال السعد', hospital_id:2, dept_id:3, slotDuration:25},
+	  {id:130, name:'د. سارة الكيلاني', hospital_id:2, dept_id:3, slotDuration:30},
+	  {id:131, name:'د. ريم فريحات', hospital_id:2, dept_id:4, slotDuration:20},
+	  {id:132, name:'د. خالد الزعبي', hospital_id:2, dept_id:4, slotDuration:30},
+	  {id:133, name:'د. هالة صباغ', hospital_id:2, dept_id:5, slotDuration:25},
+	  {id:134, name:'د. يوسف الحوراني', hospital_id:2, dept_id:5, slotDuration:30},
+	  {id:135, name:'د. ليان صافي', hospital_id:2, dept_id:6, slotDuration:20},
+	  {id:136, name:'د. عماد شاهين', hospital_id:2, dept_id:6, slotDuration:25},
+	  {id:137, name:'د. فاطمة البكري', hospital_id:2, dept_id:7, slotDuration:30},
+	  {id:138, name:'د. طارق فارس', hospital_id:2, dept_id:7, slotDuration:20},
+	  {id:139, name:'د. ندى عوض', hospital_id:2, dept_id:8, slotDuration:25},
+	  {id:140, name:'د. مازن خليل', hospital_id:2, dept_id:8, slotDuration:30},
+	  {id:141, name:'د. سارة جاد', hospital_id:2, dept_id:9, slotDuration:20},
+	  {id:142, name:'د. يوسف فؤاد', hospital_id:2, dept_id:9, slotDuration:25},
+	  {id:143, name:'د. هالة عاصي', hospital_id:2, dept_id:10, slotDuration:30},
+	  {id:144, name:'د. مازن شريف', hospital_id:2, dept_id:10, slotDuration:20},
+	  {id:145, name:'د. ليلى عبد', hospital_id:2, dept_id:11, slotDuration:25}
+	);
+
+	// الخاص
+	doctors.push(
+	  {id:146, name:'د. ليلى الجابر', hospital_id:4, dept_id:1, slotDuration:30},
+	  {id:147, name:'د. مازن أبو فخر', hospital_id:4, dept_id:1, slotDuration:25},
+	  {id:148, name:'د. ريم أبو سعيد', hospital_id:4, dept_id:2, slotDuration:30},
+	  {id:149, name:'د. خالد الجندي', hospital_id:4, dept_id:2, slotDuration:20},
+	  {id:150, name:'د. سارة الرشيد', hospital_id:4, dept_id:3, slotDuration:25},
+	  {id:151, name:'د. يوسف التل', hospital_id:4, dept_id:3, slotDuration:30},
+	  {id:152, name:'د. هالة المعاني', hospital_id:4, dept_id:4, slotDuration:20},
+	  {id:153, name:'د. طارق البكري', hospital_id:4, dept_id:4, slotDuration:25},
+	  {id:154, name:'د. ندى الفارس', hospital_id:4, dept_id:5, slotDuration:30},
+	  {id:155, name:'د. عماد الشامي', hospital_id:4, dept_id:5, slotDuration:20},
+	  {id:156, name:'د. عبير القيسي', hospital_id:4, dept_id:6, slotDuration:25},
+	  {id:157, name:'د. سامي العبد', hospital_id:4, dept_id:6, slotDuration:30},
+	  {id:158, name:'د. هناء جودت', hospital_id:4, dept_id:7, slotDuration:20},
+	  {id:159, name:'د. طلال صائب', hospital_id:4, dept_id:7, slotDuration:25},
+	  {id:160, name:'د. ريماء شرف', hospital_id:4, dept_id:8, slotDuration:30},
+	  {id:161, name:'د. خالد منير', hospital_id:4, dept_id:8, slotDuration:20},
+	  {id:162, name:'د. سارة زاهر', hospital_id:4, dept_id:9, slotDuration:25},
+	  {id:163, name:'د. يوسف جاد', hospital_id:4, dept_id:9, slotDuration:30},
+	  {id:164, name:'د. هالة عبد الله', hospital_id:4, dept_id:10, slotDuration:20},
+	  {id:165, name:'د. مازن فايز', hospital_id:4, dept_id:10, slotDuration:25},
+	  {id:166, name:'د. ليلى عواد', hospital_id:4, dept_id:11, slotDuration:30}
+	);
+
+	// مركز صحي
+	doctors.push(
+	  {id:167, name:'د. عبير القضاة', hospital_id:3, dept_id:1, slotDuration:20},
+	  {id:168, name:'د. عماد الشناق', hospital_id:3, dept_id:1, slotDuration:25},
+	  {id:169, name:'د. هناء الزعبي', hospital_id:3, dept_id:2, slotDuration:30},
+	  {id:170, name:'د. طارق العدوان', hospital_id:3, dept_id:2, slotDuration:20},
+	  {id:171, name:'د. ليلى الجازي', hospital_id:3, dept_id:3, slotDuration:25},
+	  {id:172, name:'د. مازن ريان', hospital_id:3, dept_id:3, slotDuration:30},
+	  {id:173, name:'د. ريم الكردي', hospital_id:3, dept_id:4, slotDuration:20},
+	  {id:174, name:'د. خالد شحادة', hospital_id:3, dept_id:4, slotDuration:25},
+	  {id:175, name:'د. سارة نصر', hospital_id:3, dept_id:5, slotDuration:30},
+	  {id:176, name:'د. يوسف عرسان', hospital_id:3, dept_id:5, slotDuration:20},
+	  {id:177, name:'د. هالة العوض', hospital_id:3, dept_id:6, slotDuration:25},
+	  {id:178, name:'د. سامي عيسى', hospital_id:3, dept_id:6, slotDuration:30},
+	  {id:179, name:'د. ندى فرحات', hospital_id:3, dept_id:7, slotDuration:20},
+	  {id:180, name:'د. طلال البارودي', hospital_id:3, dept_id:7, slotDuration:25},
+	  {id:181, name:'د. ريماء صابر', hospital_id:3, dept_id:8, slotDuration:30},
+	  {id:182, name:'د. خالد منير', hospital_id:3, dept_id:8, slotDuration:20},
+	  {id:183, name:'د. سارة زاهر', hospital_id:3, dept_id:9, slotDuration:25},
+	  {id:184, name:'د. يوسف جاد', hospital_id:3, dept_id:9, slotDuration:30},
+	  {id:185, name:'د. هالة عبد الله', hospital_id:3, dept_id:10, slotDuration:20}
+	);
+
 
  	// Booking status
     let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
@@ -1178,7 +1324,7 @@ footer {
         const col = document.createElement('div'); col.className = 'col-6 col-md-3';
         const card = document.createElement('div'); card.className = 'card select-card p-3 text-center';
         card.dataset.gov = g; card.innerHTML = `<div class="card-body p-0"><i class="fas fa-map-marker-alt fa-lg mb-2 text-primary"></i><strong>${escapeHtml(g)}</strong></div>`;
-        col.appendChild(card); container.appendChild(col);
+        col.appendChild	(card); container.appendChild(col);
       });
     }
     function selectGovernorate(gov){
@@ -1211,15 +1357,51 @@ footer {
       document.querySelectorAll(`[data-hosp]`).forEach(el=>{ if(Number(el.dataset.hosp)===hospId) el.classList.add('selected'); });
       showStep(4);
     }
-    function renderDepartments(){
-      const c = document.getElementById('deptList'); c.innerHTML = '';
-      departments.forEach(d => {
-        const col = document.createElement('div'); col.className='col-12 col-md-6';
-        const card = document.createElement('div'); card.className='card select-card p-3'; card.dataset.dept = d.id;
-        card.innerHTML = `<div class="card-body p-0 d-flex justify-content-between align-items-center"><div><i class="${d.icon} fa-lg me-2 text-primary"></i><strong>${escapeHtml(d.title)}</strong><div class="small text-muted">سعر أساسي: $${d.basePrice}</div></div><div class="badge-price">${d.basePrice}$</div></div>`;
-        col.appendChild(card); c.appendChild(col);
-      });
-    }
+	function renderDepartments() {
+	  const c = document.getElementById('deptList');
+	  c.innerHTML = '';
+	  // Identify the current hospital type
+	  const hospType = bookingState.hospital?.type;
+	  if (!hospType) {
+		c.innerHTML = '<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> اختر المستشفى أولاً لعرض الأقسام.</div>';
+		return;
+	  }
+	  // Filter sections by hospital type
+	  const matchedDepartments = Departments.filter(d => d.type.trim() === hospType.trim());
+
+	  if (!matchedDepartments.length) {
+		c.innerHTML = '<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> لا توجد أقسام متاحة لهذا النوع من المستشفيات.</div>';
+		return;
+	  }
+	  // View sections
+	  matchedDepartments.forEach(d => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
+
+		const card = document.createElement('div');
+		card.className = 'card select-card p-3';
+		card.dataset.dept = d.id;
+		card.innerHTML = `
+		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
+			<div>
+			  <i class="${d.icon} fa-lg me-2 text-primary"></i>
+			  <strong>${escapeHtml(d.title)}</strong>
+			  <div class="small text-muted">سعر أساسي: $${d.basePrice}</div>
+			</div>
+			<div class="badge-price">${d.basePrice}$</div>
+		  </div>`;
+		card.addEventListener('click', () => {
+		  bookingState.department = d;
+		  bookingState.doctor = null;
+		  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
+		  card.classList.add('selected');
+		  showStep(5);
+		});
+		col.appendChild(card);
+		c.appendChild(col);
+	  });
+	}
+
     function selectDepartment(deptId){
       bookingState.department = departments.find(d=>d.id===deptId); bookingState.doctor=null;
       document.querySelectorAll('[data-dept]').forEach(el=>el.classList.remove('selected'));
