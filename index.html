@@ -333,7 +333,7 @@ footer {
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
-              <i class="fas fa-calendar-alt me-1"></i> حجوزاتي
+              <i class="fas fa-calendar-alt me-1"></i> My bookings
             </a>
           </li>
         </ul>
@@ -346,11 +346,11 @@ footer {
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="bookingsModalLabel">حجوزاتي الحالية</h5>
+          <h5 class="modal-title" id="bookingsModalLabel">My current bookings</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
         </div>
         <div class="modal-body">
-          لا توجد حجوزات حالية.
+          There are no current reservations.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
@@ -362,11 +362,11 @@ footer {
 <!-- Home Page -->
   <div class="container" id="landingPage">
     <div class="landing-card text-center">
-      <h3 class="mb-3 text-primary" style="font-weight: 800;">مرحبًا بك في نظام صحتك أولًا</h3>
-      <p class="text-muted mb-4" style="font-size: 1.1rem;">احجز موعدك مع طبيبك المفضل بسهولة وسرعة من أي مكان.</p>
+      <h3 class="mb-3 text-primary" style="font-weight: 800;">Welcome to the system MedReach</h3>
+      <p class="text-muted mb-4" style="font-size: 1.1rem;">Book an appointment with your favorite doctor easily and quickly from anywhere.</p>
       <div class="text-center mb-3">
         <button id="startBookingBtn" class="btn btn-main btn-lg">
-          <i class="fas fa-stethoscope me-2"></i> ابدأ الحجز الآن
+          <i class="fas fa-stethoscope me-2"></i> Start booking now
         </button>
       </div>	
     </div>
@@ -377,8 +377,8 @@ footer {
     <div class="panel-card">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h4 class="mb-0">احجز موعدك بسهولة</h4>
-          <div class="small text-muted">اتبع الخطوات لاختيار موعدك.</div>
+          <h4 class="mb-0">Book your appointment easily</h4>
+          <div class="small text-muted">Follow the steps to choose your appointment.</div>
         </div>
         <div>
           <span class="step-pill" data-step="1">1</span>
@@ -395,42 +395,42 @@ footer {
       </div>
 
             <div id="stepsArea">
-        <div id="step-1" class="step-block"> <h5 class="mb-3">اختر المحافظة</h5> <div id="govList" class="row g-3"></div> </div>
-        <div id="step-2" class="step-block d-none"> <h5 class="mb-3">اختر نوع المنشأة</h5> <div class="row g-3">
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى حكومي</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="عسكري"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> مستشفى عسكري</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="خاص"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> مستشفى خاص</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز صحي"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> مركز صحي</div></div>
-            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز طبي"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> مركز طبي</div></div>
+        <div id="step-1" class="step-block"> <h5 class="mb-3">Choose the governorate</h5> <div id="govList" class="row g-3"></div> </div>
+        <div id="step-2" class="step-block d-none"> <h5 class="mb-3">Select the type of establishment</h5> <div class="row g-3">
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="حكومي"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="عسكري"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="خاص"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i>nursing home</div></div>
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز صحي"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
+            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="مركز طبي"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
           </div> </div>
-        <div id="step-3" class="step-block d-none"> <h5 class="mb-3">المستشفيات / المراكز المتاحة</h5> <div id="hospList" class="row g-3"></div> </div>
-        <div id="step-4" class="step-block d-none"> <h5 class="mb-3">اختر القسم</h5> <div id="deptList" class="row g-3"></div> </div>
-        <div id="step-5" class="step-block d-none"> <h5 class="mb-3">هل لديك تأمين صحي؟</h5> <div class="mt-3 d-flex gap-2">
-            <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> لا</button> <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> نعم</button>
+        <div id="step-3" class="step-block d-none"> <h5 class="mb-3">Available Hospitals/Centers</h5> <div id="hospList" class="row g-3"></div> </div>
+        <div id="step-4" class="step-block d-none"> <h5 class="mb-3">Select a section</h5> <div id="deptList" class="row g-3"></div> </div>
+        <div id="step-5" class="step-block d-none"> <h5 class="mb-3">Do you have health insurance?</h5> <div class="mt-3 d-flex gap-2">
+            <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> لا</button> <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> yes/button>
           </div> </div>
-        <div id="step-6" class="step-block d-none"> <h5 class="mb-3">معلومات التأمين</h5> <form id="insForm" class="row g-3">
-            <div class="col-md-6"><label class="form-label">شركة التأمين</label><input id="insCompany" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label">رقم البوليصة</label><input id="insPolicy" class="form-control" required></div>
-            <div class="col-12"><label class="form-label">ملاحظة (اختياري)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
-            <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> حفظ ومتابعة</button></div>
+        <div id="step-6" class="step-block d-none"> <h5 class="mb-3">Insurance Information</h5> <form id="insForm" class="row g-3">
+            <div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
+            <div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
+            <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
           </form> </div>
-        <div id="step-7" class="step-block d-none"> <h5 class="mb-3">اختر الطبيب</h5> <div id="docList" class="row g-3"></div> </div>
-        <div id="step-8" class="step-block d-none"> <h5 class="mb-3">اختر التاريخ والوقت</h5> <div class="row">
-            <div class="col-md-6 mt-2"><label class="form-label">التاريخ</label><input type="date" id="apptDate" class="form-control" /></div>
-            <div class="col-md-6 mt-2"><label class="form-label">الأوقات المتاحة</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
-          </div> <div class="mt-2 small text-muted">ملاحظة: اختيار التاريخ والوقت ينقلك للخطوة التالية.</div> </div>
-        <div id="step-9" class="step-block d-none"> <h5 class="mb-3">مراجعة البيانات</h5> <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
-          <h5 class="mb-3">بيانات العميل</h5> <form id="custForm" class="row g-3">
-            <div class="col-md-6"><label class="form-label">الاسم الكامل</label><input id="custName" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label">البريد الإلكتروني</label><input id="custEmail" type="email" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label">الهاتف</label><input id="custPhone" class="form-control" required></div>
-            <div class="col-12"><label class="form-label">ملاحظة</label><textarea id="custNote" class="form-control" rows="2"></textarea></div>
+        <div id="step-7" class="step-block d-none"> <h5 class="mb-3">Choose a doctor</h5> <div id="docList" class="row g-3"></div> </div>
+        <div id="step-8" class="step-block d-none"> <h5 class="mb-3">Select the date and time</h5> <div class="row">
+            <div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
+            <div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
+          </div> <div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div> </div>
+        <div id="step-9" class="step-block d-none"> <h5 class="mb-3">Data review</h5> <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
+          <h5 class="mb-3">Customer data</h5> <form id="custForm" class="row g-3">
+            <div class="col-md-6"><label class="form-label">full name</label><input id="custName" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label">e-mail</label><input id="custEmail" type="email" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label">The phone</label><input id="custPhone" class="form-control" required></div>
+            <div class="col-12"><label class="form-label">note</label><textarea id="custNote" class="form-control" rows="2"></textarea></div>
           </form> </div>
       </div>
 
       <hr class="my-4">
       <div class="d-flex justify-content-between">
-        <button id="prevBtn" class="btn btn-outline-main" disabled><i class="fas fa-arrow-right me-2"></i> السابق</button>
+        <button id="prevBtn" class="btn btn-outline-main" disabled><i class="fas fa-arrow-right me-2"></i> the previous</button>
         <button id="nextBtn" class="btn btn-main"><i class="fas fa-arrow-left me-2"></i> التالي</button>
       </div>
     </div>
@@ -439,7 +439,7 @@ footer {
     <div class="modal fade" id="successModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> تم تأكيد الحجز</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> The booking has been confirmed</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
         <div class="modal-body" id="modalContent"></div>
         <div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">إغلاق</button></div>
       </div>
@@ -457,7 +457,7 @@ footer {
 	// Basic Data
 	// -------------------------------
     function confirmBooking() {
-      alert("تم تأكيد حجزك بنجاح ✅");
+      alert("Your booking has been successfully confirmed ✅");
     }
 	
 	const governorates = [ 'عمان', 'إربد', 'الزرقاء', 'البلقاء', 'الكرك', 'معان', 'الطفيلة', 'جرش', 'عجلون', 'مأدبا', 'العقبة', 'المفرق' ];
@@ -577,7 +577,7 @@ footer {
 			  {id:97, name:'المركز الوطني للصحة النفسية', gov:'البلقاء', type:'حكومي'},
 			  {id:98, name:'مستشفى الأمير حسين بن عبدالله الثاني', gov:'البلقاء', type:'حكومي'},
 
-			  // مادبا
+			  // مادبا			
 			  {id:99, name:'مستشفى النديم', gov:'مأدبا', type:'حكومي'},
 			  {id:100, name:'مستشفى المحبة', gov:'مأدبا', type:'حكومي'},
 
@@ -1608,4 +1608,5 @@ footer {
 </html>
 
 	
+
 
