@@ -369,23 +369,32 @@ footer {
   }
 }
 
-@media (max-width: 480px) {
-  .navbar-brand {
-    font-size: 1.1rem;
+/* ----------------- Mobile Background & Symbol Fix ----------------- */
+@media (max-width: 768px) {
+  body::after {
+    width: 180px;
+    height: 180px;
+    opacity: 0.05;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  h1 {
-    font-size: 1.4rem;
-  }
-
-  p {
-    font-size: 0.9rem;
-  }
-
-  .btn-main, .btn-outline-main {
-    font-size: 1rem;
+  body {
+    background-size: cover;
+    background-position: center top;
   }
 }
+
+@media (max-width: 480px) {
+  body::after {
+    width: 140px;
+    height: 140px;
+    opacity: 0.04;
+  }
+}
+</style>
+
 </style>
 
 
