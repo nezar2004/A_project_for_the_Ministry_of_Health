@@ -398,9 +398,9 @@
 	        <div id="step-1" class="step-block"> <h5 class="mb-3">Choose the governorate</h5> <div id="govList" class="row g-3"></div> </div>
 	        <div id="step-2" class="step-block d-none"> <h5 class="mb-3">Select the type of establishment</h5> <div class="row g-3">
 	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="governmental"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="military"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="private"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> nursing home</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health center"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
+	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="militaryH"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
+	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="privateH"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> private hospital</div></div>
+	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health centerH"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
 	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Medical center"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
 	          </div> </div>
 	        <div id="step-3" class="step-block d-none"> <h5 class="mb-3">Available Hospitals/Centers</h5> <div id="hospList" class="row g-3"></div> </div>
@@ -606,75 +606,75 @@
 
 		const privateHospitals = [
 			 // Amman 
-				 {id:114, name:'المستشفى الإسلامي', gov:'Amman', type:'خاص'},
-				 {id:115, name:'مستشفى الإسراء', gov:'Amman', type:'خاص'},
-				 {id:116, name:'مستشفى الأردن', gov:'Amman', type:'خاص'},
-				 {id:117, name:'المستشفى الإيطالي', gov:'Amman', type:'خاص'},
-				 {id:118, name:'مستشفى الأمل للتوليد والجراحة النسائية', gov:'Amman', type:'خاص'},
-				 {id:119, name:'المستشفى الاستشاري', gov:'Amman', type:'خاص'},
-				 {id:120, name:'المستشفى الأهلي', gov:'Amman', type:'خاص'},
-				 {id:121, name:'مستشفى البيادر التخصصي', gov:'Amman', type:'خاص'},
-				 {id:122, name:'المستشفى التخصصي', gov:'Amman', type:'خاص'},
-				 {id:123, name:'مستشفى تلاع العلي', gov:'Amman', type:'خاص'},
-				 {id:124, name:'مستشفى جبل عمان للتوليد', gov:'Amman', type:'خاص'},
-				 {id:125, name:'مستشفى الحرمين التخصصي', gov:'Amman', type:'خاص'},
-				 {id:126, name:'مركز الحسين للسرطان', gov:'Amman', type:'خاص'},
-				 {id:127, name:'مستشفى الحنان العام', gov:'Amman', type:'خاص'},
-				 {id:128, name:'مستشفى ومركز الخالدي الطبي', gov:'Amman', type:'خاص'},
-				 {id:129, name:'مستشفى دار السلام', gov:'Amman', type:'خاص'},
-				 {id:130, name:'مركز مستشفى الرشيد للطب النفسي والإدمان', gov:'Amman', type:'خاص'},
-				 {id:131, name:'مستشفى الاستقلال', gov:'Amman', type:'خاص'},
-				 {id:132, name:'مستشفى الحياة العام', gov:'Amman', type:'خاص'},
-				 {id:133, name:'مستشفى لوزميلا', gov:'Amman', type:'خاص'},
-				 {id:134, name:'مستشفى الرويال', gov:'Amman', type:'خاص'},
-				 {id:135, name:'مستشفى الدكتور أحمد الحمايدة', gov:'Amman', type:'خاص'},
-				 {id:136, name:'مستشفى عبد الهادي العام', gov:'Amman', type:'خاص'},
-				 {id:137, name:'مستشفى الشميساني', gov:'Amman', type:'خاص'},
-				 {id:138, name:'مستشفى الأقصى', gov:'Amman', type:'خاص'},
-				 {id:139, name:'مجمع فرح الطبي', gov:'Amman', type:'خاص'},
-				 {id:140, name:'مستشفى الشرق الأوسط للعيون', gov:'Amman', type:'خاص'},
-				 {id:141, name:'مستشفى ابن الهيثم', gov:'Amman', type:'خاص'},
-				 {id:142, name:'المركز العربي الطبي', gov:'Amman', type:'خاص'},
-				 {id:143, name:'مستشفى الكندي', gov:'Amman', type:'خاص'},
-				 {id:144, name:'مستشفى فيلادلفيا التخصصي', gov:'Amman', type:'خاص'},
-				 {id:145, name:'مستشفى عمان', gov:'Amman', type:'خاص'},
-				 {id:146, name:'مستشفى ماركا التخصصي الإسلامي', gov:'Amman', type:'خاص'},
-				 {id:147, name:'مستشفى المواساة', gov:'Amman', type:'خاص'},
-				 {id:148, name:'مستشفى فلسطين', gov:'Amman', type:'خاص'},
-				 {id:149, name:'مستشفى الجزيرة', gov:'Amman', type:'خاص'},
-				 {id:150, name:'مستشفى المقاصد الخيرية', gov:'Amman', type:'خاص'},
-				 {id:151, name:'مستشفى السعودي', gov:'Amman', type:'خاص'},
-				 {id:152, name:'مستشفى العيون التخصصي', gov:'Amman', type:'خاص'},
-				 {id:153, name:'مستشفى هبة للولادة والجراحة النسائية', gov:'Amman', type:'خاص'},
-				 {id:154, name:'مستشفى الجاردنز', gov:'Amman', type:'خاص'},
-				 {id:155, name:'مستشفى العبدلي', gov:'Amman', type:'خاص'},
-				 {id:156, name:'مستشفى الخنساء', gov:'Amman', type:'خاص'},
+				 {id:114, name:'المستشفى الإسلامي', gov:'Amman', type:'privateH'},
+				 {id:115, name:'مستشفى الإسراء', gov:'Amman', type:'privateH'},
+				 {id:116, name:'مستشفى الأردن', gov:'Amman', type:'privateH'},
+				 {id:117, name:'المستشفى الإيطالي', gov:'Amman', type:'privateH'},
+				 {id:118, name:'مستشفى الأمل للتوليد والجراحة النسائية', gov:'Amman', type:'privateH'},
+				 {id:119, name:'المستشفى الاستشاري', gov:'Amman', type:'privateH'},
+				 {id:120, name:'المستشفى الأهلي', gov:'Amman', type:'privateH'},
+				 {id:121, name:'مستشفى البيادر التخصصي', gov:'Amman', type:'privateH'},
+				 {id:122, name:'المستشفى التخصصي', gov:'Amman', type:'privateH'},
+				 {id:123, name:'مستشفى تلاع العلي', gov:'Amman', type:'privateH'},
+				 {id:124, name:'مستشفى جبل عمان للتوليد', gov:'Amman', type:'privateH'},
+				 {id:125, name:'مستشفى الحرمين التخصصي', gov:'Amman', type:'privateH'},
+				 {id:126, name:'مركز الحسين للسرطان', gov:'Amman', type:'privateH'},
+				 {id:127, name:'مستشفى الحنان العام', gov:'Amman', type:'privateH'},
+				 {id:128, name:'مستشفى ومركز الخالدي الطبي', gov:'Amman', type:'privateH'},
+				 {id:129, name:'مستشفى دار السلام', gov:'Amman', type:'privateH'},
+				 {id:130, name:'مركز مستشفى الرشيد للطب النفسي والإدمان', gov:'Amman', type:'privateH'},
+				 {id:131, name:'مستشفى الاستقلال', gov:'Amman', type:'privateH'},
+				 {id:132, name:'مستشفى الحياة العام', gov:'Amman', type:'privateH'},
+				 {id:133, name:'مستشفى لوزميلا', gov:'Amman', type:'privateH'},
+				 {id:134, name:'مستشفى الرويال', gov:'Amman', type:'privateH'},
+				 {id:135, name:'مستشفى الدكتور أحمد الحمايدة', gov:'Amman', type:'privateH'},
+				 {id:136, name:'مستشفى عبد الهادي العام', gov:'Amman', type:'privateH'},
+				 {id:137, name:'مستشفى الشميساني', gov:'Amman', type:'privateH'},
+				 {id:138, name:'مستشفى الأقصى', gov:'Amman', type:'privateH'},
+				 {id:139, name:'مجمع فرح الطبي', gov:'Amman', type:'privateH'},
+				 {id:140, name:'مستشفى الشرق الأوسط للعيون', gov:'Amman', type:'privateH'},
+				 {id:141, name:'مستشفى ابن الهيثم', gov:'Amman', type:'privateH'},
+				 {id:142, name:'المركز العربي الطبي', gov:'Amman', type:'privateH'},
+				 {id:143, name:'مستشفى الكندي', gov:'Amman', type:'privateH'},
+				 {id:144, name:'مستشفى فيلادلفيا التخصصي', gov:'Amman', type:'privateH'},
+				 {id:145, name:'مستشفى عمان', gov:'Amman', type:'privateH'},
+				 {id:146, name:'مستشفى ماركا التخصصي الإسلامي', gov:'Amman', type:'privateH'},
+				 {id:147, name:'مستشفى المواساة', gov:'Amman', type:'privateH'},
+				 {id:148, name:'مستشفى فلسطين', gov:'Amman', type:'privateH'},
+				 {id:149, name:'مستشفى الجزيرة', gov:'Amman', type:'privateH'},
+				 {id:150, name:'مستشفى المقاصد الخيرية', gov:'Amman', type:'privateH'},
+				 {id:151, name:'مستشفى السعودي', gov:'Amman', type:'privateH'},
+				 {id:152, name:'مستشفى العيون التخصصي', gov:'Amman', type:'privateH'},
+				 {id:153, name:'مستشفى هبة للولادة والجراحة النسائية', gov:'Amman', type:'privateH'},
+				 {id:154, name:'مستشفى الجاردنز', gov:'Amman', type:'privateH'},
+				 {id:155, name:'مستشفى العبدلي', gov:'Amman', type:'privateH'},
+				 {id:156, name:'مستشفى الخنساء', gov:'Amman', type:'privateH'},
 
 				 // Karak
-				 {id:157, name:'المستشفى الإيطالي (الكرك)', gov:'Karak', type:'خاص'},
-				 {id:158, name:'مستشفى السلام', gov:'Karak', type:'خاص'},
+				 {id:157, name:'المستشفى الإيطالي (الكرك)', gov:'Karak', type:'privateH'},
+				 {id:158, name:'مستشفى السلام', gov:'Karak', type:'privateH'},
 
 				 // Irbid 
-				 {id:159, name:'مستشفى ابن النفيس', gov:'Irbid', type:'خاص'},
-				 {id:160, name:'مستشفى الروم الكاثوليك', gov:'Irbid', type:'خاص'},
-				 {id:161, name:'مستشفى النجاح للتوليد', gov:'Irbid', type:'خاص'},
-				 {id:162, name:'مستشفى إربد الإسلامي', gov:'Irbid', type:'خاص'},
-				 {id:163, name:'مستشفى إربد التخصصي', gov:'Irbid', type:'خاص'},
+				 {id:159, name:'مستشفى ابن النفيس', gov:'Irbid', type:'privateH'},
+				 {id:160, name:'مستشفى الروم الكاثوليك', gov:'Irbid', type:'privateH'},
+				 {id:161, name:'مستشفى النجاح للتوليد', gov:'Irbid', type:'privateH'},
+				 {id:162, name:'مستشفى إربد الإسلامي', gov:'Irbid', type:'privateH'},
+				 {id:163, name:'مستشفى إربد التخصصي', gov:'Irbid', type:'privateH'},
 
 				 // Madaba
-				 {id:164, name:'مستشفى المحبة', gov:'Madaba', type:'خاص'},
+				 {id:164, name:'مستشفى المحبة', gov:'Madaba', type:'privateH'},
 
 				 // Aqaba)
-				 {id:165, name:'المستشفى الإسلامي - العقبة', gov:'Aqaba', type:'خاص'},
+				 {id:165, name:'المستشفى الإسلامي - العقبة', gov:'Aqaba', type:'privateH'},
 
 				 // Mafraq)
-				 {id:166, name:'مستشفى سارة التخصصي', gov:'Mafraq', type:'خاص'},
+				 {id:166, name:'مستشفى سارة التخصصي', gov:'Mafraq', type:'privateH'},
 
 				 // Zarqa 
-				 {id:167, name:'مستشفى قصر شبيب', gov:'Zarqa', type:'خاص'},
-				 {id:168, name:'مستشفى جبل الزيتون', gov:'Zarqa', type:'خاص'},
-				 {id:169, name:'مستشفى الرازي الجديد', gov:'Zarqa', type:'خاص'},
-				 {id:170, name:'مستشفى الحكمة الحديث', gov:'Zarqa', type:'خاص'}
+				 {id:167, name:'مستشفى قصر شبيب', gov:'Zarqa', type:'privateH'},
+				 {id:168, name:'مستشفى جبل الزيتون', gov:'Zarqa', type:'privateH'},
+				 {id:169, name:'مستشفى الرازي الجديد', gov:'Zarqa', type:'privateH'},
+				 {id:170, name:'مستشفى الحكمة الحديث', gov:'Zarqa', type:'privateH'}
 			];
 			const healthCenters = [
 				// Amman 
@@ -1094,24 +1094,24 @@
 				
 			const militaryHealthCenters = [
 			  // Amman
-			  { id: 562, name: "مدينة الحسين الطبية", gov: "Amman", type: "عسكري" },
-			  { id: 563, name: "مستشفى الحسين", gov: "Amman", type: "عسكري" },
-			  { id: 564, name: "مركز الملكة علياء لأمراض وجراحة القلب", gov: "Amman", type: "عسكري" },
-			  { id: 565, name: "مركز التأهيل الملكي", gov: "Amman", type: "عسكري" },
-			  { id: 566, name: "مركز الأمير حسين بن عبدالله لأمراض وجراحة الكلى وزراعة الأعضاء", gov: "Amman", type: "عسكري" },
-			  { id: 567, name: "مركز الأميرة إيمان بنت عبدالله الثاني للأبحاث والعلوم المخبرية", gov: "Amman", type: "عسكري" },
-			  { id: 568, name: "مستشفى الملكة علياء العسكري", gov: "Amman", type: "عسكري" },
-			  { id: 574, name: "مركز الرعاية النفسية", gov: "Amman", type: "عسكري" },
+			  { id: 562, name: "مدينة الحسين الطبية", gov: "Amman", type: "militaryH" },
+			  { id: 563, name: "مستشفى الحسين", gov: "Amman", type: "militaryH" },
+			  { id: 564, name: "مركز الملكة علياء لأمراض وجراحة القلب", gov: "Amman", type: "militaryH" },
+			  { id: 565, name: "مركز التأهيل الملكي", gov: "Amman", type: "militaryH" },
+			  { id: 566, name: "مركز الأمير حسين بن عبدالله لأمراض وجراحة الكلى وزراعة الأعضاء", gov: "Amman", type: "militaryH" },
+			  { id: 567, name: "مركز الأميرة إيمان بنت عبدالله الثاني للأبحاث والعلوم المخبرية", gov: "Amman", type: "militaryH" },
+			  { id: 568, name: "مستشفى الملكة علياء العسكري", gov: "Amman", type: "militaryH" },
+			  { id: 574, name: "مركز الرعاية النفسية", gov: "Amman", type: "militaryH" },
 			  // Irbid
-			  { id: 569, name: "مستشفى الأمير راشد بن الحسن", gov: "Irbid", type: "عسكري" },
+			  { id: 569, name: "مستشفى الأمير راشد بن الحسن", gov: "Irbid", type: "militaryH" },
 			  // Zarqa
-			  { id: 570, name: "مستشفى الأمير هاشم بن الحسين", gov: "Zarqa", type: "عسكري" },
+			  { id: 570, name: "مستشفى الأمير هاشم بن الحسين", gov: "Zarqa", type: "militaryH" },
 			  // Aqaba
-			  { id: 571, name: "مستشفى الأميرة هيا بنت الحسين", gov: "Aqaba", type: "عسكري" },
+			  { id: 571, name: "مستشفى الأميرة هيا بنت الحسين", gov: "Aqaba", type: "militaryH" },
 			  // Karak
-			  { id: 572, name: "مستشفى الأمير علي بن الحسين", gov: "Karak", type: "عسكري" },
+			  { id: 572, name: "مستشفى الأمير علي بن الحسين", gov: "Karak", type: "militaryH" },
 			  // Tafila
-			  { id: 573, name: "مستشفى الأمير زيد بن الحسين", gov: "Tafila", type: "عسكري" }
+			  { id: 573, name: "مستشفى الأمير زيد بن الحسين", gov: "Tafila", type: "militaryH" }
 			];
 		const hospitals = [...governmentalHospitals, ...privateHospitals,...healthCenters,...militaryHealthCenters];
 			//Distribution of departments across hospitals	         7
@@ -1131,17 +1131,17 @@
 			];
 		
 			const militaryDepartments = [
-			  {id:1, title:'طوارئ', basePrice:70, icon:'fas fa-ambulance', type:'عسكري'},
-			  {id:2, title:'باطنية', basePrice:50, icon:'fas fa-stethoscope', type:'عسكري'},
-			  {id:3, title:'جراحة', basePrice:80, icon:'fas fa-cut', type:'عسكري'},
-			  {id:4, title:'أطفال', basePrice:45, icon:'fas fa-child', type:'عسكري'},
-			  {id:5, title:'نساء وتوليد', basePrice:60, icon:'fas fa-baby', type:'عسكري'},
-			  {id:6, title:'أشعة', basePrice:55, icon:'fas fa-x-ray', type:'عسكري'},
-			  {id:7, title:'مختبرات', basePrice:50, icon:'fas fa-vials', type:'عسكري'},
-			  {id:8, title:'صيدلية', basePrice:35, icon:'fas fa-pills', type:'عسكري'},
-			  {id:9, title:'تخدير', basePrice:65, icon:'fas fa-procedures', type:'عسكري'},
-			  {id:10, title:'ICU / العناية المركزة', basePrice:90, icon:'fas fa-procedures', type:'عسكري'},
-			  {id:11, title:'إعادة تأهيل (Physical Therapy)', basePrice:60, icon:'fas fa-wheelchair', type:'عسكري'}
+			  {id:1, title:'طوارئ', basePrice:70, icon:'fas fa-ambulance', type:'militaryH'},
+			  {id:2, title:'باطنية', basePrice:50, icon:'fas fa-stethoscope', type:'militaryH'},
+			  {id:3, title:'جراحة', basePrice:80, icon:'fas fa-cut', type:'militaryH'},
+			  {id:4, title:'أطفال', basePrice:45, icon:'fas fa-child', type:'militaryH'},
+			  {id:5, title:'نساء وتوليد', basePrice:60, icon:'fas fa-baby', type:'militaryH'},
+			  {id:6, title:'أشعة', basePrice:55, icon:'fas fa-x-ray', type:'militaryH'},
+			  {id:7, title:'مختبرات', basePrice:50, icon:'fas fa-vials', type:'militaryH'},
+			  {id:8, title:'صيدلية', basePrice:35, icon:'fas fa-pills', type:'militaryH'},
+			  {id:9, title:'تخدير', basePrice:65, icon:'fas fa-procedures', type:'militaryH'},
+			  {id:10, title:'ICU / العناية المركزة', basePrice:90, icon:'fas fa-procedures', type:'militaryH'},
+			  {id:11, title:'إعادة تأهيل (Physical Therapy)', basePrice:60, icon:'fas fa-wheelchair', type:'militaryH'}
 			];
 			
 			const healthCenterDepartments = [
@@ -1158,17 +1158,17 @@
 			];
 			
 			const privateHospitalsDepartments = [
-			  { id: 1, title: 'طوارئ', basePrice: 50, icon: 'fas fa-ambulance', type: 'خاص' },
-			  { id: 2, title: 'باطنية', basePrice: 40, icon: 'fas fa-stethoscope', type: 'خاص' },
-			  { id: 3, title: 'جراحة عامة', basePrice: 60, icon: 'fas fa-cut', type: 'خاص' },
-			  { id: 4, title: 'أطفال', basePrice: 45, icon: 'fas fa-baby', type: 'خاص' },
-			  { id: 5, title: 'نساء وتوليد', basePrice: 50, icon: 'fas fa-female', type: 'خاص' },
-			  { id: 6, title: 'أشعة', basePrice: 30, icon: 'fas fa-x-ray', type: 'خاص' },
-			  { id: 7, title: 'مختبرات', basePrice: 25, icon: 'fas fa-vials', type: 'خاص' },
-			  { id: 8, title: 'صيدلية', basePrice: 20, icon: 'fas fa-pills', type: 'خاص' },
-			  { id: 9, title: 'تخدير', basePrice: 35, icon: 'fas fa-procedures', type: 'خاص' },
-			  { id: 10, title: 'ICU / العناية المركزة', basePrice: 80, icon: 'fas fa-procedures', type: 'خاص' },
-			  { id: 11, title: 'إعادة تأهيل (Physical Therapy)', basePrice: 40, icon: 'fas fa-dumbbell', type: 'خاص' }
+			  { id: 1, title: 'طوارئ', basePrice: 50, icon: 'fas fa-ambulance', type: 'privateH' },
+			  { id: 2, title: 'باطنية', basePrice: 40, icon: 'fas fa-stethoscope', type: 'privateH' },
+			  { id: 3, title: 'جراحة عامة', basePrice: 60, icon: 'fas fa-cut', type: 'privateH' },
+			  { id: 4, title: 'أطفال', basePrice: 45, icon: 'fas fa-baby', type: 'privateH' },
+			  { id: 5, title: 'نساء وتوليد', basePrice: 50, icon: 'fas fa-female', type: 'privateH' },
+			  { id: 6, title: 'أشعة', basePrice: 30, icon: 'fas fa-x-ray', type: 'privateH' },
+			  { id: 7, title: 'مختبرات', basePrice: 25, icon: 'fas fa-vials', type: 'privateH' },
+			  { id: 8, title: 'صيدلية', basePrice: 20, icon: 'fas fa-pills', type: 'privateH' },
+			  { id: 9, title: 'تخدير', basePrice: 35, icon: 'fas fa-procedures', type: 'privateH' },
+			  { id: 10, title: 'ICU / العناية المركزة', basePrice: 80, icon: 'fas fa-procedures', type: 'privateH' },
+			  { id: 11, title: 'إعادة تأهيل (Physical Therapy)', basePrice: 40, icon: 'fas fa-dumbbell', type: 'privateH' }
 			];
 		const Departments = [...governmentaldepartments, ...privateHospitalsDepartments,...healthCenterDepartments,...militaryDepartments];
 
@@ -1645,4 +1645,5 @@
 	</html>
 
 		
+
 
