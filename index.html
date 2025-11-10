@@ -220,12 +220,18 @@ footer {
 
 /* ----------------- LOADING BOX ----------------- */
 #loadingBox {
-  background: #007bff;
+  background: rgba(0, 123, 255, 0.3);
   color: white;
   padding: 20px 40px;
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
   font-size: 18px;
+  font-weight: 600;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
   transition: all 0.4s ease;
 }
 #loadingBox.hidden {
@@ -233,6 +239,7 @@ footer {
   transform: scale(0.9);
   visibility: hidden;
 }
+
 </style>
 
 
@@ -361,14 +368,26 @@ footer {
 	      
 	    </div>
 	  </div>
+	
+		<div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
+
+		<!-- الزر -->
+		<div class="text-center mt-3">
+		  <button id="findHospitalsBtn" class="btn btn-main">
+			<i class="fas fa-location-crosshairs me-2"></i> Check nearby medical facilities
+		  </button>
+		</div
 
 
 	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	  <script>
+		document.getElementById("findHospitalsBtn").addEventListener("click", function() {
+		window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
+		  });
 		// -------------------------------
 		// Basic Data
 		// -------------------------------
-		function confirmBooking() {
+		function confirmBooking() {	
 		  alert("Your booking has been successfully confirmed ✅");
 		}
 		
@@ -1557,7 +1576,6 @@ footer {
 
 			window.open(mapsUrl, "_blank");
 		  }
-
 	  </script>
 	</body>
 	</html>
