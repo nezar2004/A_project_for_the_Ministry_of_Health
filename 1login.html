@@ -201,34 +201,43 @@
 		}
 	  }
 
-	  // ✅ دالة تسجيل الدخول
 	  document.getElementById("loginBtn").addEventListener("click", async function () {
-		const phoneInput = document.getElementById("loginEmail").value.trim();
-		const password = document.getElementById("loginPassword").value.trim();
+		  const phoneInput = document.getElementById("loginEmail").value.trim();
+		  const password = document.getElementById("loginPassword").value.trim();
 
-		if (!phoneInput || !password) {
-		  alert("الرجاء إدخال رقم الهاتف وكلمة المرور");
-		  return;
-		}
-
-		try {
-		  const q = query(collection(db, "users"), where("phone", "==", "+962" + phoneInput));
-		  const snapshot = await getDocs(q);
-
-		  if (snapshot.empty) return alert("❌ رقم الهاتف غير موجود!");
-
-		  const user = snapshot.docs[0].data();
-		  if (user.password === password) {
-			alert("✅ تم تسجيل الدخول بنجاح!");
-			// window.location.href = "home.html";
-		  } else {
-			alert("⚠️ كلمة المرور غير صحيحة!");
+		  if (!phoneInput || !password) {
+			alert("الرجاء إدخال رقم الهاتف وكلمة المرور");
+			return;
 		  }
-		} catch (e) {
-		  alert("⚠️ خطأ أثناء تسجيل الدخول: " + e.message);
-		}
-	  });
 
+		  try {
+			const q = query(collection(db, "users"), where("phone", "==", "+962" + phoneInput));
+			const snapshot = await getDocs(q);
+
+			if (snapshot.empty) {
+			  alert("❌ رقم الهاتف غير موجود!");
+			  return;
+			}
+
+			const user = snapshot.docs[0].data();
+			if (user.password === password) {
+			  alert("✅ تم تسجيل الدخول بنجاح!");
+
+			  // ✅ حفظ بيانات المستخدم في localStorage
+			  localStorage.setItem("loggedUser", JSON.stringify({
+				phone: user.phone,
+				firstName: user.firstName
+			  }));
+
+			  // ✅ الانتقال إلى صفحة النظام
+			  window.location.href = "index.html";
+			} else {
+			  alert("⚠️ كلمة المرور غير صحيحة!");
+			}
+		  } catch (e) {
+			alert("⚠️ خطأ أثناء تسجيل الدخول: " + e.message);
+		  }
+});
 	  // ✅ هذا السطر هو المفتاح — يربط الزر بالدالة
 	  document.getElementById("registerBtn").addEventListener("click", register);
 	</script>
@@ -253,3 +262,4 @@
 
 </body>
 </html>
+
