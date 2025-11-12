@@ -318,8 +318,18 @@ footer {
 /* ----------------- RESPONSIVE DESIGN ----------------- */
 @media (max-width: 768px) {
   body {
-    background-position: center;
+    background-position: center top;
     background-attachment: fixed;
+    background-size: cover;
+  }
+
+  body::after {
+    width: 180px;
+    height: 180px;
+    opacity: 0.05;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   nav.navbar {
@@ -369,37 +379,17 @@ footer {
   }
 }
 
-/* ----------------- Mobile Background & Symbol Fix ----------------- */
-@media (max-width: 768px) {
-  body::after {
-    width: 180px;
-    height: 180px;
-    opacity: 0.05;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  body {
-    background-size: cover;
-    background-position: center top;
-  }
-}
-
+/* ----------------- Small Phones ----------------- */
 @media (max-width: 480px) {
   body::after {
     width: 140px;
     height: 140px;
     opacity: 0.04;
   }
-}
-</style>
+}	
 
 </style>
-
-
-
-	</head>
+<body>
 
 	  <nav class="navbar navbar-expand-lg navbar-dark px-3">
 		<div class="container-fluid">
@@ -419,7 +409,7 @@ footer {
 		</div>
 	  </nav>
 
-	<!-- Window (Modal) -->
+	  <!-- Window (Modal) -->
 	  <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
@@ -437,7 +427,7 @@ footer {
 		</div>
 	  </div>
 
-	<!-- Home Page -->
+	  <!-- Home Page -->
 	  <div class="container" id="landingPage">
 		<div class="landing-card text-center">
 		  <h3 class="mb-3 text-primary" style="font-weight: 800;"> نبض Welcome to your health </h3>
@@ -446,101 +436,98 @@ footer {
 			<button id="startBookingBtn" class="btn btn-main btn-lg">
 			  <i class="fas fa-stethoscope me-2"></i> Start booking now
 			</button>
-		  </div>	
+		  </div>
 		</div>
 	  </div>
 
+	  <div class="container-app d-none" id="bookingApp">
+		<div class="panel-card">
+		  <div class="d-flex justify-content-between align-items-center mb-4">
+			<div>
+			  <h4 class="mb-0">Book your appointment easily</h4>
+			  <div class="small text-muted">Follow the steps to choose your appointment.</div>
+			</div>
+			<div>
+			  <span class="step-pill" data-step="1">1</span>
+			  <span class="step-pill" data-step="2">2</span>
+			  <span class="step-pill" data-step="3">3</span>
+			  <span class="step-pill" data-step="4">4</span>
+			  <span class="step-pill" data-step="5">5</span>
+			  <span class="step-pill" data-step="6">6</span>
+			  <span class="step-pill" data-step="7">7</span>
+			  <span class="step-pill" data-step="8">8</span>
+			  <span class="step-pill" data-step="9">9</span>
+			</div>
+		  </div>
 
-	    <div class="container-app d-none" id="bookingApp">
-	    <div class="panel-card">
-	      <div class="d-flex justify-content-between align-items-center mb-4">
-	        <div>
-	          <h4 class="mb-0">Book your appointment easily</h4>
-	          <div class="small text-muted">Follow the steps to choose your appointment.</div>
-	        </div>
-		        <div>
-		          <span class="step-pill" data-step="1">1</span>
-		          <span class="step-pill" data-step="2">2</span>
-		          <span class="step-pill" data-step="3">3</span>
-		          <span class="step-pill" data-step="4">4</span>
-		          <span class="step-pill" data-step="5">5</span>
-		          <span class="step-pill" data-step="6">6</span>
-		          <span class="step-pill" data-step="7">7</span>
-		          <span class="step-pill" data-step="8">8</span>
-		          <span class="step-pill" data-step="9">9</span>
-		        </div>
-		        
-		      </div>
+		  <div id="stepsArea">
+			<div id="step-1" class="step-block"> <h5 class="mb-3">Choose the governorate</h5> <div id="govList" class="row g-3"></div> </div>
+			<div id="step-2" class="step-block d-none"> <h5 class="mb-3">Select the type of establishment</h5> <div class="row g-3">
+				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="governmental"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
+				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="militaryH"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
+				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="privateH"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> private hospital</div></div>
+				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health centerH"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
+				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Medical center"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
+			  </div> </div>
+			<div id="step-3" class="step-block d-none"> <h5 class="mb-3">Available Hospitals/Centers</h5> <div id="hospList" class="row g-3"></div> </div>
+			<div id="step-4" class="step-block d-none"> <h5 class="mb-3">Select a section</h5> <div id="deptList" class="row g-3"></div> </div>
+			<div id="step-5" class="step-block d-none"> <h5 class="mb-3">Do you have health insurance?</h5> <div class="mt-3 d-flex gap-2">
+				<button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> No</button> <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> Yes</button>
+			  </div> </div>
+			<div id="step-6" class="step-block d-none"> <h5 class="mb-3">Insurance Information</h5> <form id="insForm" class="row g-3">
+				<div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
+				<div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
+				<div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
+				<div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
+			  </form> </div>
+			<div id="step-7" class="step-block d-none"> <h5 class="mb-3">Choose a doctor</h5> <div id="docList" class="row g-3"></div> </div>
+			<div id="step-8" class="step-block d-none"> <h5 class="mb-3">Select the date and time</h5> <div class="row">
+				<div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
+				<div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
+			  </div> <div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div> </div>
+			<div id="step-9" class="step-block d-none"> <h5 class="mb-3">Data review</h5> <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
+			  <h5 class="mb-3">Customer data</h5> <form id="custForm" class="row g-3">
+				<div class="col-md-6"><label class="form-label">full name</label><input id="custName" class="form-control" required></div>
+				<div class="col-md-6"><label class="form-label">e-mail</label><input id="custEmail" type="email" class="form-control" required></div>
+				<div class="col-md-6"><label class="form-label">The phone</label><input id="custPhone" class="form-control" required></div>
+				<div class="col-12"><label class="form-label">note</label><textarea id="custNote" class="form-control" rows="2"></textarea></div>
+			  </form> </div>
+		  </div>
 
-	            <div id="stepsArea">
-	        <div id="step-1" class="step-block"> <h5 class="mb-3">Choose the governorate</h5> <div id="govList" class="row g-3"></div> </div>
-	        <div id="step-2" class="step-block d-none"> <h5 class="mb-3">Select the type of establishment</h5> <div class="row g-3">
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="governmental"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="militaryH"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="privateH"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> private hospital</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health centerH"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
-	            <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Medical center"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
-	          </div> </div>
-	        <div id="step-3" class="step-block d-none"> <h5 class="mb-3">Available Hospitals/Centers</h5> <div id="hospList" class="row g-3"></div> </div>
-	        <div id="step-4" class="step-block d-none"> <h5 class="mb-3">Select a section</h5> <div id="deptList" class="row g-3"></div> </div>
-	        <div id="step-5" class="step-block d-none"> <h5 class="mb-3">Do you have health insurance?</h5> <div class="mt-3 d-flex gap-2">
-	            <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> لا</button> <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> Yes</button>
-	          </div> </div>
-	        <div id="step-6" class="step-block d-none"> <h5 class="mb-3">Insurance Information</h5> <form id="insForm" class="row g-3">
-	            <div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
-	            <div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
-	            <div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
-	            <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
-	          </form> </div>
-	        <div id="step-7" class="step-block d-none"> <h5 class="mb-3">Choose a doctor</h5> <div id="docList" class="row g-3"></div> </div>
-	        <div id="step-8" class="step-block d-none"> <h5 class="mb-3">Select the date and time</h5> <div class="row">
-	            <div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
-	            <div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
-	          </div> <div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div> </div>
-	        <div id="step-9" class="step-block d-none"> <h5 class="mb-3">Data review</h5> <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
-	          <h5 class="mb-3">Customer data</h5> <form id="custForm" class="row g-3">
-	            <div class="col-md-6"><label class="form-label">full name</label><input id="custName" class="form-control" required></div>
-	            <div class="col-md-6"><label class="form-label">e-mail</label><input id="custEmail" type="email" class="form-control" required></div>
-	            <div class="col-md-6"><label class="form-label">The phone</label><input id="custPhone" class="form-control" required></div>
-	            <div class="col-12"><label class="form-label">note</label><textarea id="custNote" class="form-control" rows="2"></textarea></div>
-	          </form> </div>
-	      </div>
-
-	      <hr class="my-4">
-	      <div class="d-flex justify-content-between">
-	        <button id="prevBtn" class="btn btn-outline-main" disabled><i class="fas fa-arrow-right me-2"></i> the previous</button>
-	        <button id="nextBtn" class="btn btn-main"><i class="fas fa-arrow-left me-2"></i> the next</button>
-	      </div>
-	    </div>
-	  </div>
-
-	    <div class="modal fade" id="successModal" tabindex="-1">
-	    <div class="modal-dialog modal-dialog-centered">
-	      <div class="modal-content">
-	        <div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> The booking has been confirmed</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
-	        <div class="modal-body" id="modalContent"></div>
-	        <div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">closing</button></div>
-	      </div>
-	      
-	    </div>
-	  </div>
-	
-		<div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
-
-		<!-- الزر -->
-		<div class="text-center mt-3">
-		  <button id="findHospitalsBtn" class="btn btn-main">
-			<i class="fas fa-location-crosshairs me-2"></i> Check nearby medical facilities
-		  </button>
+		  <hr class="my-4">
+		  <div class="d-flex justify-content-between">
+			<button id="prevBtn" class="btn btn-outline-main" disabled><i class="fas fa-arrow-right me-2"></i> the previous</button>
+			<button id="nextBtn" class="btn btn-main"><i class="fas fa-arrow-left me-2"></i> the next</button>
+		  </div>
 		</div>
-			
-		<div class="text-center mt-4">
-		  <button id="emergencyBtn" class="btn-emergency">
-			🚨 Emergency Menu
-		  </button>
-		</div>
+	  </div>
 
-	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	  <div class="modal fade" id="successModal" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+		  <div class="modal-content">
+			<div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> The booking has been confirmed</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+			<div class="modal-body" id="modalContent"></div>
+			<div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">closing</button></div>
+		  </div>
+		</div>
+	  </div>
+
+	  <div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
+
+	  <div class="text-center mt-3">
+		<button id="findHospitalsBtn" class="btn btn-main">
+		  <i class="fas fa-location-crosshairs me-2"></i> Check nearby medical facilities
+		</button>
+	  </div>
+
+	  <div class="text-center mt-4">
+		<button id="emergencyBtn" class="btn-emergency">
+		  🚨 Emergency Menu
+		</button>
+	  </div>
+
+	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 	  <script>
 		document.getElementById("findHospitalsBtn").addEventListener("click", function() {
 		window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
@@ -1765,7 +1752,7 @@ footer {
 					  const message = `🚨 Emergency! My location: https://maps.google.com/?q=${lat},${lng}`;
 					  const phone = prompt("Enter WhatsApp number (with country code, e.g. 9627XXXXXXX):");
 					  if (phone) {
-						const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+						const whatsappUrl = `https://whatsapp.com/${phone}?text=${encodeURIComponent(message)}`;
 						window.open(whatsappUrl, "_blank");
 					  }
 					},
@@ -1786,7 +1773,8 @@ footer {
 			  default:
 				alert("Operation canceled or invalid choice.");
 			}
-		  });  
+		  });  		  
+			
 	  </script>
 	</body>
 	</html>
