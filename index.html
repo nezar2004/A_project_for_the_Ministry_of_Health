@@ -429,9 +429,7 @@ footer {
 
 	  <!-- Home Page -->
 	  <div class="container" id="landingPage">
-		<div class="landing-card text-center">
-		  <h3 class="mb-3 text-primary" style="font-weight: 800;"> نبض Welcome to your health </h3>
-		  <p class="text-muted mb-4" style="font-size: 1.1rem;">Book an appointment with your favorite doctor easily and quickly from anywhere.</p>
+
 		  <div class="text-center mb-3">
 			<button id="startBookingBtn" class="btn btn-main btn-lg">
 			  <i class="fas fa-stethoscope me-2"></i> Start booking now
@@ -513,6 +511,7 @@ footer {
 	  </div>
 
 	  <div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
+	  <button onclick="logout()" style="background:#c0392b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">تسجيل الخروج</button>
 
 	  <div class="text-center mt-3">
 		<button id="findHospitalsBtn" class="btn btn-main">
@@ -529,6 +528,11 @@ footer {
 	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 	  <script>
+		const loggedUser = localStorage.getItem("loggedUser");
+			if (!loggedUser) {
+			  alert("⚠️ يجب تسجيل الدخول أولاً!");
+			  window.location.href = "1login.html";
+			}
 		document.getElementById("findHospitalsBtn").addEventListener("click", function() {
 		window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
 		  });
@@ -1774,7 +1778,14 @@ footer {
 				alert("Operation canceled or invalid choice.");
 			}
 		  });  		  
+		
+			function logout() {
+			  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
+			  alert("تم تسجيل الخروج بنجاح 👋");
+			  window.location.href = "1login.html"; // يرجع على صفحة الدخول
+			}
 			
+
 	  </script>
 	</body>
 	</html>
