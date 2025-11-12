@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
   <title>تسجيل الدخول / إنشاء حساب</title>
   <style>
 	body {
@@ -148,122 +147,127 @@
 
   </div>
 
-  <script>
-    // عدد الأرقام المطلوبة لكل دولة
-    const phoneRules = {
-      "+962": 9, // الأردن
-    };
+	<script>
+	  // عدد الأرقام المطلوبة لكل دولة
+	  const phoneRules = {
+		"+962": 9, // الأردن
+	  };
 
-    function updatePhonePlaceholder() {
-      const code = document.getElementById("countryCode").value;
-      const digits = phoneRules[code] || 9;
-      document.getElementById("phone").placeholder = `رقم الهاتف (${digits} أرقام)`;
-    }
+	  function updatePhonePlaceholder() {
+		const code = document.getElementById("countryCode").value;
+		const digits = phoneRules[code] || 9;
+		document.getElementById("phone").placeholder = `رقم الهاتف (${digits} أرقام)`;
+	  }
 
-    function resetForm(formId) {
-      const form = document.getElementById(formId);
-      if (!form) return;
-      form.querySelectorAll('input, select').forEach(input => {
-        input.value = '';
-      });
-    }
+	  function resetForm(formId) {
+		const form = document.getElementById(formId);
+		if (!form) return;
+		form.querySelectorAll('input, select').forEach(input => {
+		  input.value = '';
+		});
+	  }
 
-    function clearErrors(formId) {
-      document.querySelectorAll(`#${formId} .error`).forEach(e => e.textContent = "");
-    }
+	  function clearErrors(formId) {
+		document.querySelectorAll(`#${formId} .error`).forEach(e => e.textContent = "");
+	  }
 
-    function toggleForms() {
-      resetForm("registerForm");
-      resetForm("loginForm");
-      clearErrors("registerForm");
-      clearErrors("loginForm");
-      document.getElementById('loginForm').classList.toggle('hidden');
-      document.getElementById('registerForm').classList.toggle('hidden');
-    }
+	  function toggleForms() {
+		resetForm("registerForm");
+		resetForm("loginForm");
+		clearErrors("registerForm");
+		clearErrors("loginForm");
+		document.getElementById('loginForm').classList.toggle('hidden');
+		document.getElementById('registerForm').classList.toggle('hidden');
+	  }
 
-    function showForgot() {
-      resetForm("loginForm");
-      clearErrors("loginForm");
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('forgotForm').classList.remove('hidden');
-    }
+	  function showForgot() {
+		resetForm("loginForm");
+		clearErrors("loginForm");
+		document.getElementById('loginForm').classList.add('hidden');
+		document.getElementById('forgotForm').classList.remove('hidden');
+	  }
 
-    function backToLogin() {
-      resetForm("forgotForm");
-      clearErrors("forgotForm");
-      document.getElementById('forgotForm').classList.add('hidden');
-      document.getElementById('loginForm').classList.remove('hidden');
-    }
+	  function backToLogin() {
+		resetForm("forgotForm");
+		clearErrors("forgotForm");
+		document.getElementById('forgotForm').classList.add('hidden');
+		document.getElementById('loginForm').classList.remove('hidden');
+	  }
 
-    // إنشاء الحساب
-    function register() {
-      clearErrors("registerForm");
-      let hasError = false;
+	  // إنشاء الحساب
+	  function register() {
+		clearErrors("registerForm");
+		let hasError = false;
 
-      const firstName = document.getElementById('firstName').value.trim();
-      const lastName = document.getElementById('lastName').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const code = document.getElementById('countryCode').value;
-      const email = document.getElementById('email').value.trim();
-      const birthday = document.getElementById('birthday').value.trim();
-      const gender = document.getElementById('gender').value;
-      const pass = document.getElementById('password').value.trim();
-      const confirm = document.getElementById('confirmPassword').value.trim();
+		const firstName = document.getElementById('firstName').value.trim();
+		const lastName = document.getElementById('lastName').value.trim();
+		const phone = document.getElementById('phone').value.trim();
+		const code = document.getElementById('countryCode').value;
+		const email = document.getElementById('email').value.trim();
+		const birthday = document.getElementById('birthday').value.trim();
+		const gender = document.getElementById('gender').value;
+		const pass = document.getElementById('password').value.trim();
+		const confirm = document.getElementById('confirmPassword').value.trim();
 
-      const requiredDigits = phoneRules[code] || 9;
+		const requiredDigits = phoneRules[code] || 9;
 
-      if (!firstName) { document.getElementById('firstNameError').textContent = "الرجاء إدخال الاسم الأول"; hasError = true; }
-      if (!lastName) { document.getElementById('lastNameError').textContent = "الرجاء إدخال اسم العائلة"; hasError = true; }
-      if (!new RegExp(`^\\d{${requiredDigits}}$`).test(phone)) {
-        document.getElementById('phoneError').textContent = `رقم الهاتف يجب أن يتكون من ${requiredDigits} أرقام`;
-        hasError = true;
-      }
-      if (!email.includes("@")) { document.getElementById('emailError').textContent = "البريد الإلكتروني غير صالح"; hasError = true; }
-      if (!birthday) { document.getElementById('birthdayError').textContent = "الرجاء إدخال تاريخ الميلاد"; hasError = true; }
-      if (!gender) { document.getElementById('genderError').textContent = "الرجاء اختيار الجنس"; hasError = true; }
-      if (!pass) { document.getElementById('passwordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
-      if (pass !== confirm) { document.getElementById('confirmPasswordError').textContent = "كلمتا المرور غير متطابقتين"; hasError = true; }
+		if (!firstName) { document.getElementById('firstNameError').textContent = "الرجاء إدخال الاسم الأول"; hasError = true; }
+		if (!lastName) { document.getElementById('lastNameError').textContent = "الرجاء إدخال اسم العائلة"; hasError = true; }
+		if (!new RegExp(`^\\d{${requiredDigits}}$`).test(phone)) {
+		  document.getElementById('phoneError').textContent = `رقم الهاتف يجب أن يتكون من ${requiredDigits} أرقام`;
+		  hasError = true;
+		}
+		if (!email.includes("@")) { document.getElementById('emailError').textContent = "البريد الإلكتروني غير صالح"; hasError = true; }
+		if (!birthday) { document.getElementById('birthdayError').textContent = "الرجاء إدخال تاريخ الميلاد"; hasError = true; }
+		if (!gender) { document.getElementById('genderError').textContent = "الرجاء اختيار الجنس"; hasError = true; }
+		if (!pass) { document.getElementById('passwordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
+		if (pass !== confirm) { document.getElementById('confirmPasswordError').textContent = "كلمتا المرور غير متطابقتين"; hasError = true; }
 
-      if (hasError) return;
+		if (hasError) return;
 
-      // التحويل لتسجيل الدخول ومسح الحقول
-      document.getElementById('registerForm').classList.add('hidden');
-      document.getElementById('loginForm').classList.remove('hidden');
-      resetForm("registerForm");
-      resetForm("loginForm");
-    }
+		// التحويل لتسجيل الدخول ومسح الحقول
+		document.getElementById('registerForm').classList.add('hidden');
+		document.getElementById('loginForm').classList.remove('hidden');
+		resetForm("registerForm");
+		resetForm("loginForm");
+	  }
 
-    // تسجيل الدخول
-    function login() {
-      clearErrors("loginForm");
-      let hasError = false;
+	  // تسجيل الدخول
+	  function login() {
+		clearErrors("loginForm");
+		let hasError = false;
 
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPassword').value.trim();
+		const email = document.getElementById('loginEmail').value.trim();
+		const pass = document.getElementById('loginPassword').value.trim();
 
-      if (!email) { document.getElementById('loginEmailError').textContent = "الرجاء إدخال البريد الإلكتروني أو الرقم"; hasError = true; }
-      if (!pass) { document.getElementById('loginPasswordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
+		if (!email) { document.getElementById('loginEmailError').textContent = "الرجاء إدخال البريد الإلكتروني أو الرقم"; hasError = true; }
+		if (!pass) { document.getElementById('loginPasswordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
 
-      if (hasError) return;
+		if (hasError) return;
 
-      alert("✅ تم تسجيل الدخول بنجاح!");
-    }
+		// التحقق من بيانات تسجيل الدخول
+		if (email === "nezar@gmail.com" && pass === "123456") {
+		  // ✅ نجاح تسجيل الدخول → تحويل المستخدم إلى الصفحة الرئيسية
+		  window.location.href = "https://nezar2004.github.io/A_project_for_the_Ministry_of_Health/index.html";
+		} else {
+		  alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة");
+		}
+	  }
 
-    // نسيان كلمة المرور
-    function recoverPassword() {
-      const input = document.getElementById('recoverInput').value;
-      if (!input) {
-        alert("الرجاء إدخال البريد أو رقم الهاتف");
-        return;
-      }
-      alert("تم إرسال رسالة إلى " + input + " 📩");
-      backToLogin();
-    }
+	  // نسيان كلمة المرور
+	  function recoverPassword() {
+		const input = document.getElementById('recoverInput').value;
+		if (!input) {
+		  alert("الرجاء إدخال البريد أو رقم الهاتف");
+		  return;
+		}
+		alert("تم إرسال رسالة إلى " + input + " 📩");
+		backToLogin();
+	  }
 
-    // تحديث placeholder عند تحميل الصفحة أول مرة
-    updatePhonePlaceholder();
-  </script>
+	  // تحديث placeholder عند تحميل الصفحة أول مرة
+	  updatePhonePlaceholder();
+	</script>
 
 </body>
 </html>
-
