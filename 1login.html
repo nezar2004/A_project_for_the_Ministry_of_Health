@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول / إنشاء حساب</title>
+  <style>
+	body {
+	  font-family: "Tajawal", sans-serif;
+	  background: url('https://github.com/nezar2004/A_project_for_the_Ministry_of_Health/blob/main/%D9%86%D8%A8%D8%B6.png?raw=true') no-repeat center center fixed;
+	  background-size: cover;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  height: 100vh;
+	  margin: 0;
+	}
+	.container {
+	  background: rgba(0, 0, 0, 0.6); /* أسود شفاف، الرقم 0.6 يحدد درجة الشفافية */
+	  padding: 30px;
+	  border-radius: 15px;
+	  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	  width: 370px;
+	}
+
+    h2 {
+      text-align: center;
+      color: #2d3436;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .phone-container {
+      display: flex;
+      gap: 5px;
+    }
+    .phone-container select {
+      width: 35%;
+    }
+    .phone-container input {
+      width: 65%;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0984e3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #74b9ff;
+    }
+    .link {
+      text-align: center;
+      margin-top: 10px;
+      color: #2d3436;
+      cursor: pointer;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+    .hidden {
+      display: none;
+    }
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- تسجيل الدخول -->
+    <div id="loginForm">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="loginEmail" placeholder="البريد الإلكتروني أو رقم الهاتف">
+      <div id="loginEmailError" class="error"></div>
+
+      <input type="password" id="loginPassword" placeholder="كلمة المرور">
+      <div id="loginPasswordError" class="error"></div>
+
+      <button onclick="login()">دخول</button>
+      <div class="link" onclick="showForgot()">نسيت كلمة المرور؟</div>
+      <div class="link" onclick="toggleForms()">ليس لديك حساب؟ أنشئ حساب</div>
+    </div>
+
+    <!-- إنشاء حساب -->
+    <div id="registerForm" class="hidden">
+      <h2>إنشاء حساب جديد</h2>
+
+      <input type="text" id="firstName" placeholder="الاسم الأول">
+      <div id="firstNameError" class="error"></div>
+
+      <input type="text" id="lastName" placeholder="اسم العائلة">
+      <div id="lastNameError" class="error"></div>
+
+      <div class="phone-container">
+        <select id="countryCode" onchange="updatePhonePlaceholder()">
+          <option value="+962">🇯🇴 +962</option>
+        </select>
+        <input type="text" id="phone" placeholder="رقم الهاتف">
+      </div>
+      <div id="phoneError" class="error"></div>
+
+      <input type="email" id="email" placeholder="البريد الإلكتروني">
+      <div id="emailError" class="error"></div>
+
+      <input type="date" id="birthday" placeholder="تاريخ الميلاد">
+      <div id="birthdayError" class="error"></div>
+
+      <select id="gender">
+        <option value="">اختر الجنس</option>
+        <option value="male">ذكر</option>
+        <option value="female">أنثى</option>
+      </select>
+      <div id="genderError" class="error"></div>
+
+      <input type="password" id="password" placeholder="إنشاء كلمة المرور">
+      <div id="passwordError" class="error"></div>
+
+      <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور">
+      <div id="confirmPasswordError" class="error"></div>
+
+      <button onclick="register()">إنشاء الحساب</button>
+      <div class="link" onclick="toggleForms()">لديك حساب؟ تسجيل الدخول</div>
+    </div>
+
+    <!-- نسيان كلمة المرور -->
+    <div id="forgotForm" class="hidden">
+      <h2>استعادة كلمة المرور</h2>
+      <input type="text" id="recoverInput" placeholder="أدخل البريد أو رقم الهاتف">
+      <button onclick="recoverPassword()">إرسال رمز التحقق</button>
+      <div class="link" onclick="backToLogin()">رجوع</div>
+    </div>
+
+  </div>
+
+  <script>
+    // عدد الأرقام المطلوبة لكل دولة
+    const phoneRules = {
+      "+962": 9, // الأردن
+    };
+
+    function updatePhonePlaceholder() {
+      const code = document.getElementById("countryCode").value;
+      const digits = phoneRules[code] || 9;
+      document.getElementById("phone").placeholder = `رقم الهاتف (${digits} أرقام)`;
+    }
+
+    function resetForm(formId) {
+      const form = document.getElementById(formId);
+      if (!form) return;
+      form.querySelectorAll('input, select').forEach(input => {
+        input.value = '';
+      });
+    }
+
+    function clearErrors(formId) {
+      document.querySelectorAll(`#${formId} .error`).forEach(e => e.textContent = "");
+    }
+
+    function toggleForms() {
+      resetForm("registerForm");
+      resetForm("loginForm");
+      clearErrors("registerForm");
+      clearErrors("loginForm");
+      document.getElementById('loginForm').classList.toggle('hidden');
+      document.getElementById('registerForm').classList.toggle('hidden');
+    }
+
+    function showForgot() {
+      resetForm("loginForm");
+      clearErrors("loginForm");
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('forgotForm').classList.remove('hidden');
+    }
+
+    function backToLogin() {
+      resetForm("forgotForm");
+      clearErrors("forgotForm");
+      document.getElementById('forgotForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+    }
+
+    // إنشاء الحساب
+    function register() {
+      clearErrors("registerForm");
+      let hasError = false;
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const code = document.getElementById('countryCode').value;
+      const email = document.getElementById('email').value.trim();
+      const birthday = document.getElementById('birthday').value.trim();
+      const gender = document.getElementById('gender').value;
+      const pass = document.getElementById('password').value.trim();
+      const confirm = document.getElementById('confirmPassword').value.trim();
+
+      const requiredDigits = phoneRules[code] || 9;
+
+      if (!firstName) { document.getElementById('firstNameError').textContent = "الرجاء إدخال الاسم الأول"; hasError = true; }
+      if (!lastName) { document.getElementById('lastNameError').textContent = "الرجاء إدخال اسم العائلة"; hasError = true; }
+      if (!new RegExp(`^\\d{${requiredDigits}}$`).test(phone)) {
+        document.getElementById('phoneError').textContent = `رقم الهاتف يجب أن يتكون من ${requiredDigits} أرقام`;
+        hasError = true;
+      }
+      if (!email.includes("@")) { document.getElementById('emailError').textContent = "البريد الإلكتروني غير صالح"; hasError = true; }
+      if (!birthday) { document.getElementById('birthdayError').textContent = "الرجاء إدخال تاريخ الميلاد"; hasError = true; }
+      if (!gender) { document.getElementById('genderError').textContent = "الرجاء اختيار الجنس"; hasError = true; }
+      if (!pass) { document.getElementById('passwordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
+      if (pass !== confirm) { document.getElementById('confirmPasswordError').textContent = "كلمتا المرور غير متطابقتين"; hasError = true; }
+
+      if (hasError) return;
+
+      // التحويل لتسجيل الدخول ومسح الحقول
+      document.getElementById('registerForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+      resetForm("registerForm");
+      resetForm("loginForm");
+    }
+
+    // تسجيل الدخول
+    function login() {
+      clearErrors("loginForm");
+      let hasError = false;
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+
+      if (!email) { document.getElementById('loginEmailError').textContent = "الرجاء إدخال البريد الإلكتروني أو الرقم"; hasError = true; }
+      if (!pass) { document.getElementById('loginPasswordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
+
+      if (hasError) return;
+
+      alert("✅ تم تسجيل الدخول بنجاح!");
+    }
+
+    // نسيان كلمة المرور
+    function recoverPassword() {
+      const input = document.getElementById('recoverInput').value;
+      if (!input) {
+        alert("الرجاء إدخال البريد أو رقم الهاتف");
+        return;
+      }
+      alert("تم إرسال رسالة إلى " + input + " 📩");
+      backToLogin();
+    }
+
+    // تحديث placeholder عند تحميل الصفحة أول مرة
+    updatePhonePlaceholder();
+  </script>
+
+</body>
+</html>
