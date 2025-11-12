@@ -5,27 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول / إنشاء حساب</title>
   <style>
-	body {
-	  font-family: "Tajawal", sans-serif;
-	  background: url('https://github.com/nezar2004/A_project_for_the_Ministry_of_Health/blob/main/%D9%86%D8%A8%D8%B6.png?raw=true') no-repeat center center fixed;
-	  background-size: cover;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  height: 100vh;
-	  margin: 0;
-	}
-	.container {
-	  background: rgba(0, 0, 0, 0.6); /* أسود شفاف، الرقم 0.6 يحدد درجة الشفافية */
-	  padding: 30px;
-	  border-radius: 15px;
-	  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-	  width: 370px;
-	}
-
+    body {
+      font-family: "Tajawal", sans-serif;
+      background:
+        linear-gradient(135deg, rgba(0, 123, 255, 0.3), rgba(0, 200, 255, 0.3), rgba(0, 0, 0, 0.4)),
+        url('https://raw.githubusercontent.com/nezar2004/A_project_for_the_Ministry_of_Health/main/%D9%86%D8%A8%D8%B6.png');
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      width: 370px;
+      color: white;
+    }
     h2 {
       text-align: center;
-      color: #2d3436;
+      color: #fff;
     }
     input, select {
       width: 100%;
@@ -62,7 +64,7 @@
     .link {
       text-align: center;
       margin-top: 10px;
-      color: #2d3436;
+      color: #dfe6e9;
       cursor: pointer;
     }
     .link:hover {
@@ -72,28 +74,35 @@
       display: none;
     }
     .error {
-      color: red;
+      color: #ff7675;
       font-size: 13px;
       margin-bottom: 5px;
+    }
+    .success {
+      color: #55efc4;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="container" id="landingPage">
 
     <!-- تسجيل الدخول -->
     <div id="loginForm">
       <h2>تسجيل الدخول</h2>
-      <input type="text" id="loginEmail" placeholder="البريد الإلكتروني أو رقم الهاتف">
+      <input type="text" id="loginEmail" placeholder="رقم الهاتف ">
       <div id="loginEmailError" class="error"></div>
 
       <input type="password" id="loginPassword" placeholder="كلمة المرور">
       <div id="loginPasswordError" class="error"></div>
 
-      <button onclick="login()">دخول</button>
-      <div class="link" onclick="showForgot()">نسيت كلمة المرور؟</div>
+      <button id="loginBtn">دخول</button>
       <div class="link" onclick="toggleForms()">ليس لديك حساب؟ أنشئ حساب</div>
+      <div class="link" onclick="showForgot()">نسيت كلمة المرور؟</div>
+      <div id="loginSuccess" class="success">✅ تم تسجيل الدخول بنجاح!</div>
     </div>
 
     <!-- إنشاء حساب -->
@@ -107,15 +116,12 @@
       <div id="lastNameError" class="error"></div>
 
       <div class="phone-container">
-        <select id="countryCode" onchange="updatePhonePlaceholder()">
+        <select id="countryCode">
           <option value="+962">🇯🇴 +962</option>
         </select>
         <input type="text" id="phone" placeholder="رقم الهاتف">
       </div>
       <div id="phoneError" class="error"></div>
-
-      <input type="email" id="email" placeholder="البريد الإلكتروني">
-      <div id="emailError" class="error"></div>
 
       <input type="date" id="birthday" placeholder="تاريخ الميلاد">
       <div id="birthdayError" class="error"></div>
@@ -133,142 +139,117 @@
       <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور">
       <div id="confirmPasswordError" class="error"></div>
 
-      <button onclick="register()">إنشاء الحساب</button>
+      <button id="registerBtn">إنشاء الحساب</button>
       <div class="link" onclick="toggleForms()">لديك حساب؟ تسجيل الدخول</div>
     </div>
 
     <!-- نسيان كلمة المرور -->
     <div id="forgotForm" class="hidden">
       <h2>استعادة كلمة المرور</h2>
-      <input type="text" id="recoverInput" placeholder="أدخل البريد أو رقم الهاتف">
+      <input type="text" id="recoverInput" placeholder= "رقم الهاتف">
       <button onclick="recoverPassword()">إرسال رمز التحقق</button>
       <div class="link" onclick="backToLogin()">رجوع</div>
     </div>
 
   </div>
 
-	<script>
-	  // عدد الأرقام المطلوبة لكل دولة
-	  const phoneRules = {
-		"+962": 9, // الأردن
+  <!-- Firebase Setup -->
+	<script type="module">
+	  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+	  import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+	  const firebaseConfig = {
+		apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+		authDomain: "nabdapp-3a077.firebaseapp.com",
+		projectId: "nabdapp-3a077",
+		storageBucket: "nabdapp-3a077.firebasestorage.app",
+		messagingSenderId: "675031985272",
+		appId: "1:675031985272:web:5f86cc21c28062cd65d18d",
+		measurementId: "G-30FQ3G2L4P"
 	  };
 
-	  function updatePhonePlaceholder() {
-		const code = document.getElementById("countryCode").value;
-		const digits = phoneRules[code] || 9;
-		document.getElementById("phone").placeholder = `رقم الهاتف (${digits} أرقام)`;
-	  }
+	  const app = initializeApp(firebaseConfig);
+	  const db = getFirestore(app);
 
-	  function resetForm(formId) {
-		const form = document.getElementById(formId);
-		if (!form) return;
-		form.querySelectorAll('input, select').forEach(input => {
-		  input.value = '';
-		});
-	  }
-
-	  function clearErrors(formId) {
-		document.querySelectorAll(`#${formId} .error`).forEach(e => e.textContent = "");
-	  }
-
-	  function toggleForms() {
-		resetForm("registerForm");
-		resetForm("loginForm");
-		clearErrors("registerForm");
-		clearErrors("loginForm");
-		document.getElementById('loginForm').classList.toggle('hidden');
-		document.getElementById('registerForm').classList.toggle('hidden');
-	  }
-
-	  function showForgot() {
-		resetForm("loginForm");
-		clearErrors("loginForm");
-		document.getElementById('loginForm').classList.add('hidden');
-		document.getElementById('forgotForm').classList.remove('hidden');
-	  }
-
-	  function backToLogin() {
-		resetForm("forgotForm");
-		clearErrors("forgotForm");
-		document.getElementById('forgotForm').classList.add('hidden');
-		document.getElementById('loginForm').classList.remove('hidden');
-	  }
-
-	  // إنشاء الحساب
-	  function register() {
-		clearErrors("registerForm");
-		let hasError = false;
-
+	  // ✅ دالة إنشاء الحساب
+	  async function register() {
 		const firstName = document.getElementById('firstName').value.trim();
 		const lastName = document.getElementById('lastName').value.trim();
 		const phone = document.getElementById('phone').value.trim();
 		const code = document.getElementById('countryCode').value;
-		const email = document.getElementById('email').value.trim();
 		const birthday = document.getElementById('birthday').value.trim();
 		const gender = document.getElementById('gender').value;
 		const pass = document.getElementById('password').value.trim();
 		const confirm = document.getElementById('confirmPassword').value.trim();
 
-		const requiredDigits = phoneRules[code] || 9;
+		if (pass !== confirm) return alert("❌ كلمتا المرور غير متطابقتين!");
 
-		if (!firstName) { document.getElementById('firstNameError').textContent = "الرجاء إدخال الاسم الأول"; hasError = true; }
-		if (!lastName) { document.getElementById('lastNameError').textContent = "الرجاء إدخال اسم العائلة"; hasError = true; }
-		if (!new RegExp(`^\\d{${requiredDigits}}$`).test(phone)) {
-		  document.getElementById('phoneError').textContent = `رقم الهاتف يجب أن يتكون من ${requiredDigits} أرقام`;
-		  hasError = true;
-		}
-		if (!email.includes("@")) { document.getElementById('emailError').textContent = "البريد الإلكتروني غير صالح"; hasError = true; }
-		if (!birthday) { document.getElementById('birthdayError').textContent = "الرجاء إدخال تاريخ الميلاد"; hasError = true; }
-		if (!gender) { document.getElementById('genderError').textContent = "الرجاء اختيار الجنس"; hasError = true; }
-		if (!pass) { document.getElementById('passwordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
-		if (pass !== confirm) { document.getElementById('confirmPasswordError').textContent = "كلمتا المرور غير متطابقتين"; hasError = true; }
-
-		if (hasError) return;
-
-		// التحويل لتسجيل الدخول ومسح الحقول
-		document.getElementById('registerForm').classList.add('hidden');
-		document.getElementById('loginForm').classList.remove('hidden');
-		resetForm("registerForm");
-		resetForm("loginForm");
-	  }
-
-	  // تسجيل الدخول
-	  function login() {
-		clearErrors("loginForm");
-		let hasError = false;
-
-		const email = document.getElementById('loginEmail').value.trim();
-		const pass = document.getElementById('loginPassword').value.trim();
-
-		if (!email) { document.getElementById('loginEmailError').textContent = "الرجاء إدخال البريد الإلكتروني أو الرقم"; hasError = true; }
-		if (!pass) { document.getElementById('loginPasswordError').textContent = "الرجاء إدخال كلمة المرور"; hasError = true; }
-
-		if (hasError) return;
-
-		// التحقق من بيانات تسجيل الدخول
-		if (email === "nezar@gmail.com" && pass === "Aa@123456") {
-		  // ✅ نجاح تسجيل الدخول → تحويل المستخدم إلى الصفحة الرئيسية
-		  window.location.href = "https://nezar2004.github.io/A_project_for_the_Ministry_of_Health/index.html";
-		} else {
-		  alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة");
+		try {
+		  await addDoc(collection(db, "users"), {
+			firstName,
+			lastName,
+			phone: code + phone,
+			birthday,
+			gender,
+			password: pass,
+			createdAt: new Date()
+		  });
+		  alert("✅ تم إنشاء الحساب بنجاح!");
+		  toggleForms();
+		} catch (e) {
+		  alert("⚠️ خطأ أثناء الحفظ: " + e.message);
 		}
 	  }
 
-	  // نسيان كلمة المرور
-	  function recoverPassword() {
-		const input = document.getElementById('recoverInput').value;
-		if (!input) {
-		  alert("الرجاء إدخال البريد أو رقم الهاتف");
+	  // ✅ دالة تسجيل الدخول
+	  document.getElementById("loginBtn").addEventListener("click", async function () {
+		const phoneInput = document.getElementById("loginEmail").value.trim();
+		const password = document.getElementById("loginPassword").value.trim();
+
+		if (!phoneInput || !password) {
+		  alert("الرجاء إدخال رقم الهاتف وكلمة المرور");
 		  return;
 		}
-		alert("تم إرسال رسالة إلى " + input + " 📩");
-		backToLogin();
-	  }
 
-	  // تحديث placeholder عند تحميل الصفحة أول مرة
-	  updatePhonePlaceholder();
+		try {
+		  const q = query(collection(db, "users"), where("phone", "==", "+962" + phoneInput));
+		  const snapshot = await getDocs(q);
+
+		  if (snapshot.empty) return alert("❌ رقم الهاتف غير موجود!");
+
+		  const user = snapshot.docs[0].data();
+		  if (user.password === password) {
+			alert("✅ تم تسجيل الدخول بنجاح!");
+			// window.location.href = "home.html";
+		  } else {
+			alert("⚠️ كلمة المرور غير صحيحة!");
+		  }
+		} catch (e) {
+		  alert("⚠️ خطأ أثناء تسجيل الدخول: " + e.message);
+		}
+	  });
+
+	  // ✅ هذا السطر هو المفتاح — يربط الزر بالدالة
+	  document.getElementById("registerBtn").addEventListener("click", register);
 	</script>
+
+
+  <script>
+    function toggleForms() {
+      document.getElementById('loginForm').classList.toggle('hidden');
+      document.getElementById('registerForm').classList.toggle('hidden');
+    }
+
+    function showForgot() {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('forgotForm').classList.remove('hidden');
+    }
+
+    function backToLogin() {
+      document.getElementById('forgotForm').classList.add('hidden');
+      document.getElementById('loginForm').classList.remove('hidden');
+    }
+  </script>
 
 </body>
 </html>
-
