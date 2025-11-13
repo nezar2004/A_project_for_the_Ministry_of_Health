@@ -101,7 +101,7 @@
 
       <button id="loginBtn">login</button>
       <div class="link" onclick="toggleForms()">Create a new account</div>
-      <div class="link" onclick="showForgot()">Forgot your password ?</div>
+      <div class="link" onclick="showForgot()"> ? Forgot your password </div>
       <div id="loginSuccess" class="success">✅ Login successful!</div>
     </div>
 
@@ -171,7 +171,7 @@
 	  const app = initializeApp(firebaseConfig);
 	  const db = getFirestore(app);
 
-	  // ✅ دالة إنشاء الحساب
+	  // ✅ Account creation function
 	  async function register() {
 		const firstName = document.getElementById('firstName').value.trim();
 		const lastName = document.getElementById('lastName').value.trim();
@@ -262,6 +262,7 @@
 
 </body>
 </html>
+
 
 
 
