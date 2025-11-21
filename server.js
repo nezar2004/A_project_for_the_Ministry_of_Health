@@ -1,4 +1,4 @@
-require("dotenv").config(); // ← مهم جداً
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// مفتاحك (يُقرأ من ملف .env)
+// ربط الـ API KEY من Railway
 const client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
@@ -38,5 +38,6 @@ app.post("/api/chat", async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
-
+// مهم جداً للـ Railway
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server running on port " + PORT));
