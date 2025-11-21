@@ -387,7 +387,113 @@ footer {
     opacity: 0.04;
   }
 }	
+/*----------------شسي-------------------------------*/
+#chat-toggle{
+  position: fixed;
+  top: 12px;              /* عدّل هذا لتحريك الزر أعلى/أسفل ليتوضع تحت 'نبض' */
+  right: 160px;           /* عدّل هذا ليتحرك يمين/يسار - اجعل قيمته بحيث يكون تحت كلمة "نبض" */
+  z-index: 9999;
+  background: linear-gradient(#2b8eff,#1f6fd8);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  cursor: pointer;
+  font-weight: 600;
+  font-family: sans-serif;
+}
 
+/* صندوق الدردشة المصغر/الموسع */
+#chat-widget{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9998;
+  display: none; /* يفتح بالزر */
+  font-family: "Tahoma", "Arial", sans-serif;
+}
+
+/* حجم ومظهر واجهة الدردشة */
+.chat-box{
+  width: 320px;
+  height: 440px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  overflow: hidden;
+  display:flex;
+  flex-direction: column;
+}
+
+/* رأس الدردشة */
+.chat-header{
+  background: #1976d2;
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* منطقة الرسائل */
+.chat-body{
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f6f9fc;
+  display:flex;
+  flex-direction: column;
+}
+
+/* رسائل */
+.bot-message, .user-message {
+  max-width: 80%;
+  padding: 8px 10px;
+  margin: 6px 0;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #000 !important;  /* أهم سطر لإظهار الخط */
+}
+.bot-message {
+  background: #e2f0ff; /* أزرق واضح */
+  align-self: flex-start;
+}
+
+.user-message {
+  background: #d2ffd2; /* أخضر واضح */
+  align-self: flex-end;
+}
+/* مدخل النص */
+.chat-input{
+  display:flex;
+  gap:8px;
+  padding:10px;
+  border-top: 1px solid #e6e6e6;
+  background:#fff;
+}
+.chat-input input{
+  flex:1;
+  padding:8px 10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  outline:none;
+}
+.chat-input button{
+  padding:8px 12px;
+  border-radius:6px;
+  border:none;
+  background:#1976d2;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* حالة مخفي/مرئي للمساعدة في الوصول */
+#chat-widget[aria-hidden="true"]{ display: none; }
+#chat-widget[aria-hidden="false"]{ display: block; }
+
+/* استجابة صغيرة للزر عند hover */
+#chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
 </style>
 <body>
 
@@ -511,7 +617,7 @@ footer {
 	  </div>
 
 	  <div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
-	  <button onclick="logout()" style="background:#c0392b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">Log out</button>
+	  <button onclick="logout()" style="background:#c0392b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">تسجيل الخروج</button>
 
 	  <div class="text-center mt-3">
 		<button id="findHospitalsBtn" class="btn btn-main">
@@ -524,6 +630,21 @@ footer {
 		  🚨 Emergency Menu
 		</button>
 	  </div>
+		<button id="chat-toggle" aria-expanded="false" title="البوت الطبي">البوت</button>
+		<!-- صندوق الدردشة (مخفي افتراضياً) -->
+		<div id="chat-widget" dir="rtl" aria-hidden="true">
+		  <div class="chat-box">
+			<div class="chat-header">البوت الطبي</div>
+			<div class="chat-body" id="chat-body">
+			  <div class="bot-message">مرحباً! اسألني أي سؤال طبي.</div>
+			</div>
+			<div class="chat-input">
+			  <input type="text" id="user-input" placeholder="اكتب سؤالك الطبي..." />
+			  <button id="send-btn">إرسال</button>
+			</div>
+		  </div>
+		</div>
+
 
 	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -1784,13 +1905,53 @@ footer {
 			  alert("تم تسجيل الخروج بنجاح 👋");
 			  window.location.href = "1login.html"; // يرجع على صفحة الدخول
 			}
-			
+			const chatToggle = document.getElementById("chat-toggle");
+			const chatWidget = document.getElementById("chat-widget");
 
+			const sendBtn = document.getElementById("send-btn");
+			const userInput = document.getElementById("user-input");
+			const chatBody = document.getElementById("chat-body");
+
+			// فتح وإغلاق البوت
+			chatToggle.addEventListener("click", () => {
+				const isOpen = chatWidget.getAttribute("aria-hidden") === "false";
+				chatWidget.setAttribute("aria-hidden", isOpen ? "true" : "false");
+			});
+
+			async function handleSend() {
+				const question = userInput.value.trim();
+				if (!question) return;
+
+				// رسالة المستخدم
+				chatBody.innerHTML += `<div class="user-message">${question}</div>`;
+				userInput.value = "";
+				chatBody.scrollTop = chatBody.scrollHeight;
+
+				try {
+					const response = await fetch("http://localhost:3000/api/chat", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ question })
+					});
+
+					const data = await response.json();
+
+					chatBody.innerHTML += `<div class="bot-message">${data.answer}</div>`;
+					chatBody.scrollTop = chatBody.scrollHeight;
+
+				} catch (err) {
+					chatBody.innerHTML += `<div class="bot-message">خطأ في الاتصال بالسيرفر.</div>`;
+				}
+			}
+
+			sendBtn.addEventListener("click", handleSend);
+			userInput.addEventListener("keydown", e => {
+				if (e.key === "Enter") handleSend();
+			});
 	  </script>
 	</body>
 	</html>
 
 		
-
 
 
