@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>MedReach</title>
 	<!-- Successfully clicked the button (Favicon) -->
     <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
@@ -596,6 +596,37 @@ footer {
   pointer-events: none;
 }
 
+@media (max-width: 480px) {
+  .emergency-container {
+    top: 140px !important;
+    left: 10px !important;
+    transform: scale(0.8); /* صغر الأزرار */
+  }
+
+  .em-btn {
+    margin: 6px 0 !important; /* قلل المسافات بينهم */
+  }
+}
+@media (max-width: 480px) {
+  .booking-banner {
+    width: 90%;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+@media (max-width: 480px) {
+  #chat-toggle {
+    bottom: 20px !important;
+    right: 20px !important;
+    transform: scale(0.9);
+  }
+
+  #chat-widget {
+    width: 90vw !important;
+    height: 70vh !important;
+    right: 5vw !important;
+  }
+}
 
 </style>
 <body>
@@ -2092,4 +2123,4 @@ footer {
 
 
 
-
+	
