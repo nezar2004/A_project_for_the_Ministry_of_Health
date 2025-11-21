@@ -1,0 +1,42 @@
+require("dotenv").config(); // ← مهم جداً
+
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const OpenAI = require("openai");
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+// مفتاحك (يُقرأ من ملف .env)
+const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
+
+app.post("/api/chat", async (req, res) => {
+    const question = req.body.question?.trim();
+
+    if (!question) {
+        return res.json({ answer: "لم يتم استلام أي سؤال." });
+    }
+
+    try {
+        const completion = await client.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: "أنت مساعد ذكي وودود، أجب على أي سؤال يطرحه المستخدم." },
+                { role: "user", content: question }
+            ]
+        });
+
+        res.json({ answer: completion.choices[0].message.content });
+
+    } catch (e) {
+        console.error("AI ERROR:", e);
+        res.json({ answer: "خطأ في الاتصال بالسيرفر." });
+    }
+});
+
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
