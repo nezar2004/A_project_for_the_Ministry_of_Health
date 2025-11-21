@@ -388,43 +388,62 @@ footer {
   }
 }	
 /*----------------شسي-------------------------------*/
-#chat-toggle{
-  position: fixed;
-  top: 12px;              /* عدّل هذا لتحريك الزر أعلى/أسفل ليتوضع تحت 'نبض' */
-  right: 160px;           /* عدّل هذا ليتحرك يمين/يسار - اجعل قيمته بحيث يكون تحت كلمة "نبض" */
-  z-index: 9999;
-  background: linear-gradient(#2b8eff,#1f6fd8);
+#chat-toggle {
+  position: absolute;
+  left: 20px;
+  top: 28%;
+
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.45);           /* نفس خلفية الطوارئ */
+  border: 2px solid rgba(255,255,255,0.2);   /* نفس البوردر */
+  backdrop-filter: blur(6px);                /* البلور الشفاف */
+
   color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 18px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  font-size: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);   /* نفس الظل */
   cursor: pointer;
-  font-weight: 600;
-  font-family: sans-serif;
+  transition: 0.25s;
+  z-index: 9999;
 }
+
+#chat-toggle:hover {
+  transform: scale(1.12);                    /* نفس التأثير */
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255,255,255,0.5);
+}
+
+
 
 /* صندوق الدردشة المصغر/الموسع */
-#chat-widget{
-  position: fixed;
-  bottom: 20px;
+#chat-widget {
+  position: absolute;
+  top: 90px;    /* هذا يجعل الصندوق يبدأ من تحت كلمة نبض مباشرة */
   right: 20px;
-  z-index: 9998;
-  display: none; /* يفتح بالزر */
-  font-family: "Tahoma", "Arial", sans-serif;
+  width: 320px;
+  height: calc(100vh - 100px);  /* من تحت نبض لآخر الصفحة */
 }
 
+
 /* حجم ومظهر واجهة الدردشة */
-.chat-box{
-  width: 320px;
-  height: 440px;
-  background: #ffffff;
+.chat-box {
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   overflow: hidden;
-  display:flex;
+  display: flex;
   flex-direction: column;
+  margin-right: 0 !important;
+
 }
+
 
 /* رأس الدردشة */
 .chat-header{
@@ -436,18 +455,18 @@ footer {
 }
 
 /* منطقة الرسائل */
-.chat-body{
+.chat-body {
+  direction: ltr; 
   flex: 1;
-  padding: 12px;
   overflow-y: auto;
-  background: #f6f9fc;
-  display:flex;
-  flex-direction: column;
+  padding-right: 5px !important;  /* بدل 12px القديمة */
+  padding-left: 5px !important;   /* شيل المسافة من اليسار */
 }
+
 
 /* رسائل */
 .bot-message, .user-message {
-  max-width: 80%;
+  max-width: 100%;
   padding: 8px 10px;
   margin: 6px 0;
   border-radius: 10px;
@@ -456,36 +475,80 @@ footer {
   color: #000 !important;  /* أهم سطر لإظهار الخط */
 }
 .bot-message {
-  background: #e2f0ff; /* أزرق واضح */
-  align-self: flex-start;
+	direction: rtl;
+  text-align: right;
 }
 
 .user-message {
-  background: #d2ffd2; /* أخضر واضح */
-  align-self: flex-end;
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 8px 0;
+    color: #007bff; /* أزرق */
+    font-weight: bold;
+    font-size: 17px;
 }
-/* مدخل النص */
-.chat-input{
-  display:flex;
-  gap:8px;
-  padding:10px;
-  border-top: 1px solid #e6e6e6;
-  background:#fff;
+/* حاوية الإدخال: صف واحد ثابت، لا يلتف */
+.chat-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;   /* يوسّط العناصر عمودياً */
+  flex-wrap: nowrap;     /* يمنع النزول لسطر جديد */
+  padding: 12px;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
-.chat-input input{
-  flex:1;
-  padding:8px 10px;
-  border-radius:6px;
-  border:1px solid #ccc;
-  outline:none;
+
+/* حقل النص: يشغل المساحة المتبقية */
+.chat-input input {
+  flex: 1 1 auto;        /* ينفش ليشغل المساحة المتاحة */
+  min-width: 0;          /* مهم حتى لا يجبر الزر على النزول عند النص الطويل */
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  outline: none;
+  font-size: 15px;
 }
-.chat-input button{
-  padding:8px 12px;
-  border-radius:6px;
-  border:none;
-  background:#1976d2;
-  color:#fff;
-  cursor:pointer;
+
+/* زر الإرسال: ثابت الحجم ويبقى بجانب الحقل */
+.chat-input button {
+  flex: 0 0 48px;        /* يمنع الزر من التكبير و يضمن وجوده بجانب الحقل */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #0088cc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .15s;
+}
+
+/* أيقونة داخل الزر (إن استخدمت ::before) */
+.chat-input button::before {
+  content: "➤"; 
+  font-size: 20px;
+}
+
+.chat-input button:hover { transform: scale(1.06); }
+
+.chat-body::-webkit-scrollbar {
+  width: 0px;      /* يخفي الشريط بالكامل */
+}
+.bot-message ul,
+.bot-message ol {
+  margin: 8px 0;
+  padding-right: 20px;
+}
+
+.bot-message li {
+  margin-bottom: 4px;
+  line-height: 1.6;
 }
 
 /* حالة مخفي/مرئي للمساعدة في الوصول */
@@ -494,9 +557,55 @@ footer {
 
 /* استجابة صغيرة للزر عند hover */
 #chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
+.emergency-container {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 9999;
+}
+
+.em-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.45);
+  transition: 0.25s ease;
+}
+
+.em-btn:hover {
+  transform: scale(1.12);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255,255,255,0.5);
+}
+
+
 </style>
 <body>
-
+		<!-- صندوق الدردشة (مخفي افتراضياً) -->
+		<div id="chat-widget" dir="rtl" aria-hidden="true">
+		  <div class="chat-box">
+			<div class="chat-body" id="chat-body">
+			  <div class="bot-message">مرحباً! اسألني أي سؤال طبي.</div>
+			</div>
+			<div class="chat-input">
+			  <input type="text" id="user-input" placeholder="اكتب سؤالك الطبي..." />
+			  <button id="send-btn"></button>
+			</div>
+		  </div>
+		</div>	
 	  <nav class="navbar navbar-expand-lg navbar-dark px-3">
 		<div class="container-fluid">
 		  <a class="navbar-brand" href="#" id="homeBtn">🏥 نبض</a>
@@ -617,7 +726,7 @@ footer {
 	  </div>
 
 	  <div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
-	  <button onclick="logout()" style="background:#c0392b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">تسجيل الخروج</button>
+	  <button onclick="logout()" style="background:#c0392b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">Log out</button>
 
 	  <div class="text-center mt-3">
 		<button id="findHospitalsBtn" class="btn btn-main">
@@ -625,25 +734,31 @@ footer {
 		</button>
 	  </div>
 
-	  <div class="text-center mt-4">
-		<button id="emergencyBtn" class="btn-emergency">
-		  🚨 Emergency Menu
-		</button>
-	  </div>
-		<button id="chat-toggle" aria-expanded="false" title="البوت الطبي">البوت</button>
-		<!-- صندوق الدردشة (مخفي افتراضياً) -->
-		<div id="chat-widget" dir="rtl" aria-hidden="true">
-		  <div class="chat-box">
-			<div class="chat-header">البوت الطبي</div>
-			<div class="chat-body" id="chat-body">
-			  <div class="bot-message">مرحباً! اسألني أي سؤال طبي.</div>
-			</div>
-			<div class="chat-input">
-			  <input type="text" id="user-input" placeholder="اكتب سؤالك الطبي..." />
-			  <button id="send-btn">إرسال</button>
-			</div>
-		  </div>
+		<!-- Emergency Buttons -->
+		<div class="emergency-container">
+
+		  <button class="em-btn" id="btn-call">
+			🚑
+		  </button>
+
+		  <button class="em-btn" id="btn-custom">
+			📞 
+		  </button>
+
+		  <button class="em-btn" id="btn-location">
+			📍 
+		  </button>
+
+		  <button class="em-btn" id="btn-hospitals">
+			🏥
+		  </button>
+
 		</div>
+		</div>
+
+		<button id="chat-toggle">🤖</button>
+
+
 
 
 	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -1850,55 +1965,45 @@ footer {
 			window.open(mapsUrl, "_blank");
 		  }
 
-		  document.getElementById("emergencyBtn").addEventListener("click", function () {
-			const choice = prompt(
-			  "🚨 EMERGENCY OPTIONS:\n\n1️⃣ Call emergency number\n2️⃣ Open dialer with custom number\n3️⃣ Send my location via WhatsApp\n4️⃣ Open nearby hospitals map\n\nEnter 1, 2, 3, or 4:"
-			);
+					  // 1- Call emergency number
+			document.getElementById("btn-call").addEventListener("click", () => {
+			  window.location.href = "tel:112"; // غير الرقم حسب بلدك
+			});
 
-			switch (choice) {
-			  case "1":
-				// اتصال مباشر برقم الطوارئ
-				window.location.href = "tel:112"; // غيّر الرقم حسب بلدك
-				break;
+			// 2- Custom dialer
+			document.getElementById("btn-custom").addEventListener("click", () => {
+			  const num = prompt("Enter number to call:");
+			  if (num) window.location.href = `tel:${num}`;
+			});
 
-			  case "2":
-				// فتح تطبيق الاتصال مع رقم جاهز
-				const customNumber = prompt("Enter the phone number to call:");
-				if (customNumber) window.location.href = `tel:${customNumber}`;
-				break;
+			// 3- Send location via WhatsApp
+			document.getElementById("btn-location").addEventListener("click", () => {
+			  if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+				  pos => {
+					const lat = pos.coords.latitude;
+					const lng = pos.coords.longitude;
+					const msg = `🚨 Emergency! My location:\nhttps://maps.google.com/?q=${lat},${lng}`;
+					const whatsapp = prompt("Enter WhatsApp number (with country code):");
 
-			  case "3":
-				// إرسال الموقع عبر واتساب
-				if (navigator.geolocation) {
-				  navigator.geolocation.getCurrentPosition(
-					function (position) {
-					  const lat = position.coords.latitude;
-					  const lng = position.coords.longitude;
-					  const message = `🚨 Emergency! My location: https://maps.google.com/?q=${lat},${lng}`;
-					  const phone = prompt("Enter WhatsApp number (with country code, e.g. 9627XXXXXXX):");
-					  if (phone) {
-						const whatsappUrl = `https://whatsapp.com/${phone}?text=${encodeURIComponent(message)}`;
-						window.open(whatsappUrl, "_blank");
-					  }
-					},
-					function () {
-					  alert("Please enable GPS to share your location.");
+					if (whatsapp) {
+					  const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
+					  window.open(url, "_blank");
 					}
-				  );
-				} else {
-				  alert("Your browser doesn't support location services.");
-				}
-				break;
+				  },
+				  () => alert("Please enable GPS.")
+				);
+			  } else {
+				alert("Location not supported.");
+			  }
+			});
 
-			  case "4":
-				// فتح أقرب المستشفيات في خرائط جوجل
-				window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
-				break;
+			// 4- Open nearby hospitals
+			document.getElementById("btn-hospitals").addEventListener("click", () => {
+			  window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
+			});
 
-			  default:
-				alert("Operation canceled or invalid choice.");
-			}
-		  });  		  
+ 		  
 		
 			function logout() {
 			  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
@@ -1918,6 +2023,27 @@ footer {
 				chatWidget.setAttribute("aria-hidden", isOpen ? "true" : "false");
 			});
 
+			// ⭐⭐⭐ دالة تنسيق نص AI ⭐⭐⭐
+			function formatBotMessage(text) {
+
+				// **bold**
+				text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+				// 1. قوائم مرقمة
+				text = text.replace(/^\d+\.\s(.+)$/gm, "<li>$1</li>");
+				text = text.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ol>$1</ol>");
+
+				// 2. قوائم نقاط
+				text = text.replace(/^[-*•]\s(.+)$/gm, "<li>$1</li>");
+				text = text.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ul>$1</ul>");
+
+				// 3. فقرات
+				text = text.replace(/\n/g, "<br>");
+
+				return text;
+			}
+
+			// إرسال الرسالة
 			async function handleSend() {
 				const question = userInput.value.trim();
 				if (!question) return;
@@ -1936,7 +2062,10 @@ footer {
 
 					const data = await response.json();
 
-					chatBody.innerHTML += `<div class="bot-message">${data.answer}</div>`;
+					// ⭐⭐⭐ استدعاء المنسِّق ⭐⭐⭐
+					const formatted = formatBotMessage(data.answer);
+
+					chatBody.innerHTML += `<div class="bot-message">${formatted}</div>`;
 					chatBody.scrollTop = chatBody.scrollHeight;
 
 				} catch (err) {
