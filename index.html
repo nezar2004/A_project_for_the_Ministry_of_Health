@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>MedReach</title>
 	<!-- Successfully clicked the button (Favicon) -->
     <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
@@ -460,8 +459,6 @@ footer {
   direction: ltr; 
   flex: 1;
   overflow-y: auto;
-  padding-right: 5px !important;  /* بدل 12px القديمة */
-  padding-left: 5px !important;   /* شيل المسافة من اليسار */
 }
 
 
@@ -552,12 +549,6 @@ footer {
   line-height: 1.6;
 }
 
-/* حالة مخفي/مرئي للمساعدة في الوصول */
-#chat-widget[aria-hidden="true"]{ display: none; }
-#chat-widget[aria-hidden="false"]{ display: block; }
-
-/* استجابة صغيرة للزر عند hover */
-#chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
 .emergency-container {
   position: fixed;
   left: 20px;
@@ -586,6 +577,7 @@ footer {
   transition: 0.25s ease;
 }
 
+
 .em-btn:hover {
   transform: scale(1.12);
   background: rgba(255, 255, 255, 0.15);
@@ -597,24 +589,24 @@ footer {
 }
 
 @media (max-width: 480px) {
+
+  /* إعدادات أزرار الطوارئ */
   .emergency-container {
     top: 140px !important;
     left: 10px !important;
-    transform: scale(0.8); /* صغر الأزرار */
+    transform: scale(0.8);
   }
 
   .em-btn {
-    margin: 6px 0 !important; /* قلل المسافات بينهم */
+    margin: 6px 0 !important;
   }
-}
-@media (max-width: 480px) {
+
   .booking-banner {
     width: 90%;
     font-size: 14px;
     padding: 10px;
   }
-}
-@media (max-width: 480px) {
+
   #chat-toggle {
     bottom: 20px !important;
     right: 20px !important;
@@ -626,6 +618,7 @@ footer {
     height: 70vh !important;
     right: 5vw !important;
   }
+
 }
 /* الهيدر */
 header, .top-bar {
@@ -656,7 +649,12 @@ header, .top-bar {
   position: fixed;
   z-index: 1500 !important; /* أعلى عنصر */
 }
+/* حالة مخفي/مرئي للمساعدة في الوصول */
+#chat-widget[aria-hidden="true"]{ display: none; }
+#chat-widget[aria-hidden="false"]{ display: block; }
 
+/* استجابة صغيرة للزر عند hover */
+#chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
 </style>
 <body>
 		<!-- صندوق الدردشة (مخفي افتراضياً) -->
