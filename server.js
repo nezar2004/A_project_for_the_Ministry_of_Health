@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 // ربط الـ API KEY من Railway
 const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: "sk-AIzaSyBiAd1bsc-PAGZfodjm3wQo0svWeXYN-V4"  // حطي مفتاحك هنا مباشرة
 });
 
 app.post("/api/chat", async (req, res) => {
@@ -41,3 +41,4 @@ app.post("/api/chat", async (req, res) => {
 // مهم جداً للـ Railway
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
+
