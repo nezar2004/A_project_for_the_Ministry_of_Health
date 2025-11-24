@@ -19,8 +19,8 @@
 :root {
   --primary: #0a0f1a;
   --secondary: #2a2a2a;
-  --accent: #ff3b3b;
-  --glow: #ff7b7b;
+  --accent: #3B2F2F;
+  --glow: #C5A880;
   --bg-dark: #1e1e1e;
   --text-light: #0a0f1a;
   --card-bg: rgba(255, 255, 255, 0.1);
@@ -388,7 +388,7 @@ footer {
     opacity: 0.04;
   }
 }	
-/*----------------شسي-------------------------------*/
+/*----------------AI-------------------------------*/
 #chat-toggle {
   position: fixed;
   left: 20px;
@@ -784,13 +784,41 @@ header, .top-bar {
 				<div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
 				<div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
 			  </div> <div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div> </div>
-			<div id="step-9" class="step-block d-none"> <h5 class="mb-3">Data review</h5> <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
-			  <h5 class="mb-3">Customer data</h5> <form id="custForm" class="row g-3">
-				<div class="col-md-6"><label class="form-label">full name</label><input id="custName" class="form-control" required></div>
-				<div class="col-md-6"><label class="form-label">e-mail</label><input id="custEmail" type="email" class="form-control" required></div>
-				<div class="col-md-6"><label class="form-label">The phone</label><input id="custPhone" class="form-control" required></div>
-				<div class="col-12"><label class="form-label">note</label><textarea id="custNote" class="form-control" rows="2"></textarea></div>
-			  </form> </div>
+			<div id="step-9" class="step-block d-none">
+			  <h5 class="mb-3">Data review</h5>
+
+			  <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
+
+			  <h5 class="mb-3">Customer data</h5>
+
+			  <form id="custForm" class="row g-3">
+
+				<div class="col-md-6">
+				  <label class="form-label">full name</label>
+				  <input id="custName" class="form-control" required>
+				  <span id="custNameError" class="text-danger small"></span>
+				</div>
+
+				<div class="col-md-6">
+				  <label class="form-label">e-mail</label>
+				  <input id="custEmail" type="email" class="form-control" required>
+				  <span id="custEmailError" class="text-danger small"></span>
+				</div>
+
+				<div class="col-md-6">
+				  <label class="form-label">The phone</label>
+				  <input id="custPhone" class="form-control" required>
+				  <span id="custPhoneError" class="text-danger small"></span>
+				</div>
+
+				<div class="col-12">
+				  <label class="form-label">note</label>
+				  <textarea id="custNote" class="form-control" rows="2"></textarea>
+				</div>
+
+			  </form>
+			</div>
+
 		  </div>
 
 		  <hr class="my-4">
@@ -1934,19 +1962,71 @@ header, .top-bar {
 	    }
 
 	    function validateCurrentStep(){
-	      const s = bookingState.currentStep;
-	      if(s===1 && !bookingState.gov){ alert('الرجاء اختيار المحافظة.'); return false; }
-	      if(s===2 && !bookingState.facilityType){ alert('الرجاء اختيار نوع المنشأة.'); return false; }
-	      if(s===3 && !bookingState.hospital){ alert('الرجاء اختيار المستشفى.'); return false; }
-	      if(s===4 && !bookingState.department){ alert('الرجاء اختيار القسم.'); return false; }
-	      if(s===5 && bookingState.hasInsurance === null){ alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
-	      if(s===6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)){ alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
-	      if(s===7 && !bookingState.doctor){ alert('الرجاء اختيار الطبيب.'); return false; }
-	      if(s===8 && (!bookingState.date || !bookingState.time)){ alert('الرجاء اختيار التاريخ والوقت.'); return false; }
-	      if(s===9 && (!document.getElementById('custName').value || !document.getElementById('custEmail').value || !document.getElementById('custPhone').value)){ alert('الرجاء إدخال بيانات العميل كاملة.'); return false; }
-	      return true;
-	    }
-	    
+			const s = bookingState.currentStep;
+
+			if(s===1 && !bookingState.gov){ alert('الرجاء اختيار المحافظة.'); return false; }
+			if(s===2 && !bookingState.facilityType){ alert('الرجاء اختيار نوع المنشأة.'); return false; }
+			if(s===3 && !bookingState.hospital){ alert('الرجاء اختيار المستشفى.'); return false; }
+			if(s===4 && !bookingState.department){ alert('الرجاء اختيار القسم.'); return false; }
+			if(s===5 && bookingState.hasInsurance === null){ alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
+			if(s===6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)){ alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
+			if(s===7 && !bookingState.doctor){ alert('الرجاء اختيار الطبيب.'); return false; }
+			if(s===8 && (!bookingState.date || !bookingState.time)){ alert('الرجاء اختيار التاريخ والوقت.'); return false; }
+
+			// 👇 أهم تعديل — بدل الشرط القديم استبدله بهيك:
+			if(s===9){
+				return validateCustomerData();
+			}
+
+			return true;
+		}
+
+	    function validateCustomerData() {
+			// جلب القيم
+			const name = document.getElementById('custName').value.trim();
+			const email = document.getElementById('custEmail').value.trim();
+			const phone = document.getElementById('custPhone').value.trim();
+
+			// جلب أماكن الخطأ
+			const nameErr = document.getElementById('custNameError');
+			const emailErr = document.getElementById('custEmailError');
+			const phoneErr = document.getElementById('custPhoneError');
+
+			// مسح الأخطاء قبل الفحص
+			nameErr.textContent = "";
+			emailErr.textContent = "";
+			phoneErr.textContent = "";
+
+			let valid = true;
+
+			// التحقق من الاسم
+			if(!name){
+				nameErr.textContent = "يرجى إدخال الاسم";
+				valid = false;
+			}
+
+			// التحقق من الإيميل
+			if(!email){
+				emailErr.textContent = "يرجى إدخال الإيميل";
+				valid = false;
+			} else if(!email.includes("@") || email.startsWith("@") || email.endsWith("@")) {
+				emailErr.textContent = "الإيميل غير صحيح، يجب أن يحتوي على @";
+				valid = false;
+			}
+
+			// التحقق من رقم الهاتف
+			if(!phone){
+				phoneErr.textContent = "يرجى إدخال رقم الهاتف";
+				valid = false;
+			} else if(!/^[0-9]{10}$/.test(phone)){
+				phoneErr.textContent = "رقم الهاتف يجب أن يكون 10 أرقام";
+				valid = false;
+			}
+
+			return valid;
+		}
+
+
 	    function commitBooking(){
 	      if(!validateCurrentStep()){ return; }
 	      bookingState.customer.name = document.getElementById('custName').value;
