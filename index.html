@@ -17,12 +17,12 @@
 
 /* ----------------- Colors and Variables ----------------- */
 :root {
-  --primary: #4a4a4a;
+  --primary: #0a0f1a;
   --secondary: #2a2a2a;
-  --accent: #66bb6a;
-  --glow: #a5d6a7;
+  --accent: #ff3b3b;
+  --glow: #ff7b7b;
   --bg-dark: #1e1e1e;
-  --text-light: #ffffff;
+  --text-light: #0a0f1a;
   --card-bg: rgba(255, 255, 255, 0.1);
 }
 
@@ -392,7 +392,7 @@ footer {
 #chat-toggle {
   position: fixed;
   left: 20px;
-  top: 26%;
+  top: 28%;
 
   width: 55px;
   height: 55px;
@@ -426,10 +426,10 @@ footer {
 /* صندوق الدردشة المصغر/الموسع */
 #chat-widget {
   position: fixed;
-  top: 90px;    /* هذا يجعل الصندوق يبدأ من تحت كلمة نبض مباشرة */
+  top: 360px;    /* هذا يجعل الصندوق يبدأ من تحت كلمة نبض مباشرة */
   right: 20px;
   width: 320px;
-  height: calc(100vh - 100px);  /* من تحت نبض لآخر الصفحة */
+  height: calc(70vh - 90px);  /* من تحت نبض لآخر الصفحة */
 }
 
 
@@ -655,6 +655,26 @@ header, .top-bar {
 #chat-widget {
   position: fixed;
   z-index: 1500 !important; /* أعلى عنصر */
+}
+/* ----------- TIME SLOTS BLACK STYLE ----------- */
+.time-slot,
+.btn-outline-primary.time-slot {
+  background: rgba(0, 0, 0, 0.4) !important;    /* خلفية سوداء شفافة */
+  border: 2px solid rgba(0, 0, 0, 0.7) !important; /* حدود سوداء */
+  color: #fff !important;                        /* نص أبيض */
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+  backdrop-filter: blur(6px);
+}
+
+.time-slot:hover,
+.btn-outline-primary.time-slot:hover {
+  background: rgba(0, 0, 0, 0.8) !important;      /* سواد أقوى عند الهوفر */
+  border-color: #000 !important;                 /* حدود سوداء بالكامل */
+  color: #fff !important;
+  transform: scale(1.05);
 }
 
 </style>
@@ -1829,11 +1849,54 @@ header, .top-bar {
 	        for(let m=0; m<60; m+=slotMin){ const hh = String(h).padStart(2,'0'); const mmStr = String(m).padStart(2,'0'); slots.push(`${hh}:${mmStr}`); }
 	      }
 	      slots.forEach(s=>{
-	        const conflict = localBookings.some(b=> b.doctor_id===bookingState.doctor.id && b.date===bookingState.date && b.time===s);
-	        const btn = document.createElement('button'); btn.className = 'btn btn-outline-primary time-slot'; btn.dataset.time = s; btn.textContent = s;
-	        if(conflict){ btn.disabled = true; btn.textContent = s + ' (reserved)'; btn.classList.add('disabled'); btn.classList.remove('btn-outline-primary'); btn.classList.add('btn-outline-danger'); }
-	        container.appendChild(btn);
-	      });
+			const conflict = localBookings.some(b=> 
+				b.doctor_id===bookingState.doctor.id && 
+				b.date===bookingState.date && 
+				b.time===s
+			);
+
+			// ⏰ Check if the time is already passed for TODAY
+			let isPastTime = false;
+			const now = new Date();
+
+			// فقط لو التاريخ هو اليوم
+			const selected = new Date(bookingState.date + "T" + s + ":00");
+			const today = new Date();
+			const isToday =
+				selected.getFullYear() === today.getFullYear() &&
+				selected.getMonth() === today.getMonth() &&
+				selected.getDate() === today.getDate();
+
+			if(isToday && selected <= now){
+				isPastTime = true;
+			}
+
+			const btn = document.createElement('button');
+			btn.className = 'btn btn-outline-primary time-slot';
+			btn.dataset.time = s;
+			btn.textContent = s;
+
+			// محجوز
+			if(conflict){
+				btn.disabled = true;
+				btn.textContent = s + ' (reserved)';
+				btn.classList.add('disabled');
+				btn.classList.remove('btn-outline-primary');
+				btn.classList.add('btn-outline-danger');
+			}
+
+			// الوقت صار بالماضي
+			if(isPastTime){
+				btn.disabled = true;
+				btn.textContent = s + ' (expired)';
+				btn.classList.add('disabled');
+				btn.classList.remove('btn-outline-primary');
+				btn.classList.add('btn-outline-secondary');
+			}
+
+			container.appendChild(btn);
+		});
+
 	    }
 	    function selectTimeSlot(time){
 	      bookingState.time = time;
