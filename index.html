@@ -2112,15 +2112,12 @@ header, .top-bar {
 				  })
 				}
 			  );
-
 			  const data = await response.json();
 			  return (
 				data.candidates?.[0]?.content?.parts?.[0]?.text ||
 				"لم يصلني رد من الذكاء الاصطناعي."
 			  );
 			}
-
-			// ⭐⭐⭐ إرسال الرسائل ⭐⭐⭐
 			async function handleSend() {
 			  const question = userInput.value.trim();
 			  if (!question) return;
@@ -2140,16 +2137,6 @@ header, .top-bar {
 			userInput.addEventListener("keydown", e => {
 			  if (e.key === "Enter") handleSend();
 			});
-
-
 	</script>
 </body>
 </html>
-
-		
-
-
-
-
-
-	
