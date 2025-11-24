@@ -7,17 +7,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// ربط الـ API KEY مباشرة
+// ربط الـ API KEY من Environment Variable (على Railway)
 const client = new OpenAI({
-    apiKey: "sk-AIzaSyBiAd1bsc-PAGZfodjm3wQo0svWeXYN-V4"  // حطي مفتاح OpenAI الصحيح هنا
+    apiKey: process.env.OPENAI_API_KEY
 });
 
 app.post("/api/chat", async (req, res) => {
     const question = req.body.question?.trim();
-
-    if (!question) {
-        return res.json({ answer: "لم يتم استلام أي سؤال." });
-    }
+    if (!question) return res.json({ answer: "لم يتم استلام أي سؤال." });
 
     try {
         const completion = await client.chat.completions.create({
@@ -27,15 +24,12 @@ app.post("/api/chat", async (req, res) => {
                 { role: "user", content: question }
             ]
         });
-
         res.json({ answer: completion.choices[0].message.content });
-
     } catch (e) {
         console.error("AI ERROR:", e);
         res.json({ answer: "خطأ في الاتصال بالسيرفر." });
     }
 });
 
-// مهم جداً للـ Railway
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
