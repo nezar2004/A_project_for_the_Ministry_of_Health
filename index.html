@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>MedReach</title>
 	<!-- Successfully clicked the button (Favicon) -->
     <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
@@ -389,6 +388,142 @@ footer {
   }
 }	
 /*----------------شسي-------------------------------*/
+/* زر فتح الشات */
+#chat-toggle {
+  position: fixed;
+  left: 20px;
+  top: 20%;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 10000;   /* مهم! فوق الشات والأزرار */
+  transition: 0.3s ease;
+}
+
+
+#chat-widget {
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s;
+}
+
+#chat-widget.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+
+
+/* حجم ومظهر واجهة الدردشة */
+.chat-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-right: 0 !important;
+
+}
+
+
+/* رأس الدردشة */
+.chat-header{
+  background: #1976d2;
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* منطقة الرسائل */
+.chat-body {
+  direction: ltr; 
+  flex: 1;
+  overflow-y: auto;
+}
+
+
+/* رسائل */
+.bot-message, .user-message {
+  max-width: 100%;
+  padding: 8px 10px;
+  margin: 6px 0;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #000 !important;  /* أهم سطر لإظهار الخط */
+}
+.bot-message {
+	direction: rtl;
+  text-align: right;
+}
+
+.user-message {
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 8px 0;
+    color: #007bff; /* أزرق */
+    font-weight: bold;
+    font-size: 17px;
+}
+/* حاوية الإدخال: صف واحد ثابت، لا يلتف */
+.chat-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;   /* يوسّط العناصر عمودياً */
+  flex-wrap: nowrap;     /* يمنع النزول لسطر جديد */
+  padding: 12px;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* حقل النص: يشغل المساحة المتبقية */
+.chat-input input {
+  flex: 1 1 auto;        /* ينفش ليشغل المساحة المتاحة */
+  min-width: 0;          /* مهم حتى لا يجبر الزر على النزول عند النص الطويل */
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  outline: none;
+  font-size: 15px;
+}
+
+/* زر الإرسال: ثابت الحجم ويبقى بجانب الحقل */
+.chat-input button {
+  flex: 0 0 48px;        /* يمنع الزر من التكبير و يضمن وجوده بجانب الحقل */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #0088cc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .15s;
+}
+
+/* أيقونة داخل الزر (إن استخدمت ::before) */
+.chat-input button::before {
+  content: "➤"; 
+  font-size: 20px;
+}
 
 .chat-input button:hover { transform: scale(1.06); }
 
@@ -406,12 +541,6 @@ footer {
   line-height: 1.6;
 }
 
-/* حالة مخفي/مرئي للمساعدة في الوصول */
-#chat-widget[aria-hidden="true"]{ display: none; }
-#chat-widget[aria-hidden="false"]{ display: block; }
-
-/* استجابة صغيرة للزر عند hover */
-#chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
 .emergency-container {
   position: fixed;
   left: 20px;
@@ -440,6 +569,7 @@ footer {
   transition: 0.25s ease;
 }
 
+
 .em-btn:hover {
   transform: scale(1.12);
   background: rgba(255, 255, 255, 0.15);
@@ -451,24 +581,24 @@ footer {
 }
 
 @media (max-width: 480px) {
+
+  /* إعدادات أزرار الطوارئ */
   .emergency-container {
     top: 140px !important;
     left: 10px !important;
-    transform: scale(0.8); /* صغر الأزرار */
+    transform: scale(0.8);
   }
 
   .em-btn {
-    margin: 6px 0 !important; /* قلل المسافات بينهم */
+    margin: 6px 0 !important;
   }
-}
-@media (max-width: 480px) {
+
   .booking-banner {
     width: 90%;
     font-size: 14px;
     padding: 10px;
   }
-}
-@media (max-width: 480px) {
+
   #chat-toggle {
     bottom: 20px !important;
     right: 20px !important;
@@ -480,6 +610,7 @@ footer {
     height: 70vh !important;
     right: 5vw !important;
   }
+
 }
 /* الهيدر */
 header, .top-bar {
@@ -510,9 +641,76 @@ header, .top-bar {
   position: fixed;
   z-index: 1500 !important; /* أعلى عنصر */
 }
+/* زر فتح الشات – يبقى على اليسار */
+#chat-toggle {
+  position: fixed;
+  left: 20px;
+  bottom: 28px;     /* زر أسفل اليسار */
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10000;
+  transition: .3s;
+  top: 25%;
+}
 
+/* نافذة الشات */
+#chat-widget {
+  position: fixed;
+  right: 20px;         /* على نفس جهة الزر */
+  bottom: 90px;       /* فوق الزر مباشرة */
+  width: 320px;
+  height: 420px;
+  top: 50%;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: .25s;
+  z-index: 9999;
+}
+
+/* لما ينفتح */
+#chat-widget.open {
+  opacity: 1;
+  pointer-events: all;
+}
+/* حالة مخفي/مرئي للمساعدة في الوصول */
+#chat-widget[aria-hidden="true"]{ display: none; }
+#chat-widget[aria-hidden="false"]{ display: block; }
+
+/* استجابة صغيرة للزر عند hover */
+#chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
 </style>
 <body>
+		<!-- صندوق الدردشة (مخفي افتراضياً) -->
+		<div id="chat-widget" dir="rtl">
+		  <div class="chat-box">
+			<div class="chat-body" id="chat-body">
+			  <div class="bot-message">مرحباً! اسألني أي سؤال طبي.</div>
+			</div>
+
+			<div class="chat-input">
+			  <input type="text" id="user-input" placeholder="اكتب سؤالك الطبي...">
+			  <button id="send-btn"></button>
+			</div>
+		  </div>
+		</div>
+
+		<!-- زر فتح البوت -->
+		<button id="chat-toggle">🤖</button>
 
 	  <nav class="navbar navbar-expand-lg navbar-dark px-3">
 		<div class="container-fluid">
@@ -664,14 +862,14 @@ header, .top-bar {
 		</div>
 		</div>
 
-	
+
 
 
 
 
 	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-	<script>
+	  <script>
 		const loggedUser = localStorage.getItem("loggedUser");
 			if (!loggedUser) {
 			  alert("⚠️ يجب تسجيل الدخول أولاً!");
@@ -1918,11 +2116,83 @@ header, .top-bar {
 			  alert("تم تسجيل الخروج بنجاح 👋");
 			  window.location.href = "1login.html"; // يرجع على صفحة الدخول
 			}
+			const chatToggle = document.getElementById("chat-toggle");
+			const chatWidget = document.getElementById("chat-widget");
 
-			
+			const sendBtn = document.getElementById("send-btn");
+			const userInput = document.getElementById("user-input");
+			const chatBody = document.getElementById("chat-body");
 
-	</script>
-</body>
-</html>
+			// فتح وإغلاق البوت
+			document.getElementById("chat-toggle").onclick = () => {
+				document.getElementById("chat-widget").classList.toggle("open");
+			};
 
 
+
+			// ⭐⭐⭐ دالة تنسيق نص AI ⭐⭐⭐
+			function formatBotMessage(text) {
+
+				// **bold**
+				text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+				// 1. قوائم مرقمة
+				text = text.replace(/^\d+\.\s(.+)$/gm, "<li>$1</li>");
+				text = text.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ol>$1</ol>");
+
+				// 2. قوائم نقاط
+				text = text.replace(/^[-*•]\s(.+)$/gm, "<li>$1</li>");
+				text = text.replace(/(<li>[\s\S]*?<\/li>)/gm, "<ul>$1</ul>");
+
+				// 3. فقرات
+				text = text.replace(/\n/g, "<br>");
+
+				return text;
+			}
+
+			// إرسال الرسالة
+			async function handleSend() {
+				const question = userInput.value.trim();
+				if (!question) return;
+
+				// رسالة المستخدم
+				chatBody.innerHTML += `<div class="user-message">${question}</div>`;
+				userInput.value = "";
+				chatBody.scrollTop = chatBody.scrollHeight;
+
+				try {
+					const response = await fetch("http://localhost:3000/api/chat", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ question })
+					});
+
+					const data = await response.json();
+
+					// ⭐⭐⭐ استدعاء المنسِّق ⭐⭐⭐
+					const formatted = formatBotMessage(data.answer);
+
+					chatBody.innerHTML += `<div class="bot-message">${formatted}</div>`;
+					chatBody.scrollTop = chatBody.scrollHeight;
+
+				} catch (err) {
+					chatBody.innerHTML += `<div class="bot-message">خطأ في الاتصال بالسيرفر.</div>`;
+				}
+			}
+
+			sendBtn.addEventListener("click", handleSend);
+			userInput.addEventListener("keydown", e => {
+				if (e.key === "Enter") handleSend();
+			});
+
+	  </script>
+	</body>
+	</html>
+
+		
+
+
+
+
+
+	
