@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -9,9 +7,9 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// ربط الـ API KEY من Railway
+// ربط الـ API KEY مباشرة
 const client = new OpenAI({
-    apiKey: "sk-AIzaSyBiAd1bsc-PAGZfodjm3wQo0svWeXYN-V4"  // حطي مفتاحك هنا مباشرة
+    apiKey: "sk-AIzaSyBiAd1bsc-PAGZfodjm3wQo0svWeXYN-V4"  // حطي مفتاح OpenAI الصحيح هنا
 });
 
 app.post("/api/chat", async (req, res) => {
@@ -41,4 +39,3 @@ app.post("/api/chat", async (req, res) => {
 // مهم جداً للـ Railway
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
-
