@@ -1,14 +1,20 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { GoogleGenAI } from "@google/genai";
+import cors from "cors";
 
 const app = express();
+
+// السماح للواجهة الأمامية بالاتصال من أي مكان
+app.use(cors());
 app.use(bodyParser.json());
 
+// تحميل مفتاح API من Render environment
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY
 });
 
+// API endpoint
 app.post("/api/chat", async (req, res) => {
   const question = req.body.question;
 
@@ -26,10 +32,12 @@ app.post("/api/chat", async (req, res) => {
 
     res.json({ answer });
 
-  } catch (e) {
-    console.error("AI ERROR:", e);
+  } catch (err) {
+    console.error("AI ERROR:", err);
     res.json({ answer: "خطأ في الاتصال بالسيرفر." });
   }
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+// Render uses PORT from the environment
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
