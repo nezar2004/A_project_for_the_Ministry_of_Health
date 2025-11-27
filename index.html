@@ -676,6 +676,56 @@ header, .top-bar {
   color: #fff !important;
   transform: scale(1.05);
 }
+/*------------------------------*/
+/* الموبايل فقط */
+@media (max-width: 768px) {
+
+  /* ضبط حجم كلمة نبض والخط */
+  .hero-image,
+  .hero-text,
+  img.big-logo {
+    max-width: 90%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* زر Start booking */
+  .start-booking-btn {
+    width: 80% !important;
+    font-size: 14px !important;
+    padding: 10px !important;
+    margin: 10px auto !important;
+    display: block;
+  }
+
+  /* أيقونات اليسار */
+  .sidebar-icons {
+    position: fixed;
+    left: 10px;
+    top: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transform: scale(0.8); /* تصغيرهم شوي */
+  }
+
+  /* اللوجاو Navbar */
+  .top-navbar {
+    padding: 5px 10px;
+  }
+
+  .top-navbar img,
+  .top-navbar span {
+    transform: scale(0.9);
+  }
+
+  /* زر logout */
+  .logout-btn {
+    margin-top: 20px;
+    font-size: 14px;
+    padding: 8px 20px;
+  }
+}
 
 </style>
 <body>
@@ -2268,6 +2318,7 @@ header, .top-bar {
 	</script>
 </body>
 </html>
+
 
 
 
