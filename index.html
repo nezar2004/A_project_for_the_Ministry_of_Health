@@ -13,18 +13,25 @@
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+/* ------------------------------------------------------
+   Fonts
+------------------------------------------------------ */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 
-/* ----------------- Colors and Variables ----------------- */
+/* ------------------------------------------------------
+   Colors & Variables
+------------------------------------------------------ */
 :root {
-  --primary: #8D6E63;   /* بني ترابي */
-  --secondary: #A1887F; /* بيج غامق */
-  --accent: #6D4C41;    /* بني أغمق */
-  --glow: #4E342E;      /* بني واضح للعناوين */
-  --text-light: #3E2723; 
+  --primary: #8D6E63;
+  --secondary: #A1887F;
+  --accent: #6D4C41;
+  --glow: #4E342E;
+  --text-light: #3E2723;
 }
 
-/* ----------------- General Rule ----------------- */
+/* ------------------------------------------------------
+   Global Rules
+------------------------------------------------------ */
 * {
   margin: 0;
   padding: 0;
@@ -47,10 +54,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-x: hidden;
 }
 
-/* رمز طبي شفاف */
 body::after {
   content: "";
   position: absolute;
@@ -66,14 +71,16 @@ body::after {
   z-index: 0;
 }
 
-/* ----------------- NAVBAR ----------------- */
+/* ------------------------------------------------------
+   NAVBAR
+------------------------------------------------------ */
 nav.navbar {
   width: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0,0,0,0.3);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.2);
   padding: 15px 25px;
-  box-shadow: 0 0 20px rgba(102, 187, 106, 0.3);
+  box-shadow: 0 0 20px rgba(102,187,106,0.3);
   animation: fadeInDown 1s ease forwards;
 }
 
@@ -85,48 +92,57 @@ nav.navbar {
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: rgba(255,255,255,0.85) !important;
   font-weight: 600;
   transition: 0.3s;
 }
+
 .nav-link:hover {
   color: var(--glow) !important;
   text-shadow: 0 0 8px var(--accent);
 }
 
-/* ----------------- CONTAINER ----------------- */
+/* ------------------------------------------------------
+   CONTAINER
+------------------------------------------------------ */
 .container-app {
   width: 100%;
   max-width: 1000px;
   padding: 25px;
   margin: 40px auto;
   animation: fadeInUp 1.2s ease forwards;
-  background: transparent !important;
 }
 
-/* ----------------- CARDS ----------------- */
-.landing-card, .panel-card, .hero-banner {
-  background: rgba(255, 255, 255, 0.07);
+/* ------------------------------------------------------
+   CARDS
+------------------------------------------------------ */
+.landing-card,
+.panel-card,
+.hero-banner {
+  background: rgba(255,255,255,0.07);
   backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-radius: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255,255,255,0.15);
   padding: 2.5rem;
   margin: 2rem 0;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-  transition: all 0.4s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  transition: 0.4s;
 }
 
-.landing-card:hover, .panel-card:hover, .hero-banner:hover {
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 35px rgba(102, 187, 106, 0.3);
+.landing-card:hover,
+.panel-card:hover,
+.hero-banner:hover {
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 35px rgba(102,187,106,0.3);
   transform: translateY(-5px);
 }
 
-/* ----------------- Titles and Texts ----------------- */
+/* ------------------------------------------------------
+   Typography
+------------------------------------------------------ */
 h1, h4, h5, h6 {
   color: var(--glow);
-  text-shadow: 0 0 3px rgba(0,0,0,0.4); /* خفيف وواضح */
+  text-shadow: 0 0 3px rgba(0,0,0,0.4);
 }
 
 p {
@@ -134,7 +150,9 @@ p {
   line-height: 1.7;
 }
 
-/* ----------------- Buttons ----------------- */
+/* ------------------------------------------------------
+   Buttons
+------------------------------------------------------ */
 .btn-main {
   background: linear-gradient(90deg, var(--accent), var(--glow));
   border: none;
@@ -142,14 +160,14 @@ p {
   border-radius: 50px;
   padding: 12px 28px;
   font-weight: 700;
-  font-size: 1rem;
-  box-shadow: 0 0 15px rgba(102, 187, 106, 0.4);
+  box-shadow: 0 0 15px rgba(102,187,106,0.4);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
+
 .btn-main:hover {
   transform: scale(1.07);
-  box-shadow: 0 0 25px rgba(102, 187, 106, 0.8);
+  box-shadow: 0 0 25px rgba(102,187,106,0.8);
 }
 
 .btn-outline-main {
@@ -159,18 +177,22 @@ p {
   border-radius: 50px;
   padding: 12px 28px;
   font-weight: 700;
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
+
 .btn-outline-main:hover {
   background: var(--glow);
-  color: var(--bg-dark);
+  color: white;
   transform: scale(1.05);
 }
 
-/* ----------------- FORMS ----------------- */
-.form-control, .form-select {
+/* ------------------------------------------------------
+   Forms
+------------------------------------------------------ */
+.form-control,
+.form-select {
   width: 100%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   border: none;
   color: white;
   border-radius: 10px;
@@ -179,45 +201,52 @@ p {
   transition: 0.3s;
 }
 
-.form-control:focus, .form-select:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.2);
+.form-control:focus,
+.form-select:focus {
+  background: rgba(255,255,255,0.2);
   box-shadow: 0 0 10px var(--accent);
+  outline: none;
 }
 
-/* ----------------- STEPS ----------------- */
+/* ------------------------------------------------------
+   Steps
+------------------------------------------------------ */
 .step-pill {
   display: inline-block;
   padding: 10px 16px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   color: var(--glow);
   font-weight: 700;
   margin: 6px 4px;
   transition: 0.3s;
 }
+
 .step-pill.active {
   background: linear-gradient(90deg, var(--accent), var(--glow));
   color: #fff;
-  box-shadow: 0 0 15px rgba(102, 187, 106, 0.5);
+  box-shadow: 0 0 15px rgba(102,187,106,0.5);
 }
 
-/* ----------------- FOOTER ----------------- */
+/* ------------------------------------------------------
+   Footer
+------------------------------------------------------ */
 footer {
   width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0,0,0,0.3);
+  border-top: 1px solid rgba(255,255,255,0.2);
   backdrop-filter: blur(10px);
   text-align: center;
   padding: 1rem 0;
-  font-size: 0.9rem;
   color: var(--glow);
-  box-shadow: 0 -5px 15px rgba(102, 187, 106, 0.15);
+  box-shadow: 0 -5px 15px rgba(102,187,106,0.15);
 }
 
-/* ----------------- LOADING BOX ----------------- */
+/* ------------------------------------------------------
+   Loading Box
+------------------------------------------------------ */
 #loadingBox {
-  background: rgba(0, 123, 255, 0.3);
+  background: rgba(0,123,255,0.3);
   color: white;
   padding: 20px 40px;
   border-radius: 15px;
@@ -229,331 +258,35 @@ footer {
   top: 20px;
   right: 20px;
   z-index: 9999;
-  transition: all 0.4s ease;
+  transition: 0.4s;
 }
+
 #loadingBox.hidden {
   opacity: 0;
   transform: scale(0.9);
   visibility: hidden;
 }
 
-/* ----------------- EMERGENCY BUTTON ----------------- */
+/* ------------------------------------------------------
+   EMERGENCY BUTTONS
+------------------------------------------------------ */
 .btn-emergency {
   background-color: #d32f2f;
   color: white;
   font-size: 1.3rem;
   padding: 15px 35px;
-  border: none;
   border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(255,0,0,0.5);
   transition: 0.3s;
 }
+
 .btn-emergency:hover {
   background-color: #b71c1c;
-  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+  box-shadow: 0 0 25px rgba(255,0,0,0.7);
 }
 
-/* ----------------- MODAL ----------------- */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.modal-content {
-  background: #222;
-  color: #fff;
-  padding: 25px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(255,0,0,0.5);
-  animation: popup 0.3s ease;
-}
-.modal-content h2 {
-  margin-bottom: 20px;
-  color: #ff5252;
-}
-.option {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  background: #ff5252;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.option:hover {
-  background: #e53935;
-}
-.close-btn {
-  background: transparent;
-  color: #bbb;
-  border: none;
-  font-size: 1rem;
-  margin-top: 10px;
-  cursor: pointer;
-}
-.close-btn:hover {
-  color: white;
-}
-@keyframes popup {
-  from {transform: scale(0.8); opacity: 0;}
-  to {transform: scale(1); opacity: 1;}
-}
-
-/* ----------------- RESPONSIVE DESIGN ----------------- */
-@media (max-width: 768px) {
-  body {
-    background-position: center top;
-    background-attachment: fixed;
-    background-size: cover;
-  }
-
-  body::after {
-    width: 180px;
-    height: 180px;
-    opacity: 0.05;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  nav.navbar {
-    padding: 10px 15px;
-    text-align: center;
-  }
-
-  .navbar-brand {
-    font-size: 1.3rem;
-  }
-
-  .container-app {
-    padding: 15px;
-    margin: 20px auto;
-  }
-
-  .landing-card, .panel-card, .hero-banner {
-    padding: 1.5rem;
-    margin: 1rem 0;
-    border-radius: 18px;
-  }
-
-  h1 {
-    font-size: 1.6rem;
-    text-align: center;
-  }
-
-  h4, h5, h6, p {
-    text-align: center;
-  }
-
-  .btn-main, .btn-outline-main, .btn-emergency {
-    width: 100%;
-    padding: 14px;
-    font-size: 1.1rem;
-    border-radius: 10px;
-  }
-
-  footer {
-    font-size: 0.8rem;
-    padding: 0.8rem 0;
-  }
-
-  .modal-content {
-    width: 95%;
-    padding: 20px;
-  }
-}
-
-/* ----------------- Small Phones ----------------- */
-@media (max-width: 480px) {
-  body::after {
-    width: 140px;
-    height: 140px;
-    opacity: 0.04;
-  }
-}	
-/*----------------AI-------------------------------*/
-#chat-toggle {
-  position: fixed;
-  left: 20px;
-  top: 20%;
-
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-
-  background: rgba(0, 0, 0, 0.45);           /* نفس خلفية الطوارئ */
-  border: 2px solid rgba(255,255,255,0.2);   /* نفس البوردر */
-  backdrop-filter: blur(6px);                /* البلور الشفاف */
-
-  color: #fff;
-  font-size: 26px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.45);   /* نفس الظل */
-  cursor: pointer;
-  transition: 0.25s;
-  z-index: 9999;
-}
-
-#chat-toggle:hover {
-  transform: scale(1.12);                    /* نفس التأثير */
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255,255,255,0.5);
-}
-
-
-
-/* صندوق الدردشة المصغر/الموسع */
-#chat-widget {
-  position: fixed;
-  top: 300px;    /* هذا يجعل الصندوق يبدأ من تحت كلمة نبض مباشرة */
-  right: 20px;
-  width: 320px;
-  height: calc(70vh - 90px);  /* من تحت نبض لآخر الصفحة */
-}
-
-
-/* حجم ومظهر واجهة الدردشة */
-.chat-box {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  margin-right: 0 !important;
-
-}
-
-
-/* رأس الدردشة */
-.chat-header{
-  background: #1976d2;
-  color: #fff;
-  padding: 12px;
-  text-align: center;
-  font-weight: 700;
-}
-
-/* منطقة الرسائل */
-.chat-body {
-  direction: ltr; 
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 5px !important;  /* بدل 12px القديمة */
-  padding-left: 5px !important;   /* شيل المسافة من اليسار */
-}
-
-
-/* رسائل */
-.bot-message, .user-message {
-  max-width: 100%;
-  padding: 8px 10px;
-  margin: 6px 0;
-  border-radius: 10px;
-  font-size: 15px;
-  line-height: 1.4;
-  color: #000 !important;  /* أهم سطر لإظهار الخط */
-}
-.bot-message {
-	direction: rtl;
-  text-align: right;
-}
-
-.user-message {
-    background: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 8px 0;
-    color: #007bff; /* أزرق */
-    font-weight: bold;
-    font-size: 17px;
-}
-/* حاوية الإدخال: صف واحد ثابت، لا يلتف */
-.chat-input {
-  display: flex;
-  gap: 8px;
-  align-items: center;   /* يوسّط العناصر عمودياً */
-  flex-wrap: nowrap;     /* يمنع النزول لسطر جديد */
-  padding: 12px;
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.05);
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-/* حقل النص: يشغل المساحة المتبقية */
-.chat-input input {
-  flex: 1 1 auto;        /* ينفش ليشغل المساحة المتاحة */
-  min-width: 0;          /* مهم حتى لا يجبر الزر على النزول عند النص الطويل */
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  outline: none;
-  font-size: 15px;
-}
-
-/* زر الإرسال: ثابت الحجم ويبقى بجانب الحقل */
-.chat-input button {
-  flex: 0 0 48px;        /* يمنع الزر من التكبير و يضمن وجوده بجانب الحقل */
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  background: #0088cc;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform .15s;
-}
-
-/* أيقونة داخل الزر (إن استخدمت ::before) */
-.chat-input button::before {
-  content: "➤"; 
-  font-size: 20px;
-}
-
-.chat-input button:hover { transform: scale(1.06); }
-
-.chat-body::-webkit-scrollbar {
-  width: 0px;      /* يخفي الشريط بالكامل */
-}
-.bot-message ul,
-.bot-message ol {
-  margin: 8px 0;
-  padding-right: 20px;
-}
-
-.bot-message li {
-  margin-bottom: 4px;
-  line-height: 1.6;
-}
-
-/* حالة مخفي/مرئي للمساعدة في الوصول */
-#chat-widget[aria-hidden="true"]{ display: none; }
-#chat-widget[aria-hidden="false"]{ display: block; }
-
-/* استجابة صغيرة للزر عند hover */
-#chat-toggle:hover{ transform: translateY(-2px); transition: 0.15s; }
 .emergency-container {
   position: fixed;
   left: 20px;
@@ -569,48 +302,239 @@ footer {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0,0,0,0.45);
   border: 2px solid rgba(255,255,255,0.2);
   backdrop-filter: blur(6px);
   color: #fff;
   font-size: 26px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.45);
-  transition: 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+  transition: 0.25s;
 }
 
 .em-btn:hover {
   transform: scale(1.12);
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255,255,255,0.5);
-}
-#findHospitalsBtn {
-  opacity: 0;
-  pointer-events: none;
+  background: rgba(255,255,255,0.15);
 }
 
-@media (max-width: 480px) {
-  .emergency-container {
-    top: 140px !important;
-    left: 10px !important;
-    transform: scale(0.8); /* صغر الأزرار */
+/* ------------------------------------------------------
+   CHAT WIDGET
+------------------------------------------------------ */
+#chat-toggle {
+  position: fixed;
+  left: 20px;
+  top: 20%;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+  cursor: pointer;
+  transition: 0.25s;
+  z-index: 300 !important;
+}
+
+#chat-toggle:hover {
+  transform: scale(1.12);
+  background: rgba(255,255,255,0.15);
+}
+
+#chat-widget {
+  position: fixed;
+  z-index: 350 !important;
+}
+
+#chat-widget[aria-hidden="true"] {display: none;}
+#chat-widget[aria-hidden="false"] {display: block;}
+
+.chat-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  background: #1976d2;
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.chat-body {
+  flex: 1;
+  direction: ltr;
+  overflow-y: auto;
+  padding: 5px !important;
+}
+
+.chat-body::-webkit-scrollbar {
+  width: 0;
+}
+
+.bot-message,
+.user-message {
+  max-width: 100%;
+  padding: 8px 10px;
+  margin: 6px 0;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: #000 !important;
+}
+
+.bot-message {
+  text-align: right;
+  direction: rtl;
+}
+
+.user-message {
+  background: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  color: #007bff;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  align-items: center;
+  flex-wrap: nowrap;
+  background: rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+
+.chat-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  outline: none;
+}
+
+.chat-input button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #0088cc;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.15s;
+}
+
+.chat-input button::before {
+  content: "➤";
+  font-size: 20px;
+}
+
+.chat-input button:hover {
+  transform: scale(1.06);
+}
+
+/* ------------------------------------------------------
+   TIME SLOTS
+------------------------------------------------------ */
+.time-slot,
+.btn-outline-primary.time-slot {
+  background: rgba(0,0,0,0.4) !important;
+  border: 2px solid rgba(0,0,0,0.7) !important;
+  color: #fff !important;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+  backdrop-filter: blur(6px);
+}
+
+.time-slot:hover {
+  background: rgba(0,0,0,0.8) !important;
+  border-color: #000 !important;
+  transform: scale(1.05);
+}
+
+/* ------------------------------------------------------
+   FIXED HEADER / SIDE BUTTONS
+------------------------------------------------------ */
+header, .top-bar {
+  position: fixed;
+  z-index: 100 !important;
+}
+
+.booking-banner {
+  position: fixed;
+  z-index: 90 !important;
+}
+
+.side-buttons {
+  position: fixed;
+  z-index: 800;
+}
+
+/* ------------------------------------------------------
+   RESPONSIVE (768px)
+------------------------------------------------------ */
+@media (max-width: 768px) {
+
+  body {
+    background-position: center top;
+    background-size: cover;
   }
 
-  .em-btn {
-    margin: 6px 0 !important; /* قلل المسافات بينهم */
+  body::after {
+    width: 180px;
+    height: 180px;
+    opacity: 0.05;
+    top: 55%;
   }
-}
-@media (max-width: 480px) {
-  .booking-banner {
-    width: 90%;
-    font-size: 14px;
-    padding: 10px;
+
+  nav.navbar {
+    padding: 10px 15px;
+    text-align: center;
   }
-}
-@media (max-width: 480px) {
+
+  .navbar-brand {font-size: 1.3rem;}
+
+  .container-app {
+    padding: 15px;
+    margin: 20px auto;
+  }
+
+  .btn-main,
+  .btn-outline-main,
+  .btn-emergency {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 14px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+
+  /* Chat mobile position */
   #chat-toggle {
     bottom: 20px !important;
     right: 20px !important;
@@ -622,104 +546,44 @@ footer {
     height: 70vh !important;
     right: 5vw !important;
   }
-}
-/* الهيدر */
-header, .top-bar {
-  position: fixed;
-  z-index: 1000;
+
+  .emergency-container {
+    top: 140px !important;
+    left: 10px !important;
+    transform: scale(0.8);
+  }
 }
 
-/* شريط Start Booking */
-.booking-banner {
-  position: fixed;
-  z-index: 900;
-}
+/* ------------------------------------------------------
+   Small Phones (480px)
+------------------------------------------------------ */
+@media (max-width: 480px) {
 
-/* أزرار الطوارئ الجانبية */
-.side-buttons {
-  position: fixed;
-  z-index: 800;
-}
-
-/* أيقونة الشات */
-#chat-toggle {
-  position: fixed;
-  z-index: 1200 !important;
-}
-
-/* نافذة الدردشة */
-#chat-widget {
-  position: fixed;
-  z-index: 1500 !important; /* أعلى عنصر */
-}
-/* ----------- TIME SLOTS BLACK STYLE ----------- */
-.time-slot,
-.btn-outline-primary.time-slot {
-  background: rgba(0, 0, 0, 0.4) !important;    /* خلفية سوداء شفافة */
-  border: 2px solid rgba(0, 0, 0, 0.7) !important; /* حدود سوداء */
-  color: #fff !important;                        /* نص أبيض */
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: 0.3s;
-  backdrop-filter: blur(6px);
-}
-
-.time-slot:hover,
-.btn-outline-primary.time-slot:hover {
-  background: rgba(0, 0, 0, 0.8) !important;      /* سواد أقوى عند الهوفر */
-  border-color: #000 !important;                 /* حدود سوداء بالكامل */
-  color: #fff !important;
-  transform: scale(1.05);
-}
-/*------------------------------*/
-/* الموبايل فقط */
-@media (max-width: 768px) {
-
-  /* ضبط حجم كلمة نبض والخط */
-  .hero-image,
-  .hero-text,
-  img.big-logo {
-    max-width: 90%;
-    margin: 0 auto;
-    display: block;
+  body::after {
+    width: 140px;
+    height: 140px;
+    opacity: 0.04;
   }
 
-  /* زر Start booking */
-  .start-booking-btn {
-    width: 80% !important;
-    font-size: 14px !important;
-    padding: 10px !important;
-    margin: 10px auto !important;
-    display: block;
+  .landing-card,
+  .panel-card,
+  .hero-banner {
+    padding: 1rem !important;
+    margin: 0.8rem 0 !important;
+    border-radius: 14px !important;
   }
 
-  /* أيقونات اليسار */
-  .sidebar-icons {
-    position: fixed;
-    left: 10px;
-    top: 120px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transform: scale(0.8); /* تصغيرهم شوي */
-  }
-
-  /* اللوجاو Navbar */
-  .top-navbar {
-    padding: 5px 10px;
-  }
-
-  .top-navbar img,
-  .top-navbar span {
-    transform: scale(0.9);
-  }
-
-  /* زر logout */
-  .logout-btn {
-    margin-top: 20px;
+  .booking-banner {
+    width: 90%;
     font-size: 14px;
-    padding: 8px 20px;
+    padding: 10px;
+  }
+
+  #chat-widget {
+    bottom: 70px !important;
+    width: 90% !important;
+    height: 65vh !important;
+    right: 10px !important;
   }
 }
 
@@ -889,9 +753,8 @@ header, .top-bar {
 	  <button onclick="logout()" style="background:#c0392b; color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;">Log out</button>
 
 	  <div class="text-center mt-3">
-		<button id="findHospitalsBtn" class="btn btn-main">
-		  <i class="fas fa-location-crosshairs me-2"></i> Check nearby medical facilities
-		</button>
+		<p id="findHospitalsBtn" > 
+		</p>
 	  </div>
 
 		<!-- Emergency Buttons -->
@@ -2314,9 +2177,3 @@ header, .top-bar {
 	</script>
 </body>
 </html>
-
-
-
-
-
-
