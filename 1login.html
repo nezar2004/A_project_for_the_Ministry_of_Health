@@ -93,180 +93,169 @@
 </head>
 <body>
 
-  <div class="container" id="landingPage">
-
-    <!-- Log in -->
-    <div id="loginForm">
-      <h2>Log in</h2>
-      <input type="text" id="loginEmail" placeholder="phone number ">
-      <div id="loginEmailError" class="error"></div>
-
-      <input type="password" id="loginPassword" placeholder="password">
-      <div id="loginPasswordError" class="error"></div>
-
-      <button id="loginBtn">login</button>
-      <div class="link" onclick="toggleForms()">Create a new account</div>
-      <div class="link" onclick="showForgot()"> ? Forgot your password </div>
-      <div id="loginSuccess" class="success">✅ Login successful!</div>
-    </div>
-
-    <!-- Create a new account -->
-    <div id="registerForm" class="hidden">
-      <h2>Create a new account</h2>
-
-      <input type="text" id="firstName" placeholder="First name">
-      <div id="firstNameError" class="error"></div>
-
-      <input type="text" id="lastName" placeholder="Last name">
-      <div id="lastNameError" class="error"></div>
-
-      <div class="phone-container">
-        <select id="countryCode">
-          <option value="+962">🇯🇴 +962</option>
-        </select>
-        <input type="text" id="phone" placeholder="phone number">
-      </div>
-      <div id="phoneError" class="error"></div>
-
-      <input type="date" id="birthday" placeholder="date of birth">
-      <div id="birthdayError" class="error"></div>
-
-      <select id="gender">
-        <option value="">Select gender</option>
-        <option value="male">male</option>
-        <option value="female">female</option>
-      </select>
-      <div id="genderError" class="error"></div>
-
-      <input type="password" id="password" placeholder="Create password">
-      <div id="passwordError" class="error"></div>
-
-      <input type="password" id="confirmPassword" placeholder="Confirm password">
-      <div id="confirmPasswordError" class="error"></div>
-
-      <button id="registerBtn">Create an account</button>
-      <div class="link" onclick="toggleForms()">I have an account? Log in</div>
-    </div>
-
-    <!-- Forgot password -->
-    <div id="forgotForm" class="hidden">
-      <h2>Password recovery</h2>
-      <input type="text" id="recoverInput" placeholder= "phone number">
-      <button onclick="recoverPassword()">Send verification code</button>
-      <div class="link" onclick="backToLogin()">Return</div>
-    </div>
-
-  </div>
-
+	<div class="container" id="landingPage">
+	
+	  <!-- Log in -->
+	  <div id="loginForm">
+	    <h2>Log in</h2>
+	    <input type="text" id="loginEmail" placeholder="Phone number or Email">
+	    <div id="loginEmailError" class="error"></div>
+	
+	    <input type="password" id="loginPassword" placeholder="Password">
+	    <div id="loginPasswordError" class="error"></div>
+	
+	    <button id="loginBtn">Login</button>
+	    <div class="link" onclick="toggleForms()">Create a new account</div>
+	    <div class="link" onclick="showForgot()">Forgot your password?</div>
+	
+	    <div id="loginSuccess" class="success">✅ Login successful!</div>
+	  </div>
+	
+	  <!-- Create a new account -->
+	  <div id="registerForm" class="hidden">
+	    <h2>Create a new account</h2>
+	
+	    <input type="text" id="firstName" placeholder="First name">
+	    <div id="firstNameError" class="error"></div>
+	
+	    <input type="text" id="lastName" placeholder="Last name">
+	    <div id="lastNameError" class="error"></div>
+	
+	    <div class="phone-container">
+	      <select id="countryCode">
+	        <option value="+962">🇯🇴 +962</option>
+	      </select>
+	      <input type="text" id="phone" placeholder="Phone number">
+	    </div>
+	    <div id="phoneError" class="error"></div>
+	
+	    <input type="date" id="birthday" placeholder="Date of birth">
+	    <div id="birthdayError" class="error"></div>
+	
+	    <select id="gender">
+	      <option value="">Select gender</option>
+	      <option value="male">Male</option>
+	      <option value="female">Female</option>
+	    </select>
+	    <div id="genderError" class="error"></div>
+	
+	    <input type="password" id="password" placeholder="Create password">
+	    <div id="passwordError" class="error"></div>
+	
+	    <input type="password" id="confirmPassword" placeholder="Confirm password">
+	    <div id="confirmPasswordError" class="error"></div>
+	
+	    <button id="registerBtn">Create an account</button>
+	    <div class="link" onclick="toggleForms()">I have an account? Log in</div>
+	  </div>
+	
+	  <!-- Forgot password -->
+	  <div id="forgotForm" class="hidden">
+	    <h2>Password recovery</h2>
+	    <input type="email" id="recoverInput" placeholder="Email address">
+	    <button onclick="recoverPassword()">Send reset link</button>
+	    <div class="link" onclick="backToLogin()">Return</div>
+	  </div>
+	
+	</div>
   <!-- Firebase Setup -->
 	<script type="module">
-	  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-	  import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-	  const firebaseConfig = {
-		apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-		authDomain: "nabdapp-3a077.firebaseapp.com",
-		projectId: "nabdapp-3a077",
-		storageBucket: "nabdapp-3a077.firebasestorage.app",
-		messagingSenderId: "675031985272",
-		appId: "1:675031985272:web:5f86cc21c28062cd65d18d",
-		measurementId: "G-30FQ3G2L4P"
-	  };
-
-	  const app = initializeApp(firebaseConfig);
-	  const db = getFirestore(app);
-
-	  // ✅ Account creation function
-	  async function register() {
-		const firstName = document.getElementById('firstName').value.trim();
-		const lastName = document.getElementById('lastName').value.trim();
-		const phone = document.getElementById('phone').value.trim();
-		const code = document.getElementById('countryCode').value;
-		const birthday = document.getElementById('birthday').value.trim();
-		const gender = document.getElementById('gender').value;
-		const pass = document.getElementById('password').value.trim();
-		const confirm = document.getElementById('confirmPassword').value.trim();
-
-		if (pass !== confirm) return alert("❌ كلمتا المرور غير متطابقتين!");
-
-		try {
-		  await addDoc(collection(db, "users"), {
-			firstName,
-			lastName,
-			phone: code + phone,
-			birthday,
-			gender,
-			password: pass,
-			createdAt: new Date()
-		  });
-		  alert("✅ تم إنشاء الحساب بنجاح!");
-		  toggleForms();
-		} catch (e) {
-		  alert("⚠️ خطأ أثناء الحفظ: " + e.message);
-		}
-	  }
-
-	  document.getElementById("loginBtn").addEventListener("click", async function () {
-		  const phoneInput = document.getElementById("loginEmail").value.trim();
-		  const password = document.getElementById("loginPassword").value.trim();
-
-		  if (!phoneInput || !password) {
-			alert("الرجاء إدخال رقم الهاتف وكلمة المرور");
-			return;
-		  }
-
+	    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+		import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+		import { 
+		  getAuth, 
+		  createUserWithEmailAndPassword, 
+		  signInWithEmailAndPassword, 
+		  sendPasswordResetEmail 
+		} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+		
+		// ✅ إعداد Firebase
+		const firebaseConfig = {
+		  apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+		  authDomain: "nabdapp-3a077.firebaseapp.com",
+		  projectId: "nabdapp-3a077",
+		  storageBucket: "nabdapp-3a077.firebasestorage.app",
+		  messagingSenderId: "675031985272",
+		  appId: "1:675031985272:web:5f86cc21c28062cd65d18d",
+		  measurementId: "G-30FQ3G2L4P"
+		};
+		
+		const app = initializeApp(firebaseConfig);
+		const db = getFirestore(app);
+		const auth = getAuth(app);
+		
+		// ===== تسجيل مستخدم جديد =====
+		document.getElementById("registerBtn").addEventListener("click", async () => {
+		  const firstName = document.getElementById('firstName').value.trim();
+		  const lastName = document.getElementById('lastName').value.trim();
+		  const email = document.getElementById('phone').value.trim() + "@example.com"; // مؤقتا لو ما عندك إيميل
+		  const pass = document.getElementById('password').value.trim();
+		  const confirm = document.getElementById('confirmPassword').value.trim();
+		
+		  if (pass !== confirm) return alert("❌ Passwords do not match!");
+		
 		  try {
-			const q = query(collection(db, "users"), where("phone", "==", "+962" + phoneInput));
-			const snapshot = await getDocs(q);
-
-			if (snapshot.empty) {
-			  alert("❌ رقم الهاتف غير موجود!");
-			  return;
-			}
-
-			const user = snapshot.docs[0].data();
-			if (user.password === password) {
-			  alert("✅ تم تسجيل الدخول بنجاح!");
-
-			  // ✅ حفظ بيانات المستخدم في localStorage
-			  localStorage.setItem("loggedUser", JSON.stringify({
-				phone: user.phone,
-				firstName: user.firstName
-			  }));
-
-			  // ✅ الانتقال إلى صفحة النظام
-			  window.location.href = "index.html";
-			} else {
-			  alert("⚠️ كلمة المرور غير صحيحة!");
-			}
+		    // تسجيل في Firebase Auth
+		    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+		    const user = userCredential.user;
+		
+		    // حفظ بيانات إضافية في Firestore
+		    await addDoc(collection(db, "users"), {
+		      firstName,
+		      lastName,
+		      email,
+		      createdAt: new Date()
+		    });
+		
+		    alert("✅ Account created successfully!");
+		    toggleForms(); // ارجع للفورم تسجيل الدخول
 		  } catch (e) {
-			alert("⚠️ خطأ أثناء تسجيل الدخول: " + e.message);
+		    alert("⚠️ Error: " + e.message);
 		  }
-});
-	  // ✅ هذا السطر هو المفتاح — يربط الزر بالدالة
-	  document.getElementById("registerBtn").addEventListener("click", register);
-	</script>
+		});
+		
+		// ===== تسجيل الدخول =====
+		document.getElementById("loginBtn").addEventListener("click", async () => {
+		  const email = document.getElementById("loginEmail").value.trim();
+		  const password = document.getElementById("loginPassword").value.trim();
+		
+		  if (!email || !password) return alert("Please enter email and password");
+		
+		  try {
+		    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+		    const user = userCredential.user;
+		
+		    // حفظ بيانات المستخدم في localStorage
+		    localStorage.setItem("loggedUser", JSON.stringify({
+		      email: user.email
+		    }));
+		
+		    alert("✅ Login successful!");
+		    window.location.href = "index.html"; // صفحة النظام
+		  } catch (e) {
+		    alert("⚠️ Login failed: " + e.message);
+		  }
+		});
+		
+		// ===== نسيت كلمة المرور =====
+		window.recoverPassword = async () => {
+		  const email = document.getElementById("recoverInput").value.trim();
+		  if (!email) return alert("Please enter your email");
+		
+		  try {
+		    await sendPasswordResetEmail(auth, email);
+		    alert("✅ Reset link sent to your email!");
+		    backToLogin();
+		  } catch (e) {
+		    alert("⚠️ Error: " + e.message);
+		  }
+		};
 
-
-  <script>
-    function toggleForms() {
-      document.getElementById('loginForm').classList.toggle('hidden');
-      document.getElementById('registerForm').classList.toggle('hidden');
-    }
-
-    function showForgot() {
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('forgotForm').classList.remove('hidden');
-    }
-
-    function backToLogin() {
-      document.getElementById('forgotForm').classList.add('hidden');
-      document.getElementById('loginForm').classList.remove('hidden');
-    }
   </script>
 
 </body>
 </html>
+
 
 
 
