@@ -272,9 +272,16 @@ loginBtn.addEventListener("click", async () => {
     return alert("❌ أدخل الإيميل وكلمة المرور");
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
     alert("✅ تم تسجيل الدخول");
-    window.location.href = "index.html";
+
+    // تأكد من أن Firebase أكّد تسجيل الدخول قبل التحويل
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        window.location.href = "index.html";  // الآن يدخل الصفحة مباشرة
+      }
+    });
+
   } catch (err) {
     alert("❌ الإيميل أو كلمة المرور غير صحيحة");
   }
@@ -303,6 +310,7 @@ window.recoverPassword = async () => {
 
 </body>
 </html>
+
 
 
 
