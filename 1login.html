@@ -159,121 +159,196 @@
 	
 	</div>
   <!-- Firebase Setup -->
-	<script type="module">
-		    window.toggleForms = function () {
-			    document.getElementById("loginForm").classList.toggle("hidden");
-			    document.getElementById("registerForm").classList.toggle("hidden");
-			    document.getElementById("forgotForm").classList.add("hidden");
-			  }
-			
-			  window.showForgot = function () {
-			    document.getElementById("loginForm").classList.add("hidden");
-			    document.getElementById("registerForm").classList.add("hidden");
-			    document.getElementById("forgotForm").classList.remove("hidden");
-			  }
-			
-			  window.backToLogin = function () {
-			    document.getElementById("loginForm").classList.remove("hidden");
-			    document.getElementById("registerForm").classList.add("hidden");
-			    document.getElementById("forgotForm").classList.add("hidden");
-			  }
-			
-			  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-			  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-			  import {
-			    getAuth,
-			    createUserWithEmailAndPassword,
-			    signInWithEmailAndPassword,
-			    sendPasswordResetEmail
-			  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<script type="module">
 
-		
-		// ✅ إعداد Firebase
-		const firebaseConfig = {
-		  apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-		  authDomain: "nabdapp-3a077.firebaseapp.com",
-		  projectId: "nabdapp-3a077",
-		  storageBucket: "nabdapp-3a077.firebasestorage.app",
-		  messagingSenderId: "675031985272",
-		  appId: "1:675031985272:web:5f86cc21c28062cd65d18d",
-		  measurementId: "G-30FQ3G2L4P"
-		};
-		
-		const app = initializeApp(firebaseConfig);
-		const db = getFirestore(app);
-		const auth = getAuth(app);
-		
-		// ===== تسجيل مستخدم جديد =====
-		document.getElementById("registerBtn").addEventListener("click", async () => {
-		  const firstName = document.getElementById('firstName').value.trim();
-		  const lastName = document.getElementById('lastName').value.trim();
-		  const email = document.getElementById('phone').value.trim() + "@example.com"; // مؤقتا لو ما عندك إيميل
-		  const pass = document.getElementById('password').value.trim();
-		  const confirm = document.getElementById('confirmPassword').value.trim();
-		
-		  if (pass !== confirm) return alert("❌ Passwords do not match!");
-		
-		  try {
-		    // تسجيل في Firebase Auth
-		    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-		    const user = userCredential.user;
-		
-		    // حفظ بيانات إضافية في Firestore
-		    await addDoc(collection(db, "users"), {
-		      firstName,
-		      lastName,
-		      email,
-		      createdAt: new Date()
-		    });
-		
-		    alert("✅ Account created successfully!");
-		    toggleForms(); // ارجع للفورم تسجيل الدخول
-		  } catch (e) {
-		    alert("⚠️ Error: " + e.message);
-		  }
-		});
-		
-		// ===== تسجيل الدخول =====
-		document.getElementById("loginBtn").addEventListener("click", async () => {
-		  const email = document.getElementById("loginEmail").value.trim();
-		  const password = document.getElementById("loginPassword").value.trim();
-		
-		  if (!email || !password) return alert("Please enter email and password");
-		
-		  try {
-		    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-		    const user = userCredential.user;
-		
-		    // حفظ بيانات المستخدم في localStorage
-		    localStorage.setItem("loggedUser", JSON.stringify({
-		      email: user.email
-		    }));
-		
-		    alert("✅ Login successful!");
-		    window.location.href = "index.html"; // صفحة النظام
-		  } catch (e) {
-		    alert("⚠️ Login failed: " + e.message);
-		  }
-		});
-		
-		// ===== نسيت كلمة المرور =====
-		window.recoverPassword = async () => {
-		  const email = document.getElementById("recoverInput").value.trim();
-		  if (!email) return alert("Please enter your email");
-		
-		  try {
-		    await sendPasswordResetEmail(auth, email);
-		    alert("✅ Reset link sent to your email!");
-		    backToLogin();
-		  } catch (e) {
-		    alert("⚠️ Error: " + e.message);
-		  }
-		};
+/* =======================
+   التحكم بالفورمات
+======================= */
+window.toggleForms = function () {
+  document.getElementById("loginForm").classList.toggle("hidden");
+  document.getElementById("registerForm").classList.toggle("hidden");
+  document.getElementById("forgotForm").classList.add("hidden");
+};
 
-  </script>
+window.showForgot = function () {
+  document.getElementById("loginForm").classList.add("hidden");
+  document.getElementById("registerForm").classList.add("hidden");
+  document.getElementById("forgotForm").classList.remove("hidden");
+};
+
+window.backToLogin = function () {
+  document.getElementById("loginForm").classList.remove("hidden");
+  document.getElementById("registerForm").classList.add("hidden");
+  document.getElementById("forgotForm").classList.add("hidden");
+};
+
+/* =======================
+   Firebase Imports
+======================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* =======================
+   Firebase Config
+======================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+  authDomain: "nabdapp-3a077.firebaseapp.com",
+  projectId: "nabdapp-3a077",
+  storageBucket: "nabdapp-3a077.appspot.com",
+  messagingSenderId: "675031985272",
+  appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* =======================
+   إنشاء حساب جديد
+======================= */
+document.getElementById("registerBtn").addEventListener("click", async () => {
+  const firstName = firstNameInput.value.trim();
+  const lastName  = lastNameInput.value.trim();
+  const phone     = phone.value.trim();
+  const password  = passwordInput.value.trim();
+  const confirm   = confirmPassword.value.trim();
+
+  if (!firstName || !lastName || !phone || !password)
+    return alert("❌ الرجاء تعبئة جميع الحقول");
+
+  if (password !== confirm)
+    return alert("❌ كلمتا المرور غير متطابقتين");
+
+  // توليد إيميل داخلي من رقم الهاتف
+  const email = phone + "@nabd.app";
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+    await addDoc(collection(db, "users"), {
+      uid: cred.user.uid,
+      firstName,
+      lastName,
+      phone,
+      email,
+      createdAt: new Date()
+    });
+
+    alert("✅ تم إنشاء الحساب بنجاح");
+    toggleForms();
+
+  } catch (e) {
+    alert("⚠️ " + e.message);
+  }
+});
+
+/* =======================
+   تسجيل الدخول (ذكي)
+======================= */
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const identity = loginEmail.value.trim(); // إيميل / هاتف / اسم
+  const password = loginPassword.value.trim();
+
+  if (!identity || !password)
+    return alert("❌ أدخل البيانات");
+
+  let email = "";
+
+  try {
+    // 📧 إذا إيميل
+    if (identity.includes("@")) {
+      email = identity;
+    }
+
+    // 📱 إذا رقم هاتف
+    else if (/^\d{9,10}$/.test(identity)) {
+      const q = query(
+        collection(db, "users"),
+        where("phone", "==", identity)
+      );
+      const snap = await getDocs(q);
+      if (snap.empty) return alert("❌ رقم الهاتف غير مسجل");
+      email = snap.docs[0].data().email;
+    }
+
+    // 👤 إذا اسم + لقب
+    else if (identity.includes(" ")) {
+      const [firstName, lastName] = identity.split(" ");
+
+      const q = query(
+        collection(db, "users"),
+        where("firstName", "==", firstName),
+        where("lastName", "==", lastName)
+      );
+
+      const snap = await getDocs(q);
+      if (snap.empty) return alert("❌ الاسم غير موجود");
+      email = snap.docs[0].data().email;
+    }
+
+    else {
+      return alert("❌ طريقة تسجيل الدخول غير صحيحة");
+    }
+
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("✅ تم تسجيل الدخول");
+    window.location.href = "index.html";
+
+  } catch (e) {
+    alert("❌ كلمة المرور أو البيانات غير صحيحة");
+  }
+});
+
+/* =======================
+   استعادة كلمة المرور
+======================= */
+window.recoverPassword = async () => {
+  const input = recoverInput.value.trim();
+  let email = "";
+
+  try {
+    if (input.includes("@")) {
+      email = input;
+    } else {
+      const q = query(
+        collection(db, "users"),
+        where("phone", "==", input)
+      );
+      const snap = await getDocs(q);
+      if (snap.empty) return alert("❌ غير موجود");
+      email = snap.docs[0].data().email;
+    }
+
+    await sendPasswordResetEmail(auth, email);
+    alert("✅ تم إرسال رابط الاستعادة");
+    backToLogin();
+
+  } catch (e) {
+    alert("⚠️ " + e.message);
+  }
+};
+
+</script>
+
 
 </body>
 </html>
+
 
 
 
