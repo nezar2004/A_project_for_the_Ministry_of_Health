@@ -128,7 +128,10 @@
 	      <input type="text" id="phone" placeholder="Phone number">
 	    </div>
 	    <div id="phoneError" class="error"></div>
-	
+
+		<input type="email" id="email" placeholder="Email address">
+		<div id="emailError" class="error"></div>
+
 	    <input type="date" id="birthday" placeholder="Date of birth">
 	    <div id="birthdayError" class="error"></div>
 	
@@ -160,28 +163,6 @@
 	</div>
   <!-- Firebase Setup -->
 <script type="module">
-
-/* =======================
-   التحكم بالفورمات
-======================= */
-window.toggleForms = function () {
-  document.getElementById("loginForm").classList.toggle("hidden");
-  document.getElementById("registerForm").classList.toggle("hidden");
-  document.getElementById("forgotForm").classList.add("hidden");
-};
-
-window.showForgot = function () {
-  document.getElementById("loginForm").classList.add("hidden");
-  document.getElementById("registerForm").classList.add("hidden");
-  document.getElementById("forgotForm").classList.remove("hidden");
-};
-
-window.backToLogin = function () {
-  document.getElementById("loginForm").classList.remove("hidden");
-  document.getElementById("registerForm").classList.add("hidden");
-  document.getElementById("forgotForm").classList.add("hidden");
-};
-
 /* =======================
    Firebase Imports
 ======================= */
@@ -196,10 +177,7 @@ import {
 import {
   getFirestore,
   collection,
-  addDoc,
-  query,
-  where,
-  getDocs
+  addDoc
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /* =======================
@@ -214,28 +192,52 @@ const firebaseConfig = {
   appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
 };
 
-const app = initializeApp(firebaseConfig);
+const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db   = getFirestore(app);
 
 /* =======================
-   إنشاء حساب جديد
+   التحكم بالفورمات
 ======================= */
-document.getElementById("registerBtn").addEventListener("click", async () => {
-  const firstName = firstNameInput.value.trim();
-  const lastName  = lastNameInput.value.trim();
-  const phone     = phone.value.trim();
-  const password  = passwordInput.value.trim();
-  const confirm   = confirmPassword.value.trim();
+window.toggleForms = () => {
+  loginForm.classList.toggle("hidden");
+  registerForm.classList.toggle("hidden");
+  forgotForm.classList.add("hidden");
+};
 
-  if (!firstName || !lastName || !phone || !password)
+window.showForgot = () => {
+  loginForm.classList.add("hidden");
+  registerForm.classList.add("hidden");
+  forgotForm.classList.remove("hidden");
+};
+
+window.backToLogin = () => {
+  loginForm.classList.remove("hidden");
+  registerForm.classList.add("hidden");
+  forgotForm.classList.add("hidden");
+};
+
+/* =======================
+   إنشاء حساب جديد (إيميل حقيقي)
+======================= */
+registerBtn.addEventListener("click", async () => {
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName  = document.getElementById("lastName").value.trim();
+  const phone     = document.getElementById("phone").value.trim();
+  const email     = document.getElementById("email").value.trim();
+  const password  = document.getElementById("password").value.trim();
+  const confirm   = document.getElementById("confirmPassword").value.trim();
+  const birthday  = document.getElementById("birthday").value;
+  const gender    = document.getElementById("gender").value;
+
+  if (!firstName || !lastName || !email || !password || !confirm)
     return alert("❌ الرجاء تعبئة جميع الحقول");
+
+  if (!email.includes("@"))
+    return alert("❌ أدخل بريد إلكتروني صحيح");
 
   if (password !== confirm)
     return alert("❌ كلمتا المرور غير متطابقتين");
-
-  // توليد إيميل داخلي من رقم الهاتف
-  const email = phone + "@nabd.app";
 
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -244,73 +246,37 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
       uid: cred.user.uid,
       firstName,
       lastName,
-      phone,
       email,
+      phone,
+      birthday,
+      gender,
       createdAt: new Date()
     });
 
     alert("✅ تم إنشاء الحساب بنجاح");
     toggleForms();
 
-  } catch (e) {
-    alert("⚠️ " + e.message);
+  } catch (err) {
+    alert("⚠️ " + err.message);
   }
 });
 
 /* =======================
-   تسجيل الدخول (ذكي)
+   تسجيل الدخول (إيميل فقط)
 ======================= */
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const identity = loginEmail.value.trim(); // إيميل / هاتف / اسم
-  const password = loginPassword.value.trim();
+loginBtn.addEventListener("click", async () => {
+  const email    = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
 
-  if (!identity || !password)
-    return alert("❌ أدخل البيانات");
-
-  let email = "";
+  if (!email || !password)
+    return alert("❌ أدخل الإيميل وكلمة المرور");
 
   try {
-    // 📧 إذا إيميل
-    if (identity.includes("@")) {
-      email = identity;
-    }
-
-    // 📱 إذا رقم هاتف
-    else if (/^\d{9,10}$/.test(identity)) {
-      const q = query(
-        collection(db, "users"),
-        where("phone", "==", identity)
-      );
-      const snap = await getDocs(q);
-      if (snap.empty) return alert("❌ رقم الهاتف غير مسجل");
-      email = snap.docs[0].data().email;
-    }
-
-    // 👤 إذا اسم + لقب
-    else if (identity.includes(" ")) {
-      const [firstName, lastName] = identity.split(" ");
-
-      const q = query(
-        collection(db, "users"),
-        where("firstName", "==", firstName),
-        where("lastName", "==", lastName)
-      );
-
-      const snap = await getDocs(q);
-      if (snap.empty) return alert("❌ الاسم غير موجود");
-      email = snap.docs[0].data().email;
-    }
-
-    else {
-      return alert("❌ طريقة تسجيل الدخول غير صحيحة");
-    }
-
     await signInWithEmailAndPassword(auth, email, password);
     alert("✅ تم تسجيل الدخول");
     window.location.href = "index.html";
-
-  } catch (e) {
-    alert("❌ كلمة المرور أو البيانات غير صحيحة");
+  } catch (err) {
+    alert("❌ الإيميل أو كلمة المرور غير صحيحة");
   }
 });
 
@@ -318,36 +284,26 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
    استعادة كلمة المرور
 ======================= */
 window.recoverPassword = async () => {
-  const input = recoverInput.value.trim();
-  let email = "";
+  const email = document.getElementById("recoverInput").value.trim();
+
+  if (!email)
+    return alert("❌ أدخل بريدك الإلكتروني");
 
   try {
-    if (input.includes("@")) {
-      email = input;
-    } else {
-      const q = query(
-        collection(db, "users"),
-        where("phone", "==", input)
-      );
-      const snap = await getDocs(q);
-      if (snap.empty) return alert("❌ غير موجود");
-      email = snap.docs[0].data().email;
-    }
-
     await sendPasswordResetEmail(auth, email);
     alert("✅ تم إرسال رابط الاستعادة");
     backToLogin();
-
-  } catch (e) {
-    alert("⚠️ " + e.message);
+  } catch (err) {
+    alert("⚠️ " + err.message);
   }
 };
-
 </script>
+
 
 
 </body>
 </html>
+
 
 
 
