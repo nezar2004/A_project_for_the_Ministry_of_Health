@@ -160,14 +160,33 @@
 	</div>
   <!-- Firebase Setup -->
 	<script type="module">
-	    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-		import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-		import { 
-		  getAuth, 
-		  createUserWithEmailAndPassword, 
-		  signInWithEmailAndPassword, 
-		  sendPasswordResetEmail 
-		} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+		    window.toggleForms = function () {
+			    document.getElementById("loginForm").classList.toggle("hidden");
+			    document.getElementById("registerForm").classList.toggle("hidden");
+			    document.getElementById("forgotForm").classList.add("hidden");
+			  }
+			
+			  window.showForgot = function () {
+			    document.getElementById("loginForm").classList.add("hidden");
+			    document.getElementById("registerForm").classList.add("hidden");
+			    document.getElementById("forgotForm").classList.remove("hidden");
+			  }
+			
+			  window.backToLogin = function () {
+			    document.getElementById("loginForm").classList.remove("hidden");
+			    document.getElementById("registerForm").classList.add("hidden");
+			    document.getElementById("forgotForm").classList.add("hidden");
+			  }
+			
+			  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+			  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+			  import {
+			    getAuth,
+			    createUserWithEmailAndPassword,
+			    signInWithEmailAndPassword,
+			    sendPasswordResetEmail
+			  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
 		
 		// ✅ إعداد Firebase
 		const firebaseConfig = {
@@ -255,6 +274,7 @@
 
 </body>
 </html>
+
 
 
 
