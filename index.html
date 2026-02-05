@@ -2318,17 +2318,11 @@ header, .top-bar {
 			});
 
  		  
-		
-			import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-			const auth = getAuth();
-			
-			window.logout = function () {
-			  signOut(auth).then(() => {
-			    alert("تم تسجيل الخروج بنجاح 👋");
-			    window.location.href = "1login.html";
-			  });
-			};
+			function logout() {
+				  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
+				  alert("تم تسجيل الخروج بنجاح 👋");
+				  window.location.href = "1login.html"; // يرجع على صفحة الدخول
+				}
 
 
 			
@@ -2397,6 +2391,7 @@ header, .top-bar {
 
 </body>
 </html>
+
 
 
 
