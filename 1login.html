@@ -94,13 +94,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// تبديل النماذج
 window.showForm = (id) => {
     document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
 };
 
-// 1. تسجيل الدخول (مطابقة الرقم الوطني وكلمة المرور)
+// 1. تسجيل الدخول: يوجه المستخدم إلى index.html
 document.getElementById("loginBtn").onclick = async () => {
     const nid = document.getElementById("loginNationalID").value.trim();
     const pass = document.getElementById("loginPassword").value;
@@ -109,14 +108,14 @@ document.getElementById("loginBtn").onclick = async () => {
     const snapshot = await getDocs(q);
 
     if (!snapshot.empty) {
-        alert("✅ أهلاً بك.. تم تسجيل دخولك");
-        window.location.href = "home.html";
+        alert("✅ أهلاً بك.. تم تسجيل دخولك بنجاح");
+        window.location.href = "index.html"; 
     } else {
         alert("❌ عذراً، الرقم الوطني أو كلمة المرور غير صحيحة");
     }
 };
 
-// 2. إنشاء حساب مع OTP
+// 2. إرسال كود التحقق لإنشاء حساب
 document.getElementById("regSendCodeBtn").onclick = async () => {
     const phone = document.getElementById("regPhone").value.trim();
     const fullPhone = "+962" + (phone.startsWith('0') ? phone.substring(1) : phone);
@@ -132,6 +131,7 @@ document.getElementById("regSendCodeBtn").onclick = async () => {
     } catch (err) { alert("⚠️ خطأ في الإرسال: " + err.message); }
 };
 
+// 3. إنهاء التسجيل: يحفظ البيانات ويوجه المستخدم إلى صفحة تسجيل الدخول 1login.html
 document.getElementById("verifyRegBtn").onclick = async () => {
     const code = document.getElementById("regOtpCode").value;
     try {
@@ -144,8 +144,8 @@ document.getElementById("verifyRegBtn").onclick = async () => {
             gender: document.getElementById("regGender").value,
             birthday: document.getElementById("regBirthday").value
         });
-        alert("✅ تم إنشاء حسابك بنجاح");
-        window.location.href = "home.html";
+        alert("✅ تم إنشاء حسابك بنجاح! يرجى تسجيل الدخول.");
+        window.location.href = "1login.html"; 
     } catch (err) { alert("❌ الكود المدخل غير صحيح"); }
 };
 </script>
