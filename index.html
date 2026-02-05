@@ -973,6 +973,7 @@ header, .top-bar {
 			if (!loggedUser) {
 			  alert("⚠️ يجب تسجيل الدخول أولاً!");
 			  window.location.href = "1login.html";
+			}
 		document.getElementById("findHospitalsBtn").addEventListener("click", function() {
 		window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
 		  });
@@ -2017,7 +2018,7 @@ header, .top-bar {
 				btn.classList.add('btn-outline-secondary');
 			}
 
-			container.appendChild(btn);تا
+			container.appendChild(btn);
 		});
 
 	    }
@@ -2303,12 +2304,12 @@ header, .top-bar {
 			});
 
  		  
+		
 			function logout() {
-				  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
-				  alert("تم تسجيل الخروج بنجاح 👋");
-				  window.location.href = "1login.html"; // يرجع على صفحة الدخول
-				}
-
+			  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
+			  alert("تم تسجيل الخروج بنجاح 👋");
+			  window.location.href = "1login.html"; // يرجع على صفحة الدخول
+			}
 
 			
 			const chatToggle = document.getElementById("chat-toggle");
@@ -2376,10 +2377,5 @@ header, .top-bar {
 
 </body>
 </html>
-
-
-
-
-
 
 
