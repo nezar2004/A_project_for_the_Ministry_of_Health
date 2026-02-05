@@ -969,11 +969,25 @@ header, .top-bar {
 	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 	<script>
-		const loggedUser = localStorage.getItem("loggedUser");
-			if (!loggedUser) {
-			  alert("⚠️ يجب تسجيل الدخول أولاً!");
-			  window.location.href = "1login.html";
-			}
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+		import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+		
+		const firebaseConfig = {
+		  apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+		  authDomain: "nabdapp-3a077.firebaseapp.com",
+		  projectId: "nabdapp-3a077",
+		};
+		
+		const app = initializeApp(firebaseConfig);
+		const auth = getAuth(app);
+		
+		// ✅ هذا هو التحقق الصحيح
+		onAuthStateChanged(auth, (user) => {
+		  if (!user) {
+		    alert("⚠️ يجب تسجيل الدخول أولاً!");
+		    window.location.href = "1login.html";
+		  }
+		});
 		document.getElementById("findHospitalsBtn").addEventListener("click", function() {
 		window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
 		  });
@@ -2308,13 +2322,14 @@ header, .top-bar {
 			import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 			const auth = getAuth();
-
-			function logout() {
+			
+			window.logout = function () {
 			  signOut(auth).then(() => {
-				alert("تم تسجيل الخروج بنجاح 👋");
-				window.location.href = "1login.html";
+			    alert("تم تسجيل الخروج بنجاح 👋");
+			    window.location.href = "1login.html";
 			  });
-			}
+			};
+
 
 			
 			const chatToggle = document.getElementById("chat-toggle");
@@ -2382,6 +2397,7 @@ header, .top-bar {
 
 </body>
 </html>
+
 
 
 
