@@ -3,75 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نبض - تسجيل الدخول</title>
+  <title>نظام نبض - وزارة الصحة</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #8D6E63;
-      --secondary: #A1887F;
-      --accent: #6D4C41;
-      --bg: #F5F5F5;
-    }
-    body {
-      font-family: "Tajawal", sans-serif;
-      background-color: #D7CCC8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-      color: #3E2723;
-    }
-    h2 { text-align: center; margin-bottom: 20px; color: var(--accent); }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 14px;
-      box-sizing: border-box;
-      font-family: 'Tajawal';
-    }
-    .phone-container { display: flex; gap: 10px; }
-    .phone-container select { width: 35%; }
-    .phone-container input { width: 65%; }
-    
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: 0.3s;
-    }
+    :root { --primary: #8D6E63; --accent: #5D4037; --text: #3E2723; }
+    body { font-family: "Tajawal", sans-serif; background-color: #D7CCC8; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .container { background: white; padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
+    h2 { color: var(--accent); margin-bottom: 25px; font-weight: 700; }
+    input, select { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #E0E0E0; border-radius: 12px; font-size: 15px; font-family: 'Tajawal'; background: #FAFAFA; box-sizing: border-box; }
+    .phone-row { display: flex; gap: 10px; }
+    .phone-row select { width: 35%; }
+    button { width: 100%; padding: 15px; background-color: var(--accent); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 15px; }
     button:hover { background-color: var(--primary); }
-    button:disabled { background-color: #ccc; cursor: not-allowed; }
-    
-    .link {
-      text-align: center;
-      margin-top: 15px;
-      color: var(--primary);
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .link:hover { text-decoration: underline; }
+    .link { margin-top: 20px; color: var(--primary); cursor: pointer; font-size: 14px; text-decoration: none; display: block; }
     .hidden { display: none; }
-    #recaptcha-container { margin: 10px 0; display: flex; justify-content: center; }
-    .otp-box { border: 2px solid var(--primary); padding: 10px; border-radius: 10px; margin-top: 10px; }
+    #recaptcha-container { margin: 15px 0; display: flex; justify-content: center; }
   </style>
 </head>
 <body>
@@ -80,78 +26,61 @@
   
   <div id="loginForm">
     <h2>تسجيل الدخول</h2>
-    <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
+    <input type="text" id="loginNationalID" placeholder="الرقم الوطني">
     <input type="password" id="loginPassword" placeholder="كلمة المرور">
     <button id="loginBtn">دخول</button>
-    <div class="link" onclick="toggleForms()">إنشاء حساب جديد</div>
-    <div class="link" onclick="showForgot()">نسيت كلمة المرور؟ (عبر الهاتف)</div>
+    <div class="link" onclick="showForm('registerForm')">إنشاء حساب جديد (لأول مرة)</div>
+    <div class="link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
   </div>
 
   <div id="registerForm" class="hidden">
     <h2>إنشاء حساب جديد</h2>
-    <input type="text" id="firstName" placeholder="الاسم الأول">
-    <input type="text" id="lastName" placeholder="اسم العائلة">
+    <input type="text" id="regFirstName" placeholder="الاسم الأول">
+    <input type="text" id="regLastName" placeholder="اسم العائلة">
+    <input type="text" id="regNationalID" placeholder="الرقم الوطني (10 أرقام)">
     
-    <div class="phone-container">
-      <select id="countryCode">
-        <option value="+962">🇯🇴 +962</option>
-      </select>
-      <input type="text" id="phone" placeholder="7XXXXXXXX">
+    <div class="phone-row">
+      <select id="regCountryCode"><option value="+962">JO +962</option></select>
+      <input type="text" id="regPhone" placeholder="7XXXXXXXX">
     </div>
 
-    <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
-    <input type="date" id="birthday">
-    
-    <select id="gender">
+    <input type="date" id="regBirthday">
+    <select id="regGender">
       <option value="">الجنس</option>
       <option value="male">ذكر</option>
       <option value="female">أنثى</option>
     </select>
-
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور">
     
-    <button id="registerBtn">إنشاء الحساب</button>
-    <div class="link" onclick="toggleForms()">لديك حساب؟ سجل دخولك</div>
+    <input type="password" id="regPassword" placeholder="ضبط كلمة مرور جديدة">
+    
+    <div id="recaptcha-container"></div>
+    <button id="regSendCodeBtn">تأكيد رقم الهاتف وإنشاء الحساب</button>
+
+    <div id="regOtpSection" class="hidden">
+        <input type="text" id="regOtpCode" placeholder="أدخل كود التحقق (SMS)">
+        <button id="verifyRegBtn">إنهاء عملية التسجيل</button>
+    </div>
+    <div class="link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
   </div>
 
   <div id="forgotForm" class="hidden">
     <h2>استعادة الدخول</h2>
-    <p style="font-size: 12px; text-align: center;">أدخل رقم هاتفك المسجل لتصلك رسالة نصية بكود الدخول</p>
-    
-    <div class="phone-container">
-      <select id="recoverCountryCode">
-        <option value="+962">🇯🇴 +962</option>
-      </select>
-      <input type="text" id="recoverPhone" placeholder="7XXXXXXXX">
+    <p style="font-size: 13px; color: #777;">أدخل رقم هاتفك لتصلك رسالة كود الدخول</p>
+    <div class="phone-row">
+      <select><option value="+962">JO +962</option></select>
+      <input type="text" id="recoverPhone" placeholder="780545469">
     </div>
-
-    <div id="recaptcha-container"></div>
-
-    <button id="sendOtpBtn">إرسال كود التحقق</button>
-
-    <div id="otpSection" class="hidden" class="otp-box">
-      <input type="text" id="otpCode" placeholder="أدخل الكود (6 أرقام)">
-      <button id="verifyOtpBtn">تأكيد الكود والدخول</button>
-    </div>
-
-    <div class="link" onclick="backToLogin()">العودة لتسجيل الدخول</div>
+    <button id="recoverBtn">إرسال كود التحقق</button>
+    <div class="link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
   </div>
 
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { 
-    getAuth, 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
-    RecaptchaVerifier, 
-    signInWithPhoneNumber 
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// إعدادات Firebase الخاصة بك
 const firebaseConfig = {
   apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
   authDomain: "nabdapp-3a077.firebaseapp.com",
@@ -164,116 +93,60 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-auth.languageCode = 'ar';
 
-// إدارة النوافذ
-window.toggleForms = () => {
-  document.getElementById("loginForm").classList.toggle("hidden");
-  document.getElementById("registerForm").classList.toggle("hidden");
+// تبديل النماذج
+window.showForm = (id) => {
+    document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
 };
 
-window.showForgot = () => {
-  document.getElementById("loginForm").classList.add("hidden");
-  document.getElementById("forgotForm").classList.remove("hidden");
-};
-
-window.backToLogin = () => {
-  document.getElementById("loginForm").classList.remove("hidden");
-  document.getElementById("forgotForm").classList.add("hidden");
-  document.getElementById("registerForm").classList.add("hidden");
-};
-
-// تهيئة reCAPTCHA بشكل صحيح
-function initRecaptcha() {
-    if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            'size': 'normal',
-            'callback': (response) => {
-                console.log("تم التحقق من الكابتشا");
-            }
-        });
-    }
-}
-
-// 1. إرسال كود OTP
-document.getElementById("sendOtpBtn").onclick = async () => {
-  let phone = document.getElementById("recoverPhone").value.trim();
-  const countryCode = document.getElementById("recoverCountryCode").value;
-
-  // تنظيف الرقم: إذا بدأ بـ 0 نحذفه (مثلاً 079 تصبح 79)
-  if (phone.startsWith('0')) {
-      phone = phone.substring(1);
-  }
-
-  const fullPhone = countryCode + phone;
-
-  if (phone.length < 9) return alert("❌ الرجاء إدخال رقم هاتف صحيح");
-
-  initRecaptcha();
-
-  try {
-    const confirmationResult = await signInWithPhoneNumber(auth, fullPhone, window.recaptchaVerifier);
-    window.confirmationResult = confirmationResult;
-    document.getElementById("otpSection").classList.remove("hidden");
-    document.getElementById("sendOtpBtn").classList.add("hidden");
-    alert("✅ تم إرسال الكود بنجاح");
-  } catch (error) {
-    console.error(error);
-    alert("⚠️ خطأ داخلي: " + error.message);
-    // إعادة تعيين الكابتشا في حال الخطأ
-    if (window.recaptchaVerifier) {
-        window.recaptchaVerifier.render().then(widgetId => {
-            grecaptcha.reset(widgetId);
-        });
-    }
-  }
-};
-
-// 2. تأكيد الكود
-document.getElementById("verifyOtpBtn").onclick = async () => {
-  const code = document.getElementById("otpCode").value.trim();
-  try {
-    await window.confirmationResult.confirm(code);
-    alert("✅ تم التحقق بنجاح! جاري الدخول...");
-    window.location.href = "index.html";
-  } catch (error) {
-    alert("❌ الكود غير صحيح أو انتهت صلاحيته");
-  }
-};
-
-// 3. تسجيل الدخول بالإيميل
+// 1. تسجيل الدخول (مطابقة الرقم الوطني وكلمة المرور)
 document.getElementById("loginBtn").onclick = async () => {
-  const email = document.getElementById("loginEmail").value.trim();
-  const pass = document.getElementById("loginPassword").value;
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-    window.location.href = "index.html";
-  } catch (err) {
-    alert("❌ خطأ في البريد أو كلمة المرور");
-  }
+    const nid = document.getElementById("loginNationalID").value.trim();
+    const pass = document.getElementById("loginPassword").value;
+
+    const q = query(collection(db, "users"), where("nationalID", "==", nid), where("password", "==", pass));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+        alert("✅ أهلاً بك.. تم تسجيل دخولك");
+        window.location.href = "home.html";
+    } else {
+        alert("❌ عذراً، الرقم الوطني أو كلمة المرور غير صحيحة");
+    }
 };
 
-// 4. إنشاء الحساب
-document.getElementById("registerBtn").onclick = async () => {
-  const fName = document.getElementById("firstName").value.trim();
-  const email = document.getElementById("regEmail").value.trim();
-  const pass = document.getElementById("password").value;
-  
-  if (!email || !pass || !fName) return alert("❌ الرجاء تعبئة البيانات");
+// 2. إنشاء حساب مع OTP
+document.getElementById("regSendCodeBtn").onclick = async () => {
+    const phone = document.getElementById("regPhone").value.trim();
+    const fullPhone = "+962" + (phone.startsWith('0') ? phone.substring(1) : phone);
+    
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'normal' });
 
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await addDoc(collection(db, "users"), {
-      uid: cred.user.uid,
-      name: fName,
-      email: email,
-      createdAt: new Date()
-    });
-    alert("✅ تم إنشاء الحساب");
-    window.location.href = "index.html";
-  } catch (err) {
-    alert("⚠️ " + err.message);
-  }
+    try {
+        const confirmationResult = await signInWithPhoneNumber(auth, fullPhone, window.recaptchaVerifier);
+        window.regConfirm = confirmationResult;
+        document.getElementById("regOtpSection").classList.remove("hidden");
+        document.getElementById("regSendCodeBtn").classList.add("hidden");
+        alert("✅ تم إرسال الكود إلى " + fullPhone);
+    } catch (err) { alert("⚠️ خطأ في الإرسال: " + err.message); }
+};
+
+document.getElementById("verifyRegBtn").onclick = async () => {
+    const code = document.getElementById("regOtpCode").value;
+    try {
+        await window.regConfirm.confirm(code);
+        await addDoc(collection(db, "users"), {
+            name: document.getElementById("regFirstName").value + " " + document.getElementById("regLastName").value,
+            nationalID: document.getElementById("regNationalID").value,
+            password: document.getElementById("regPassword").value,
+            phone: document.getElementById("regPhone").value,
+            gender: document.getElementById("regGender").value,
+            birthday: document.getElementById("regBirthday").value
+        });
+        alert("✅ تم إنشاء حسابك بنجاح");
+        window.location.href = "home.html";
+    } catch (err) { alert("❌ الكود المدخل غير صحيح"); }
 };
 </script>
 </body>
