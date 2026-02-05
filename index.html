@@ -2018,7 +2018,7 @@ header, .top-bar {
 				btn.classList.add('btn-outline-secondary');
 			}
 
-			container.appendChild(btn);
+			container.appendChild(btn);تا
 		});
 
 	    }
@@ -2305,10 +2305,15 @@ header, .top-bar {
 
  		  
 		
+			import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+			const auth = getAuth();
+
 			function logout() {
-			  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
-			  alert("تم تسجيل الخروج بنجاح 👋");
-			  window.location.href = "1login.html"; // يرجع على صفحة الدخول
+			  signOut(auth).then(() => {
+				alert("تم تسجيل الخروج بنجاح 👋");
+				window.location.href = "1login.html";
+			  });
 			}
 
 			
@@ -2377,6 +2382,7 @@ header, .top-bar {
 
 </body>
 </html>
+
 
 
 
