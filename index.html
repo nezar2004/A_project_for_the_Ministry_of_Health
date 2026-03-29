@@ -602,23 +602,27 @@ header, .top-bar {
 /* حاوية كل الخطوات */
 .info-container {
   position: absolute;
-  top: 150px;
+  top: 0;
+  margin-top: 150px;
   left: 50%;
   transform: translateX(-50%);
 
   width: 90%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 25px;
 
   padding-bottom: 50px;
 }
-
+@media (max-width: 480px) {
+  .info-container {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* نفس تصميمك السابق بدون تغيير */
 .project-info {
   background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
   padding: 25px 30px;
   border-radius: 20px;
   color: #3E2723;
@@ -659,6 +663,14 @@ header, .top-bar {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+button {
+  min-height: 44px;
+}
+
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 <style>
 .side-btn {
@@ -2549,6 +2561,5 @@ input, select, button {
 
 </body>
 </html>
-
 
 
