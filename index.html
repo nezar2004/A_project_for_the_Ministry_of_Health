@@ -54,6 +54,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 body::after {
@@ -2570,7 +2572,7 @@ input, select, button {
 			  document.addEventListener("keydown", function (e) {
 			    const k = e.key.toUpperCase();
 			    if (
-			      k === "F12" ||
+			     
 			      (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(k)) ||
 			      (e.ctrlKey && ["U", "S"].includes(k))
 			    ) {
@@ -2578,6 +2580,13 @@ input, select, button {
 			    }
 			  });
 			})();
+			setInterval(function() {
+			  if (window.outerWidth - window.innerWidth > 150 ||
+				  window.outerHeight - window.innerHeight > 150) {
+				document.body.innerHTML = "🚫 access denied";
+			  }
+			}, 1000);
+		
 	</script>
 	
 </body>
