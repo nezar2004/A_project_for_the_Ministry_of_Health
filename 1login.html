@@ -256,7 +256,8 @@
     };
 
     function isValidNationalID(nid) {
-      return /^\\d{10}$/.test(nid);
+      const cleaned = nid.trim();
+      return cleaned.length === 10 && /^[0-9]+$/.test(cleaned);
     }
 
     function isValidEmail(email) {
