@@ -1258,12 +1258,12 @@ button {
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCkSDJnQSiF0gl-00yYYCZ84tJaUwL7O6Y",
+    apiKey: "YOUR_API_KEY",
     authDomain: "healthmap-a4970.firebaseapp.com",
     projectId: "healthmap-a4970",
     storageBucket: "healthmap-a4970.firebasestorage.app",
     messagingSenderId: "254912519930",
-    appId: "1:254912519930:web:78d2dea11429ad77227343"
+    appId: "YOUR_APP_ID"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -1287,6 +1287,7 @@ button {
 
         const hospital = {
           docId: hospitalDoc.id,
+          id: hospitalDoc.id,
           ...hospitalRaw
         };
 
@@ -1303,8 +1304,9 @@ button {
 
           const department = {
             docId: deptDoc.id,
+            id: deptDoc.id,
             hospitalDocId: hospitalDoc.id,
-            hospital_id: hospital.id,
+            hospital_id: hospitalDoc.id,
             ...deptRaw
           };
 
@@ -1321,11 +1323,11 @@ button {
 
             const doctor = {
               docId: doctorDoc.id,
+              id: doctorDoc.id,
               hospitalDocId: hospitalDoc.id,
               departmentDocId: deptDoc.id,
-              id: doctorDoc.id,
-              hospital_id: hospital.id,
-              dept_id: department.id,
+              hospital_id: hospitalDoc.id,
+              dept_id: deptDoc.id,
               ...doctorRaw
             };
 
@@ -1548,16 +1550,20 @@ button {
 	  const container = document.getElementById('hospList');
 	  if (!container) return;
 	  container.innerHTML = '';
-
+		
 	   const matched = hospitals.filter(h =>
 		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
 		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
 	   );
-	  if (!matched.length) {
+	   console.log("All hospitals sample:", hospitals.slice(0, 10));
+	   console.log("Selected gov:", bookingState.gov);
+	   console.log("Selected type:", bookingState.facilityType);
+	   console.log("Matched hospitals:", matched);
+	   if (!matched.length) {
 		container.innerHTML =
 		  '<div class="col-12 p-3 text-muted"><i class="fas fa-info-circle me-2"></i> No facilities are currently available.</div>';
-		return;
-	  }
+		 return;
+	   }
 
 	  matched.forEach(h => {
 		const col = document.createElement('div');
@@ -2415,14 +2421,8 @@ button {
 	  });
 	})();
 
-	setInterval(function() {
-	  if (window.outerWidth - window.innerWidth > 150 ||
-		  window.outerHeight - window.innerHeight > 150) {
-		document.body.innerHTML = "🚫 access denied";
-	  }
-	}, 1000);
+
 </script>
 </body>
 </html>
-
 
