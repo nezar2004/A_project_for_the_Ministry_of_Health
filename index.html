@@ -478,6 +478,36 @@ footer {
   transform: scale(1.06);
 }
 
+.bot-message,
+.user-message {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.typing {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #000;
+  padding: 10px 15px;
+  border-radius: 15px 15px 15px 0;
+  width: fit-content;
+  margin-bottom: 10px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
 /* ------------------------------------------------------
    TIME SLOTS
 ------------------------------------------------------ */
@@ -692,7 +722,6 @@ button {
 * {
   -webkit-tap-highlight-color: transparent;
 }
-<style>
 .side-btn {
   position: fixed;
   right: 20px;
@@ -745,7 +774,6 @@ input, select, button {
   margin: 6px 0;
   padding: 8px;
 }
-</style>
 
 
 </style>
@@ -2457,30 +2485,72 @@ input, select, button {
 			  });
 
 			  const data = await response.json();
+
+			  if (!response.ok) {
+				throw new Error(data.answer || "حدث خطأ أثناء الاتصال بالسيرفر.");
+			  }
+
 			  return data.answer || "لم يصلني رد من السيرفر.";
+			}
+
+			// إضافة رسالة بشكل آمن
+			function appendMessage(className, content, useHTML = false) {
+			  const div = document.createElement("div");
+			  div.className = className;
+
+			  if (useHTML) {
+				div.innerHTML = content;
+			  } else {
+				div.textContent = content;
+			  }
+
+			  chatBody.appendChild(div);
+			  chatBody.scrollTop = chatBody.scrollHeight;
+			  return div;
 			}
 
 			async function handleSend() {
 			  const question = userInput.value.trim();
 			  if (!question) return;
 
-			  chatBody.innerHTML += `<div class="user-message">${question}</div>`;
+			  // تعطيل الإدخال مؤقتًا
+			  sendBtn.disabled = true;
+			  userInput.disabled = true;
+
+			  // رسالة المستخدم
+			  appendMessage("user-message", question);
 			  userInput.value = "";
-			  chatBody.scrollTop = chatBody.scrollHeight;
 
-			  const answer = await askGemini(question);
-			  const formatted = formatBotMessage(answer);
+			  // مؤشر الكتابة
+			  const typingEl = appendMessage("typing", "جاري الكتابة...");
 
-			  chatBody.innerHTML += `<div class="bot-message">${formatted}</div>`;
-			  chatBody.scrollTop = chatBody.scrollHeight;
+			  try {
+				const answer = await askGemini(question);
+
+				// حذف مؤشر الكتابة
+				typingEl.remove();
+
+				const formatted = formatBotMessage(answer);
+				appendMessage("bot-message", formatted, true);
+
+			  } catch (err) {
+				typingEl.remove();
+				appendMessage("bot-message", err.message || "حدث خطأ غير متوقع.");
+			  } finally {
+				// إعادة التفعيل
+				sendBtn.disabled = false;
+				userInput.disabled = false;
+				userInput.focus();
+			  }
 			}
 
+			// الأحداث
 			sendBtn.addEventListener("click", handleSend);
-			userInput.addEventListener("keydown", e => {
+
+			userInput.addEventListener("keydown", (e) => {
 			  if (e.key === "Enter") handleSend();
 			});
-			let editingId = null;
-
+// ------------------------------
 			const panel = document.getElementById("reminderPanel");
 			const overlay = document.getElementById("overlay");
 
