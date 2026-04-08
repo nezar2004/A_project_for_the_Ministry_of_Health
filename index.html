@@ -1549,10 +1549,6 @@ button {
 	  if (!container) return;
 	  container.innerHTML = '';
 
-	  const matched = hospitals.filter(h =>
-		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
-		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
-	  );
 	   const matched = hospitals.filter(h =>
 		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
 		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
