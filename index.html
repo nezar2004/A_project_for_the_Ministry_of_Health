@@ -1354,6 +1354,17 @@ button {
   loadFirebaseData();
 </script>
 <script>
+	function normalizeFacilityType(type) {
+	  const t = String(type || "").trim().toLowerCase();
+	
+	  if (["government", "governmental", "gov", "حكومي"].includes(t)) return "governmental";
+	  if (["military", "militaryh", "عسكري"].includes(t)) return "militaryH";
+	  if (["private", "privateh", "خاص"].includes(t)) return "privateH";
+	  if (["healthcenter", "health center", "health centerh", "center", "مركز صحي"].includes(t)) return "Health centerH";
+	  if (["medicalcenter", "medical center", "مركز طبي"].includes(t)) return "Medical center";
+
+  return String(type || "").trim();
+}
  // -------------------------------
 	// Basic Data
 	// -------------------------------
@@ -1373,14 +1384,26 @@ button {
 
 	// إذا تم تحميل بيانات Firebase من سكربت آخر
 	window.addEventListener("firebaseDataReady", () => {
-	  hospitals = window.firebaseHospitals || [];
-	  Departments = window.firebaseDepartments || [];
+	  hospitals = (window.firebaseHospitals || []).map(h => ({
+	    ...h,
+	    gov: String(h.gov || "").trim(),
+	    type: normalizeFacilityType(h.type)
+	  }));
+	
+	  Departments = (window.firebaseDepartments || []).map(d => ({
+	    ...d,
+	    type: normalizeFacilityType(d.type)
+	  }));
+	
 	  doctors = window.firebaseDoctors || [];
+	
 	  console.log("🔥 Firebase data ready", {
-		hospitals: hospitals.length,
-		departments: Departments.length,
-		doctors: doctors.length
+	    hospitals: hospitals.length,
+	    departments: Departments.length,
+	    doctors: doctors.length
 	  });
+	
+	  console.log("Sample hospital types:", [...new Set(hospitals.slice(0, 20).map(h => h.type))]);
 	});
 
 	// -------------------------------
@@ -1505,16 +1528,18 @@ button {
 	}
 
 	function selectFacilityType(type) {
-	  bookingState.facilityType = type;
+	  bookingState.facilityType = normalizeFacilityType(type);
 	  bookingState.hospital = null;
 	  bookingState.department = null;
 	  bookingState.doctor = null;
-
+	
 	  document.querySelectorAll('[data-type]').forEach(el => el.classList.remove('selected'));
 	  document.querySelectorAll('[data-type]').forEach(el => {
-		if (el.dataset.type === type) el.classList.add('selected');
+	    if (normalizeFacilityType(el.dataset.type) === bookingState.facilityType) {
+	      el.classList.add('selected');
+	    }
 	  });
-
+	
 	  renderHospitals();
 	  showStep(3);
 	}
@@ -1525,9 +1550,13 @@ button {
 	  container.innerHTML = '';
 
 	  const matched = hospitals.filter(h =>
-		h.gov === bookingState.gov && h.type === bookingState.facilityType
+		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
+		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
 	  );
-
+	   const matched = hospitals.filter(h =>
+		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
+		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
+	   );
 	  if (!matched.length) {
 		container.innerHTML =
 		  '<div class="col-12 p-3 text-muted"><i class="fas fa-info-circle me-2"></i> No facilities are currently available.</div>';
