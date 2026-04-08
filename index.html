@@ -1252,6 +1252,8 @@ button {
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
+  console.log("🔥 module script started");
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -1267,9 +1269,14 @@ button {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
+  console.log("✅ firebase app initialized");
+
   async function loadFirebaseData() {
     try {
+      console.log("📥 starting firestore read...");
+
       const hospitalsSnap = await getDocs(collection(db, "hospitals"));
+      console.log("✅ hospitals snapshot loaded:", hospitalsSnap.size);
 
       const hospitalsData = [];
       const departmentsData = [];
@@ -1289,6 +1296,8 @@ button {
           collection(db, "hospitals", hospitalDoc.id, "departments")
         );
 
+        console.log("🏥 hospital:", hospital.name, "| departments:", deptSnap.size);
+
         for (const deptDoc of deptSnap.docs) {
           const deptRaw = deptDoc.data();
 
@@ -1304,6 +1313,8 @@ button {
           const doctorsSnap = await getDocs(
             collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
           );
+
+          console.log("📂 department:", department.title, "| doctors:", doctorsSnap.size);
 
           for (const doctorDoc of doctorsSnap.docs) {
             const doctorRaw = doctorDoc.data();
@@ -1333,6 +1344,7 @@ button {
       console.log("Doctors:", doctorsData.length);
 
       window.dispatchEvent(new Event("firebaseDataReady"));
+      console.log("🚀 firebaseDataReady dispatched");
     } catch (error) {
       console.error("❌ Firebase loading error:", error);
       alert("حدث خطأ أثناء تحميل البيانات من Firebase");
