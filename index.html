@@ -1030,66 +1030,49 @@ button {
 
 	  <!-- Window (Modal) -->
 <!-- صفحة البداية -->
-		<div class="container" id="landingPage">
+<div class="container" id="landingPage">
 
-			<!-- Emergency Buttons (تظهر فقط في صفحة الهوم) -->
-			<div class="emergency-container">
+  <!-- Emergency Buttons -->
+  <div class="emergency-container">
+    <button title="هذا زر الاسعاف" class="em-btn" id="btn-call">🚑</button>
+    <button title="هذا زر الاتصال" class="em-btn" id="btn-custom">📞</button>
+    <button title="هذا زر ارسال موقعك" class="em-btn" id="btn-location">📍</button>
+    <button title="هذا زر اقرب مستشفيات" class="em-btn" id="btn-hospitals">🏥</button>
+    <button title="هذا زر البوت" id="chat-toggle">🤖</button>
+    <button class="em-btn logout-btn" onclick="logout()" title="تسجيل الخروج">⏻</button>
+    <button id="openReminderPanel" class="em-btn">🔔</button>
+  </div>
 
-				<button title="هذا زر الاسعاف" class="em-btn" id="btn-call">
-					🚑
-				</button>
+  <!-- المودال -->
+  <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
 
-				<button title="هذا زر الاتصال" class="em-btn" id="btn-custom">
-					📞 
-				</button>
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookingsModalLabel">My current bookings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="closing"></button>
+        </div>
 
-				<button title="هذا زر ارسال موقعك" class="em-btn" id="btn-location">
-					📍 
-				</button>
+        <div class="modal-body">
+          There are no current reservations.
+        </div>
 
-				<button title="هذا زر اقرب مستشفيات" class="em-btn" id="btn-hospitals">
-					🏥
-				</button>
-				<button title="هذا زر   البوت " id="chat-toggle">🤖</button>	
-				<button class="em-btn logout-btn" onclick="logout()" title="تسجيل الخروج">⏻</button>
-				<button id="openReminderPanel" class="em-btn">🔔</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">closing</button>
+        </div>
 
-			</div>
+      </div>
+    </div>
+  </div>
 
-		<!-- المودال (الحجوزات) -->
-		<div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
+  <!-- زر البداية -->
+  <div class="text-center mb-3">
+    <button id="startBookingBtn" class="btn btn-main btn-lg">
+      <i class="fas fa-stethoscope me-2"></i> Start booking now
+    </button>
+  </div>
 
-					<div class="modal-header">
-						<h5 class="modal-title" id="bookingsModalLabel">My current bookings</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="closing"></button>
-					</div>
-
-					<div class="modal-body">
-						There are no current reservations.
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">closing</button>
-					</div>
-
-				</div>
-			</div>
-		</div>
-
-
-	  <!-- Home Page -->
-	  <div class="container" id="landingPage">
-
-		  <div class="text-center mb-3">
-			<button  id="startBookingBtn" class="btn btn-main btn-lg">
-			  <i  class="fas fa-stethoscope me-2"></i> Start booking now
-			</button>
-		  </div>
-		</div>
-	  </div>
-
+</div>
 	  <div class="container-app d-none" id="bookingApp">
 		<div class="panel-card">
 		  <div class="d-flex justify-content-between align-items-center mb-4">
@@ -1111,66 +1094,95 @@ button {
 		  </div>
 
 		  <div id="stepsArea">
-			<div id="step-1" class="step-block"> <h5 class="mb-3">Choose the governorate</h5> <div id="govList" class="row g-3"></div> </div>
-			<div id="step-2" class="step-block d-none"> <h5 class="mb-3">Select the type of establishment</h5> <div class="row g-3">
-				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="governmental"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
-				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="militaryH"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
-				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="privateH"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> private hospital</div></div>
-				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health centerH"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
-				<div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Medical center"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
-			  </div> </div>
-			<div id="step-3" class="step-block d-none"> <h5 class="mb-3">Available Hospitals/Centers</h5> <div id="hospList" class="row g-3"></div> </div>
-			<div id="step-4" class="step-block d-none"> <h5 class="mb-3">Select a section</h5> <div id="deptList" class="row g-3"></div> </div>
-			<div id="step-5" class="step-block d-none"> <h5 class="mb-3">Do you have health insurance?</h5> <div class="mt-3 d-flex gap-2">
-				<button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> No</button> <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> Yes</button>
-			  </div> </div>
-			<div id="step-6" class="step-block d-none"> <h5 class="mb-3">Insurance Information</h5> <form id="insForm" class="row g-3">
-				<div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
-				<div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
-				<div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
-				<div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
-			  </form> </div>
-			<div id="step-7" class="step-block d-none"> <h5 class="mb-3">Choose a doctor</h5> <div id="docList" class="row g-3"></div> </div>
-			<div id="step-8" class="step-block d-none"> <h5 class="mb-3">Select the date and time</h5> <div class="row">
-				<div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
-				<div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
-			  </div> <div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div> </div>
-			<div id="step-9" class="step-block d-none">
-			  <h5 class="mb-3">Data review</h5>
+			  <div id="step-1" class="step-block">
+				<h5 class="mb-3">Choose the governorate</h5>
+				<div id="govList" class="row g-3"></div>
+			  </div>
 
-			  <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
-
-			  <h5 class="mb-3">Customer data</h5>
-
-			  <form id="custForm" class="row g-3">
-
-				<div class="col-md-6">
-				  <label class="form-label">full name</label>
-				  <input id="custName" class="form-control" required>
-				  <span id="custNameError" class="text-danger small"></span>
+			  <div id="step-2" class="step-block d-none">
+				<h5 class="mb-3">Select the type of establishment</h5>
+				<div class="row g-3">
+				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="governmental"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
+				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="militaryH"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
+				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="privateH"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> private hospital</div></div>
+				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health centerH"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
+				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Medical center"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
 				</div>
+			  </div>
 
-				<div class="col-md-6">
-				  <label class="form-label">e-mail</label>
-				  <input id="custEmail" type="email" class="form-control" required>
-				  <span id="custEmailError" class="text-danger small"></span>
+			  <div id="step-3" class="step-block d-none">
+				<h5 class="mb-3">Available Hospitals/Centers</h5>
+				<div id="hospList" class="row g-3"></div>
+			  </div>
+
+			  <div id="step-4" class="step-block d-none">
+				<h5 class="mb-3">Select a section</h5>
+				<div id="deptList" class="row g-3"></div>
+			  </div>
+
+			  <div id="step-5" class="step-block d-none">
+				<h5 class="mb-3">Do you have health insurance?</h5>
+				<div class="mt-3 d-flex gap-2">
+				  <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> No</button>
+				  <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> Yes</button>
 				</div>
+			  </div>
 
-				<div class="col-md-6">
-				  <label class="form-label">The phone</label>
-				  <input id="custPhone" class="form-control" required>
-				  <span id="custPhoneError" class="text-danger small"></span>
+			  <div id="step-6" class="step-block d-none">
+				<h5 class="mb-3">Insurance Information</h5>
+				<form id="insForm" class="row g-3">
+				  <div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
+				  <div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
+				  <div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
+				  <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
+				</form>
+			  </div>
+
+			  <div id="step-7" class="step-block d-none">
+				<h5 class="mb-3">Choose a doctor</h5>
+				<div id="docList" class="row g-3"></div>
+			  </div>
+
+			  <div id="step-8" class="step-block d-none">
+				<h5 class="mb-3">Select the date and time</h5>
+				<div class="row">
+				  <div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
+				  <div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
 				</div>
+				<div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div>
+			  </div>
 
-				<div class="col-12">
-				  <label class="form-label">note</label>
-				  <textarea id="custNote" class="form-control" rows="2"></textarea>
-				</div>
+			  <div id="step-9" class="step-block d-none">
+				<h5 class="mb-3">Data review</h5>
+				<div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
 
-			  </form>
+				<h5 class="mb-3">Customer data</h5>
+				<form id="custForm" class="row g-3">
+				  <div class="col-md-6">
+					<label class="form-label">full name</label>
+					<input id="custName" class="form-control" required>
+					<span id="custNameError" class="text-danger small"></span>
+				  </div>
+
+				  <div class="col-md-6">
+					<label class="form-label">e-mail</label>
+					<input id="custEmail" type="email" class="form-control" required>
+					<span id="custEmailError" class="text-danger small"></span>
+				  </div>
+
+				  <div class="col-md-6">
+					<label class="form-label">The phone</label>
+					<input id="custPhone" class="form-control" required>
+					<span id="custPhoneError" class="text-danger small"></span>
+				  </div>
+
+				  <div class="col-12">
+					<label class="form-label">note</label>
+					<textarea id="custNote" class="form-control" rows="2"></textarea>
+				  </div>
+				</form>
+			  </div>
 			</div>
-
-		  </div>
 
 		  <hr class="my-4">
 		  <div class="d-flex justify-content-between">
@@ -1237,1623 +1249,1142 @@ button {
 		<div id="remindersList"></div>
 	  </div>
 	</div>
-	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-	<script>
-		// -------------------------------
-		// Basic Data
-		// -------------------------------
-		function confirmBooking() {	
-		  alert("Your booking has been successfully confirmed ✅");
-		}
-		
-		const governorates =['Amman', 'Irbid', 'Zarqa', 'Balqa', 'Karak', 'Ma,an', 'Tafila', 'Jerash', 'Ajloun', 'Madaba', 'Aqaba', 'Mafraq']
-;
+  const firebaseConfig = {
+    apiKey: "AIzaSyCkSDJnQSiF0gl-00yYYCZ84tJaUwL7O6Y",
+    authDomain: "healthmap-a4970.firebaseapp.com",
+    projectId: "healthmap-a4970",
+    storageBucket: "healthmap-a4970.firebasestorage.app",
+    messagingSenderId: "254912519930",
+    appId: "1:254912519930:web:78d2dea11429ad77227343"
+  };
 
-		// 1. List of Governmental Hospitals
-		// Renamed from 'hospitals' to 'governmentalHospitals'
-			const governmentalHospitals = [
-				   // Amman
-				  {id:1, name:'مستشفى البشير', gov:'Amman', type:'governmental'},
-				  {id:2, name:'المستشفى الأردني', gov:'Amman', type:'governmental'},
-				  {id:3, name:'مستشفى الجامعة الأردنية', gov:'Amman', type:'governmental'},
-				  {id:4, name:'مستشفى ابن الهيثم', gov:'Amman', type:'governmental'},
-				  {id:5, name:'مستشفى الأردن', gov:'Amman', type:'governmental'},
-				  {id:6, name:'المستشفى الاستشاري', gov:'Amman', type:'governmental'},
-				  {id:7, name:'مستشفى الاستقلال', gov:'Amman', type:'governmental'},
-				  {id:8, name:'مستشفى الملكة علياء', gov:'Amman', type:'governmental'},
-				  {id:9, name:'مستشفى الإسراء', gov:'Amman', type:'governmental'},
-				  {id:10, name:'مدينة الحسين الطبية', gov:'Amman', type:'governmental'},
-				  {id:11, name:'مركز التأهيل الأردني', gov:'Amman', type:'governmental'},
-				  {id:12, name:'المستشفى الإسلامي / عمّان', gov:'Amman', type:'governmental'},
-				  {id:13, name:'مستشفى الأقصى', gov:'Amman', type:'governmental'},
-				  {id:14, name:'مركز الملكة علياء لأمراض وجراحة القلب', gov:'Amman', type:'governmental'},
-				  {id:15, name:'مستشفى الأمل', gov:'Amman', type:'governmental'},
-				  {id:16, name:'مستشفى الدكتور جميل التوتنجي', gov:'Amman', type:'governmental'},
-				  {id:17, name:'المستشفى الأهلي', gov:'Amman', type:'governmental'},
-				  {id:18, name:'مستشفى الحسين', gov:'Amman', type:'governmental'},
-				  {id:19, name:'المستشفى الإيطالي / عمّان', gov:'Amman', type:'governmental'},
-				  {id:20, name:'مستشفى الملكة رانيا للأطفال', gov:'Amman', type:'governmental'},
-				  {id:21, name:'مستشفى البيادر', gov:'Amman', type:'governmental'},
-				  {id:22, name:'مستشفى الكرامة', gov:'Amman', type:'governmental'},
-				  {id:23, name:'المستشفى التخصصي', gov:'Amman', type:'governmental'},
-				  {id:24, name:'مستشفى الجاردنز', gov:'Amman', type:'governmental'},
-				  {id:25, name:'مستشفى الجزيرة', gov:'Amman', type:'governmental'},
-				  {id:26, name:'مستشفى الحرمين', gov:'Amman', type:'governmental'},
-				  {id:27, name:'مستشفى الحمايدة', gov:'Amman', type:'governmental'},
-				  {id:28, name:'مستشفى الحنان', gov:'Amman', type:'governmental'},
-				  {id:29, name:'مستشفى الحياة', gov:'Amman', type:'governmental'},
-				  {id:30, name:'مستشفى الأمير حمزة', gov:'Amman', type:'governmental'},
-				  {id:31, name:'مستشفى الخالدي', gov:'Amman', type:'governmental'},
-				  {id:32, name:'مستشفى الخنساء', gov:'Amman', type:'governmental'},
-				  {id:33, name:'المركز الوطني لتأهيل المدمنين', gov:'Amman', type:'governmental'},
-				  {id:34, name:'مستشفى الشميساني', gov:'Amman', type:'governmental'},
-				  {id:35, name:'مستشفى الشهيد أبو دية', gov:'Amman', type:'governmental'},
-				  {id:36, name:'مستشفى العيون التخصصي', gov:'Amman', type:'governmental'},
-				  {id:37, name:'مستشفى القدس', gov:'Amman', type:'governmental'},
-				  {id:38, name:'المستشفى العربي الطبي', gov:'Amman', type:'governmental'},
-				  {id:39, name:'مستشفى المقاصد الخيرية', gov:'Amman', type:'governmental'},
-				  {id:40, name:'مستشفى المواساة', gov:'Amman', type:'governmental'},
-				  {id:41, name:'مستشفى النخبة / ميلاد', gov:'Amman', type:'governmental'},
-				  {id:42, name:'مستشفى الهلال الأحمر', gov:'Amman', type:'governmental'},
-				  {id:43, name:'مستشفى تلاع العلي', gov:'Amman', type:'governmental'},
-				  {id:44, name:'مستشفى جبل عمّان', gov:'Amman', type:'governmental'},
-				  {id:45, name:'مستشفى دار السلام', gov:'Amman', type:'governmental'},
-				  {id:46, name:'مستشفى رويال', gov:'Amman', type:'governmental'},
-				  {id:47, name:'مستشفى عاقلة', gov:'Amman', type:'governmental'},
-				  {id:48, name:'مستشفى عبد الهادي', gov:'Amman', type:'governmental'},
-				  {id:49, name:'مستشفى عمّان الجراحي', gov:'Amman', type:'governmental'},
-				  {id:50, name:'مستشفى فرح', gov:'Amman', type:'governmental'},
-				  {id:51, name:'مستشفى فلسطين', gov:'Amman', type:'governmental'},
-				  {id:52, name:'مستشفى فيلادلفيا', gov:'Amman', type:'governmental'},
-				  {id:53, name:'مستشفى لوزميلا', gov:'Amman', type:'governmental'},
-				  {id:54, name:'مستشفى ماركا التخصصي الإسلامي / الرحمة', gov:'Amman', type:'governmental'},
-				  {id:55, name:'مركز الحسين للسرطان', gov:'Amman', type:'governmental'},
-				  {id:56, name:'مستشفى هبة للتوليد', gov:'Amman', type:'governmental'},
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-				  // Irbid
-				  {id:57, name:'مستشفى ابن النفيس', gov:'Irbid', type:'governmental'},
-				  {id:58, name:'مستشفى أبو عبيدة', gov:'Irbid', type:'governmental'},
-				  {id:59, name:'مستشفى الأمير راشد بن الحسن', gov:'Irbid', type:'governmental'},
-				  {id:60, name:'مستشفى الملك المؤسس عبدالله الجامعي', gov:'Irbid', type:'governmental'},
-				  {id:61, name:'مستشفى إربد الإسلامي', gov:'Irbid', type:'governmental'},
-				  {id:62, name:'مستشفى الأميرة بديعة', gov:'Irbid', type:'governmental'},
-				  {id:63, name:'مستشفى إربد التخصصي', gov:'Irbid', type:'governmental'},
-				  {id:64, name:'مستشفى الأميرة بسمة', gov:'Irbid', type:'governmental'},
-				  {id:65, name:'مستشفى الأميرة راية', gov:'Irbid', type:'governmental'},
-				  {id:66, name:'مستشفى اليرموك', gov:'Irbid', type:'governmental'},
-				  {id:67, name:'مستشفى الرمثا', gov:'Irbid', type:'governmental'},
-				  {id:68, name:'مستشفى معاذ بن جبل', gov:'Irbid', type:'governmental'},
-				  {id:69, name:'مستشفى الروم الكاثوليك', gov:'Irbid', type:'governmental'},
-				  {id:70, name:'مستشفى القواسمي التخصصي', gov:'Irbid', type:'governmental'},
-				  {id:71, name:'مستشفى النجاح', gov:'Irbid', type:'governmental'},
-				  {id:72, name:'مستشفى راهبات الوردية', gov:'Irbid', type:'governmental'},
-				  {id:73, name:'مستشفى الأميرة رحمة', gov:'Irbid', type:'governmental'},
+  async function loadFirebaseData() {
+    try {
+      const hospitalsSnap = await getDocs(collection(db, "hospitals"));
 
-				  // Zarqa
-				  {id:74, name:'مستشفى الأمير فيصل', gov:'Zarqa', type:'governmental'},
-				  {id:75, name:'مستشفى الأمير هاشم بن الحسين', gov:'Zarqa', type:'governmental'},
-				  {id:76, name:'مستشفى الزرقاء', gov:'Zarqa', type:'governmental'},
-				  {id:77, name:'مستشفى الحكمة', gov:'Zarqa', type:'governmental'},
-				  {id:78, name:'مستشفى الرازي الجديد', gov:'Zarqa', type:'governmental'},
-				  {id:79, name:'مستشفى الضليل', gov:'Zarqa', type:'governmental'},
-				  {id:80, name:'مستشفى جبل الزيتون', gov:'Zarqa', type:'governmental'},
-				  {id:81, name:'مستشفى قصر شبيب', gov:'Zarqa', type:'governmental'},
+      const hospitalsData = [];
+      const departmentsData = [];
+      const doctorsData = [];
 
-				  // Mafraq
-				  {id:82, name:'مستشفى الرويشد', gov:'Mafraq', type:'governmental'},
-				  {id:83, name:'مستشفى الملك طلال', gov:'Mafraq', type:'governmental'},
-				  {id:84, name:'مستشفى المفرق', gov:'Mafraq', type:'governmental'},
-				  {id:85, name:'مستشفى النسائية والأطفال / المفرق', gov:'Mafraq', type:'governmental'},
-				  {id:86, name:'مستشفى البادية الشمالية', gov:'Mafraq', type:'governmental'},
-				  {id:87, name:'مستشفى سارا', gov:'Mafraq', type:'governmental'},
-				  {id:88, name:'مستشفى مصح النور', gov:'Mafraq', type:'governmental'},
+      for (const hospitalDoc of hospitalsSnap.docs) {
+        const hospitalRaw = hospitalDoc.data();
 
-				  // Jerash
-				  {id:89, name:'مستشفى جرش', gov:'Jerash', type:'governmental'},
-				  {id:90, name:'مستشفى الصفاء التخصصي', gov:'Jerash', type:'governmental'},
+        const hospital = {
+          docId: hospitalDoc.id,
+          ...hospitalRaw
+        };
 
-				  // Ajloun
-				  {id:91, name:'مستشفى الأميرة هيا بنت الحسين', gov:'Ajloun', type:'governmental'},
-				  {id:92, name:'مستشفى الإيمان / عجلون', gov:'Ajloun', type:'governmental'},
+        hospitalsData.push(hospital);
 
-				  // Balqa
-				  {id:93, name:'مستشفى الأميرة إيمان / معدي', gov:'Balqa', type:'governmental'},
-				  {id:94, name:'مستشفى الحسين / السلط', gov:'Balqa', type:'governmental'},
-				  {id:95, name:'مستشفى الشونة الجنوبية', gov:'Balqa', type:'governmental'},
-				  {id:96, name:'مستشفى الرشيد النفسي', gov:'Balqa', type:'governmental'},
-				  {id:97, name:'المركز الوطني للصحة النفسية', gov:'Balqa', type:'governmental'},
-				  {id:98, name:'مستشفى الأمير حسين بن عبدالله الثاني', gov:'Balqa', type:'governmental'},
+        const deptSnap = await getDocs(
+          collection(db, "hospitals", hospitalDoc.id, "departments")
+        );
 
-				  // Madaba
-				  {id:99, name:'مستشفى النديم', gov:'Madaba', type:'governmental'},
-				  {id:100, name:'مستشفى المحبة', gov:'Madaba', type:'governmental'},
+        for (const deptDoc of deptSnap.docs) {
+          const deptRaw = deptDoc.data();
 
-				  // Karak
-				  {id:101, name:'مستشفى الأمير علي بن الحسين / الكرك', gov:'Karak', type:'governmental'},
-				  {id:102, name:'المستشفى الإيطالي / الكرك', gov:'Karak', type:'governmental'},
-				  {id:103, name:'مستشفى البوتاس', gov:'Karak', type:'governmental'},
-				  {id:104, name:'مستشفى الكرك', gov:'Karak', type:'governmental'},
-				  {id:105, name:'مستشفى غور الصافي', gov:'Karak', type:'governmental'},
-				  {id:106, name:'مستشفى السلام', gov:'Karak', type:'governmental'},
+          const department = {
+            docId: deptDoc.id,
+            hospitalDocId: hospitalDoc.id,
+            hospital_id: hospital.id,
+            ...deptRaw
+          };
 
-				  // Tafila
-				  {id:107, name:'مستشفى الطفيلة', gov:'Tafila', type:'governmental'},
-				  {id:108, name:'مستشفى الأمير زيد بن الحسين', gov:'Tafila', type:'governmental'},
+          departmentsData.push(department);
 
-				  // Ma,an
-				  {id:109, name:'مستشفى الملكة رانيا', gov:'Ma,an', type:'governmental'},
-				  {id:110, name:'مستشفى معان', gov:'Ma,an', type:'governmental'},
+          const doctorsSnap = await getDocs(
+            collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
+          );
 
-				  // Aqaba
-				  {id:111, name:'المستشفى الإسلامي / العقبة', gov:'Aqaba', type:'governmental'},
-				  {id:112, name:'مستشفى الأمير هاشم بن عبدالله الثاني', gov:'Aqaba', type:'governmental'},
-				  {id:113, name:'المستشفى الحديث / العقبة', gov:'Aqaba', type:'governmental'}
-		];
+          for (const doctorDoc of doctorsSnap.docs) {
+            const doctorRaw = doctorDoc.data();
 
-		const privateHospitals = [
-			 // Amman 
-				 {id:114, name:'المستشفى الإسلامي', gov:'Amman', type:'privateH'},
-				 {id:115, name:'مستشفى الإسراء', gov:'Amman', type:'privateH'},
-				 {id:116, name:'مستشفى الأردن', gov:'Amman', type:'privateH'},
-				 {id:117, name:'المستشفى الإيطالي', gov:'Amman', type:'privateH'},
-				 {id:118, name:'مستشفى الأمل للتوليد والجراحة النسائية', gov:'Amman', type:'privateH'},
-				 {id:119, name:'المستشفى الاستشاري', gov:'Amman', type:'privateH'},
-				 {id:120, name:'المستشفى الأهلي', gov:'Amman', type:'privateH'},
-				 {id:121, name:'مستشفى البيادر التخصصي', gov:'Amman', type:'privateH'},
-				 {id:122, name:'المستشفى التخصصي', gov:'Amman', type:'privateH'},
-				 {id:123, name:'مستشفى تلاع العلي', gov:'Amman', type:'privateH'},
-				 {id:124, name:'مستشفى جبل عمان للتوليد', gov:'Amman', type:'privateH'},
-				 {id:125, name:'مستشفى الحرمين التخصصي', gov:'Amman', type:'privateH'},
-				 {id:126, name:'مركز الحسين للسرطان', gov:'Amman', type:'privateH'},
-				 {id:127, name:'مستشفى الحنان العام', gov:'Amman', type:'privateH'},
-				 {id:128, name:'مستشفى ومركز الخالدي الطبي', gov:'Amman', type:'privateH'},
-				 {id:129, name:'مستشفى دار السلام', gov:'Amman', type:'privateH'},
-				 {id:130, name:'مركز مستشفى الرشيد للطب النفسي والإدمان', gov:'Amman', type:'privateH'},
-				 {id:131, name:'مستشفى الاستقلال', gov:'Amman', type:'privateH'},
-				 {id:132, name:'مستشفى الحياة العام', gov:'Amman', type:'privateH'},
-				 {id:133, name:'مستشفى لوزميلا', gov:'Amman', type:'privateH'},
-				 {id:134, name:'مستشفى الرويال', gov:'Amman', type:'privateH'},
-				 {id:135, name:'مستشفى الدكتور أحمد الحمايدة', gov:'Amman', type:'privateH'},
-				 {id:136, name:'مستشفى عبد الهادي العام', gov:'Amman', type:'privateH'},
-				 {id:137, name:'مستشفى الشميساني', gov:'Amman', type:'privateH'},
-				 {id:138, name:'مستشفى الأقصى', gov:'Amman', type:'privateH'},
-				 {id:139, name:'مجمع فرح الطبي', gov:'Amman', type:'privateH'},
-				 {id:140, name:'مستشفى الشرق الأوسط للعيون', gov:'Amman', type:'privateH'},
-				 {id:141, name:'مستشفى ابن الهيثم', gov:'Amman', type:'privateH'},
-				 {id:142, name:'المركز العربي الطبي', gov:'Amman', type:'privateH'},
-				 {id:143, name:'مستشفى الكندي', gov:'Amman', type:'privateH'},
-				 {id:144, name:'مستشفى فيلادلفيا التخصصي', gov:'Amman', type:'privateH'},
-				 {id:145, name:'مستشفى عمان', gov:'Amman', type:'privateH'},
-				 {id:146, name:'مستشفى ماركا التخصصي الإسلامي', gov:'Amman', type:'privateH'},
-				 {id:147, name:'مستشفى المواساة', gov:'Amman', type:'privateH'},
-				 {id:148, name:'مستشفى فلسطين', gov:'Amman', type:'privateH'},
-				 {id:149, name:'مستشفى الجزيرة', gov:'Amman', type:'privateH'},
-				 {id:150, name:'مستشفى المقاصد الخيرية', gov:'Amman', type:'privateH'},
-				 {id:151, name:'مستشفى السعودي', gov:'Amman', type:'privateH'},
-				 {id:152, name:'مستشفى العيون التخصصي', gov:'Amman', type:'privateH'},
-				 {id:153, name:'مستشفى هبة للولادة والجراحة النسائية', gov:'Amman', type:'privateH'},
-				 {id:154, name:'مستشفى الجاردنز', gov:'Amman', type:'privateH'},
-				 {id:155, name:'مستشفى العبدلي', gov:'Amman', type:'privateH'},
-				 {id:156, name:'مستشفى الخنساء', gov:'Amman', type:'privateH'},
+            const doctor = {
+              docId: doctorDoc.id,
+              hospitalDocId: hospitalDoc.id,
+              departmentDocId: deptDoc.id,
+              id: doctorDoc.id,
+              hospital_id: hospital.id,
+              dept_id: department.id,
+              ...doctorRaw
+            };
 
-				 // Karak
-				 {id:157, name:'المستشفى الإيطالي (الكرك)', gov:'Karak', type:'privateH'},
-				 {id:158, name:'مستشفى السلام', gov:'Karak', type:'privateH'},
+            doctorsData.push(doctor);
+          }
+        }
+      }
 
-				 // Irbid 
-				 {id:159, name:'مستشفى ابن النفيس', gov:'Irbid', type:'privateH'},
-				 {id:160, name:'مستشفى الروم الكاثوليك', gov:'Irbid', type:'privateH'},
-				 {id:161, name:'مستشفى النجاح للتوليد', gov:'Irbid', type:'privateH'},
-				 {id:162, name:'مستشفى إربد الإسلامي', gov:'Irbid', type:'privateH'},
-				 {id:163, name:'مستشفى إربد التخصصي', gov:'Irbid', type:'privateH'},
+      window.firebaseHospitals = hospitalsData;
+      window.firebaseDepartments = departmentsData;
+      window.firebaseDoctors = doctorsData;
 
-				 // Madaba
-				 {id:164, name:'مستشفى المحبة', gov:'Madaba', type:'privateH'},
+      console.log("✅ Firebase loaded successfully");
+      console.log("Hospitals:", hospitalsData.length);
+      console.log("Departments:", departmentsData.length);
+      console.log("Doctors:", doctorsData.length);
 
-				 // Aqaba)
-				 {id:165, name:'المستشفى الإسلامي - العقبة', gov:'Aqaba', type:'privateH'},
+      window.dispatchEvent(new Event("firebaseDataReady"));
+    } catch (error) {
+      console.error("❌ Firebase loading error:", error);
+      alert("حدث خطأ أثناء تحميل البيانات من Firebase");
+    }
+  }
 
-				 // Mafraq)
-				 {id:166, name:'مستشفى سارة التخصصي', gov:'Mafraq', type:'privateH'},
+  loadFirebaseData();
+</script>
+<script>
+ // -------------------------------
+	// Basic Data
+	// -------------------------------
+	function confirmBooking() {
+	  alert("Your booking has been successfully confirmed ✅");
+	}
 
-				 // Zarqa 
-				 {id:167, name:'مستشفى قصر شبيب', gov:'Zarqa', type:'privateH'},
-				 {id:168, name:'مستشفى جبل الزيتون', gov:'Zarqa', type:'privateH'},
-				 {id:169, name:'مستشفى الرازي الجديد', gov:'Zarqa', type:'privateH'},
-				 {id:170, name:'مستشفى الحكمة الحديث', gov:'Zarqa', type:'privateH'}
-			];
-			const healthCenters = [
-				// Amman 
-				{ id: 171, name: "مركز صحي اصلاح وتأهيل سواقه", gov: "Amman", type: "Health centerH" },
-				{ id: 172, name: "مركز صحي اصلاح وتأهيل / ماركا العسكري", gov: "Amman", type: "Health centerH" },
-				{ id: 173, name: "مركز صحي ابو صياح", gov: "Amman", type: "Health centerH" },
-				{ id: 174, name: "مركز الاستقلال الاولي", gov: "Amman", type: "Health centerH" },
-				{ id: 175, name: "مركز صحي ابو السوس", gov: "Amman", type: "Health centerH" },
-				{ id: 176, name: "مركز صحي العرين", gov: "Amman", type: "Health centerH" },
-				{ id: 177, name: "مركز صحي اصلاح و تأهيل الجويدة / ذكور", gov: "Amman", type: "Health centerH" },
-				{ id: 178, name: "مركز صحي اصلاح و تأهيل الجويدة / اناث", gov: "Amman", type: "Health centerH" },
-				{ id: 179, name: "مركز صحي الجبيهة الشامل", gov: "Amman", type: "Health centerH" },
-				{ id: 180, name: "م . صحي القسطل", gov: "Amman", type: "Health centerH" },
-				{ id: 181, name: "مركز صحي ابو علندا/سكن كريم", gov: "Amman", type: "Health centerH" },
-				{ id: 182, name: "مركز صحي احد", gov: "Amman", type: "Health centerH" },
-				{ id: 183, name: "مركز صحي اصلاح وتأهيل الموقر", gov: "Amman", type: "Health centerH" },
-				{ id: 184, name: "مركز صحي مطار الملكة علياء", gov: "Amman", type: "Health centerH" },
-				{ id: 185, name: "مركز صحي اليادودة", gov: "Amman", type: "Health centerH" },
-				{ id: 186, name: "مركز صحي الياهون", gov: "Amman", type: "Health centerH" },
-				{ id: 187, name: "مركز صحي المستندة", gov: "Amman", type: "Health centerH" },
-				{ id: 188, name: "مركز صحي الطيبة/ شرق عمان", gov: "Amman", type: "Health centerH" },
-				{ id: 189, name: "مركز صحي الرميل", gov: "Amman", type: "Health centerH" },
-				{ id: 190, name: "مركز صحي الجويدة", gov: "Amman", type: "Health centerH" },
-				{ id: 191, name: "مركز صحي ام نوارة", gov: "Amman", type: "Health centerH" },
-				{ id: 192, name: "مركز صحي ام قصير/ المقابلين", gov: "Amman", type: "Health centerH" },
-				{ id: 193, name: "مركز صحي القويسمة", gov: "Amman", type: "Health centerH" },
-				{ id: 194, name: "مركز صحي خريبة السوق", gov: "Amman", type: "Health centerH" },
-				{ id: 195, name: "مركز صحي ابو علندا", gov: "Amman", type: "Health centerH" },
-				{ id: 196, name: "مركز صحي ارينبة الغربية", gov: "Amman", type: "Health centerH" },
-				{ id: 197, name: "مركز صحي المشيرفة/ شرق عمان", gov: "Amman", type: "Health centerH" },
-				{ id: 198, name: "مركز صحي ام الرصاص", gov: "Amman", type: "Health centerH" },
-				{ id: 199, name: "مركز صحي ام الوليد", gov: "Amman", type: "Health centerH" },
-				{ id: 200, name: "مركز صحي الزميلة", gov: "Amman", type: "Health centerH" },
-				{ id: 201, name: "مركز صحي منجا", gov: "Amman", type: "Health centerH" },
-				{ id: 202, name: "مركز صحي ام بطمة", gov: "Amman", type: "Health centerH" },
-				{ id: 203, name: "مركز صحي الكتيفة", gov: "Amman", type: "Health centerH" },
-				{ id: 204, name: "مركز صحي الذهيبة الشرقية", gov: "Amman", type: "Health centerH" },
-				{ id: 205, name: "مركز صحي الذهيبة الغربية", gov: "Amman", type: "Health centerH" },
-				{ id: 206, name: "مركز صحي خشافية الدبايبة", gov: "Amman", type: "Health centerH" },
-				{ id: 207, name: "مركز صحي رجم الشامي", gov: "Amman", type: "Health centerH" },
-				{ id: 208, name: "مركز صحي ابو حليليفة", gov: "Amman", type: "Health centerH" },
-				{ id: 209, name: "مركز صحي ام العمد/ شرق عمان", gov: "Amman", type: "Health centerH" },
-				{ id: 210, name: "مركز صحي ضبعة", gov: "Amman", type: "Health centerH" },
-				{ id: 211, name: "مركز صحي الجميل", gov: "Amman", type: "Health centerH" },
-				{ id: 212, name: "مركز صحي الرامة/ شرق عمان", gov: "Amman", type: "Health centerH" },
-				{ id: 213, name: "مركز صحي النقيرة", gov: "Amman", type: "Health centerH" },
-				{ id: 214, name: "مركز صحي الفيصلية/ شرق عمان", gov: "Amman", type: "Health centerH" },
-				{ id: 215, name: "مركز صحي اللبن", gov: "Amman", type: "Health centerH" },
-				{ id: 216, name: "مركز صحي نزهة سحاب", gov: "Amman", type: "Health centerH" },
-				{ id: 217, name: "مركز صحي نتل", gov: "Amman", type: "Health centerH" },
-				{ id: 218, name: "مركز صحي الجيزة", gov: "Amman", type: "Health centerH" },
-				{ id: 219, name: "مركز صحي سحاب", gov: "Amman", type: "Health centerH" },
-				{ id: 220, name: "مركز صحي اصلاح و تأهيل ماركا", gov: "Amman", type: "Health centerH" },
-				{ id: 221, name: "مركز صحي النظيف", gov: "Amman", type: "Health centerH" },
-				{ id: 222, name: "مركز صحي صويلح الشامل", gov: "Amman", type: "Health centerH" },
-				{ id: 223, name: "مركز صحي ام الحسين", gov: "Amman", type: "Health centerH" },
-				{ id: 224, name: "مركز صحي البنيات / العاصمة", gov: "Amman", type: "Health centerH" },
-				{ id: 225, name: "مركز صحي قصر العدل", gov: "Amman", type: "Health centerH" },
-				{ id: 226, name: "مركز صحي مطار ماركا المدني", gov: "Amman", type: "Health centerH" },
-				{ id: 227, name: "مركز صحي زبود", gov: "Amman", type: "Health centerH" },
-				{ id: 228, name: "مركز صحي أم القطين", gov: "Amman", type: "Health centerH" },
-				{ id: 229, name: "مركز صحي صالحية العابد", gov: "Amman", type: "Health centerH" },
-				{ id: 230, name: "مركز صحي عمان الشامل ( الشميساني )", gov: "Amman", type: "Health centerH" },
-				{ id: 231, name: "مركز صحي حسبان", gov: "Amman", type: "Health centerH" },
-				{ id: 232, name: "مركز صحي المرقب", gov: "Amman", type: "Health centerH" },
-				{ id: 233, name: "مركز صحي الزهور", gov: "Amman", type: "Health centerH" },
-				{ id: 234, name: "مركز صحي بدر", gov: "Amman", type: "Health centerH" },
-				{ id: 235, name: "مركز صحي الجوفة", gov: "Amman", type: "Health centerH" },
-				{ id: 236, name: "مركز صحي الهاشمية", gov: "Amman", type: "Health centerH" },
-				{ id: 237, name: "مركز صحي العدسية/ العاصمة", gov: "Amman", type: "Health centerH" },
-				{ id: 238, name: "مركز صحي القصور (الهاشمي الجنوبي)", gov: "Amman", type: "Health centerH" },
-				{ id: 239, name: "مركز صحي كوم ياجوز", gov: "Amman", type: "Health centerH" },
-				{ id: 240, name: "مركز صحي طبربور", gov: "Amman", type: "Health centerH" },
-				{ id: 241, name: "مركز صحي ضاحية الحسين/ العاصمة", gov: "Amman", type: "Health centerH" },
-				{ id: 242, name: "مركز صحي البصة", gov: "Amman", type: "Health centerH" },
-				{ id: 243, name: "مركز صحي شفا بدران", gov: "Amman", type: "Health centerH" },
-				{ id: 244, name: "مركز صحي النظيف(المريخ)", gov: "Amman", type: "Health centerH" },
-				{ id: 245, name: "مركز صحي الاميرة بسمة (رأس العين) / شامل", gov: "Amman", type: "Health centerH" },
-				{ id: 246, name: "مركز صحي الهاشمي الشمالي", gov: "Amman", type: "Health centerH" },
-				{ id: 247, name: "مركز صحي النزهة", gov: "Amman", type: "Health centerH" },
-				{ id: 248, name: "مركز صحي ام الاسود", gov: "Amman", type: "Health centerH" },
-				{ id: 249, name: "مركز صحي جبل عمان / اولي", gov: "Amman", type: "Health centerH" },
-				{ id: 250, name: "مركز صحي العال", gov: "Amman", type: "Health centerH" },
-				{ id: 251, name: "مركز صحي الربوة_هملان", gov: "Amman", type: "Health centerH" },
-				{ id: 252, name: "مركز صحي الروضة/ العاصمة", gov: "Amman", type: "Health centerH" },
-				{ id: 253, name: "مركز صحي ام البساتين", gov: "Amman", type: "Health centerH" },
-				{ id: 254, name: "مركز صحي ناعور", gov: "Amman", type: "Health centerH" },
-				{ id: 255, name: "مركز صحي النصر", gov: "Amman", type: "Health centerH" },
-				{ id: 256, name: "مركز صحي مرج الحمام", gov: "Amman", type: "Health centerH" },
-				{ id: 257, name: "مركز صحي وادي السير", gov: "Amman", type: "Health centerH" },
-				{ id: 258, name: "مركز صحي عراق الامير", gov: "Amman", type: "Health centerH" },
-				{ id: 259, name: "مركز صحي ام عبهرة", gov: "Amman", type: "Health centerH" },
-				{ id: 260, name: "مركز صحي العودة (أم تينة) / اولي", gov: "Amman", type: "Health centerH" },
-				{ id: 261, name: "مركز صحي حي نزال", gov: "Amman", type: "Health centerH" },
-				{ id: 262, name: "مركز صحي اللويبدة الشرقي / شامل", gov: "Amman", type: "Health centerH" },
-				{ id: 263, name: "مركز صحي التاج / اولي", gov: "Amman", type: "Health centerH" },
-				{ id: 264, name: "مركز صحي المنارة/ العاصمة", gov: "Amman", type: "Health centerH" },
-				{ id: 265, name: "مركز صحي اسكان أبو نصير الشامل التدريبي", gov: "Amman", type: "Health centerH" },
-				{ id: 266, name: "مركز صحي التطوير الحضري ماركا", gov: "Amman", type: "Health centerH" },
-				{ id: 267, name: "مركز صحي أبو أيوب الانصاري (الهلال) / اولي", gov: "Amman", type: "Health centerH" },
+	const governorates = [
+	  'Amman', 'Irbid', 'Zarqa', 'Balqa', 'Karak', 'Ma,an',
+	  'Tafila', 'Jerash', 'Ajloun', 'Madaba', 'Aqaba', 'Mafraq'
+	];
 
+	// بيانات ستأتي من Firebase
+	let hospitals = [];
+	let Departments = [];
+	let doctors = [];
 
-				// Irbid
-				{ id: 268, name: "مركز صحي الحصن", gov: "Irbid", type: "Health centerH" },
-				{ id: 269, name: "مركز صحي الرمثا", gov: "Irbid", type: "Health centerH" },
-				{ id: 270, name: "مركز صحي خرجا", gov: "Irbid", type: "Health centerH" },
-				{ id: 271, name: "مركز صحي سمر", gov: "Irbid", type: "Health centerH" },
-				{ id: 272, name: "مركز صحي حرثا", gov: "Irbid", type: "Health centerH" },
-				{ id: 273, name: "مركز صحي سحم", gov: "Irbid", type: "Health centerH" },
-				{ id: 274, name: "مركز صحي الحمه الأردنية", gov: "Irbid", type: "Health centerH" },
-				{ id: 275, name: "مركز صحي أم قيس", gov: "Irbid", type: "Health centerH" },
-				{ id: 276, name: "مركز صحي اليرموك", gov: "Irbid", type: "Health centerH" },
-				{ id: 277, name: "مركز صحي كفر سوم", gov: "Irbid", type: "Health centerH" },
-				{ id: 278, name: "مركز صحي يبلا", gov: "Irbid", type: "Health centerH" },
-				{ id: 279, name: "مركز صحي أبدر", gov: "Irbid", type: "Health centerH" },
-				{ id: 280, name: "مركز صحي حبراص", gov: "Irbid", type: "Health centerH" },
-				{ id: 281, name: "مركز صحي حريما", gov: "Irbid", type: "Health centerH" },
-				{ id: 282, name: "مركز صحي الرفيد", gov: "Irbid", type: "Health centerH" },
-				{ id: 283, name: "مركز صحي زمال", gov: "Irbid", type: "Health centerH" },
-				{ id: 284, name: "مركز صحي جفين", gov: "Irbid", type: "Health centerH" },
-				{ id: 285, name: "مركز صحي تبنة", gov: "Irbid", type: "Health centerH" },
-				{ id: 286, name: "مركز صحي جنين الصفا", gov: "Irbid", type: "Health centerH" },
-				{ id: 287, name: "مركز صحي جديتا", gov: "Irbid", type: "Health centerH" },
-				{ id: 288, name: "مركز صحي سموع", gov: "Irbid", type: "Health centerH" },
-				{ id: 289, name: "مركز صحي كفر ابيل", gov: "Irbid", type: "Health centerH" },
-				{ id: 290, name: "مركز صحي كفر عوان", gov: "Irbid", type: "Health centerH" },
-				{ id: 291, name: "مركز صحي بيت أيدس", gov: "Irbid", type: "Health centerH" },
-				{ id: 292, name: "مركز صحي كفر راكب", gov: "Irbid", type: "Health centerH" },
-				{ id: 293, name: "مركز صحي الأشرفية/ الكـــورة", gov: "Irbid", type: "Health centerH" },
-				{ id: 294, name: "مركز صحي كفر الماء", gov: "Irbid", type: "Health centerH" },
-				{ id: 295, name: "مركز صحي دير أبي سعيد", gov: "Irbid", type: "Health centerH" },
-				{ id: 296, name: "مركز صحي الرمثا الشامل", gov: "Irbid", type: "Health centerH" },
-				{ id: 297, name: "مركز صحي سهل حوران الشامل", gov: "Irbid", type: "Health centerH" },
-				{ id: 298, name: "مركز صحي الشجرة الحنوبي / اولي", gov: "Irbid", type: "Health centerH" },
-				{ id: 299, name: "مركز صحي الطرة الجنوبي", gov: "Irbid", type: "Health centerH" },
-				{ id: 300, name: "مركز صحي الذنيبة", gov: "Irbid", type: "Health centerH" },
-				{ id: 301, name: "مركز صحي الطرة الشمالي", gov: "Irbid", type: "Health centerH" },
-				{ id: 302, name: "مركز صحي عمراوة", gov: "Irbid", type: "Health centerH" },
-				{ id: 303, name: "مركز صحي البويضة", gov: "Irbid", type: "Health centerH" },
-				{ id: 304, name: "مركز صحي الشجرة", gov: "Irbid", type: "Health centerH" },
-				{ id: 305, name: "مركز صحي الرمثا الشمالي", gov: "Irbid", type: "Health centerH" },
-				{ id: 306, name: "مركز صحي الرمثا الغربي", gov: "Irbid", type: "Health centerH" },
-				{ id: 307, name: "مركز صحي معبر وادي الاردن", gov: "Irbid", type: "Health centerH" },
-				{ id: 308, name: "مركز صحي كريمة", gov: "Irbid", type: "Health centerH" },
-				{ id: 309, name: "مركز صحي ابو سيدو", gov: "Irbid", type: "Health centerH" },
-				{ id: 310, name: "مركز صحي ابو هابيل", gov: "Irbid", type: "Health centerH" },
-				{ id: 311, name: "مركز صحي وادي الريان", gov: "Irbid", type: "Health centerH" },
-				{ id: 312, name: "مركز صحي المشارع", gov: "Irbid", type: "Health centerH" },
-				{ id: 313, name: "مركز صحي المنشية / الاغوار الشمالية", gov: "Irbid", type: "Health centerH" },
-				{ id: 314, name: "مركز صحي الشونة الشمالية", gov: "Irbid", type: "Health centerH" },
-				{ id: 315, name: "مركز صحي وقاص", gov: "Irbid", type: "Health centerH" },
-				{ id: 316, name: "مركز صحي الشيخ حسين", gov: "Irbid", type: "Health centerH" },
-				{ id: 317, name: "مركز صحي اصلاح و تأهيل اربد / اربد", gov: "Irbid", type: "Health centerH" },
-				{ id: 318, name: "مركز صحي تقبل و أم الجدايل", gov: "Irbid", type: "Health centerH" },
-				{ id: 319, name: "مركز صحي التطوير الحضري", gov: "Irbid", type: "Health centerH" },
-				{ id: 320, name: "مركز صحي الطوال", gov: "Irbid", type: "Health centerH" },
-				{ id: 321, name: "مركز صحي جامعة اليرموك", gov: "Irbid", type: "Health centerH" },
-				{ id: 322, name: "مركز صحي الرازي/ اربـــد", gov: "Irbid", type: "Health centerH" },
-				{ id: 323, name: "مركز صحي ججين", gov: "Irbid", type: "Health centerH" },
-				{ id: 324, name: "مركز صحي جحفيه", gov: "Irbid", type: "Health centerH" },
-				{ id: 325, name: "مركز صحي حوفا", gov: "Irbid", type: "Health centerH" },
-				{ id: 326, name: "مركز صحي زحر", gov: "Irbid", type: "Health centerH" },
-				{ id: 327, name: "مركز صحي حوارة اربد", gov: "Irbid", type: "Health centerH" },
-				{ id: 328, name: "مركز صحي شطنا", gov: "Irbid", type: "Health centerH" },
-				{ id: 329, name: "مركز صحي مخربا", gov: "Irbid", type: "Health centerH" },
-				{ id: 330, name: "مركز صحي النعيمة", gov: "Irbid", type: "Health centerH" },
-				{ id: 331, name: "مركز صحي حور", gov: "Irbid", type: "Health centerH" },
-				{ id: 332, name: "مركز صحي زوبيا", gov: "Irbid", type: "Health centerH" },
-				{ id: 333, name: "مركز صحي فوعرا", gov: "Irbid", type: "Health centerH" },
-				{ id: 334, name: "مركز صحي سوم", gov: "Irbid", type: "Health centerH" },
-				{ id: 335, name: "مركز صحي الخراج", gov: "Irbid", type: "Health centerH" },
-				{ id: 336, name: "مركز صحي كفر اسد", gov: "Irbid", type: "Health centerH" },
-				{ id: 337, name: "مركز صحي قميم", gov: "Irbid", type: "Health centerH" },
-				{ id: 338, name: "مركز صحي كفرعان", gov: "Irbid", type: "Health centerH" },
-				{ id: 339, name: "مركز صحي صما", gov: "Irbid", type: "Health centerH" },
-				{ id: 340, name: "مركز صحي الطيبة/ اربـــد", gov: "Irbid", type: "Health centerH" },
-				{ id: 341, name: "مركز صحي دير السعنة", gov: "Irbid", type: "Health centerH" },
-				{ id: 342, name: "مركز صحي بيت يافا", gov: "Irbid", type: "Health centerH" },
-				{ id: 343, name: "مركز صحي كفريوبا", gov: "Irbid", type: "Health centerH" },
-				{ id: 344, name: "مركز صحي عنبة", gov: "Irbid", type: "Health centerH" },
-				{ id: 345, name: "مركز صحي المزار", gov: "Irbid", type: "Health centerH" },
-				{ id: 346, name: "مركز صحي الفاروق", gov: "Irbid", type: "Health centerH" },
-				{ id: 347, name: "مركز صحي ديريوسف", gov: "Irbid", type: "Health centerH" },
-				{ id: 348, name: "مركز صحي ارحابا", gov: "Irbid", type: "Health centerH" },
-				{ id: 349, name: "مركز صحي صمد والزعترة", gov: "Irbid", type: "Health centerH" },
-				{ id: 350, name: "مركز صحي حبكا", gov: "Irbid", type: "Health centerH" },
-				{ id: 351, name: "مركز صحي ايدون", gov: "Irbid", type: "Health centerH" },
-				{ id: 352, name: "مركز صحي كتم", gov: "Irbid", type: "Health centerH" },
-				{ id: 353, name: "مركز صحي الصريح", gov: "Irbid", type: "Health centerH" },
-				{ id: 354, name: "مركز صحي كفرجايز", gov: "Irbid", type: "Health centerH" },
-				{ id: 355, name: "مركز صحي بشرى", gov: "Irbid", type: "Health centerH" },
-				{ id: 356, name: "مركز صحي المغير", gov: "Irbid", type: "Health centerH" },
-				{ id: 357, name: "مركز صحي سال", gov: "Irbid", type: "Health centerH" },
-				{ id: 358, name: "مركز صحي بيت راس", gov: "Irbid", type: "Health centerH" },
-				{ id: 359, name: "مركز صحي علعال", gov: "Irbid", type: "Health centerH" },
-				{ id: 360, name: "مركز صحي حكما", gov: "Irbid", type: "Health centerH" },
-				{ id: 361, name: "مركز صحي الزهراوي", gov: "Irbid", type: "Health centerH" },
-				{ id: 362, name: "مركز صحي حنينا/ اربـــد", gov: "Irbid", type: "Health centerH" },
-				{ id: 363, name: "مركز صحي بيت يافا", gov: "Irbid", type: "Health centerH" },
+	// إذا تم تحميل بيانات Firebase من سكربت آخر
+	window.addEventListener("firebaseDataReady", () => {
+	  hospitals = window.firebaseHospitals || [];
+	  Departments = window.firebaseDepartments || [];
+	  doctors = window.firebaseDoctors || [];
+	  console.log("🔥 Firebase data ready", {
+		hospitals: hospitals.length,
+		departments: Departments.length,
+		doctors: doctors.length
+	  });
+	});
 
+	// -------------------------------
+	// Booking status
+	// -------------------------------
+	let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
 
-				// Jerash
-				{ id: 364, name: "مركز صحي دير الليات", gov: "Jerash", type: "Health centerH" },
-				{ id: 365, name: "مركز صحي كفر خل", gov: "Jerash", type: "Health centerH" },
-				{ id: 366, name: "مركز صحي جبة", gov: "Jerash", type: "Health centerH" },
-				{ id: 367, name: "مركز صحي المصطبة", gov: "Jerash", type: "Health centerH" },
-				{ id: 368, name: "مركز صحي بليلا", gov: "Jerash", type: "Health centerH" },
-				{ id: 369, name: "مركز صحي قفقفا", gov: "Jerash", type: "Health centerH" },
-				{ id: 370, name: "مركز صحي برما", gov: "Jerash", type: "Health centerH" },
-				{ id: 371, name: "مركز صحي الرازي/ جرش", gov: "Jerash", type: "Health centerH" },
-				{ id: 372, name: "مركز صحي ساكب", gov: "Jerash", type: "Health centerH" },
-				{ id: 373, name: "مركز صحي سوف", gov: "Jerash", type: "Health centerH" },
-				{ id: 374, name: "مركز صحي جرش", gov: "Jerash", type: "Health centerH" },
+	let bookingState = {
+	  currentStep: 1,
+	  gov: null,
+	  facilityType: null,
+	  hospital: null,
+	  department: null,
+	  hasInsurance: null,
+	  insuranceDetails: null,
+	  doctor: null,
+	  date: null,
+	  time: null,
+	  price: null,
+	  customer: { name: null, email: null, phone: null, note: null }
+	};
 
-				// Ajloun
-				{ id: 375, name: "مركز صحي الأمير هاشم", gov: "Ajloun", type: "Health centerH" },
-				{ id: 376, name: "مركز صحي عنجرة", gov: "Ajloun", type: "Health centerH" },
-				{ id: 377, name: "مركز صحي عجلون", gov: "Ajloun", type: "Health centerH" },
-				{ id: 378, name: "مركز صحي الهاشمية", gov: "Ajloun", type: "Health centerH" },
-				{ id: 379, name: "مركز صحي دير الصماديه", gov: "Ajloun", type: "Health centerH" },
-				{ id: 380, name: "مركز صحي اشتفينا", gov: "Ajloun", type: "Health centerH" },
-				{ id: 381, name: "مركز صحي ديرينة", gov: "Ajloun", type: "Health centerH" },
-				{ id: 382, name: "مركز صحي الروابي", gov: "Ajloun", type: "Health centerH" },
-				{ id: 383, name: "مركز صحي المرجم", gov: "Ajloun", type: "Health centerH" },
-				{ id: 384, name: "مركز صحي صخر", gov: "Ajloun", type: "Health centerH" },
-				{ id: 385, name: "مركز صحي راس منيف (عفنا)", gov: "Ajloun", type: "Health centerH" },
-				{ id: 386, name: "مركز صحي الصفا الجديد (الجبل الاخضر)", gov: "Ajloun", type: "Health centerH" },
-				{ id: 387, name: "مركز صحي اوصرة", gov: "Ajloun", type: "Health centerH" },
-				{ id: 388, name: "مركز صحي حلاوة", gov: "Ajloun", type: "Health centerH" },
-				{ id: 389, name: "مركز صحي باعون", gov: "Ajloun", type: "Health centerH" },
-				{ id: 390, name: "مركز صحي راسون", gov: "Ajloun", type: "Health centerH" },
-				{ id: 391, name: "مركز صحي راجب", gov: "Ajloun", type: "Health centerH" },
-				{ id: 392, name: "مركز صحي الوهادنة", gov: "Ajloun", type: "Health centerH" },
-				{ id: 393, name: "مركز صحي عرجان", gov: "Ajloun", type: "Health centerH" },
-				{ id: 394, name: "مركز صحي عين جنا", gov: "Ajloun", type: "Health centerH" },
-				{ id: 395, name: "مركز صحي الهاشمية / عجلون", gov: "Ajloun", type: "Health centerH" },
-				{ id: 396, name: "مركز صحي صخر", gov: "Ajloun", type: "Health centerH" },
-				{ id: 397, name: "مركز صحي وادي الطواحين", gov: "Ajloun", type: "Health centerH" },
+	const maxStep = 9;
 
-				// Balqa
-				{ id: 398, name: "مركز صحي الجوفه", gov: "Balqa", type: "Health centerH" },
-				{ id: 399, name: "مركز صحي الشونة الجنوبية", gov: "Balqa", type: "Health centerH" },
-				{ id: 400, name: "مركز صحي مثلث العارضة", gov: "Balqa", type: "Health centerH" },
-				{ id: 401, name: "مركز امومة وطفولة الريادي لخدمات الرعاية الصحية", gov: "Balqa", type: "Health centerH" },
-				{ id: 402, name: "مركز صحي ام عياش", gov: "Balqa", type: "Health centerH" },
-				{ id: 403, name: "مركز صحي ميسرة و فتوش", gov: "Balqa", type: "Health centerH" },
-				{ id: 404, name: "مركز صحي ظهرة الرملة", gov: "Balqa", type: "Health centerH" },
-				{ id: 405, name: "مركز صحي تل المنطح", gov: "Balqa", type: "Health centerH" },
-				{ id: 406, name: "مركز صحي داميا", gov: "Balqa", type: "Health centerH" },
-				{ id: 407, name: "مركز صحي ابو الزيغان/ ديــر عـلا", gov: "Balqa", type: "Health centerH" },
-				{ id: 408, name: "مركز صحي الرويحة", gov: "Balqa", type: "Health centerH" },
-				{ id: 409, name: "مركز صحي الروضة", gov: "Balqa", type: "Health centerH" },
-				{ id: 410, name: "مركز صحي معدي", gov: "Balqa", type: "Health centerH" },
-				{ id: 411, name: "مركز صحي ضرار بن الازور", gov: "Balqa", type: "Health centerH" },
-				{ id: 412, name: "مركز صحي العارضة/ الشمالية", gov: "Balqa", type: "Health centerH" },
-				{ id: 413, name: "مركز صحي القبلان", gov: "Balqa", type: "Health centerH" },
-				{ id: 414, name: "مركز صحي ام الدنانير", gov: "Balqa", type: "Health centerH" },
-				{ id: 415, name: "مركز صحي موبص", gov: "Balqa", type: "Health centerH" },
-				{ id: 416, name: "مركز صحي السحلولية", gov: "Balqa", type: "Health centerH" },
-				{ id: 417, name: "مركز صحي ام انجاصة", gov: "Balqa", type: "Health centerH" },
-				{ id: 418, name: "مركز صحي سيحان", gov: "Balqa", type: "Health centerH" },
-				{ id: 419, name: "مركز صحي زي", gov: "Balqa", type: "Health centerH" },
-				{ id: 420, name: "مركز صحي السليحي", gov: "Balqa", type: "Health centerH" },
-				{ id: 421, name: "مركز صحي بيوضة الشرقية", gov: "Balqa", type: "Health centerH" },
-				{ id: 422, name: "مركز صحي علان", gov: "Balqa", type: "Health centerH" },
-				{ id: 423, name: "مركز صحي الصبيحي", gov: "Balqa", type: "Health centerH" },
-				{ id: 424, name: "مركز صحي صافوط", gov: "Balqa", type: "Health centerH" },
-				{ id: 425, name: "مركز صحي البصة", gov: "Balqa", type: "Health centerH" },
-				{ id: 426, name: "مركز صحي الباكورة", gov: "Balqa", type: "Health centerH" },
-				{ id: 427, name: "مركز صحي عيرا", gov: "Balqa", type: "Health centerH" },
-				{ id: 428, name: "مركز صحي الرميمين", gov: "Balqa", type: "Health centerH" },
-				{ id: 429, name: "مركز صحي الفحيص", gov: "Balqa", type: "Health centerH" },
-				{ id: 430, name: "مركز صحي الرميمين الغربي", gov: "Balqa", type: "Health centerH" },
-				{ id: 431, name: "مركز صحي ماحص", gov: "Balqa", type: "Health centerH" },
-				{ id: 432, name: "مركز صحي ام جوزة", gov: "Balqa", type: "Health centerH" },
-				{ id: 433, name: "مركز صحي البحيرة", gov: "Balqa", type: "Health centerH" },
-				{ id: 434, name: "مركز صحي الشونة الجنوبية", gov: "Balqa", type: "Health centerH" },
-				{ id: 435, name: "مركز صحي البقعة", gov: "Balqa", type: "Health centerH" },
-				{ id: 436, name: "مركز صحي البلقاء الشامل", gov: "Balqa", type: "Health centerH" },
-				{ id: 437, name: "مركز صحي التطوير الحضري/ السلط", gov: "Balqa", type: "Health centerH" },
-				{ id: 438, name: "مركز صحي السلالم/ السلط", gov: "Balqa", type: "Health centerH" },
-				{ id: 439, name: "مركز صحي عين الباشا الشامل", gov: "Balqa", type: "Health centerH" },
-				{ id: 440, name: "مركز صحي زي", gov: "Balqa", type: "Health centerH" },
-				{ id: 441, name: "مركز صحي زي", gov: "Balqa", type: "Health centerH" },
-				{ id: 442, name: "مركز صحي الروضة", gov: "Balqa", type: "Health centerH" },
-				{ id: 443, name: "مركز صحي معدي", gov: "Balqa", type: "Health centerH" },
-				{ id: 444, name: "مركز صحي ضرار بن الازور", gov: "Balqa", type: "Health centerH" },
-				{ id: 445, name: "مركز صحي العارضة/ الشمالية", gov: "Balqa", type: "Health centerH" },
-				{ id: 446, name: "مركز صحي القبلان", gov: "Balqa", type: "Health centerH" },
-				// Karak 
-				{ id: 447, name: "مركز صحي الموجب", gov: "Karak", type: "Health centerH" },
-				{ id: 448, name: "مركز صحي غور المزرعة", gov: "Karak", type: "Health centerH" },
-				{ id: 449, name: "مركز صحي غور فيفا", gov: "Karak", type: "Health centerH" },
-				{ id: 450, name: "مركز صحي عي", gov: "Karak", type: "Health centerH" },
-				{ id: 451, name: "مركز صحي الصافي", gov: "Karak", type: "Health centerH" },
-				{ id: 452, name: "مركز صحي فقوع", gov: "Karak", type: "Health centerH" },
-				{ id: 453, name: "مركز صحي ام الحيران", gov: "Karak", type: "Health centerH" },
-				{ id: 454, name: "مركز صحي الكرك الشامل", gov: "Karak", type: "Health centerH" },
-				{ id: 455, name: "مركز صحي المزار الجنوبي", gov: "Karak", type: "Health centerH" },
-				{ id: 456, name: "مركز صحي مؤتة", gov: "Karak", type: "Health centerH" },
-				{ id: 457, name: "مركز صحي ذات راس", gov: "Karak", type: "Health centerH" },
-				{ id: 458, name: "مركز صحي منشية ابو حمور", gov: "Karak", type: "Health centerH" },
-				{ id: 459, name: "مركز صحي ادر", gov: "Karak", type: "Health centerH" },
-				{ id: 460, name: "مركز صحي العدنانية", gov: "Karak", type: "Health centerH" },
-				{ id: 461, name: "مركز صحي صرفا", gov: "Karak", type: "Health centerH" },
-				{ id: 462, name: "مركز صحي الربة", gov: "Karak", type: "Health centerH" },
-				{ id: 463, name: "مركز صحي الحسينية", gov: "Karak", type: "Health centerH" },
+	// -------------------------------
+	// Helper Functions
+	// -------------------------------
+	function escapeHtml(str) {
+	  if (!str && str !== 0) return '';
+	  return String(str)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+	}
 
-				// Tafila
-				{ id: 464, name: "مركز صحي الطفيلة", gov: "Tafila", type: "Health centerH" },
-				{ id: 465, name: "مركز صحي عيمة", gov: "Tafila", type: "Health centerH" },
-				{ id: 466, name: "مركز صحي العيص", gov: "Tafila", type: "Health centerH" },
-				{ id: 467, name: "مركز صحي غرندل", gov: "Tafila", type: "Health centerH" },
-				{ id: 468, name: "مركز صحي القادسية", gov: "Tafila", type: "Health centerH" },
-				{ id: 469, name: "مركز صحي عين البيضاء", gov: "Tafila", type: "Health centerH" },
-				{ id: 470, name: "مركز صحي بصيرا", gov: "Tafila", type: "Health centerH" },
-				{ id: 471, name: "مركز صحي الرشادية", gov: "Tafila", type: "Health centerH" },
-				{ id: 472, name: "مركز صحي ارويم", gov: "Tafila", type: "Health centerH" },
-				{ id: 473, name: "مركز صحي الحسا", gov: "Tafila", type: "Health centerH" },
-				{ id: 474, name: "مركز صحي القادسية", gov: "Tafila", type: "Health centerH" },
-				{ id: 475, name: "مركز صحي التطوير الحضري/ الطفيلة", gov: "Tafila", type: "Health centerH" },
+	// -------------------------------
+	// Main Navigation Functions
+	// -------------------------------
+	function showStep(n) {
+	  document.querySelectorAll('#stepsArea .step-block').forEach(el => el.classList.add('d-none'));
+	  const el = document.getElementById('step-' + n);
+	  if (el) el.classList.remove('d-none');
 
-				// Ma,an
-				{ id: 476, name: "مركز صحي الشوبك", gov: "Ma,an", type: "خدمات طبية ملكية" },
-				{ id: 477, name: "خدمات طبية ملكية مركز طبي معان", gov: "Ma,an", type: "خدمات طبية ملكية" },
-				{ id: 478, name: "مركز صحي الثغرة", gov: "Ma,an", type: "Health centerH" },
-				{ id: 479, name: "مركز صحي الاستقلال", gov: "Ma,an", type: "Health centerH" },
-				{ id: 480, name: "مركز صحي الشراه", gov: "Ma,an", type: "Health centerH" },
-				{ id: 481, name: "مركز صحي المدورة الجديد", gov: "Ma,an", type: "Health centerH" },
-				{ id: 482, name: "مركز صحي معان الغربي", gov: "Ma,an", type: "Health centerH" },
-				{ id: 483, name: "مركز صحي سمو الاميرة رحمة بنت الحسن", gov: "Ma,an", type: "Health centerH" },
-				{ id: 484, name: "مركز صحي (مضيبيع) الفيصلية", gov: "Ma,an", type: "Health centerH" },
-				{ id: 485, name: "مركز صحي المدورة", gov: "Ma,an", type: "Health centerH" },
-				{ id: 486, name: "مركز صحي الاصلاح والتاهيل معان", gov: "Ma,an", type: "Health centerH" },
-				{ id: 487, name: "مركز صحي قضاء ايل", gov: "Ma,an", type: "Health centerH" },
-				{ id: 488, name: "مركز صحي الراجف", gov: "Ma,an", type: "Health centerH" },
-				{ id: 489, name: "مركز صحي الطيبة", gov: "Ma,an", type: "Health centerH" },
-				{ id: 490, name: "مركز صحي الحسينية", gov: "Ma,an", type: "Health centerH" },
-				{ id: 491, name: "مركز صحي اذرح", gov: "Ma,an", type: "Health centerH" },
-				{ id: 492, name: "مركز صحي قضاء الجفر", gov: "Ma,an", type: "Health centerH" },
-				{ id: 493, name: "مركز صحي وادي موسى", gov: "Ma,an", type: "Health centerH" },
-				{ id: 494, name: "مركز صحي العمرة/ معان", gov: "Ma,an", type: "Health centerH" },
-				{ id: 495, name: "مركز صحي العبدلية/ معان", gov: "Ma,an", type: "Health centerH" },
-				{ id: 496, name: "مركز صحي الجهير", gov: "Ma,an", type: "Health centerH" },
-				{ id: 497, name: "مركز صحي مثلث الشوبك", gov: "Ma,an", type: "Health centerH" },
-				{ id: 498, name: "مركز صحي الشوبك", gov: "Ma,an", type: "Health centerH" },
-				{ id: 499, name: "مركز صحي المنشية / معان", gov: "Ma,an", type: "Health centerH" },
-				{ id: 500, name: "مركز صحي معان", gov: "Ma,an", type: "Health centerH" },
+	  bookingState.currentStep = n;
+	  updateStepPills();
+	  updateNavButtons();
 
-				// Aqaba
-				{ id: 501, name: "مركز صحي الديسة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 502, name: "مركز صحي الراشدية", gov: "Aqaba", type: "Health centerH" },
-				{ id: 503, name: "مركز صحي القويرة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 504, name: "مركز صحي الصالحية", gov: "Aqaba", type: "Health centerH" },
-				{ id: 505, name: "مركز صحي الريشة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 506, name: "مركز صحي اليرموك", gov: "Aqaba", type: "Health centerH" },
-				{ id: 507, name: "مركز صحي القويرة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 508, name: "مركز صحي الخزان", gov: "Aqaba", type: "Health centerH" },
-				{ id: 509, name: "مركز صحي الشامية", gov: "Aqaba", type: "Health centerH" },
-				{ id: 510, name: "مركز صحي الكرامة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 511, name: "مركز صحي فينان / فرعي", gov: "Aqaba", type: "Health centerH" },
-				{ id: 512, name: "مركز صحي البلدة القديمة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 513, name: "مركز صحي السجن", gov: "Aqaba", type: "Health centerH" },
-				{ id: 514, name: "مركز صحي الاميرة بسمة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 515, name: "مركز صحي منيشير", gov: "Aqaba", type: "Health centerH" },
-				{ id: 516, name: "مركز صحي رم", gov: "Aqaba", type: "Health centerH" },
-				{ id: 517, name: "مركز صحي القريقرة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 518, name: "مركز صحي الخزان", gov: "Aqaba", type: "Health centerH" },
-				{ id: 519, name: "مركز صحي الغال", gov: "Aqaba", type: "Health centerH" },
-				{ id: 520, name: "مركز صحي دبة حانوت", gov: "Aqaba", type: "Health centerH" },
-				{ id: 521, name: "مركز صحي الحميمة", gov: "Aqaba", type: "Health centerH" },
-				{ id: 522, name: "مركز صحي الطويل", gov: "Aqaba", type: "Health centerH" },
+	  if (n === 4 && bookingState.hospital) renderDepartments();
+	  if (n === 7 && bookingState.department) renderDoctors();
+	  if (n === 8 && bookingState.doctor) {
+		autoFillToday();
+		loadTimeSlotsForSelectedDate();
+	  }
+	  if (n === 9 && bookingState.time) updateSummaryCard();
+	}
 
-				// Zarqa
-				{ id: 523, name: "مركز صحي الزرقاء الشامل", gov: "Zarqa", type: "Health centerH" },
-				{ id: 524, name: "مركز صحي الرصيفة الشامل", gov: "Zarqa", type: "Health centerH" },
-				{ id: 525, name: "مركز صحي الهاشمية", gov: "Zarqa", type: "Health centerH" },
-				{ id: 526, name: "مركز صحي الضليل", gov: "Zarqa", type: "Health centerH" },
-				{ id: 527, name: "مركز صحي السخنة", gov: "Zarqa", type: "Health centerH" },
-				{ id: 528, name: "مركز صحي بيرين", gov: "Zarqa", type: "Health centerH" },
-				{ id: 529, name: "مركز صحي الغويرية", gov: "Zarqa", type: "Health centerH" },
-				{ id: 530, name: "مركز صحي جناعة", gov: "Zarqa", type: "Health centerH" },
-				{ id: 531, name: "مركز صحي الأزرق الشامل", gov: "Zarqa", type: "Health centerH" },
-				{ id: 532, name: "مركز صحي قضاء الضليل", gov: "Zarqa", type: "Health centerH" },
-				{ id: 533, name: "مركز صحي جبل طارق", gov: "Zarqa", type: "Health centerH" },
-				{ id: 534, name: "مركز صحي وادي الحجر", gov: "Zarqa", type: "Health centerH" },
-				{ id: 535, name: "مركز صحي القنية", gov: "Zarqa", type: "Health centerH" },
+	function updateStepPills() {
+	  document.querySelectorAll('.step-pill').forEach(p => {
+		const stepNum = Number(p.dataset.step);
+		p.classList.remove('active', 'text-success');
+		if (stepNum === bookingState.currentStep) p.classList.add('active');
+		if (stepNum < bookingState.currentStep) p.classList.add('text-success');
+	  });
+	}
 
-				// Mafraq
-				{ id: 536, name: "مركز صحي المفرق الشامل", gov: "Mafraq", type: "Health centerH" },
-				{ id: 537, name: "مركز صحي البادية الشمالية", gov: "Mafraq", type: "Health centerH" },
-				{ id: 538, name: "مركز صحي بلعما", gov: "Mafraq", type: "Health centerH" },
-				{ id: 539, name: "مركز صحي منشية بني حسن", gov: "Mafraq", type: "Health centerH" },
-				{ id: 540, name: "مركز صحي الزعتري", gov: "Mafraq", type: "Health centerH" },
-				{ id: 541, name: "مركز صحي الخالدية", gov: "Mafraq", type: "Health centerH" },
-				{ id: 542, name: "مركز صحي صبحا وصبحية", gov: "Mafraq", type: "Health centerH" },
-				{ id: 543, name: "مركز صحي ام الجمال", gov: "Mafraq", type: "Health centerH" },
-				{ id: 544, name: "مركز صحي الرويشد", gov: "Mafraq", type: "Health centerH" },
-				{ id: 545, name: "مركز صحي الصالحية", gov: "Mafraq", type: "Health centerH" },
-				{ id: 546, name: "مركز صحي حويجة", gov: "Mafraq", type: "Health centerH" },
-				{ id: 547, name: "مركز صحي منشية القريات", gov: "Mafraq", type: "Health centerH" },
-				{ id: 548, name: "مركز صحي ايدون بني حسن", gov: "Mafraq", type: "Health centerH" },
-				{ id: 549, name: "مركز صحي الدجنية", gov: "Mafraq", type: "Health centerH" },
+	function updateNavButtons() {
+	  const prevBtn = document.getElementById('prevBtn');
+	  const nextBtn = document.getElementById('nextBtn');
+	  if (!prevBtn || !nextBtn) return;
 
-				// Madaba
-				{ id: 550, name: "مركز صحي الفيحاء", gov: "Madaba", type: "Health centerH" },
-				{ id: 551, name: "مركز صحي الهيدان", gov: "Madaba", type: "Health centerH" },
-				{ id: 552, name: "مركز صحي ادر", gov: "Madaba", type: "Health centerH" },
-				{ id: 553, name: "مركز صحي الوالة", gov: "Madaba", type: "Health centerH" },
-				{ id: 554, name: "مركز صحي ارحاب", gov: "Madaba", type: "Health centerH" },
-				{ id: 555, name: "مركز صحي حنينا", gov: "Madaba", type: "Health centerH" },
-				{ id: 556, name: "مركز صحي المريجمة", gov: "Madaba", type: "Health centerH" },
-				{ id: 557, name: "مركز صحي عيون الذيب", gov: "Madaba", type: "Health centerH" },
-				{ id: 558, name: "مركز صحي المأمونية الشرقية", gov: "Madaba", type: "Health centerH" },
-				{ id: 559, name: "مركز صحي جبل نيبو", gov: "Madaba", type: "Health centerH" },
-				{ id: 560, name: "مركز صحي مادبا الشامل", gov: "Madaba", type: "Health centerH" },
-				{ id: 561, name: "مركز صحي التطوير الحضري / مادبا", gov: "Madaba", type: "Health centerH" },
-			]
+	  prevBtn.disabled = bookingState.currentStep === 1;
+	  nextBtn.innerHTML =
+		bookingState.currentStep === maxStep
+		  ? '<i class="fas fa-check me-2"></i> Booking confirmation'
+		  : '<i class="fas fa-arrow-left me-2"></i> the next';
+	  prevBtn.innerHTML =
+		'<i class="fas fa-arrow-right me-2"></i> the previous';
+	}
 
-			const militaryHealthCenters = [
-			  // Amman
-			  { id: 562, name: "مدينة الحسين الطبية", gov: "Amman", type: "militaryH" },
-			  { id: 563, name: "مستشفى الحسين", gov: "Amman", type: "militaryH" },
-			  { id: 564, name: "مركز الملكة علياء لأمراض وجراحة القلب", gov: "Amman", type: "militaryH" },
-			  { id: 565, name: "مركز التأهيل الملكي", gov: "Amman", type: "militaryH" },
-			  { id: 566, name: "مركز الأمير حسين بن عبدالله لأمراض وجراحة الكلى وزراعة الأعضاء", gov: "Amman", type: "militaryH" },
-			  { id: 567, name: "مركز الأميرة إيمان بنت عبدالله الثاني للأبحاث والعلوم المخبرية", gov: "Amman", type: "militaryH" },
-			  { id: 568, name: "مستشفى الملكة علياء العسكري", gov: "Amman", type: "militaryH" },
-			  { id: 574, name: "مركز الرعاية النفسية", gov: "Amman", type: "militaryH" },
-			  // Irbid
-			  { id: 569, name: "مستشفى الأمير راشد بن الحسن", gov: "Irbid", type: "militaryH" },
-			  // Zarqa
-			  { id: 570, name: "مستشفى الأمير هاشم بن الحسين", gov: "Zarqa", type: "militaryH" },
-			  // Aqaba
-			  { id: 571, name: "مستشفى الأميرة هيا بنت الحسين", gov: "Aqaba", type: "militaryH" },
-			  // Karak
-			  { id: 572, name: "مستشفى الأمير علي بن الحسين", gov: "Karak", type: "militaryH" },
-			  // Tafila
-			  { id: 573, name: "مستشفى الأمير زيد بن الحسين", gov: "Tafila", type: "militaryH" }
-			];
-		const hospitals = [...governmentalHospitals, ...privateHospitals,...healthCenters,...militaryHealthCenters];
-			//Distribution of departments across hospitals	         7
-			const governmentaldepartments = [
-			  {id:1, title:'قسم العظام', basePrice:40, icon:'fas fa-bone', type:'governmental'},
-			  {id:2, title:'الباطنية', basePrice:35, icon:'fas fa-stethoscope', type:'governmental'},
-			  {id:3, title:'القلب', basePrice:60, icon:'fas fa-heartbeat', type:'governmental'},
-			  {id:4, title:'الجراحة العامة', basePrice:70, icon:'fas fa-cut', type:'governmental'},
-			  {id:5, title:'النساء والولادة', basePrice:50, icon:'fas fa-baby', type:'governmental'},
-			  {id:6, title:'عيادة الأطفال', basePrice:30, icon:'fas fa-child', type:'governmental'},
-			  {id:7, title:'طب الأسنان', basePrice:30, icon:'fas fa-tooth', type:'governmental'},
-			  {id:8, title:'التحاليل المخبرية', basePrice:25, icon:'fas fa-vials', type:'governmental'},
-			  {id:9, title:'الأشعة', basePrice:40, icon:'fas fa-x-ray', type:'governmental'},
-			  {id:10, title:'الصيدلية', basePrice:20, icon:'fas fa-pills', type:'governmental'},
-			  {id:11, title:'الأمراض المزمنة', basePrice:35, icon:'fas fa-thermometer-half', type:'governmental'},
-			  {id:12, title:'الصحة النفسية', basePrice:30, icon:'fas fa-brain', type:'governmental'}
-			];
-		
-			const militaryDepartments = [
-			  {id:1, title:'طوارئ', basePrice:70, icon:'fas fa-ambulance', type:'militaryH'},
-			  {id:2, title:'باطنية', basePrice:50, icon:'fas fa-stethoscope', type:'militaryH'},
-			  {id:3, title:'جراحة', basePrice:80, icon:'fas fa-cut', type:'militaryH'},
-			  {id:4, title:'أطفال', basePrice:45, icon:'fas fa-child', type:'militaryH'},
-			  {id:5, title:'نساء وتوليد', basePrice:60, icon:'fas fa-baby', type:'militaryH'},
-			  {id:6, title:'أشعة', basePrice:55, icon:'fas fa-x-ray', type:'militaryH'},
-			  {id:7, title:'مختبرات', basePrice:50, icon:'fas fa-vials', type:'militaryH'},
-			  {id:8, title:'صيدلية', basePrice:35, icon:'fas fa-pills', type:'militaryH'},
-			  {id:9, title:'تخدير', basePrice:65, icon:'fas fa-procedures', type:'militaryH'},
-			  {id:10, title:'ICU / العناية المركزة', basePrice:90, icon:'fas fa-procedures', type:'militaryH'},
-			  {id:11, title:'إعادة تأهيل (Physical Therapy)', basePrice:60, icon:'fas fa-wheelchair', type:'militaryH'}
-			];
-			
-			const healthCenterDepartments = [
-			  {id:1, title:'عيادة باطنية / عامة', basePrice:30, icon:'fas fa-stethoscope', type:'مركز صحي '},
-			  {id:2, title:'عيادة أطفال', basePrice:30, icon:'fas fa-child', type:'مركز صحي'},
-			  {id:3, title:'عيادة نساء وتوليد', basePrice:35, icon:'fas fa-baby', type:'مركز صحي'},
-			  {id:4, title:'عيادة أسنان', basePrice:25, icon:'fas fa-tooth', type:'مركز صحي'},
-			  {id:5, title:'عيادة وقاية / تطعيمات', basePrice:20, icon:'fas fa-syringe', type:'مركز صحي'},
-			  {id:6, title:'تحاليل مخبرية بسيطة', basePrice:25, icon:'fas fa-vials', type:'مركز صحي'},
-			  {id:7, title:'أشعة بسيطة', basePrice:30, icon:'fas fa-x-ray', type:'مركز صحي'},
-			  {id:8, title:'صيدلية', basePrice:15, icon:'fas fa-pills', type:'مركز صحي'},
-			  {id:9, title:'عيادة أمراض مزمنة', basePrice:35, icon:'fas fa-heartbeat', type:'مركز صحي'},
-			  {id:10, title:'عيادة الصحة النفسية الأساسية', basePrice:30, icon:'fas fa-brain', type:'مركز صحي'}
-			];
-			
-			const privateHospitalsDepartments = [
-			  { id: 1, title: 'طوارئ', basePrice: 50, icon: 'fas fa-ambulance', type: 'privateH' },
-			  { id: 2, title: 'باطنية', basePrice: 40, icon: 'fas fa-stethoscope', type: 'privateH' },
-			  { id: 3, title: 'جراحة عامة', basePrice: 60, icon: 'fas fa-cut', type: 'privateH' },
-			  { id: 4, title: 'أطفال', basePrice: 45, icon: 'fas fa-baby', type: 'privateH' },
-			  { id: 5, title: 'نساء وتوليد', basePrice: 50, icon: 'fas fa-female', type: 'privateH' },
-			  { id: 6, title: 'أشعة', basePrice: 30, icon: 'fas fa-x-ray', type: 'privateH' },
-			  { id: 7, title: 'مختبرات', basePrice: 25, icon: 'fas fa-vials', type: 'privateH' },
-			  { id: 8, title: 'صيدلية', basePrice: 20, icon: 'fas fa-pills', type: 'privateH' },
-			  { id: 9, title: 'تخدير', basePrice: 35, icon: 'fas fa-procedures', type: 'privateH' },
-			  { id: 10, title: 'ICU / العناية المركزة', basePrice: 80, icon: 'fas fa-procedures', type: 'privateH' },
-			  { id: 11, title: 'إعادة تأهيل (Physical Therapy)', basePrice: 40, icon: 'fas fa-dumbbell', type: 'privateH' }
-			];
-		const Departments = [...governmentaldepartments, ...privateHospitalsDepartments,...healthCenterDepartments,...militaryDepartments];
+	// -------------------------------
+	// Display and Logic Functions
+	// -------------------------------
+	function renderGovernorates() {
+	  const container = document.getElementById('govList');
+	  if (!container) return;
+	  container.innerHTML = '';
 
-		const doctors = [
-		  // حكومي
-		  {id:101, name:'د. سليم العلي', hospital_id:1, dept_id:1, slotDuration:30},
-		  {id:102, name:'د. منال الخطيب', hospital_id:1, dept_id:1, slotDuration:20},
-		  {id:103, name:'د. هالة مراد', hospital_id:1, dept_id:2, slotDuration:30},
-		  {id:104, name:'د. رائد الشوابكة', hospital_id:1, dept_id:2, slotDuration:25},
-		  {id:105, name:'د. ليلى أبو غوش', hospital_id:1, dept_id:3, slotDuration:20},
-		  {id:106, name:'د. خالد الياسين', hospital_id:1, dept_id:3, slotDuration:30},
-		  {id:107, name:'د. ريم الحسيني', hospital_id:1, dept_id:4, slotDuration:20},
-		  {id:108, name:'د. طارق أبو حسين', hospital_id:1, dept_id:4, slotDuration:25},
-		  {id:109, name:'د. سارة العتيبي', hospital_id:1, dept_id:5, slotDuration:30},
-		  {id:110, name:'د. أحمد الجبالي', hospital_id:1, dept_id:5, slotDuration:20},
-		  {id:111, name:'د. فاطمة السالم', hospital_id:1, dept_id:6, slotDuration:30},
-		  {id:112, name:'د. يوسف ناصر', hospital_id:1, dept_id:6, slotDuration:25},
-		  {id:113, name:'د. ندى شريف', hospital_id:1, dept_id:7, slotDuration:30},
-		  {id:114, name:'د. عماد الزهراني', hospital_id:1, dept_id:7, slotDuration:20},
-		  {id:115, name:'د. ليان خالد', hospital_id:1, dept_id:8, slotDuration:25},
-		  {id:116, name:'د. مازن الحسن', hospital_id:1, dept_id:8, slotDuration:30},
-		  {id:117, name:'د. هناء مصطفى', hospital_id:1, dept_id:9, slotDuration:20},
-		  {id:118, name:'د. طلال أبو ريان', hospital_id:1, dept_id:9, slotDuration:30},
-		  {id:119, name:'د. سلمى حامد', hospital_id:1, dept_id:10, slotDuration:25},
-		  {id:120, name:'د. ناصر يوسف', hospital_id:1, dept_id:10, slotDuration:30},
-		  {id:121, name:'د. مها عابدين', hospital_id:1, dept_id:11, slotDuration:20},
-		  {id:122, name:'د. وليد سليم', hospital_id:1, dept_id:11, slotDuration:30},
-		  {id:123, name:'د. غادة رامي', hospital_id:1, dept_id:12, slotDuration:25},
-		  {id:124, name:'د. عمار فوزي', hospital_id:1, dept_id:12, slotDuration:30},
-		]
-		// العسكري
-		doctors.push(
-		  {id:125, name:'د. مازن الحمود', hospital_id:2, dept_id:1, slotDuration:30},
-		  {id:126, name:'د. رنا الخالدي', hospital_id:2, dept_id:1, slotDuration:25},
-		  {id:127, name:'د. سامي المراشدة', hospital_id:2, dept_id:2, slotDuration:30},
-		  {id:128, name:'د. هدى القيسي', hospital_id:2, dept_id:2, slotDuration:20},
-		  {id:129, name:'د. طلال السعد', hospital_id:2, dept_id:3, slotDuration:25},
-		  {id:130, name:'د. سارة الكيلاني', hospital_id:2, dept_id:3, slotDuration:30},
-		  {id:131, name:'د. ريم فريحات', hospital_id:2, dept_id:4, slotDuration:20},
-		  {id:132, name:'د. خالد الزعبي', hospital_id:2, dept_id:4, slotDuration:30},
-		  {id:133, name:'د. هالة صباغ', hospital_id:2, dept_id:5, slotDuration:25},
-		  {id:134, name:'د. يوسف الحوراني', hospital_id:2, dept_id:5, slotDuration:30},
-		  {id:135, name:'د. ليان صافي', hospital_id:2, dept_id:6, slotDuration:20},
-		  {id:136, name:'د. عماد شاهين', hospital_id:2, dept_id:6, slotDuration:25},
-		  {id:137, name:'د. فاطمة البكري', hospital_id:2, dept_id:7, slotDuration:30},
-		  {id:138, name:'د. طارق فارس', hospital_id:2, dept_id:7, slotDuration:20},
-		  {id:139, name:'د. ندى عوض', hospital_id:2, dept_id:8, slotDuration:25},
-		  {id:140, name:'د. مازن خليل', hospital_id:2, dept_id:8, slotDuration:30},
-		  {id:141, name:'د. سارة جاد', hospital_id:2, dept_id:9, slotDuration:20},
-		  {id:142, name:'د. يوسف فؤاد', hospital_id:2, dept_id:9, slotDuration:25},
-		  {id:143, name:'د. هالة عاصي', hospital_id:2, dept_id:10, slotDuration:30},
-		  {id:144, name:'د. مازن شريف', hospital_id:2, dept_id:10, slotDuration:20},
-		  {id:145, name:'د. ليلى عبد', hospital_id:2, dept_id:11, slotDuration:25}
-		);
+	  governorates.forEach(g => {
+		const col = document.createElement('div');
+		col.className = 'col-6 col-md-3';
 
-		// الخاص
-		doctors.push(
-		  {id:146, name:'د. ليلى الجابر', hospital_id:4, dept_id:1, slotDuration:30},
-		  {id:147, name:'د. مازن أبو فخر', hospital_id:4, dept_id:1, slotDuration:25},
-		  {id:148, name:'د. ريم أبو سعيد', hospital_id:4, dept_id:2, slotDuration:30},
-		  {id:149, name:'د. خالد الجندي', hospital_id:4, dept_id:2, slotDuration:20},
-		  {id:150, name:'د. سارة الرشيد', hospital_id:4, dept_id:3, slotDuration:25},
-		  {id:151, name:'د. يوسف التل', hospital_id:4, dept_id:3, slotDuration:30},
-		  {id:152, name:'د. هالة المعاني', hospital_id:4, dept_id:4, slotDuration:20},
-		  {id:153, name:'د. طارق البكري', hospital_id:4, dept_id:4, slotDuration:25},
-		  {id:154, name:'د. ندى الفارس', hospital_id:4, dept_id:5, slotDuration:30},
-		  {id:155, name:'د. عماد الشامي', hospital_id:4, dept_id:5, slotDuration:20},
-		  {id:156, name:'د. عبير القيسي', hospital_id:4, dept_id:6, slotDuration:25},
-		  {id:157, name:'د. سامي العبد', hospital_id:4, dept_id:6, slotDuration:30},
-		  {id:158, name:'د. هناء جودت', hospital_id:4, dept_id:7, slotDuration:20},
-		  {id:159, name:'د. طلال صائب', hospital_id:4, dept_id:7, slotDuration:25},
-		  {id:160, name:'د. ريماء شرف', hospital_id:4, dept_id:8, slotDuration:30},
-		  {id:161, name:'د. خالد منير', hospital_id:4, dept_id:8, slotDuration:20},
-		  {id:162, name:'د. سارة زاهر', hospital_id:4, dept_id:9, slotDuration:25},
-		  {id:163, name:'د. يوسف جاد', hospital_id:4, dept_id:9, slotDuration:30},
-		  {id:164, name:'د. هالة عبد الله', hospital_id:4, dept_id:10, slotDuration:20},
-		  {id:165, name:'د. مازن فايز', hospital_id:4, dept_id:10, slotDuration:25},
-		  {id:166, name:'د. ليلى عواد', hospital_id:4, dept_id:11, slotDuration:30}
-		);
+		const card = document.createElement('div');
+		card.className = 'card select-card p-3 text-center';
+		card.dataset.gov = g;
+		card.innerHTML = `
+		  <div class="card-body p-0">
+			<i class="fas fa-map-marker-alt fa-lg mb-2 text-primary"></i>
+			<strong>${escapeHtml(g)}</strong>
+		  </div>
+		`;
 
-		// مركز صحي
-		doctors.push(
-		  {id:167, name:'د. عبير القضاة', hospital_id:3, dept_id:1, slotDuration:20},
-		  {id:168, name:'د. عماد الشناق', hospital_id:3, dept_id:1, slotDuration:25},
-		  {id:169, name:'د. هناء الزعبي', hospital_id:3, dept_id:2, slotDuration:30},
-		  {id:170, name:'د. طارق العدوان', hospital_id:3, dept_id:2, slotDuration:20},
-		  {id:171, name:'د. ليلى الجازي', hospital_id:3, dept_id:3, slotDuration:25},
-		  {id:172, name:'د. مازن ريان', hospital_id:3, dept_id:3, slotDuration:30},
-		  {id:173, name:'د. ريم الكردي', hospital_id:3, dept_id:4, slotDuration:20},
-		  {id:174, name:'د. خالد شحادة', hospital_id:3, dept_id:4, slotDuration:25},
-		  {id:175, name:'د. سارة نصر', hospital_id:3, dept_id:5, slotDuration:30},
-		  {id:176, name:'د. يوسف عرسان', hospital_id:3, dept_id:5, slotDuration:20},
-		  {id:177, name:'د. هالة العوض', hospital_id:3, dept_id:6, slotDuration:25},
-		  {id:178, name:'د. سامي عيسى', hospital_id:3, dept_id:6, slotDuration:30},
-		  {id:179, name:'د. ندى فرحات', hospital_id:3, dept_id:7, slotDuration:20},
-		  {id:180, name:'د. طلال البارودي', hospital_id:3, dept_id:7, slotDuration:25},
-		  {id:181, name:'د. ريماء صابر', hospital_id:3, dept_id:8, slotDuration:30},
-		  {id:182, name:'د. خالد منير', hospital_id:3, dept_id:8, slotDuration:20},
-		  {id:183, name:'د. سارة زاهر', hospital_id:3, dept_id:9, slotDuration:25},
-		  {id:184, name:'د. يوسف جاد', hospital_id:3, dept_id:9, slotDuration:30},
-		  {id:185, name:'د. هالة عبد الله', hospital_id:3, dept_id:10, slotDuration:20}
-		);
+		col.appendChild(card);
+		container.appendChild(col);
+	  });
+	}
 
+	function selectGovernorate(gov) {
+	  bookingState.gov = gov;
+	  bookingState.facilityType = null;
+	  bookingState.hospital = null;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
 
-	 	// Booking status
-	    let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
-	    let bookingState = {
-	      currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
-	      insuranceDetails:null, doctor:null, date:null, time:null, price:null,
-	      customer:{name:null, email:null, phone:null, note:null}
-	    };
-		// -------------------------------
-		// Helper Functions
-		// -------------------------------
-		    function escapeHtml(str){ if(!str && str!==0) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
-	    const maxStep = 9;
+	  document.querySelectorAll('[data-gov]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-gov]').forEach(el => {
+		if (el.dataset.gov === gov) el.classList.add('selected');
+	  });
 
-		// -------------------------------
-		// Main Navigation Functions
-		// -------------------------------
-	    function showStep(n){
-	      document.querySelectorAll('#stepsArea .step-block').forEach(el=>el.classList.add('d-none'));
-	      const el = document.getElementById('step-' + n); if(el) el.classList.remove('d-none');
-	      bookingState.currentStep = n; updateStepPills(); updateNavButtons();
+	  showStep(2);
+	}
 
-	      if(n === 4 && bookingState.hospital){ renderDepartments(); }
-	      if(n === 7 && bookingState.department){ renderDoctors(); }
-	      if(n === 8 && bookingState.doctor){ autoFillToday(); loadTimeSlotsForSelectedDate(); }
-	      if(n === 9 && bookingState.time){ updateSummaryCard(); }
-	    }
+	function selectFacilityType(type) {
+	  bookingState.facilityType = type;
+	  bookingState.hospital = null;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
 
-	    function updateStepPills(){
-	      document.querySelectorAll('.step-pill').forEach(p=>{
-	        const stepNum = Number(p.dataset.step);
-	        p.classList.remove('active', 'text-success');
-	        if(stepNum === bookingState.currentStep) p.classList.add('active');
-	        if(stepNum < bookingState.currentStep) p.classList.add('text-success');
-	      });
-	    }
+	  document.querySelectorAll('[data-type]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-type]').forEach(el => {
+		if (el.dataset.type === type) el.classList.add('selected');
+	  });
 
-	    function updateNavButtons(){
-	      document.getElementById('prevBtn').disabled = bookingState.currentStep ===1;
-	      document.getElementById('nextBtn').innerHTML = bookingState.currentStep === maxStep ? '<i class="fas fa-check me-2"></i> Booking confirmation' : '<i class="fas fa-arrow-left me-2"></i> the next';
-	      document.getElementById('prevBtn').innerHTML = '<i class="fas fa-arrow-right me-2"></i> the previous';
-	    }
-	    
-		// -------------------------------
-		// Display and Logic Functions
-		// -------------------------------
+	  renderHospitals();
+	  showStep(3);
+	}
 
-	    function renderGovernorates(){
-	      const container = document.getElementById('govList'); container.innerHTML = '';
-	      governorates.forEach(g => {
-	        const col = document.createElement('div'); col.className = 'col-6 col-md-3';
-	        const card = document.createElement('div'); card.className = 'card select-card p-3 text-center';
-	        card.dataset.gov = g; card.innerHTML = `<div class="card-body p-0"><i class="fas fa-map-marker-alt fa-lg mb-2 text-primary"></i><strong>${escapeHtml(g)}</strong></div>`;
-	        col.appendChild	(card); container.appendChild(col);
-	      });
-	    }
-	    function selectGovernorate(gov){
-	      bookingState.gov = gov; bookingState.facilityType = null; bookingState.hospital = null; bookingState.department=null; bookingState.doctor=null;
-	      document.querySelectorAll('[data-gov]').forEach(el=>el.classList.remove('selected'));
-	      document.querySelectorAll(`[data-gov]`).forEach(el=>{ if(el.dataset.gov===gov) el.classList.add('selected'); });
-	      showStep(2);
-	    }
-	    function selectFacilityType(type){
-	      bookingState.facilityType = type; bookingState.hospital=null; bookingState.department=null; bookingState.doctor=null;
-	      document.querySelectorAll('[data-type]').forEach(el=>el.classList.remove('selected'));
-	      document.querySelectorAll(`[data-type]`).forEach(el=>{ if(el.dataset.type===type) el.classList.add('selected'); });
-	      renderHospitals(); showStep(3);
-	    }
-	    function renderHospitals(){
-	      const container = document.getElementById('hospList'); container.innerHTML='';
-	      const matched = hospitals.filter(h=> h.gov===bookingState.gov && h.type===bookingState.facilityType);
-	      if(!matched.length){ container.innerHTML = '<div class="col-12 p-3 text-muted"><i class="fas fa-info-circle me-2"></i> No facilities are currently available.</div>'; return; }
-	      matched.forEach(h => {
-	        const col = document.createElement('div'); col.className = 'col-12 col-md-6';
-	        const card = document.createElement('div'); card.className = 'card select-card p-3';
-	        card.dataset.hosp = h.id; card.innerHTML = `<div class="card-body p-0"><div class="d-flex justify-content-between align-items-center"><div><strong>${escapeHtml(h.name)}</strong><div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div></div><div><i class="fas fa-hospital" style="font-size:1.8rem;color:var(--primary)"></i></div></div></div>`;
-	        col.appendChild(card); container.appendChild(col);
-	      });
-	    }
-	    function selectHospital(hospId){
-	      const h = hospitals.find(x=>x.id===hospId); if(!h) return;
-	      bookingState.hospital = h; bookingState.department=null; bookingState.doctor=null;
-	      document.querySelectorAll('[data-hosp]').forEach(el=>el.classList.remove('selected'));
-	      document.querySelectorAll(`[data-hosp]`).forEach(el=>{ if(Number(el.dataset.hosp)===hospId) el.classList.add('selected'); });
-	      showStep(4);
-	    }
-		function renderDepartments() {
-		  const c = document.getElementById('deptList');
-		  c.innerHTML = '';
-		  // Identify the current hospital type
-		  const hospType = bookingState.hospital?.type;
-		  if (!hospType) {
-			c.innerHTML = '<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> Select the hospital first to view the departments.</div>';
-			return;
-		  }
-		  // Filter sections by hospital type
-		  const matchedDepartments = Departments.filter(d => d.type.trim() === hospType.trim());
+	function renderHospitals() {
+	  const container = document.getElementById('hospList');
+	  if (!container) return;
+	  container.innerHTML = '';
 
-		  if (!matchedDepartments.length) {
-			c.innerHTML = '<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> There are no departments available for this type of hospital.</div>';
-			return;
-		  }
-		  // View sections
-		  matchedDepartments.forEach(d => {
-			const col = document.createElement('div');
-			col.className = 'col-12 col-md-6';
+	  const matched = hospitals.filter(h =>
+		h.gov === bookingState.gov && h.type === bookingState.facilityType
+	  );
 
-			const card = document.createElement('div');
-			card.className = 'card select-card p-3';
-			card.dataset.dept = d.id;
-			card.innerHTML = `
-			  <div class="card-body p-0 d-flex justify-content-between align-items-center">
-				<div>
-				  <i class="${d.icon} fa-lg me-2 text-primary"></i>
-				  <strong>${escapeHtml(d.title)}</strong>
-				  <div class="small text-muted">Base price: $${d.basePrice}</div>
-				</div>
-				<div class="badge-price">${d.basePrice}$</div>
-			  </div>`;
-			card.addEventListener('click', () => {
-			  bookingState.department = d;
-			  bookingState.doctor = null;
-			  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
-			  card.classList.add('selected');
-			  showStep(5);
-			});
-			col.appendChild(card);
-			c.appendChild(col);
-		  });
-		}
+	  if (!matched.length) {
+		container.innerHTML =
+		  '<div class="col-12 p-3 text-muted"><i class="fas fa-info-circle me-2"></i> No facilities are currently available.</div>';
+		return;
+	  }
 
-	    function selectDepartment(deptId){
-	      bookingState.department = departments.find(d=>d.id===deptId); bookingState.doctor=null;
-	      document.querySelectorAll('[data-dept]').forEach(el=>el.classList.remove('selected'));
-	      document.querySelectorAll(`[data-dept]`).forEach(el=>{ if(Number(el.dataset.dept)===deptId) el.classList.add('selected'); });
-	      showStep(5);
-	    }
-	    function renderDoctors(){
-	      const c = document.getElementById('docList'); c.innerHTML='';
-	      if(!bookingState.hospital || !bookingState.department){ c.innerHTML='<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> Select the hospital and then the department to view the doctors.</div>'; return; }
-	      const matched = doctors.filter(d=> d.hospital_id===bookingState.hospital.id && d.dept_id===bookingState.department.id );
-	      if(!matched.length){ c.innerHTML='<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> There are no doctors available for the department at this facility.</div>'; return; }
-	      matched.forEach(doc=>{
-	        const col = document.createElement('div'); col.className='col-12 col-md-6';
-	        const card = document.createElement('div'); card.className='card select-card p-3'; card.dataset.doc = doc.id;
-	        card.innerHTML = `<div class="card-body p-0 d-flex justify-content-between align-items-center"><div><strong><i class="fas fa-user-md me-2 text-primary"></i> ${escapeHtml(doc.name)}</strong><div class="small text-muted">Duration: ${doc.slotDuration} minute</div></div><div><i class="fas fa-angle-left" style="font-size:1.6rem;color:var(--primary)"></i></div></div>`;
-	        col.appendChild(card); c.appendChild(col);
-	      });
-	    }
-	    function selectDoctor(docId){
-	      bookingState.doctor = doctors.find(d=>d.id===docId); bookingState.date=null; bookingState.time=null; bookingState.price=null;
-	      document.querySelectorAll('[data-doc]').forEach(el=>el.classList.remove('selected'));
-	      document.querySelectorAll(`[data-doc]`).forEach(el=>{ if(Number(el.dataset.doc)===docId) el.classList.add('selected'); });
-	      const base = bookingState.department.basePrice;
-	      bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
-	      showStep(8);
-	      setTimeout(()=>{ autoFillToday(); loadTimeSlotsForSelectedDate(); }, 100);
-	    }
-	    function autoFillToday(){
-	      const today = new Date(); const yyyy = today.getFullYear(); const mm = String(today.getMonth()+1).padStart(2,'0'); const dd = String(today.getDate()).padStart(2,'0');
-	      const val = `${yyyy}-${mm}-${dd}`; document.getElementById('apptDate').value = val; bookingState.date = val; enforceDateMin();
-	    }
-	    function enforceDateMin(){
-	      const today = new Date(); const yyyy = today.getFullYear(); const mm = String(today.getMonth()+1).padStart(2,'0'); const dd = String(today.getDate()).padStart(2,'0');
-	      document.getElementById('apptDate').setAttribute('min', `${yyyy}-${mm}-${dd}`);
-	    }
-	    function loadTimeSlotsForSelectedDate(){
-	      const container = document.getElementById('slotsArea'); container.innerHTML='';
-	      if(!bookingState.doctor || !bookingState.date){ container.innerHTML = '<div class="text-muted p-2">Select the doctor and date to view times</div>'; return; }
-	      const slotMin = bookingState.doctor.slotDuration || 30;
-	      const startH = 9, endH = 17; const slots = [];
-	      for(let h = startH; h < endH; h++){
-	        for(let m=0; m<60; m+=slotMin){ const hh = String(h).padStart(2,'0'); const mmStr = String(m).padStart(2,'0'); slots.push(`${hh}:${mmStr}`); }
-	      }
-	      slots.forEach(s=>{
-			const conflict = localBookings.some(b=> 
-				b.doctor_id===bookingState.doctor.id && 
-				b.date===bookingState.date && 
-				b.time===s
-			);
+	  matched.forEach(h => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
 
-			// ⏰ Check if the time is already passed for TODAY
-			let isPastTime = false;
-			const now = new Date();
+		const card = document.createElement('div');
+		card.className = 'card select-card p-3';
+		card.dataset.hosp = h.id;
+		card.innerHTML = `
+		  <div class="card-body p-0">
+			<div class="d-flex justify-content-between align-items-center">
+			  <div>
+				<strong>${escapeHtml(h.name)}</strong>
+				<div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div>
+			  </div>
+			  <div>
+				<i class="fas fa-hospital" style="font-size:1.8rem;color:var(--primary)"></i>
+			  </div>
+			</div>
+		  </div>
+		`;
 
-			// فقط لو التاريخ هو اليوم
-			const selected = new Date(bookingState.date + "T" + s + ":00");
-			const today = new Date();
-			const isToday =
-				selected.getFullYear() === today.getFullYear() &&
-				selected.getMonth() === today.getMonth() &&
-				selected.getDate() === today.getDate();
+		col.appendChild(card);
+		container.appendChild(col);
+	  });
+	}
 
-			if(isToday && selected <= now){
-				isPastTime = true;
-			}
+	function selectHospital(hospId) {
+	  const h = hospitals.find(x => x.id === hospId);
+	  if (!h) return;
 
-			const btn = document.createElement('button');
-			btn.className = 'btn btn-outline-primary time-slot';
-			btn.dataset.time = s;
-			btn.textContent = s;
+	  bookingState.hospital = h;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
 
-			// محجوز
-			if(conflict){
-				btn.disabled = true;
-				btn.textContent = s + ' (reserved)';
-				btn.classList.add('disabled');
-				btn.classList.remove('btn-outline-primary');
-				btn.classList.add('btn-outline-danger');
-			}
+	  document.querySelectorAll('[data-hosp]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-hosp]').forEach(el => {
+		if (Number(el.dataset.hosp) === hospId) el.classList.add('selected');
+	  });
 
-			// الوقت صار بالماضي
-			if(isPastTime){
-				btn.disabled = true;
-				btn.textContent = s + ' (expired)';
-				btn.classList.add('disabled');
-				btn.classList.remove('btn-outline-primary');
-				btn.classList.add('btn-outline-secondary');
-			}
+	  showStep(4);
+	}
 
-			container.appendChild(btn);
+	function renderDepartments() {
+	  const c = document.getElementById('deptList');
+	  if (!c) return;
+	  c.innerHTML = '';
+
+	  const hospType = bookingState.hospital?.type;
+	  if (!hospType) {
+		c.innerHTML =
+		  '<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> Select the hospital first to view the departments.</div>';
+		return;
+	  }
+
+	  const matchedDepartments = Departments.filter(d => String(d.type).trim() === String(hospType).trim());
+
+	  if (!matchedDepartments.length) {
+		c.innerHTML =
+		  '<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> There are no departments available for this type of hospital.</div>';
+		return;
+	  }
+
+	  matchedDepartments.forEach(d => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
+
+		const card = document.createElement('div');
+		card.className = 'card select-card p-3';
+		card.dataset.dept = d.id;
+		card.innerHTML = `
+		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
+			<div>
+			  <i class="${d.icon || 'fas fa-notes-medical'} fa-lg me-2 text-primary"></i>
+			  <strong>${escapeHtml(d.title)}</strong>
+			  <div class="small text-muted">Base price: $${d.basePrice}</div>
+			</div>
+			<div class="badge-price">${d.basePrice}$</div>
+		  </div>
+		`;
+
+		card.addEventListener('click', () => {
+		  bookingState.department = d;
+		  bookingState.doctor = null;
+		  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
+		  card.classList.add('selected');
+		  showStep(5);
 		});
 
-	    }
-	    function selectTimeSlot(time){
-	      bookingState.time = time;
-	      document.querySelectorAll('.time-slot').forEach(el=>el.classList.remove('selected'));
-	      document.querySelectorAll(`.time-slot[data-time="${time}"]`).forEach(el=>el.classList.add('selected'));
-	      // Auto advance after selection
-	      nextStep();
-	    }
-	    function updateSummaryCard(){
-	      const c = document.getElementById('summaryCard');
-	      const html = `
-	        <div class="row">
-	          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i> المحافظة</div><strong>${escapeHtml(bookingState.gov || '-')}</strong></div>
-	          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-building me-1"></i> نوع المنشأة</div><strong>${escapeHtml(bookingState.facilityType || '-')}</strong></div>
-	        </div>
-	        <hr class="my-2">
-	        <div class="row">
-	          <div class="col-12 mb-2"><div class="small text-muted"><i class="fas fa-hospital me-1"></i> المستشفى</div><strong>${escapeHtml(bookingState.hospital? bookingState.hospital.name : '-')}</strong></div>
-	        </div>
-	        <div class="row">
-	          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clipboard-list me-1"></i> القسم</div><strong>${escapeHtml(bookingState.department? bookingState.department.title : '-')}</strong></div>
-	          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-user-md me-1"></i> الطبيب</div><strong>${escapeHtml(bookingState.doctor? bookingState.doctor.name : '-')}</strong></div>
-	        </div>
-	        <div class="row">
-	          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-calendar-alt me-1"></i> التاريخ</div><strong>${escapeHtml(bookingState.date || '-')}</strong></div>
-	          <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clock me-1"></i> الوقت</div><strong>${escapeHtml(bookingState.time || '-')}</strong></div>
-	        </div>
-	        <hr class="my-2">
-	        <div class="row align-items-center">
-	          <div class="col-6"><div class="small text-muted"><i class="fas fa-money-bill-wave me-1"></i> السعر النهائي</div><h4 class="mb-0 text-success">$${escapeHtml(bookingState.price || '-')}</h4></div>
-	          <div class="col-6 text-end small text-muted"><i class="fas fa-shield-alt me-1"></i> التأمين: ${bookingState.hasInsurance ? 'نعم' : 'لا'}</div>
-	        </div>
-	      `;
-	      c.innerHTML = html;
-	    }
+		col.appendChild(card);
+		c.appendChild(col);
+	  });
+	}
 
-	    function validateCurrentStep(){
-			const s = bookingState.currentStep;
+	function selectDepartment(deptId) {
+	  bookingState.department = Departments.find(d => d.id === deptId);
+	  bookingState.doctor = null;
 
-			if(s===1 && !bookingState.gov){ alert('الرجاء اختيار المحافظة.'); return false; }
-			if(s===2 && !bookingState.facilityType){ alert('الرجاء اختيار نوع المنشأة.'); return false; }
-			if(s===3 && !bookingState.hospital){ alert('الرجاء اختيار المستشفى.'); return false; }
-			if(s===4 && !bookingState.department){ alert('الرجاء اختيار القسم.'); return false; }
-			if(s===5 && bookingState.hasInsurance === null){ alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
-			if(s===6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)){ alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
-			if(s===7 && !bookingState.doctor){ alert('الرجاء اختيار الطبيب.'); return false; }
-			if(s===8 && (!bookingState.date || !bookingState.time)){ alert('الرجاء اختيار التاريخ والوقت.'); return false; }
+	  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-dept]').forEach(el => {
+		if (Number(el.dataset.dept) === deptId) el.classList.add('selected');
+	  });
 
-			// 👇 أهم تعديل — بدل الشرط القديم استبدله بهيك:
-			if(s===9){
-				return validateCustomerData();
-			}
+	  showStep(5);
+	}
 
-			return true;
+	function renderDoctors() {
+	  const c = document.getElementById('docList');
+	  if (!c) return;
+	  c.innerHTML = '';
+
+	  if (!bookingState.hospital || !bookingState.department) {
+		c.innerHTML =
+		  '<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> Select the hospital and then the department to view the doctors.</div>';
+		return;
+	  }
+
+	  const matched = doctors.filter(d =>
+		d.hospital_id === bookingState.hospital.id &&
+		d.dept_id === bookingState.department.id
+	  );
+
+	  if (!matched.length) {
+		c.innerHTML =
+		  '<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> There are no doctors available for the department at this facility.</div>';
+		return;
+	  }
+
+	  matched.forEach(doc => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
+
+		const card = document.createElement('div');
+		card.className = 'card select-card p-3';
+		card.dataset.doc = doc.id;
+		card.innerHTML = `
+		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
+			<div>
+			  <strong><i class="fas fa-user-md me-2 text-primary"></i> ${escapeHtml(doc.name)}</strong>
+			  <div class="small text-muted">Duration: ${doc.slotDuration} minute</div>
+			</div>
+			<div>
+			  <i class="fas fa-angle-left" style="font-size:1.6rem;color:var(--primary)"></i>
+			</div>
+		  </div>
+		`;
+
+		col.appendChild(card);
+		c.appendChild(col);
+	  });
+	}
+
+	function selectDoctor(docId) {
+	  bookingState.doctor = doctors.find(d => d.id === docId);
+	  bookingState.date = null;
+	  bookingState.time = null;
+	  bookingState.price = null;
+
+	  document.querySelectorAll('[data-doc]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-doc]').forEach(el => {
+		if (Number(el.dataset.doc) === docId) el.classList.add('selected');
+	  });
+
+	  const base = bookingState.department.basePrice;
+	  bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
+
+	  showStep(8);
+	  setTimeout(() => {
+		autoFillToday();
+		loadTimeSlotsForSelectedDate();
+	  }, 100);
+	}
+
+	function autoFillToday() {
+	  const today = new Date();
+	  const yyyy = today.getFullYear();
+	  const mm = String(today.getMonth() + 1).padStart(2, '0');
+	  const dd = String(today.getDate()).padStart(2, '0');
+
+	  const val = `${yyyy}-${mm}-${dd}`;
+	  document.getElementById('apptDate').value = val;
+	  bookingState.date = val;
+	  enforceDateMin();
+	}
+
+	function enforceDateMin() {
+	  const today = new Date();
+	  const yyyy = today.getFullYear();
+	  const mm = String(today.getMonth() + 1).padStart(2, '0');
+	  const dd = String(today.getDate()).padStart(2, '0');
+
+	  document.getElementById('apptDate').setAttribute('min', `${yyyy}-${mm}-${dd}`);
+	}
+
+	function loadTimeSlotsForSelectedDate() {
+	  const container = document.getElementById('slotsArea');
+	  if (!container) return;
+	  container.innerHTML = '';
+
+	  if (!bookingState.doctor || !bookingState.date) {
+		container.innerHTML = '<div class="text-muted p-2">Select the doctor and date to view times</div>';
+		return;
+	  }
+
+	  const slotMin = bookingState.doctor.slotDuration || 30;
+	  const startH = 9, endH = 17;
+	  const slots = [];
+
+	  for (let h = startH; h < endH; h++) {
+		for (let m = 0; m < 60; m += slotMin) {
+		  const hh = String(h).padStart(2, '0');
+		  const mmStr = String(m).padStart(2, '0');
+		  slots.push(`${hh}:${mmStr}`);
+		}
+	  }
+
+	  slots.forEach(s => {
+		const conflict = localBookings.some(b =>
+		  b.doctor_id === bookingState.doctor.id &&
+		  b.date === bookingState.date &&
+		  b.time === s
+		);
+
+		let isPastTime = false;
+		const now = new Date();
+		const selected = new Date(bookingState.date + "T" + s + ":00");
+		const today = new Date();
+
+		const isToday =
+		  selected.getFullYear() === today.getFullYear() &&
+		  selected.getMonth() === today.getMonth() &&
+		  selected.getDate() === today.getDate();
+
+		if (isToday && selected <= now) {
+		  isPastTime = true;
 		}
 
-	    function validateCustomerData() {
-			// جلب القيم
-			const name = document.getElementById('custName').value.trim();
-			const email = document.getElementById('custEmail').value.trim();
-			const phone = document.getElementById('custPhone').value.trim();
+		const btn = document.createElement('button');
+		btn.className = 'btn btn-outline-primary time-slot';
+		btn.dataset.time = s;
+		btn.textContent = s;
 
-			// جلب أماكن الخطأ
-			const nameErr = document.getElementById('custNameError');
-			const emailErr = document.getElementById('custEmailError');
-			const phoneErr = document.getElementById('custPhoneError');
-
-			// مسح الأخطاء قبل الفحص
-			nameErr.textContent = "";
-			emailErr.textContent = "";
-			phoneErr.textContent = "";
-
-			let valid = true;
-
-			// التحقق من الاسم
-			if(!name){
-				nameErr.textContent = "يرجى إدخال الاسم";
-				valid = false;
-			}
-
-			// التحقق من الإيميل
-			if(!email){
-				emailErr.textContent = "يرجى إدخال الإيميل";
-				valid = false;
-			} else if(!email.includes("@") || email.startsWith("@") || email.endsWith("@")) {
-				emailErr.textContent = "الإيميل غير صحيح، يجب أن يحتوي على @";
-				valid = false;
-			}
-
-			// التحقق من رقم الهاتف
-			if(!phone){
-				phoneErr.textContent = "يرجى إدخال رقم الهاتف";
-				valid = false;
-			} else if(!/^[0-9]{10}$/.test(phone)){
-				phoneErr.textContent = "رقم الهاتف يجب أن يكون 10 أرقام";
-				valid = false;
-			}
-
-			return valid;
+		if (conflict) {
+		  btn.disabled = true;
+		  btn.textContent = s + ' (reserved)';
+		  btn.classList.add('disabled');
+		  btn.classList.remove('btn-outline-primary');
+		  btn.classList.add('btn-outline-danger');
 		}
 
+		if (isPastTime) {
+		  btn.disabled = true;
+		  btn.textContent = s + ' (expired)';
+		  btn.classList.add('disabled');
+		  btn.classList.remove('btn-outline-primary');
+		  btn.classList.add('btn-outline-secondary');
+		}
 
-	    function commitBooking(){
-	      if(!validateCurrentStep()){ return; }
-	      bookingState.customer.name = document.getElementById('custName').value;
-	      bookingState.customer.email = document.getElementById('custEmail').value;
-	      bookingState.customer.phone = document.getElementById('custPhone').value;
-	      bookingState.customer.note = document.getElementById('custNote').value;
-	      const payload = {
-	        timestamp: new Date().toISOString(), booking_id: 'B' + Date.now(), status: 'PENDING',
-	        gov: bookingState.gov, hospital_name: bookingState.hospital.name, department_title: bookingState.department.title,
-	        doctor_name: bookingState.doctor.name, date: bookingState.date, time: bookingState.time, price: bookingState.price,
-	        customer_name: bookingState.customer.name, customer_email: bookingState.customer.email, customer_phone: bookingState.customer.phone,
-	        doctor_id: bookingState.doctor.id, // Needed for time slot conflict check
-	      };
-	      localBookings.push(payload);
-	      localStorage.setItem('localBookings', JSON.stringify(localBookings));
-	      document.getElementById('modalContent').innerHTML = `
-	        <p>Your appointment has been successfully booked!</p><strong>Booking number:</strong> ${payload.booking_id}<p><strong>Date and time:</strong> ${payload.date} the hour ${payload.time}</p><p><strong>Amount due:</strong> <span class="text-success">$${payload.price}</span></p>
-	      `;
-	      const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-	      successModal.show();
-	      bookingState = { currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null, insuranceDetails:null, doctor:null, date:null, time:null, price:null, customer:{name:null, email:null, phone:null, note:null} };
-	      goToLandingPage(); // Go back to landing page after success
-	    }
+		container.appendChild(btn);
+	  });
+	}
 
-	    function nextStep(){
-	      if(!validateCurrentStep()) return;
-	      if(bookingState.currentStep === maxStep){
-	        commitBooking();
-	      } else {
-	        let targetStep = bookingState.currentStep + 1;
-	        if(bookingState.currentStep === 5 && bookingState.hasInsurance === false){ targetStep = 7; }
-	        showStep(targetStep);
-	      }
-	    }
-	    
-		// -------------------------------
-		// Page Display Management (Landing vs. App)
-		// -------------------------------
+	function selectTimeSlot(time) {
+	  bookingState.time = time;
+	  document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll(`.time-slot[data-time="${time}"]`).forEach(el => el.classList.add('selected'));
+	  nextStep();
+	}
 
-	    function goToBookingApp(){
-	      document.getElementById('landingPage').classList.add('d-none');
-	      document.getElementById('bookingApp').classList.remove('d-none');
-	      showStep(1); // Start the booking process
-	    }
-	    
-	    function goToLandingPage(){
-	      document.getElementById('landingPage').classList.remove('d-none');
-	      document.getElementById('bookingApp').classList.add('d-none');
-	      // Reset the state/form if needed
-	      bookingState = { currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null, insuranceDetails:null, doctor:null, date:null, time:null, price:null, customer:{name:null, email:null, phone:null, note:null} };
-	      renderGovernorates(); // Re-render step 1 for a clean start
-	    }
-	    
-		 // -------------------------------
-		// Event Handlers (Listeners)
-		// -------------------------------
-		// Navigation from the homepage	
-	    document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
-	    // Navigate to the main page from the navbar
-	    document.getElementById('homeBtn').addEventListener('click', (e) => { e.preventDefault(); goToLandingPage(); });
+	function updateSummaryCard() {
+	  const c = document.getElementById('summaryCard');
+	  if (!c) return;
 
-	    // Delegate Clicks (Gov, Type, Hosp, Dept, Doc, Slot)
-	    document.addEventListener('click', function(e){
-	      const govEl = e.target.closest('[data-gov]'); if(govEl){ selectGovernorate(govEl.dataset.gov); return; }
-	      const typeEl = e.target.closest('[data-type]'); if(typeEl){ selectFacilityType(typeEl.dataset.type); return; }
-	      const hospEl = e.target.closest('[data-hosp]'); if(hospEl){ selectHospital(parseInt(hospEl.dataset.hosp,10)); return; }
-	      const deptEl = e.target.closest('[data-dept]'); if(deptEl){ selectDepartment(parseInt(deptEl.dataset.dept,10)); return; }
-	      const docEl = e.target.closest('[data-doc]'); if(docEl){ selectDoctor(parseInt(docEl.dataset.doc,10)); return; }
-	      const slotEl = e.target.closest('.time-slot'); if(slotEl && !slotEl.disabled){ selectTimeSlot(slotEl.dataset.time); return; }
-	    });
+	  const html = `
+		<div class="row">
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i> المحافظة</div><strong>${escapeHtml(bookingState.gov || '-')}</strong></div>
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-building me-1"></i> نوع المنشأة</div><strong>${escapeHtml(bookingState.facilityType || '-')}</strong></div>
+		</div>
+		<hr class="my-2">
+		<div class="row">
+		  <div class="col-12 mb-2"><div class="small text-muted"><i class="fas fa-hospital me-1"></i> المستشفى</div><strong>${escapeHtml(bookingState.hospital ? bookingState.hospital.name : '-')}</strong></div>
+		</div>
+		<div class="row">
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clipboard-list me-1"></i> القسم</div><strong>${escapeHtml(bookingState.department ? bookingState.department.title : '-')}</strong></div>
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-user-md me-1"></i> الطبيب</div><strong>${escapeHtml(bookingState.doctor ? bookingState.doctor.name : '-')}</strong></div>
+		</div>
+		<div class="row">
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-calendar-alt me-1"></i> التاريخ</div><strong>${escapeHtml(bookingState.date || '-')}</strong></div>
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clock me-1"></i> الوقت</div><strong>${escapeHtml(bookingState.time || '-')}</strong></div>
+		</div>
+		<hr class="my-2">
+		<div class="row align-items-center">
+		  <div class="col-6"><div class="small text-muted"><i class="fas fa-money-bill-wave me-1"></i> السعر النهائي</div><h4 class="mb-0 text-success">$${escapeHtml(bookingState.price || '-')}</h4></div>
+		  <div class="col-6 text-end small text-muted"><i class="fas fa-shield-alt me-1"></i> التأمين: ${bookingState.hasInsurance ? 'نعم' : 'لا'}</div>
+		</div>
+	  `;
+	  c.innerHTML = html;
+	}
 
-	    // Date change
-	    document.getElementById('apptDate').addEventListener('change', function(){ bookingState.date = this.value; bookingState.time=null; loadTimeSlotsForSelectedDate(); });
+	function validateCurrentStep() {
+	  const s = bookingState.currentStep;
 
-	    // Insurance handlers
-	    document.getElementById('insNo').addEventListener('click', function(){ bookingState.hasInsurance = false; bookingState.insuranceDetails = null; nextStep(); });
-	    document.getElementById('insYes').addEventListener('click', function(){ bookingState.hasInsurance = true; nextStep(); });
-	    document.getElementById('insForm').addEventListener('submit', function(e){
-	      e.preventDefault();
-	      if(validateCurrentStep()){
-	        bookingState.insuranceDetails = { company: document.getElementById('insCompany').value, policy: document.getElementById('insPolicy').value, note: document.getElementById('insNote').value };
-	        nextStep();
-	      }
-	    });
+	  if (s === 1 && !bookingState.gov) { alert('الرجاء اختيار المحافظة.'); return false; }
+	  if (s === 2 && !bookingState.facilityType) { alert('الرجاء اختيار نوع المنشأة.'); return false; }
+	  if (s === 3 && !bookingState.hospital) { alert('الرجاء اختيار المستشفى.'); return false; }
+	  if (s === 4 && !bookingState.department) { alert('الرجاء اختيار القسم.'); return false; }
+	  if (s === 5 && bookingState.hasInsurance === null) { alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
+	  if (s === 6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)) { alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
+	  if (s === 7 && !bookingState.doctor) { alert('الرجاء اختيار الطبيب.'); return false; }
+	  if (s === 8 && (!bookingState.date || !bookingState.time)) { alert('الرجاء اختيار التاريخ والوقت.'); return false; }
 
-	    // Prev/Next Navigation
-	    document.getElementById('prevBtn').addEventListener('click', function(){
-	      if(bookingState.currentStep>1){
-	        let targetStep = bookingState.currentStep-1;
-	        if(bookingState.currentStep === 7 && bookingState.hasInsurance === false){ targetStep = 5; }
-	        showStep(targetStep);
-	      }
-	    });
+	  if (s === 9) {
+		return validateCustomerData();
+	  }
 
-	    document.getElementById('nextBtn').addEventListener('click', nextStep);
+	  return true;
+	}
 
-	    // Initialize
-	    document.addEventListener('DOMContentLoaded', function(){ goToLandingPage(); });
-		document.addEventListener('contextmenu', e => e.preventDefault());
-		document.addEventListener('selectstart', e => e.preventDefault());
-		document.addEventListener('dragstart', e => e.preventDefault());
-		// Code GPS
-		  let userLat = null;
-		  let userLng = null;
-		  const loadingBox = document.getElementById("loadingBox");
+	function validateCustomerData() {
+	  const name = document.getElementById('custName').value.trim();
+	  const email = document.getElementById('custEmail').value.trim();
+	  const phone = document.getElementById('custPhone').value.trim();
 
-		  window.onload = function() {
-			if ("geolocation" in navigator) {
-			  navigator.geolocation.getCurrentPosition(
-				(position) => {
-				  userLat = position.coords.latitude;
-				  userLng = position.coords.longitude;
-				  console.log("Your Location:", userLat, userLng);
+	  const nameErr = document.getElementById('custNameError');
+	  const emailErr = document.getElementById('custEmailError');
+	  const phoneErr = document.getElementById('custPhoneError');
 
-				  loadingBox.textContent = "✅ Your location has been successfully determined!";
-				  setTimeout(() => loadingBox.classList.add("hidden"), 1500);
-				},
-				(error) => {
-				  console.error("Error getting location:", error.message);
-				  loadingBox.textContent = "⚠️ We were unable to locate you. Please ensure your GPS is enabled and location permissions are granted.";
-				  loadingBox.style.background = "#dc3545"; 
-				},
-				{ enableHighAccuracy: true, timeout: 10000 }
-			  );
-			} else {
-			  loadingBox.textContent = "Your device does not support geolocation (GPS).";
-			  loadingBox.style.background = "#6c757d";
+	  nameErr.textContent = "";
+	  emailErr.textContent = "";
+	  phoneErr.textContent = "";
+
+	  let valid = true;
+
+	  if (!name) {
+		nameErr.textContent = "يرجى إدخال الاسم";
+		valid = false;
+	  }
+
+	  if (!email) {
+		emailErr.textContent = "يرجى إدخال الإيميل";
+		valid = false;
+	  } else if (!email.includes("@") || email.startsWith("@") || email.endsWith("@")) {
+		emailErr.textContent = "الإيميل غير صحيح، يجب أن يحتوي على @";
+		valid = false;
+	  }
+
+	  if (!phone) {
+		phoneErr.textContent = "يرجى إدخال رقم الهاتف";
+		valid = false;
+	  } else if (!/^[0-9]{10}$/.test(phone)) {
+		phoneErr.textContent = "رقم الهاتف يجب أن يكون 10 أرقام";
+		valid = false;
+	  }
+
+	  return valid;
+	}
+
+	function commitBooking() {
+	  if (!validateCurrentStep()) return;
+
+	  bookingState.customer.name = document.getElementById('custName').value;
+	  bookingState.customer.email = document.getElementById('custEmail').value;
+	  bookingState.customer.phone = document.getElementById('custPhone').value;
+	  bookingState.customer.note = document.getElementById('custNote').value;
+
+	  const payload = {
+		timestamp: new Date().toISOString(),
+		booking_id: 'B' + Date.now(),
+		status: 'PENDING',
+		gov: bookingState.gov,
+		hospital_name: bookingState.hospital.name,
+		department_title: bookingState.department.title,
+		doctor_name: bookingState.doctor.name,
+		date: bookingState.date,
+		time: bookingState.time,
+		price: bookingState.price,
+		customer_name: bookingState.customer.name,
+		customer_email: bookingState.customer.email,
+		customer_phone: bookingState.customer.phone,
+		doctor_id: bookingState.doctor.id
+	  };
+
+	  localBookings.push(payload);
+	  localStorage.setItem('localBookings', JSON.stringify(localBookings));
+
+	  document.getElementById('modalContent').innerHTML = `
+		<p>Your appointment has been successfully booked!</p>
+		<strong>Booking number:</strong> ${payload.booking_id}
+		<p><strong>Date and time:</strong> ${payload.date} the hour ${payload.time}</p>
+		<p><strong>Amount due:</strong> <span class="text-success">$${payload.price}</span></p>
+	  `;
+
+	  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+	  successModal.show();
+
+	  bookingState = {
+		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
+		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
+		customer:{name:null, email:null, phone:null, note:null}
+	  };
+
+	  goToLandingPage();
+	}
+
+	function nextStep() {
+	  if (!validateCurrentStep()) return;
+
+	  if (bookingState.currentStep === maxStep) {
+		commitBooking();
+	  } else {
+		let targetStep = bookingState.currentStep + 1;
+		if (bookingState.currentStep === 5 && bookingState.hasInsurance === false) {
+		  targetStep = 7;
+		}
+		showStep(targetStep);
+	  }
+	}
+
+	// -------------------------------
+	// Page Display Management
+	// -------------------------------
+	function goToBookingApp() {
+	  document.getElementById('landingPage').classList.add('d-none');
+	  document.getElementById('bookingApp').classList.remove('d-none');
+	  showStep(1);
+	}
+
+	function goToLandingPage() {
+	  document.getElementById('landingPage').classList.remove('d-none');
+	  document.getElementById('bookingApp').classList.add('d-none');
+	  bookingState = {
+		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
+		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
+		customer:{name:null, email:null, phone:null, note:null}
+	  };
+	  renderGovernorates();
+	}
+
+	// -------------------------------
+	// Event Handlers
+	// -------------------------------
+	document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
+	document.getElementById('homeBtn').addEventListener('click', (e) => {
+	  e.preventDefault();
+	  goToLandingPage();
+	});
+
+	document.addEventListener('click', function(e){
+	  const govEl = e.target.closest('[data-gov]');
+	  if(govEl){ selectGovernorate(govEl.dataset.gov); return; }
+
+	  const typeEl = e.target.closest('[data-type]');
+	  if(typeEl){ selectFacilityType(typeEl.dataset.type); return; }
+
+	  const hospEl = e.target.closest('[data-hosp]');
+	  if(hospEl){ selectHospital(parseInt(hospEl.dataset.hosp,10)); return; }
+
+	  const deptEl = e.target.closest('[data-dept]');
+	  if(deptEl){ selectDepartment(parseInt(deptEl.dataset.dept,10)); return; }
+
+	  const docEl = e.target.closest('[data-doc]');
+	  if(docEl){ selectDoctor(parseInt(docEl.dataset.doc,10)); return; }
+
+	  const slotEl = e.target.closest('.time-slot');
+	  if(slotEl && !slotEl.disabled){ selectTimeSlot(slotEl.dataset.time); return; }
+	});
+
+	document.getElementById('apptDate').addEventListener('change', function(){
+	  bookingState.date = this.value;
+	  bookingState.time = null;
+	  loadTimeSlotsForSelectedDate();
+	});
+
+	document.getElementById('insNo').addEventListener('click', function(){
+	  bookingState.hasInsurance = false;
+	  bookingState.insuranceDetails = null;
+	  nextStep();
+	});
+
+	document.getElementById('insYes').addEventListener('click', function(){
+	  bookingState.hasInsurance = true;
+	  nextStep();
+	});
+
+	document.getElementById('insForm').addEventListener('submit', function(e){
+	  e.preventDefault();
+	  if(validateCurrentStep()){
+		bookingState.insuranceDetails = {
+		  company: document.getElementById('insCompany').value,
+		  policy: document.getElementById('insPolicy').value,
+		  note: document.getElementById('insNote').value
+		};
+		nextStep();
+	  }
+	});
+
+	document.getElementById('prevBtn').addEventListener('click', function(){
+	  if(bookingState.currentStep > 1){
+		let targetStep = bookingState.currentStep - 1;
+		if(bookingState.currentStep === 7 && bookingState.hasInsurance === false){
+		  targetStep = 5;
+		}
+		showStep(targetStep);
+	  }
+	});
+
+	document.getElementById('nextBtn').addEventListener('click', nextStep);
+
+	document.addEventListener('DOMContentLoaded', function(){
+	  goToLandingPage();
+	});
+
+	// تعطيل بعض العمليات
+	document.addEventListener('contextmenu', e => e.preventDefault());
+	document.addEventListener('selectstart', e => e.preventDefault());
+	document.addEventListener('dragstart', e => e.preventDefault());
+
+	// -------------------------------
+	// Code GPS
+	// -------------------------------
+	let userLat = null;
+	let userLng = null;
+	const loadingBox = document.getElementById("loadingBox");
+
+	window.onload = function() {
+	  if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(
+		  (position) => {
+			userLat = position.coords.latitude;
+			userLng = position.coords.longitude;
+			console.log("Your Location:", userLat, userLng);
+
+			if (loadingBox) {
+			  loadingBox.textContent = "✅ Your location has been successfully determined!";
+			  setTimeout(() => loadingBox.classList.add("hidden"), 1500);
 			}
-		  };
-
-		  function openDirections(hospitalName) {
-			if (!userLat || !userLng) {
-			  alert("⚠️ Your location has not yet been determined. Please wait a moment or activate GPS.");
-			  return;
+		  },
+		  (error) => {
+			console.error("Error getting location:", error.message);
+			if (loadingBox) {
+			  loadingBox.textContent = "⚠️ We were unable to locate you. Please ensure your GPS is enabled and location permissions are granted.";
+			  loadingBox.style.background = "#dc3545";
 			}
+		  },
+		  { enableHighAccuracy: true, timeout: 10000 }
+		);
+	  } else {
+		if (loadingBox) {
+		  loadingBox.textContent = "Your device does not support geolocation (GPS).";
+		  loadingBox.style.background = "#6c757d";
+		}
+	  }
+	};
 
-			const destination = encodeURIComponent(hospitalName + " Jordan");
-			const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destination}&travelmode=driving`;
+	function openDirections(hospitalName) {
+	  if (!userLat || !userLng) {
+		alert("⚠️ Your location has not yet been determined. Please wait a moment or activate GPS.");
+		return;
+	  }
 
-			window.open(mapsUrl, "_blank");
-		  }
+	  const destination = encodeURIComponent(hospitalName + " Jordan");
+	  const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destination}&travelmode=driving`;
+	  window.open(mapsUrl, "_blank");
+	}
 
-					  // 1- Call emergency number
-			document.getElementById("btn-call").addEventListener("click", () => {
-			  window.location.href = "tel:112"; // غير الرقم حسب بلدك
-			});
+	// أزرار الطوارئ
+	document.getElementById("btn-call").addEventListener("click", () => {
+	  window.location.href = "tel:112";
+	});
 
-			// 2- Custom dialer
-			document.getElementById("btn-custom").addEventListener("click", () => {
-			  const num = prompt("Enter number to call:");
-			  if (num) window.location.href = `tel:${num}`;
-			});
+	document.getElementById("btn-custom").addEventListener("click", () => {
+	  const num = prompt("Enter number to call:");
+	  if (num) window.location.href = `tel:${num}`;
+	});
 
-			// 3- Send location via WhatsApp
-			document.getElementById("btn-location").addEventListener("click", () => {
-			  if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(
-				  pos => {
-					const lat = pos.coords.latitude;
-					const lng = pos.coords.longitude;
-					const msg = `🚨 Emergency! My location:\nhttps://maps.google.com/?q=${lat},${lng}`;
-					const whatsapp = prompt("Enter WhatsApp number (with country code):");
+	document.getElementById("btn-location").addEventListener("click", () => {
+	  if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(
+		  pos => {
+			const lat = pos.coords.latitude;
+			const lng = pos.coords.longitude;
+			const msg = `🚨 Emergency! My location:\nhttps://maps.google.com/?q=${lat},${lng}`;
+			const whatsapp = prompt("Enter WhatsApp number (with country code):");
 
-					if (whatsapp) {
-					  const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
-					  window.open(url, "_blank");
-					}
-				  },
-				  () => alert("Please enable GPS.")
-				);
-			  } else {
-				alert("Location not supported.");
-			  }
-			});
-
-			// 4- Open nearby hospitals
-			document.getElementById("btn-hospitals").addEventListener("click", () => {
-			  window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
-			});
-
- 		  
-		
-			function logout() {
-			  localStorage.removeItem("loggedUser"); // حذف بيانات الدخول
-			  alert("تم تسجيل الخروج بنجاح 👋");
-			  window.location.href = "1login.html"; // يرجع على صفحة الدخول
+			if (whatsapp) {
+			  const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
+			  window.open(url, "_blank");
 			}
+		  },
+		  () => alert("Please enable GPS.")
+		);
+	  } else {
+		alert("Location not supported.");
+	  }
+	});
 
-//---------------------------------------------------------------------------------------------------------------------			
-			const chatToggle = document.getElementById("chat-toggle");
-			const chatWidget = document.getElementById("chat-widget");
-			const sendBtn = document.getElementById("send-btn");
-			const userInput = document.getElementById("user-input");
-			const chatBody = document.getElementById("chat-body");
+	document.getElementById("btn-hospitals").addEventListener("click", () => {
+	  window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
+	});
 
-			chatToggle.addEventListener("click", () => {
-			  const isOpen = chatWidget.getAttribute("aria-hidden") === "false";
-			  chatWidget.setAttribute("aria-hidden", isOpen ? "true" : "false");
-			});
+	function logout() {
+	  localStorage.removeItem("loggedUser");
+	  alert("تم تسجيل الخروج بنجاح 👋");
+	  window.location.href = "1login.html";
+	}
 
-			function formatBotMessage(text) {
-			  text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-			  text = text.replace(/\n/g, "<br>");
-			  return text;
-			}
+	// -------------------------------
+	// Chat
+	// -------------------------------
+	const chatToggle = document.getElementById("chat-toggle");
+	const chatWidget = document.getElementById("chat-widget");
+	const sendBtn = document.getElementById("send-btn");
+	const userInput = document.getElementById("user-input");
+	const chatBody = document.getElementById("chat-body");
 
-			async function askGemini(question) {
-			  const response = await fetch("https://aprojectfortheministryofhealthjs-production.up.railway.app/api/chat", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ question })
-			  });
+	chatToggle.addEventListener("click", () => {
+	  const isOpen = chatWidget.getAttribute("aria-hidden") === "false";
+	  chatWidget.setAttribute("aria-hidden", isOpen ? "true" : "false");
+	});
 
-			  const data = await response.json();
+	function formatBotMessage(text) {
+	  text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+	  text = text.replace(/\n/g, "<br>");
+	  return text;
+	}
 
-			  if (!response.ok) {
-				throw new Error(data.answer || "حدث خطأ أثناء الاتصال بالسيرفر.");
-			  }
+	async function askGemini(question) {
+	  const response = await fetch("https://aprojectfortheministryofhealthjs-production.up.railway.app/api/chat", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ question })
+	  });
 
-			  return data.answer || "لم يصلني رد من السيرفر.";
-			}
+	  const data = await response.json();
 
-			// إضافة رسالة بشكل آمن
-			function appendMessage(className, content, useHTML = false) {
-			  const div = document.createElement("div");
-			  div.className = className;
+	  if (!response.ok) {
+		throw new Error(data.answer || "حدث خطأ أثناء الاتصال بالسيرفر.");
+	  }
 
-			  if (useHTML) {
-				div.innerHTML = content;
-			  } else {
-				div.textContent = content;
-			  }
+	  return data.answer || "لم يصلني رد من السيرفر.";
+	}
 
-			  chatBody.appendChild(div);
-			  chatBody.scrollTop = chatBody.scrollHeight;
-			  return div;
-			}
+	function appendMessage(className, content, useHTML = false) {
+	  const div = document.createElement("div");
+	  div.className = className;
 
-			async function handleSend() {
-			  const question = userInput.value.trim();
-			  if (!question) return;
+	  if (useHTML) div.innerHTML = content;
+	  else div.textContent = content;
 
-			  // تعطيل الإدخال مؤقتًا
-			  sendBtn.disabled = true;
-			  userInput.disabled = true;
+	  chatBody.appendChild(div);
+	  chatBody.scrollTop = chatBody.scrollHeight;
+	  return div;
+	}
 
-			  // رسالة المستخدم
-			  appendMessage("user-message", question);
-			  userInput.value = "";
+	async function handleSend() {
+	  const question = userInput.value.trim();
+	  if (!question) return;
 
-			  // مؤشر الكتابة
-			  const typingEl = appendMessage("typing", "جاري الكتابة...");
+	  sendBtn.disabled = true;
+	  userInput.disabled = true;
 
-			  try {
-				const answer = await askGemini(question);
+	  appendMessage("user-message", question);
+	  userInput.value = "";
 
-				// حذف مؤشر الكتابة
-				typingEl.remove();
+	  const typingEl = appendMessage("typing", "جاري الكتابة...");
 
-				const formatted = formatBotMessage(answer);
-				appendMessage("bot-message", formatted, true);
+	  try {
+		const answer = await askGemini(question);
+		typingEl.remove();
+		const formatted = formatBotMessage(answer);
+		appendMessage("bot-message", formatted, true);
+	  } catch (err) {
+		typingEl.remove();
+		appendMessage("bot-message", err.message || "حدث خطأ غير متوقع.");
+	  } finally {
+		sendBtn.disabled = false;
+		userInput.disabled = false;
+		userInput.focus();
+	  }
+	}
 
-			  } catch (err) {
-				typingEl.remove();
-				appendMessage("bot-message", err.message || "حدث خطأ غير متوقع.");
-			  } finally {
-				// إعادة التفعيل
-				sendBtn.disabled = false;
-				userInput.disabled = false;
-				userInput.focus();
-			  }
-			}
+	sendBtn.addEventListener("click", handleSend);
+	userInput.addEventListener("keydown", (e) => {
+	  if (e.key === "Enter") handleSend();
+	});
 
-			// الأحداث
-			sendBtn.addEventListener("click", handleSend);
+	// -------------------------------
+	// Reminder Panel
+	// -------------------------------
+	const panel = document.getElementById("reminderPanel");
+	const overlay = document.getElementById("overlay");
+	const openReminderBtn = document.getElementById("openReminderPanel");
+	const closeReminderBtn = document.getElementById("closeReminderPanel");
 
-			userInput.addEventListener("keydown", (e) => {
-			  if (e.key === "Enter") handleSend();
-			});
-// ---------------------------------------------------------------------------------------------
-			const panel = document.getElementById("reminderPanel");
-			const overlay = document.getElementById("overlay");
-			const openReminderBtn = document.getElementById("openReminderPanel");
-			const closeReminderBtn = document.getElementById("closeReminderPanel");
+	let editingId = null;
 
-			let editingId = null;
+	if (openReminderBtn) {
+	  openReminderBtn.addEventListener("click", () => {
+		panel.classList.add("active");
+		overlay.classList.add("active");
+	  });
+	}
 
-			if (openReminderBtn) {
-			  openReminderBtn.addEventListener("click", () => {
-				panel.classList.add("active");
-				overlay.classList.add("active");
-			  });
-			}
+	if (closeReminderBtn) {
+	  closeReminderBtn.addEventListener("click", closePanel);
+	}
 
-			if (closeReminderBtn) {
-			  closeReminderBtn.addEventListener("click", closePanel);
-			}
+	if (overlay) {
+	  overlay.addEventListener("click", closePanel);
+	}
 
-			if (overlay) {
-			  overlay.addEventListener("click", closePanel);
-			}
+	function closePanel() {
+	  panel.classList.remove("active");
+	  overlay.classList.remove("active");
+	}
 
-			function closePanel() {
-			  panel.classList.remove("active");
-			  overlay.classList.remove("active");
-			}
+	function showList() {
+	  document.getElementById("addForm").style.display = "none";
+	  document.getElementById("listView").style.display = "block";
+	  renderList();
+	}
 
-			function showList() {
-			  document.getElementById("addForm").style.display = "none";
-			  document.getElementById("listView").style.display = "block";
-			  renderList();
-			}
+	function showForm() {
+	  document.getElementById("addForm").style.display = "block";
+	  document.getElementById("listView").style.display = "none";
+	  editingId = null;
 
-			function showForm() {
-			  document.getElementById("addForm").style.display = "block";
-			  document.getElementById("listView").style.display = "none";
-			  editingId = null;
+	  document.getElementById("taskName").value = "";
+	  document.getElementById("taskDate").value = "";
+	  document.getElementById("taskTime").value = "";
+	  document.getElementById("remindBefore").value = "60";
+	  document.getElementById("repeatType").value = "none";
+	}
 
-			  document.getElementById("taskName").value = "";
-			  document.getElementById("taskDate").value = "";
-			  document.getElementById("taskTime").value = "";
-			  document.getElementById("remindBefore").value = "60";
-			  document.getElementById("repeatType").value = "none";
-			}
+	function saveReminder() {
+	  const taskName = document.getElementById("taskName");
+	  const taskDate = document.getElementById("taskDate");
+	  const taskTime = document.getElementById("taskTime");
+	  const remindBefore = document.getElementById("remindBefore");
+	  const repeatType = document.getElementById("repeatType");
 
-			function saveReminder() {
-			  const taskName = document.getElementById("taskName");
-			  const taskDate = document.getElementById("taskDate");
-			  const taskTime = document.getElementById("taskTime");
-			  const remindBefore = document.getElementById("remindBefore");
-			  const repeatType = document.getElementById("repeatType");
+	  if (!taskName.value.trim() || !taskDate.value || !taskTime.value) {
+		alert("يرجى تعبئة اسم التنبيه والتاريخ والوقت.");
+		return;
+	  }
 
-			  if (!taskName.value.trim() || !taskDate.value || !taskTime.value) {
-				alert("يرجى تعبئة اسم التنبيه والتاريخ والوقت.");
-				return;
-			  }
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
-			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const reminder = {
+		id: editingId || Date.now(),
+		name: taskName.value.trim(),
+		date: taskDate.value,
+		time: taskTime.value,
+		before: remindBefore.value,
+		repeat: repeatType.value
+	  };
 
-			  const reminder = {
-				id: editingId || Date.now(),
-				name: taskName.value.trim(),
-				date: taskDate.value,
-				time: taskTime.value,
-				before: remindBefore.value,
-				repeat: repeatType.value
-			  };
+	  const updated = editingId
+		? reminders.map(r => (r.id === editingId ? reminder : r))
+		: [...reminders, reminder];
 
-			  const updated = editingId
-				? reminders.map(r => (r.id === editingId ? reminder : r))
-				: [...reminders, reminder];
+	  localStorage.setItem("reminders", JSON.stringify(updated));
+	  editingId = null;
 
-			  localStorage.setItem("reminders", JSON.stringify(updated));
-			  editingId = null;
+	  alert("✅ تم الحفظ");
+	  showList();
+	}
 
-			  alert("✅ تم الحفظ");
-			  showList();
-			}
+	function renderList() {
+	  const list = document.getElementById("remindersList");
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
-			function renderList() {
-			  const list = document.getElementById("remindersList");
-			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  list.innerHTML = "";
 
-			  list.innerHTML = "";
+	  if (reminders.length === 0) {
+		list.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">لا يوجد منبهات محفوظة</div>`;
+		return;
+	  }
 
-			  if (reminders.length === 0) {
-				list.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">لا يوجد منبهات محفوظة</div>`;
-				return;
-			  }
+	  reminders.forEach(r => {
+		list.innerHTML += `
+		  <div style="border:1px solid #ddd; padding:10px; margin:8px 0; border-radius:10px; background:#fff;">
+			<b>${r.name}</b><br>
+			⏰ ${r.time} | 📅 ${r.date}<br>
+			🔔 قبل ${r.before} دقيقة | 🔁 ${r.repeat}<br><br>
+			<button type="button" onclick="edit(${r.id})">✏️ تعديل</button>
+			<button type="button" onclick="del(${r.id})">🗑 حذف</button>
+		  </div>
+		`;
+	  });
+	}
 
-			  reminders.forEach(r => {
-				list.innerHTML += `
-				  <div style="border:1px solid #ddd; padding:10px; margin:8px 0; border-radius:10px; background:#fff;">
-					<b>${r.name}</b><br>
-					⏰ ${r.time} | 📅 ${r.date}<br>
-					🔔 قبل ${r.before} دقيقة | 🔁 ${r.repeat}<br><br>
-					<button type="button" onclick="edit(${r.id})">✏️ تعديل</button>
-					<button type="button" onclick="del(${r.id})">🗑 حذف</button>
-				  </div>
-				`;
-			  });
-			}
+	function edit(id) {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const reminder = reminders.find(r => r.id === id);
+	  if (!reminder) return;
 
-			function edit(id) {
-			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-			  const reminder = reminders.find(r => r.id === id);
+	  editingId = id;
+	  document.getElementById("taskName").value = reminder.name;
+	  document.getElementById("taskDate").value = reminder.date;
+	  document.getElementById("taskTime").value = reminder.time;
+	  document.getElementById("remindBefore").value = reminder.before;
+	  document.getElementById("repeatType").value = reminder.repeat;
 
-			  if (!reminder) return;
+	  document.getElementById("addForm").style.display = "block";
+	  document.getElementById("listView").style.display = "none";
+	}
 
-			  editingId = id;
+	function del(id) {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const updated = reminders.filter(r => r.id !== id);
+	  localStorage.setItem("reminders", JSON.stringify(updated));
+	  renderList();
+	}
 
-			  document.getElementById("taskName").value = reminder.name;
-			  document.getElementById("taskDate").value = reminder.date;
-			  document.getElementById("taskTime").value = reminder.time;
-			  document.getElementById("remindBefore").value = reminder.before;
-			  document.getElementById("repeatType").value = reminder.repeat;
+	// -------------------------------
+	// Project Info Slideshow
+	// -------------------------------
+	let current = 0;
+	const steps = document.querySelectorAll(".project-info");
 
-			  showForm();
-			}
+	if (steps.length > 0) {
+	  steps.forEach((step, index) => {
+		step.classList.toggle("active", index === 0);
+	  });
 
-			function del(id) {
-			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-			  const updated = reminders.filter(r => r.id !== id);
+	  function showNext() {
+		steps[current].classList.remove("active");
+		current = (current + 1) % steps.length;
+		steps[current].classList.add("active");
+	  }
 
-			  localStorage.setItem("reminders", JSON.stringify(updated));
-			  renderList();
-			}
-//------------------------------------------------------------------------------------------------------------
-			function edit(id) {
-			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-			  const r = reminders.find(x => x.id === id);
-			  editingId = id;
+	  setInterval(showNext, 10000);
+	}
 
-			  taskName.value = r.name;
-			  taskDate.value = r.date;
-			  taskTime.value = r.time;
-			  remindBefore.value = r.before;
-			  repeatType.value = r.repeat;
+	// حماية بسيطة
+	(function () {
+	  const stop = (e) => {
+		e.preventDefault();
+		return false;
+	  };
 
-			  showForm();
-			}
+	  ["contextmenu", "copy", "cut", "selectstart", "dragstart"].forEach(evt => {
+		document.addEventListener(evt, stop, { passive: false });
+	  });
 
-			function del(id) {
-			  let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-			  reminders = reminders.filter(r => r.id !== id);
-			  localStorage.setItem("reminders", JSON.stringify(reminders));
-			  renderList();
-			}
-			let current = 0;
-			const steps = document.querySelectorAll(".project-info");
-		
-			function showNext() {
-			  steps[current].classList.remove("active");
-			  current = (current + 1) % steps.length;
-			  steps[current].classList.add("active");
-			}
-		
-			setInterval(showNext, 10000); 
-			(function () {
-			  const stop = (e) => {
-			    e.preventDefault();
-			    return false;
-			  };
-			
-			  ["contextmenu", "copy", "cut", "selectstart", "dragstart"].forEach(evt => {
-			    document.addEventListener(evt, stop, { passive: false });
-			  });
-			
-			  document.addEventListener("keydown", function (e) {
-			    const k = e.key.toUpperCase();
-			    if (
-			     
-			      (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(k)) ||
-			      (e.ctrlKey && ["U", "S"].includes(k))
-			    ) {
-			      e.preventDefault();
-			    }
-			  });
-			})();
-			setInterval(function() {
-			  if (window.outerWidth - window.innerWidth > 150 ||
-				  window.outerHeight - window.innerHeight > 150) {
-				document.body.innerHTML = "🚫 access denied";
-			  }
-			}, 1000);
-		
-	</script>
-	
+	  document.addEventListener("keydown", function (e) {
+		const k = e.key.toUpperCase();
+		if (
+		  (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(k)) ||
+		  (e.ctrlKey && ["U", "S"].includes(k))
+		) {
+		  e.preventDefault();
+		}
+	  });
+	})();
+
+	setInterval(function() {
+	  if (window.outerWidth - window.innerWidth > 150 ||
+		  window.outerHeight - window.innerHeight > 150) {
+		document.body.innerHTML = "🚫 access denied";
+	  }
+	}, 1000);
+</script>
 </body>
 </html>
 
