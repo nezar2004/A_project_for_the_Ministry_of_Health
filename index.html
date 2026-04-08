@@ -2671,13 +2671,22 @@ button {
 			const openReminderBtn = document.getElementById("openReminderPanel");
 			const closeReminderBtn = document.getElementById("closeReminderPanel");
 
-			openReminderBtn.addEventListener("click", () => {
-			  panel.classList.add("active");
-			  overlay.classList.add("active");
-			});
+			let editingId = null;
 
-			closeReminderBtn.addEventListener("click", closePanel);
-			overlay.addEventListener("click", closePanel);
+			if (openReminderBtn) {
+			  openReminderBtn.addEventListener("click", () => {
+				panel.classList.add("active");
+				overlay.classList.add("active");
+			  });
+			}
+
+			if (closeReminderBtn) {
+			  closeReminderBtn.addEventListener("click", closePanel);
+			}
+
+			if (overlay) {
+			  overlay.addEventListener("click", closePanel);
+			}
 
 			function closePanel() {
 			  panel.classList.remove("active");
@@ -2694,14 +2703,31 @@ button {
 			  document.getElementById("addForm").style.display = "block";
 			  document.getElementById("listView").style.display = "none";
 			  editingId = null;
+
+			  document.getElementById("taskName").value = "";
+			  document.getElementById("taskDate").value = "";
+			  document.getElementById("taskTime").value = "";
+			  document.getElementById("remindBefore").value = "60";
+			  document.getElementById("repeatType").value = "none";
 			}
 
 			function saveReminder() {
+			  const taskName = document.getElementById("taskName");
+			  const taskDate = document.getElementById("taskDate");
+			  const taskTime = document.getElementById("taskTime");
+			  const remindBefore = document.getElementById("remindBefore");
+			  const repeatType = document.getElementById("repeatType");
+
+			  if (!taskName.value.trim() || !taskDate.value || !taskTime.value) {
+				alert("يرجى تعبئة اسم التنبيه والتاريخ والوقت.");
+				return;
+			  }
+
 			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
 			  const reminder = {
 				id: editingId || Date.now(),
-				name: taskName.value,
+				name: taskName.value.trim(),
 				date: taskDate.value,
 				time: taskTime.value,
 				before: remindBefore.value,
@@ -2709,10 +2735,12 @@ button {
 			  };
 
 			  const updated = editingId
-				? reminders.map(r => r.id === editingId ? reminder : r)
+				? reminders.map(r => (r.id === editingId ? reminder : r))
 				: [...reminders, reminder];
 
 			  localStorage.setItem("reminders", JSON.stringify(updated));
+			  editingId = null;
+
 			  alert("✅ تم الحفظ");
 			  showList();
 			}
@@ -2720,18 +2748,50 @@ button {
 			function renderList() {
 			  const list = document.getElementById("remindersList");
 			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+
 			  list.innerHTML = "";
+
+			  if (reminders.length === 0) {
+				list.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">لا يوجد منبهات محفوظة</div>`;
+				return;
+			  }
 
 			  reminders.forEach(r => {
 				list.innerHTML += `
-				  <div style="border:1px solid #ddd;padding:6px;margin:6px 0">
+				  <div style="border:1px solid #ddd; padding:10px; margin:8px 0; border-radius:10px; background:#fff;">
 					<b>${r.name}</b><br>
 					⏰ ${r.time} | 📅 ${r.date}<br>
-					<button onclick="edit(${r.id})">✏️</button>
-					<button onclick="del(${r.id})">🗑</button>
+					🔔 قبل ${r.before} دقيقة | 🔁 ${r.repeat}<br><br>
+					<button type="button" onclick="edit(${r.id})">✏️ تعديل</button>
+					<button type="button" onclick="del(${r.id})">🗑 حذف</button>
 				  </div>
 				`;
 			  });
+			}
+
+			function edit(id) {
+			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+			  const reminder = reminders.find(r => r.id === id);
+
+			  if (!reminder) return;
+
+			  editingId = id;
+
+			  document.getElementById("taskName").value = reminder.name;
+			  document.getElementById("taskDate").value = reminder.date;
+			  document.getElementById("taskTime").value = reminder.time;
+			  document.getElementById("remindBefore").value = reminder.before;
+			  document.getElementById("repeatType").value = reminder.repeat;
+
+			  showForm();
+			}
+
+			function del(id) {
+			  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+			  const updated = reminders.filter(r => r.id !== id);
+
+			  localStorage.setItem("reminders", JSON.stringify(updated));
+			  renderList();
 			}
 //------------------------------------------------------------------------------------------------------------
 			function edit(id) {
