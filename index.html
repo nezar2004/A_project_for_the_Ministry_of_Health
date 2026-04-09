@@ -1551,10 +1551,7 @@ button {
 	  if (!container) return;
 	  container.innerHTML = '';
 		
-	   const matched = hospitals.filter(h =>
-		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
-		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
-	   );
+	  
 	   console.log("All hospitals sample:", hospitals.slice(0, 10));
 	   console.log("Selected gov:", bookingState.gov);
 	   console.log("Selected type:", bookingState.facilityType);
