@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تست رفع البيانات إلى Firestore</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f7f7f7;
+      text-align: center;
+      margin: 0;
+    }
+
+    h2 {
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #0d6efd;
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #0b5ed7;
+    }
+
+    #status {
+      margin-top: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: right;
+      max-width: 900px;
+      margin-inline: auto;
+      white-space: pre-line;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      min-height: 120px;
+    }
+  </style>
+</head>
+<body>
+  <h2>تست رفع المستشفيات والأقسام والأطباء إلى Firestore</h2>
+
+  <button id="uploadBtn">🚀 رفع بيانات تجريبية</button>
+
+  <div id="status">جاهز للرفع...</div>
+
+  <script type="module">
+    const governmentalHospitals = [
+      { id: 1, name: "مستشفى حكومي تجريبي 1", gov: "Irbid" },
+      { id: 2, name: "مستشفى حكومي تجريبي 2", gov: "Amman" }
+    ];
+
+    const privateHospitals = [
+      { id: 101, name: "مستشفى خاص تجريبي 1", gov: "Amman" },
+      { id: 102, name: "مستشفى خاص تجريبي 2", gov: "Zarqa" }
+    ];
+
+    const militaryHospitals = [
+      { id: 201, name: "مستشفى عسكري تجريبي 1", gov: "Amman" },
+      { id: 202, name: "مستشفى عسكري تجريبي 2", gov: "Mafraq" }
+    ];
+
+    const healthCenters = [
+      { id: 301, name: "مركز صحي تجريبي 1", gov: "Irbid" },
+      { id: 302, name: "مركز صحي تجريبي 2", gov: "Ajloun" }
+    ];
+
+    const governmentaldepartments = [
+      { id: 1, title: "باطنية", basePrice: 10, icon: "fa-stethoscope" },
+      { id: 2, title: "أطفال", basePrice: 8, icon: "fa-child" },
+      { id: 3, title: "عظام", basePrice: 12, icon: "fa-bone" }
+    ];
+
+    const privateDepartments = [
+      { id: 1, title: "نسائية", basePrice: 25, icon: "fa-user-doctor" },
+      { id: 2, title: "أسنان", basePrice: 20, icon: "fa-tooth" },
+      { id: 3, title: "جلدية", basePrice: 18, icon: "fa-user-doctor" }
+    ];
+
+    const militaryDepartments = [
+      { id: 1, title: "جراحة", basePrice: 15, icon: "fa-user-doctor" },
+      { id: 2, title: "عيون", basePrice: 14, icon: "fa-eye" },
+      { id: 3, title: "باطنية", basePrice: 13, icon: "fa-stethoscope" }
+    ];
+
+    const healthCenterDepartments = [
+      { id: 1, title: "طب عام", basePrice: 5, icon: "fa-house-medical" },
+      { id: 2, title: "أطفال", basePrice: 5, icon: "fa-child" },
+      { id: 3, title: "نسائية", basePrice: 5, icon: "fa-user-doctor" }
+    ];
+
+    const maleNames = [
+      "د. أحمد علي",
+      "د. محمد خالد",
+      "د. عمر يوسف",
+      "د. سامر حسن"
+    ];
+
+    const femaleNames = [
+      "د. سارة أحمد",
+      "د. نور محمد",
+      "د. آية خالد",
+      "د. ريم علي"
+    ];
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      getDocs,
+      addDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBW5dCsppo4sIqP2ODWgMO_GPzwTW-ZJPU",
+	  authDomain: "emergencyhospitals.firebaseapp.com",
+	  projectId: "emergencyhospitals",
+	  storageBucket: "emergencyhospitals.firebasestorage.app",
+	  messagingSenderId: "574388885020",
+	  appId: "1:574388885020:web:321ceffac2b3a6790031d9",
+	  measurementId: "G-D4VTN7PC4Z"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const statusBox = document.getElementById("status");
+
+    function log(message) {
+      console.log(message);
+      statusBox.textContent += "\n" + message;
+    }
+
+    function normalizeGov(gov) {
+      if (!gov) return "";
+      if (gov === "Ma,an" || gov === "Ma'an") return "Maan";
+      return String(gov).trim();
+    }
+
+    function makeSafeId(value, fallback = "item") {
+      return String(value || fallback)
+        .trim()
+        .replace(/\s+/g, "_")
+        .replace(/[^\u0600-\u06FFa-zA-Z0-9_-]/g, "_");
+    }
+
+    function getRandomDoctorName() {
+      const source = Math.random() > 0.5 ? maleNames : femaleNames;
+      return source[Math.floor(Math.random() * source.length)];
+    }
+
+    function createDoctorForDepartment(department, facility) {
+      return {
+        name: getRandomDoctorName(),
+        departmentId: department.id || "",
+        departmentName: department.title || "",
+        specialty: department.title || "",
+        facilityId: facility.id || "",
+        facilityName: facility.name || "",
+        facilityType: facility.type || "",
+        gov: facility.gov || "",
+        slotDuration: 30,
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    function prepareFacilities() {
+      const govHospitals = governmentalHospitals.map(item => ({
+        id: item.id,
+        name: item.name,
+        gov: normalizeGov(item.gov),
+        type: "governmental"
+      }));
+
+      const milHospitals = militaryHospitals.map(item => ({
+        id: item.id,
+        name: item.name,
+        gov: normalizeGov(item.gov),
+        type: "military"
+      }));
+
+      const privHospitals = privateHospitals.map(item => ({
+        id: item.id,
+        name: item.name,
+        gov: normalizeGov(item.gov),
+        type: "private"
+      }));
+
+      const centers = healthCenters.map(item => ({
+        id: item.id,
+        name: item.name,
+        gov: normalizeGov(item.gov),
+        type: "healthCenter"
+      }));
+
+      return [
+        ...govHospitals,
+        ...milHospitals,
+        ...privHospitals,
+        ...centers
+      ];
+    }
+
+    function getCollectionNameByType(type) {
+      switch (type) {
+        case "governmental":
+          return "governmentalHospitals";
+        case "military":
+          return "militaryHospitals";
+        case "private":
+          return "privateHospitals";
+        case "healthCenter":
+          return "healthCenters";
+        default:
+          return "";
+      }
+    }
+
+    function getDepartmentsByType(type) {
+      switch (type) {
+        case "governmental":
+          return governmentaldepartments;
+        case "military":
+          return militaryDepartments;
+        case "private":
+          return privateDepartments;
+        case "healthCenter":
+          return healthCenterDepartments;
+        default:
+          return [];
+      }
+    }
+
+    async function facilityExists(collectionName, facilityId) {
+      const facilityRef = doc(db, collectionName, facilityId);
+      const snap = await getDoc(facilityRef);
+      return snap.exists();
+    }
+
+    async function departmentExists(collectionName, facilityId, departmentId) {
+      const deptRef = doc(db, collectionName, facilityId, "departments", departmentId);
+      const snap = await getDoc(deptRef);
+      return snap.exists();
+    }
+
+    async function doctorAlreadyExists(collectionName, facilityId, departmentId) {
+      const doctorsRef = collection(
+        db,
+        collectionName,
+        facilityId,
+        "departments",
+        departmentId,
+        "doctors"
+      );
+      const doctorsSnap = await getDocs(doctorsRef);
+      return !doctorsSnap.empty;
+    }
+
+    async function uploadFacility(facility) {
+      const collectionName = getCollectionNameByType(facility.type);
+
+      if (!collectionName) {
+        log(`❌ نوع غير معروف: ${facility.name}`);
+        return;
+      }
+
+      const facilityId = makeSafeId(facility.id || facility.name, "facility");
+      const facilityRef = doc(db, collectionName, facilityId);
+
+      const exists = await facilityExists(collectionName, facilityId);
+
+      if (!exists) {
+        await setDoc(facilityRef, {
+          id: facilityId,
+          name: facility.name,
+          gov: facility.gov,
+          type: facility.type
+        });
+        log(`✅ تم رفع المرفق: ${facility.name}`);
+      } else {
+        log(`⏭ المرفق موجود مسبقًا: ${facility.name}`);
+      }
+
+      const departments = getDepartmentsByType(facility.type);
+
+      for (const dept of departments) {
+        const departmentId = makeSafeId(dept.id || dept.title, "department");
+        const deptRef = doc(db, collectionName, facilityId, "departments", departmentId);
+
+        const deptExists = await departmentExists(collectionName, facilityId, departmentId);
+
+        if (!deptExists) {
+          await setDoc(deptRef, {
+            id: departmentId,
+            title: dept.title,
+            basePrice: dept.basePrice || 0,
+            icon: dept.icon || "",
+            type: facility.type
+          });
+          log(`   ✅ تم رفع القسم: ${dept.title}`);
+        } else {
+          log(`   ⏭ القسم موجود مسبقًا: ${dept.title}`);
+        }
+
+        const hasDoctor = await doctorAlreadyExists(collectionName, facilityId, departmentId);
+
+        if (!hasDoctor) {
+          const doctorData = createDoctorForDepartment(
+            { ...dept, id: departmentId },
+            { ...facility, id: facilityId }
+          );
+
+          await addDoc(
+            collection(
+              db,
+              collectionName,
+              facilityId,
+              "departments",
+              departmentId,
+              "doctors"
+            ),
+            doctorData
+          );
+
+          log(`      ✅ تم إضافة دكتور للقسم: ${dept.title}`);
+        } else {
+          log(`      ⏭ يوجد دكتور مسبقًا في القسم: ${dept.title}`);
+        }
+      }
+    }
+
+    async function uploadAllData() {
+      try {
+        statusBox.textContent = "بدء عملية الرفع...\n";
+
+        const allFacilities = prepareFacilities();
+
+        for (const facility of allFacilities) {
+          await uploadFacility(facility);
+        }
+
+        log("\n🎉 تم رفع البيانات التجريبية بنجاح");
+        alert("✔ تم رفع البيانات التجريبية بنجاح");
+      } catch (error) {
+        console.error(error);
+        log(`\n❌ حدث خطأ أثناء الرفع: ${error.message}`);
+        alert("❌ حدث خطأ أثناء الرفع، راجع Console");
+      }
+    }
+
+    document.getElementById("uploadBtn").addEventListener("click", uploadAllData);
+  </script>
+</body>
+</html>
