@@ -1290,20 +1290,28 @@ button {
       const hospitalsSnap = await getDocs(collection(db, "hospitals"));
       console.log("hospitalsSnap.size =", hospitalsSnap.size);
 
-      const hospitalsData = [];
+      const hospitalsData = hospitalsSnap.docs.map(hospitalDoc => {
+        const hospitalRaw = hospitalDoc.data();
+        return {
+          ...hospitalRaw,
+          docId: hospitalDoc.id,
+          id: hospitalRaw.id ?? hospitalDoc.id
+        };
+      });
+
+      window.firebaseHospitals = hospitalsData;
+      window.firebaseDepartments = [];
+      window.firebaseDoctors = [];
+
+      console.log("Hospitals loaded first:", hospitalsData.length);
+
+      window.dispatchEvent(new Event("firebaseDataReady"));
+
       const departmentsData = [];
       const doctorsData = [];
 
       for (const hospitalDoc of hospitalsSnap.docs) {
         const hospitalRaw = hospitalDoc.data();
-
-        const hospital = {
-          ...hospitalRaw,
-          docId: hospitalDoc.id,
-          id: hospitalRaw.id ?? hospitalDoc.id
-        };
-
-        hospitalsData.push(hospital);
 
         const deptSnap = await getDocs(
           collection(db, "hospitals", hospitalDoc.id, "departments")
@@ -1344,14 +1352,13 @@ button {
         }
       }
 
-      window.firebaseHospitals = hospitalsData;
       window.firebaseDepartments = departmentsData;
       window.firebaseDoctors = doctorsData;
 
-      console.log("Firebase loaded:", {
-        hospitals: hospitalsData,
-        departments: departmentsData,
-        doctors: doctorsData
+      console.log("All Firebase data loaded:", {
+        hospitals: hospitalsData.length,
+        departments: departmentsData.length,
+        doctors: doctorsData.length
       });
 
       window.dispatchEvent(new Event("firebaseDataReady"));
@@ -1394,25 +1401,27 @@ button {
 	// إذا تم تحميل بيانات Firebase من سكربت آخر
 	window.addEventListener("firebaseDataReady", () => {
 	  hospitals = (window.firebaseHospitals || []).map(h => ({
-	    ...h,
-	    gov: String(h.gov || "").trim(),
-	    type: normalizeFacilityType(h.type)
+		...h,
+		gov: String(h.gov || "").trim(),
+		type: normalizeFacilityType(h.type)
 	  }));
-	
+
 	  Departments = (window.firebaseDepartments || []).map(d => ({
-	    ...d,
-	    type: normalizeFacilityType(d.type)
+		...d,
+		type: normalizeFacilityType(d.type)
 	  }));
-	
+
 	  doctors = window.firebaseDoctors || [];
-	
+
 	  console.log("🔥 Firebase data ready", {
-	    hospitals: hospitals.length,
-	    departments: Departments.length,
-	    doctors: doctors.length
+		hospitals: hospitals.length,
+		departments: Departments.length,
+		doctors: doctors.length
 	  });
-	
-	  console.log("Sample hospital types:", [...new Set(hospitals.slice(0, 20).map(h => h.type))]);
+
+	  if (bookingState.currentStep === 3) {
+		renderHospitals();
+	  }
 	});
 
 	// -------------------------------
