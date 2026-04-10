@@ -1650,6 +1650,11 @@ button {
 		String(d.hospital_id) === String(bookingState.hospital.id)
 	  );
 
+	  // 🔥 هون بالزبط
+	  console.log("selected hospital =", bookingState.hospital);
+	  console.log("Departments length =", Departments.length);
+	  console.log("matchedDepartments =", matchedDepartments);
+
 	  if (!matchedDepartments.length) {
 		c.innerHTML = `
 		  <div class="col-12 text-muted p-3">
