@@ -1476,9 +1476,11 @@ button {
 	  if (n === 4 && bookingState.hospital) renderDepartments();
 	  if (n === 7 && bookingState.department) loadDoctorsForSelectedDepartment();
 	  if (n === 8 && bookingState.doctor) {
-		autoFillToday();
-		loadTimeSlotsForSelectedDate();
-	  }
+		  if (!bookingState.date) {
+			autoFillToday();
+		  }
+		  loadTimeSlotsForSelectedDate();
+		}
 	  if (n === 9 && bookingState.time) updateSummaryCard();
 	}
 
@@ -1877,6 +1879,8 @@ button {
 	}
 
 	function autoFillToday() {
+	  if (bookingState.date) return;
+
 	  const today = new Date();
 	  const yyyy = today.getFullYear();
 	  const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -1898,6 +1902,8 @@ button {
 	}
 
 	function loadTimeSlotsForSelectedDate() {
+	  console.log("loadTimeSlotsForSelectedDate called", bookingState.date, bookingState.doctor);
+
 	  const container = document.getElementById('slotsArea');
 	  if (!container) return;
 	  container.innerHTML = '';
