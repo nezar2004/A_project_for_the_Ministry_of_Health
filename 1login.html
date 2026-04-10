@@ -1273,32 +1273,9 @@ button {
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // Firebase خاص بتسجيل الدخول
-  const authFirebaseConfig = {
-    apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-    authDomain: "nabdapp-3a077.firebaseapp.com",
-    projectId: "nabdapp-3a077",
-    storageBucket: "nabdapp-3a077.appspot.com",
-    messagingSenderId: "675031985272",
-    appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
-  };
-
-  const authApp = initializeApp(authFirebaseConfig, "authApp");
-  const auth = getAuth(authApp);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "1login.html";
-    } else {
-      console.log("User logged in:", user.email);
-    }
-  });
-
-  // Firebase خاص بالداتا
   const firebaseConfig = {
     apiKey: "AIzaSyCH940ESn8v0Ld1ESp---fv0RC_9bf_e70",
     authDomain: "testing-8208a.firebaseapp.com",
@@ -1308,12 +1285,11 @@ button {
     appId: "1:912654428982:web:2aad95677b05765e802d97"
   };
 
-  const app = initializeApp(firebaseConfig, "dataApp");
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   window.db = db;
   window.collection = collection;
   window.getDocs = getDocs;
-
   async function loadFirebaseData() {
     try {
       console.log("START loadFirebaseData");
@@ -2607,5 +2583,4 @@ button {
 </script>
 </body>
 </html>
-
 
