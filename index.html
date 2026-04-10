@@ -1102,11 +1102,26 @@ button {
 			  <div id="step-2" class="step-block d-none">
 				<h5 class="mb-3">Select the type of establishment</h5>
 				<div class="row g-3">
-				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="governmental"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> Government hospital</div></div>
-				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="militaryH"><i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i> military hospital</div></div>
-				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="privateH"><i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i> private hospital</div></div>
-				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Health centerH"><i class="fas fa-plus-square fa-2x mb-2 text-primary"></i> Health center</div></div>
-				  <div class="col-6 col-md-3"><div class="card select-card p-3 text-center" data-type="Medical center"><i class="fas fa-first-aid fa-2x mb-2 text-primary"></i> Medical center</div></div>
+				  <div class="col-6 col-md-3">
+					<div class="card select-card p-3 text-center" data-type="governmental">
+					  <i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i>
+					  Government hospital
+					</div>
+				  </div>
+
+				  <div class="col-6 col-md-3">
+					<div class="card select-card p-3 text-center" data-type="private">
+					  <i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i>
+					  Private hospital
+					</div>
+				  </div>
+
+				  <div class="col-6 col-md-3">
+					<div class="card select-card p-3 text-center" data-type="healthCenter">
+					  <i class="fas fa-plus-square fa-2x mb-2 text-primary"></i>
+					  Health center
+					</div>
+				  </div>
 				</div>
 			  </div>
 
@@ -1252,31 +1267,24 @@ button {
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
-  console.log("🔥 module script started");
-
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCj-ssDWRyfhTp-FOg64JqgczCHOE77jGE",
+    apiKey: "AIzaSyCkSDJnQSiF0gl-00yYYCZ84tJaUwL7O6Y",
     authDomain: "healthmap-a4970.firebaseapp.com",
     projectId: "healthmap-a4970",
     storageBucket: "healthmap-a4970.firebasestorage.app",
     messagingSenderId: "254912519930",
-    appId: "1:254912519930:web:1810647ef9f8e538227343"
+    appId: "1:254912519930:web:78d2dea11429ad77227343"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  console.log("✅ firebase app initialized");
-
   async function loadFirebaseData() {
     try {
-      console.log("📥 starting firestore read...");
-
       const hospitalsSnap = await getDocs(collection(db, "hospitals"));
-      console.log("✅ hospitals snapshot loaded:", hospitalsSnap.size);
 
       const hospitalsData = [];
       const departmentsData = [];
@@ -1286,9 +1294,9 @@ button {
         const hospitalRaw = hospitalDoc.data();
 
         const hospital = {
+          ...hospitalRaw,
           docId: hospitalDoc.id,
-          id: hospitalDoc.id,
-          ...hospitalRaw
+          id: hospitalRaw.id ?? hospitalDoc.id
         };
 
         hospitalsData.push(hospital);
@@ -1297,17 +1305,15 @@ button {
           collection(db, "hospitals", hospitalDoc.id, "departments")
         );
 
-        console.log("🏥 hospital:", hospital.name, "| departments:", deptSnap.size);
-
         for (const deptDoc of deptSnap.docs) {
           const deptRaw = deptDoc.data();
 
           const department = {
+            ...deptRaw,
             docId: deptDoc.id,
-            id: deptDoc.id,
+            id: deptRaw.id ?? deptDoc.id,
             hospitalDocId: hospitalDoc.id,
-            hospital_id: hospitalDoc.id,
-            ...deptRaw
+            hospital_id: hospitalRaw.id ?? hospitalDoc.id
           };
 
           departmentsData.push(department);
@@ -1316,19 +1322,17 @@ button {
             collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
           );
 
-          console.log("📂 department:", department.title, "| doctors:", doctorsSnap.size);
-
           for (const doctorDoc of doctorsSnap.docs) {
             const doctorRaw = doctorDoc.data();
 
             const doctor = {
+              ...doctorRaw,
               docId: doctorDoc.id,
-              id: doctorDoc.id,
+              id: doctorRaw.id ?? doctorDoc.id,
               hospitalDocId: hospitalDoc.id,
               departmentDocId: deptDoc.id,
-              hospital_id: hospitalDoc.id,
-              dept_id: deptDoc.id,
-              ...doctorRaw
+              hospital_id: hospitalRaw.id ?? hospitalDoc.id,
+              dept_id: deptRaw.id ?? deptDoc.id
             };
 
             doctorsData.push(doctor);
@@ -1340,15 +1344,15 @@ button {
       window.firebaseDepartments = departmentsData;
       window.firebaseDoctors = doctorsData;
 
-      console.log("✅ Firebase loaded successfully");
-      console.log("Hospitals:", hospitalsData.length);
-      console.log("Departments:", departmentsData.length);
-      console.log("Doctors:", doctorsData.length);
+      console.log("Firebase loaded:", {
+        hospitals: hospitalsData,
+        departments: departmentsData,
+        doctors: doctorsData
+      });
 
       window.dispatchEvent(new Event("firebaseDataReady"));
-      console.log("🚀 firebaseDataReady dispatched");
     } catch (error) {
-      console.error("❌ Firebase loading error:", error);
+      console.error("Firebase loading error:", error);
       alert("حدث خطأ أثناء تحميل البيانات من Firebase");
     }
   }
@@ -1357,16 +1361,15 @@ button {
 </script>
 <script>
 	function normalizeFacilityType(type) {
-	  const t = String(type || "").trim().toLowerCase();
-	
-	  if (["government", "governmental", "gov", "حكومي"].includes(t)) return "governmental";
-	  if (["military", "militaryh", "عسكري"].includes(t)) return "militaryH";
-	  if (["private", "privateh", "خاص"].includes(t)) return "privateH";
-	  if (["healthcenter", "health center", "health centerh", "center", "مركز صحي"].includes(t)) return "Health centerH";
-	  if (["medicalcenter", "medical center", "مركز طبي"].includes(t)) return "Medical center";
+		const t = String(type || "").trim().toLowerCase();
 
-  return String(type || "").trim();
-}
+		if (["governmental", "government", "gov", "حكومي"].includes(t)) return "governmental";
+		if (["private", "خاص"].includes(t)) return "private";
+		if (["healthcenter", "health center", "مركز صحي"].includes(t)) return "healthCenter";
+		if (["medicalcenter", "medical center", "مركز طبي"].includes(t)) return "medicalCenter";
+
+		return String(type || "").trim();
+	  }
  // -------------------------------
 	// Basic Data
 	// -------------------------------
@@ -1550,20 +1553,21 @@ button {
 	  const container = document.getElementById('hospList');
 	  if (!container) return;
 	  container.innerHTML = '';
-	 const matched = hospitals.filter(h =>
-		  String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
-		  normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
-	   );
-	  
-	   console.log("All hospitals sample:", hospitals.slice(0, 10));
-	   console.log("Selected gov:", bookingState.gov);
-	   console.log("Selected type:", bookingState.facilityType);
-	   console.log("Matched hospitals:", matched);
-	   if (!matched.length) {
-		container.innerHTML =
-		  '<div class="col-12 p-3 text-muted"><i class="fas fa-info-circle me-2"></i> No facilities are currently available.</div>';
-		 return;
-	   }
+
+	  const matched = hospitals.filter(h =>
+		String(h.gov || "").trim() === String(bookingState.gov || "").trim() &&
+		normalizeFacilityType(h.type) === normalizeFacilityType(bookingState.facilityType)
+	  );
+
+	  if (!matched.length) {
+		container.innerHTML = `
+		  <div class="col-12 p-3 text-muted">
+			<i class="fas fa-info-circle me-2"></i>
+			No facilities are currently available.
+		  </div>
+		`;
+		return;
+	  }
 
 	  matched.forEach(h => {
 		const col = document.createElement('div');
@@ -1571,7 +1575,8 @@ button {
 
 		const card = document.createElement('div');
 		card.className = 'card select-card p-3';
-		card.dataset.hosp = h.id;
+		card.dataset.hosp = String(h.id);
+
 		card.innerHTML = `
 		  <div class="card-body p-0">
 			<div class="d-flex justify-content-between align-items-center">
@@ -1586,25 +1591,11 @@ button {
 		  </div>
 		`;
 
+		card.addEventListener('click', () => selectHospital(String(h.id)));
+
 		col.appendChild(card);
 		container.appendChild(col);
 	  });
-	}
-
-	function selectHospital(hospId) {
-	  const h = hospitals.find(x => x.id === hospId);
-	  if (!h) return;
-
-	  bookingState.hospital = h;
-	  bookingState.department = null;
-	  bookingState.doctor = null;
-
-	  document.querySelectorAll('[data-hosp]').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll('[data-hosp]').forEach(el => {
-		if (Number(el.dataset.hosp) === hospId) el.classList.add('selected');
-	  });
-
-	  showStep(4);
 	}
 
 	function renderDepartments() {
@@ -1612,18 +1603,27 @@ button {
 	  if (!c) return;
 	  c.innerHTML = '';
 
-	  const hospType = bookingState.hospital?.type;
-	  if (!hospType) {
-		c.innerHTML =
-		  '<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> Select the hospital first to view the departments.</div>';
+	  if (!bookingState.hospital) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-info-circle me-2"></i>
+			Select the hospital first to view the departments.
+		  </div>
+		`;
 		return;
 	  }
 
-	  const matchedDepartments = Departments.filter(d => String(d.type).trim() === String(hospType).trim());
+	  const matchedDepartments = Departments.filter(d =>
+		String(d.hospital_id) === String(bookingState.hospital.id)
+	  );
 
 	  if (!matchedDepartments.length) {
-		c.innerHTML =
-		  '<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> There are no departments available for this type of hospital.</div>';
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-exclamation-triangle me-2"></i>
+			There are no departments available for this hospital.
+		  </div>
+		`;
 		return;
 	  }
 
@@ -1633,15 +1633,16 @@ button {
 
 		const card = document.createElement('div');
 		card.className = 'card select-card p-3';
-		card.dataset.dept = d.id;
+		card.dataset.dept = String(d.id);
+
 		card.innerHTML = `
 		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
 			<div>
 			  <i class="${d.icon || 'fas fa-notes-medical'} fa-lg me-2 text-primary"></i>
 			  <strong>${escapeHtml(d.title)}</strong>
-			  <div class="small text-muted">Base price: $${d.basePrice}</div>
+			  <div class="small text-muted">Base price: $${escapeHtml(d.basePrice)}</div>
 			</div>
-			<div class="badge-price">${d.basePrice}$</div>
+			<div class="badge-price">${escapeHtml(d.basePrice)}$</div>
 		  </div>
 		`;
 
@@ -1676,19 +1677,27 @@ button {
 	  c.innerHTML = '';
 
 	  if (!bookingState.hospital || !bookingState.department) {
-		c.innerHTML =
-		  '<div class="col-12 text-muted p-3"><i class="fas fa-info-circle me-2"></i> Select the hospital and then the department to view the doctors.</div>';
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-info-circle me-2"></i>
+			Select the hospital and then the department to view the doctors.
+		  </div>
+		`;
 		return;
 	  }
 
 	  const matched = doctors.filter(d =>
-		d.hospital_id === bookingState.hospital.id &&
-		d.dept_id === bookingState.department.id
+		String(d.hospital_id) === String(bookingState.hospital.id) &&
+		String(d.dept_id) === String(bookingState.department.id)
 	  );
 
 	  if (!matched.length) {
-		c.innerHTML =
-		  '<div class="col-12 text-muted p-3"><i class="fas fa-exclamation-triangle me-2"></i> There are no doctors available for the department at this facility.</div>';
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-exclamation-triangle me-2"></i>
+			There are no doctors available for this department.
+		  </div>
+		`;
 		return;
 	  }
 
@@ -1698,12 +1707,13 @@ button {
 
 		const card = document.createElement('div');
 		card.className = 'card select-card p-3';
-		card.dataset.doc = doc.id;
+		card.dataset.doc = String(doc.id);
+
 		card.innerHTML = `
 		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
 			<div>
 			  <strong><i class="fas fa-user-md me-2 text-primary"></i> ${escapeHtml(doc.name)}</strong>
-			  <div class="small text-muted">Duration: ${doc.slotDuration} minute</div>
+			  <div class="small text-muted">Duration: ${escapeHtml(doc.slotDuration || 30)} minute</div>
 			</div>
 			<div>
 			  <i class="fas fa-angle-left" style="font-size:1.6rem;color:var(--primary)"></i>
@@ -1711,26 +1721,31 @@ button {
 		  </div>
 		`;
 
+		card.addEventListener('click', () => selectDoctor(String(doc.id)));
+
 		col.appendChild(card);
 		c.appendChild(col);
 	  });
 	}
 
 	function selectDoctor(docId) {
-	  bookingState.doctor = doctors.find(d => d.id === docId);
+	  bookingState.doctor = doctors.find(d => String(d.id) === String(docId));
 	  bookingState.date = null;
 	  bookingState.time = null;
 	  bookingState.price = null;
 
 	  document.querySelectorAll('[data-doc]').forEach(el => el.classList.remove('selected'));
 	  document.querySelectorAll('[data-doc]').forEach(el => {
-		if (Number(el.dataset.doc) === docId) el.classList.add('selected');
+		if (String(el.dataset.doc) === String(docId)) {
+		  el.classList.add('selected');
+		}
 	  });
 
-	  const base = bookingState.department.basePrice;
+	  const base = Number(bookingState.department.basePrice || 0);
 	  bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
 
 	  showStep(8);
+
 	  setTimeout(() => {
 		autoFillToday();
 		loadTimeSlotsForSelectedDate();
