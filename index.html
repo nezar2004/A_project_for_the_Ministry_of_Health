@@ -1419,9 +1419,9 @@ button {
 		doctors: doctors.length
 	  });
 
-	  if (bookingState.currentStep === 3) {
-		renderHospitals();
-	  }
+	  
+	  if (bookingState.currentStep === 3) renderHospitals();
+	  if (bookingState.currentStep === 4) renderDepartments();
 	});
 
 	// -------------------------------
@@ -1636,6 +1636,10 @@ button {
 	  if (!c) return;
 	  c.innerHTML = '';
 
+	  console.log("selected hospital =", bookingState.hospital);
+	  console.log("Departments length =", Departments.length);
+	  console.log("first 5 Departments =", Departments.slice(0, 5));
+
 	  if (!bookingState.hospital) {
 		c.innerHTML = `
 		  <div class="col-12 text-muted p-3">
@@ -1650,10 +1654,8 @@ button {
 		String(d.hospital_id) === String(bookingState.hospital.id)
 	  );
 
-	  // 🔥 هون بالزبط
-	  console.log("selected hospital =", bookingState.hospital);
-	  console.log("Departments length =", Departments.length);
-	  console.log("matchedDepartments =", matchedDepartments);
+	  console.log("matchedDepartments length =", matchedDepartments.length);
+	  console.log("matchedDepartments sample =", matchedDepartments.slice(0, 5));
 
 	  if (!matchedDepartments.length) {
 		c.innerHTML = `
@@ -1670,31 +1672,31 @@ button {
 		col.className = 'col-12 col-md-6';
 
 		const card = document.createElement('div');
-		card.className = 'card select-card p-3';
+		card.className = 'card p-3 border';
 		card.dataset.dept = String(d.id);
 
 		card.innerHTML = `
-		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
-			<div>
-			  <i class="${d.icon || 'fas fa-notes-medical'} fa-lg me-2 text-primary"></i>
-			  <strong>${escapeHtml(d.title)}</strong>
-			  <div class="small text-muted">Base price: $${escapeHtml(d.basePrice)}</div>
-			</div>
-			<div class="badge-price">${escapeHtml(d.basePrice)}$</div>
+		  <div>
+			<strong>${escapeHtml(d.title)}</strong>
+			<div class="small text-muted">Base price: $${escapeHtml(d.basePrice)}</div>
 		  </div>
 		`;
 
 		card.addEventListener('click', () => {
 		  bookingState.department = d;
 		  bookingState.doctor = null;
+
 		  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
 		  card.classList.add('selected');
+
 		  showStep(5);
 		});
 
 		col.appendChild(card);
 		c.appendChild(col);
 	  });
+
+	  console.log("renderDepartments done");
 	}
 
 	function selectDepartment(deptId) {
