@@ -1898,14 +1898,12 @@ button {
 	}
 
 	function loadTimeSlotsForSelectedDate() {
-	  console.log("loadTimeSlotsForSelectedDate called", bookingState.date, bookingState.doctor);
-
 	  const container = document.getElementById('slotsArea');
 	  if (!container) return;
 	  container.innerHTML = '';
 
 	  if (!bookingState.doctor || !bookingState.date) {
-		container.innerHTML = '<div class="text-muted p-2">Select the doctor and date to view times</div>';
+		container.innerHTML = '<div class="text-muted p-2">اختر الطبيب والتاريخ لعرض المواعيد</div>';
 		return;
 	  }
 
@@ -1921,14 +1919,15 @@ button {
 		}
 	  }
 
+	  let availableCount = 0;
+
 	  slots.forEach(s => {
 		const conflict = localBookings.some(b =>
-		  b.doctor_id === bookingState.doctor.id &&
-		  b.date === bookingState.date &&
-		  b.time === s
+		  String(b.doctor_id) === String(bookingState.doctor.id) &&
+		  String(b.date) === String(bookingState.date) &&
+		  String(b.time) === String(s)
 		);
 
-		let isPastTime = false;
 		const now = new Date();
 		const selected = new Date(bookingState.date + "T" + s + ":00");
 		const today = new Date();
@@ -1938,33 +1937,40 @@ button {
 		  selected.getMonth() === today.getMonth() &&
 		  selected.getDate() === today.getDate();
 
-		if (isToday && selected <= now) {
-		  isPastTime = true;
-		}
+		const isPastTime = isToday && selected <= now;
 
 		const btn = document.createElement('button');
 		btn.className = 'btn btn-outline-primary time-slot';
 		btn.dataset.time = s;
 		btn.textContent = s;
 
-		if (conflict) {
-		  btn.disabled = true;
-		  btn.textContent = s + ' (reserved)';
-		  btn.classList.add('disabled');
-		  btn.classList.remove('btn-outline-primary');
-		  btn.classList.add('btn-outline-danger');
-		}
-
 		if (isPastTime) {
 		  btn.disabled = true;
-		  btn.textContent = s + ' (expired)';
+		  btn.textContent = s + ' (ممنوع الحجز)';
 		  btn.classList.add('disabled');
 		  btn.classList.remove('btn-outline-primary');
 		  btn.classList.add('btn-outline-secondary');
+		} else if (conflict) {
+		  btn.disabled = true;
+		  btn.textContent = s + ' (محجوز)';
+		  btn.classList.add('disabled');
+		  btn.classList.remove('btn-outline-primary');
+		  btn.classList.add('btn-outline-danger');
+		} else {
+		  availableCount++;
+		  btn.addEventListener('click', () => selectTimeSlot(s));
 		}
 
 		container.appendChild(btn);
 	  });
+
+	  if (availableCount === 0) {
+		container.innerHTML = `
+		  <div class="text-muted p-2">
+			لا توجد مواعيد متاحة لهذا اليوم. اختر تاريخًا آخر.
+		  </div>
+		`;
+	  }
 	}
 
 	function selectTimeSlot(time) {
