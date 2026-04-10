@@ -1615,7 +1615,7 @@ button {
 
 	  console.log("renderHospitals done");
 	}
-	fasync function selectHospital(hospId) {
+	async function selectHospital(hospId) {
 	  const h = hospitals.find(x => String(x.id) === String(hospId));
 	  if (!h) return;
 
