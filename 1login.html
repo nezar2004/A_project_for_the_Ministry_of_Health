@@ -1,2605 +1,418 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>MedReach</title>
-	<!-- Successfully clicked the button (Favicon) -->
-    <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-<style>
-/* ------------------------------------------------------
-   Fonts
------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-
-/* ------------------------------------------------------
-   Colors & Variables
------------------------------------------------------- */
-:root {
-  --primary: #8D6E63;
-  --secondary: #A1887F;
-  --accent: #6D4C41;
-  --glow: #4E342E;
-  --text-light: #3E2723;
-}
-
-/* ------------------------------------------------------
-   Global Rules
------------------------------------------------------- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Cairo', sans-serif;
-}
-
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-  position: relative;
-}
-
-body {
-  background-color: #D7CCC8;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: var(--text-light);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-body::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  height: 400px;
-  background: url('https://cdn.pixabay.com/photo/2017/07/19/13/11/medical-2519808_1280.png') no-repeat center center;
-  background-size: contain;
-  opacity: 0.08;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* ------------------------------------------------------
-   NAVBAR
------------------------------------------------------- */
-nav.navbar {
-  width: 100%;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.2);
-  padding: 15px 25px;
-  box-shadow: 0 0 20px rgba(102,187,106,0.3);
-  animation: fadeInDown 1s ease forwards;
-}
-
-.navbar-brand {
-  color: var(--glow);
-  font-weight: 800;
-  font-size: 1.6rem;
-  text-shadow: 0 0 10px var(--accent);
-}
-
-.nav-link {
-  color: rgba(255,255,255,0.85) !important;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.nav-link:hover {
-  color: var(--glow) !important;
-  text-shadow: 0 0 8px var(--accent);
-}
-
-/* ------------------------------------------------------
-   CONTAINER
------------------------------------------------------- */
-.container-app {
-  width: 100%;
-  max-width: 1000px;
-  padding: 25px;
-  margin: 40px auto;
-  animation: fadeInUp 1.2s ease forwards;
-}
-
-/* ------------------------------------------------------
-   CARDS
------------------------------------------------------- */
-.landing-card,
-.panel-card,
-.hero-banner {
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 25px;
-  border: 1px solid rgba(255,255,255,0.15);
-  padding: 2.5rem;
-  margin: 2rem 0;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  transition: 0.4s;
-}
-
-.landing-card:hover,
-.panel-card:hover,
-.hero-banner:hover {
-  background: rgba(255,255,255,0.12);
-  box-shadow: 0 0 35px rgba(102,187,106,0.3);
-  transform: translateY(-5px);
-}
-
-/* ------------------------------------------------------
-   Typography
------------------------------------------------------- */
-h1, h4, h5, h6 {
-  color: var(--glow);
-  text-shadow: 0 0 3px rgba(0,0,0,0.4);
-}
-
-p {
-  color: #5D4037;
-  line-height: 1.7;
-}
-
-/* ------------------------------------------------------
-   Buttons
------------------------------------------------------- */
-.btn-main {
-  background: linear-gradient(90deg, var(--accent), var(--glow));
-  border: none;
-  color: #fff;
-  border-radius: 50px;
-  padding: 12px 28px;
-  font-weight: 700;
-  box-shadow: 0 0 15px rgba(102,187,106,0.4);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-main:hover {
-  transform: scale(1.07);
-  box-shadow: 0 0 25px rgba(102,187,106,0.8);
-}
-
-.btn-outline-main {
-  background: transparent;
-  color: var(--glow);
-  border: 2px solid var(--glow);
-  border-radius: 50px;
-  padding: 12px 28px;
-  font-weight: 700;
-  transition: 0.3s;
-}
-
-.btn-outline-main:hover {
-  background: var(--glow);
-  color: white;
-  transform: scale(1.05);
-}
-
-/* ------------------------------------------------------
-   Forms
------------------------------------------------------- */
-.form-control,
-.form-select {
-  width: 100%;
-  background: rgba(255,255,255,0.1);
-  border: none;
-  color: white;
-  border-radius: 10px;
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  transition: 0.3s;
-}
-
-.form-control:focus,
-.form-select:focus {
-  background: rgba(255,255,255,0.2);
-  box-shadow: 0 0 10px var(--accent);
-  outline: none;
-}
-
-/* ------------------------------------------------------
-   Steps
------------------------------------------------------- */
-.step-pill {
-  display: inline-block;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.1);
-  color: var(--glow);
-  font-weight: 700;
-  margin: 6px 4px;
-  transition: 0.3s;
-}
-
-.step-pill.active {
-  background: linear-gradient(90deg, var(--accent), var(--glow));
-  color: #fff;
-  box-shadow: 0 0 15px rgba(102,187,106,0.5);
-}
-
-/* ------------------------------------------------------
-   Footer
------------------------------------------------------- */
-footer {
-  width: 100%;
-  background: rgba(0,0,0,0.3);
-  border-top: 1px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(10px);
-  text-align: center;
-  padding: 1rem 0;
-  color: var(--glow);
-  box-shadow: 0 -5px 15px rgba(102,187,106,0.15);
-}
-
-/* ------------------------------------------------------
-   Loading Box
------------------------------------------------------- */
-#loadingBox {
-  background: rgba(0,123,255,0.3);
-  color: white;
-  padding: 20px 40px;
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-  font-size: 18px;
-  font-weight: 600;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
-  transition: 0.4s;
-}
-
-#loadingBox.hidden {
-  opacity: 0;
-  transform: scale(0.9);
-  visibility: hidden;
-}
-
-/* ------------------------------------------------------
-   EMERGENCY BUTTONS
------------------------------------------------------- */
-.btn-emergency {
-  background-color: #d32f2f;
-  color: white;
-  font-size: 1.3rem;
-  padding: 15px 35px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 0 15px rgba(255,0,0,0.5);
-  transition: 0.3s;
-}
-
-.btn-emergency:hover {
-  background-color: #b71c1c;
-  box-shadow: 0 0 25px rgba(255,0,0,0.7);
-}
-
-.emergency-container {
-
-  position: fixed;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  z-index: 9999;
-}
-
-.em-btn {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.45);
-  border: 2px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  font-size: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
-  transition: 0.25s;
-}
-.logout-btn {
-  background: rgba(192, 57, 43, 0.55) !important;
-}
-.em-btn:hover {
-  transform: scale(1.12);
-  background: rgba(255,255,255,0.15);
-}
-
-/* ------------------------------------------------------
-   CHAT WIDGET
------------------------------------------------------- */
-#chat-toggle {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.45);
-  border: 2px solid rgba(255,255,255,0.2);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  font-size: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
-  transition: 0.25s;
-}
-
-#chat-toggle:hover {
-  transform: scale(1.12);
-  background: rgba(255,255,255,0.15);
-}
-
-#chat-widget {
-  position: fixed;
-  bottom: 10px;
-  right: 20px;
-  width: 350px;
-  height: 400px;
-  z-index: 999999 !important;
-}
-
-
-#chat-widget[aria-hidden="true"] {display: none;}
-#chat-widget[aria-hidden="false"] {display: block;}
-
-.chat-box {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-header {
-  background: #1976d2;
-  color: #fff;
-  padding: 12px;
-  text-align: center;
-  font-weight: 700;
-}
-
-.chat-body {
-  background: linear-gradient(180deg, #d7ccc8, #c7b3ac);
-  flex: 1;
-  direction: rtl;
-  overflow-y: auto;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-}
-.chat-body::-webkit-scrollbar {
-  width: 0;
-}
-
-.bot-message {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #000;
-  padding: 10px 15px;
-  border-radius: 15px 15px 15px 0;
-  max-width: 70%;
-  margin: 0 0 10px 0;
-  text-align: right;
-  direction: rtl;
-  display: block;
-  width: fit-content;
-  word-wrap: break-word;
-  clear: both;
-}
-
-.user-message {
-  max-width: 70%;
-  padding: 10px 15px;
-  margin: 6px 0 6px auto;
-  border-radius: 15px 15px 0 15px;
-  font-size: 15px;
-  line-height: 1.4;
-  background: #0088cc;
-  color: #fff;
-  text-align: right;
-  direction: rtl;
-  display: block;
-  width: fit-content;
-  word-wrap: break-word;
-  clear: both;
-}
-.bot-message {
-  text-align: right;
-  direction: rtl;
-}
-
-
-.chat-input {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  align-items: center;
-  flex-wrap: nowrap;
-  background: rgba(255,255,255);
-  border-top: 1px solid rgba(255,255,255);
-  backdrop-filter: blur(10px);
-}
-
-.chat-input input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px 14px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.75);
-  border: 1px solid rgba(0,0,0,0.08);
-  color: #000;
-  outline: none;
-  font-size: 15px;
-}
-
-.chat-input button {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #0088cc;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.15s;
-}
-
-.chat-input button::before {
-  content: "➤";
-  font-size: 20px;
-}
-
-.chat-input button:hover {
-  transform: scale(1.06);
-}
-
-.bot-message,
-.user-message {
-  animation: fadeIn 0.25s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.typing {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #000;
-  padding: 10px 15px;
-  border-radius: 15px 15px 15px 0;
-  width: fit-content;
-  margin-bottom: 10px;
-  animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 1; }
-}
-.chat-input button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-/* ------------------------------------------------------
-   TIME SLOTS
------------------------------------------------------- */
-.time-slot,
-.btn-outline-primary.time-slot {
-  background: rgba(0,0,0,0.4) !important;
-  border: 2px solid rgba(0,0,0,0.7) !important;
-  color: #fff !important;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: 0.3s;
-  backdrop-filter: blur(6px);
-}
-
-.time-slot:hover {
-  background: rgba(0,0,0,0.8) !important;
-  border-color: #000 !important;
-  transform: scale(1.05);
-}
-
-/* ------------------------------------------------------
-   FIXED HEADER / SIDE BUTTONS
------------------------------------------------------- */
-header, .top-bar {
-  position: fixed;
-  z-index: 100 !important;
-}
-
-.booking-banner {
-  position: fixed;
-  z-index: 90 !important;
-}
-
-.side-buttons {
-  position: fixed;
-  z-index: 800;
-}
-
-/* ------------------------------------------------------
-   RESPONSIVE (768px)
------------------------------------------------------- */
-@media (max-width: 768px) {
-
-  body {
-    background-position: center top;
-    background-size: cover;
-  }
-
-  body::after {
-    width: 180px;
-    height: 180px;
-    opacity: 0.05;
-    top: 55%;
-  }
-
-  nav.navbar {
-    padding: 10px 15px;
-    text-align: center;
-  }
-
-  .navbar-brand {font-size: 1.3rem;}
-
-  .container-app {
-    padding: 15px;
-    margin: 20px auto;
-  }
-
-  .btn-main,
-  .btn-outline-main,
-  .btn-emergency {
-    width: 100%;
-    font-size: 1.1rem;
-    padding: 14px;
-  }
-
-  footer {
-    font-size: 0.8rem;
-  }
-
-  /* Chat mobile position */
-  #chat-toggle {
-    bottom: 20px !important;
-    right: 20px !important;
-    transform: scale(0.9);
-  }
-
-  #chat-widget {
-    width: 90vw !important;
-    height: 70vh !important;
-    right: 5vw !important;
-  }
-
-  .emergency-container {
-    top: 140px !important;
-    left: 10px !important;
-    transform: scale(0.8);
-  }
-}
-
-/* ------------------------------------------------------
-   Small Phones (480px)
------------------------------------------------------- */
-@media (max-width: 480px) {
-
-  body::after {
-    width: 140px;
-    height: 140px;
-    opacity: 0.04;
-	pointer-events: none !important;
-  }
-
-  .landing-card,
-  .panel-card,
-  .hero-banner {
-    padding: 1rem !important;
-    margin: 0.8rem 0 !important;
-    border-radius: 14px !important;
-  }
-
-  .booking-banner {
-    width: 90%;
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  #chat-widget {
-    bottom: 70px !important;
-    width: 90% !important;
-    height: 65vh !important;
-    right: 10px !important;
-  }
-}
-.em-btn {
-  pointer-events: auto !important;
-  z-index: 999999 !important;
-}
-#landingPage .emergency-container {
-  display: flex;
-}
-
-/* حاوية كل الخطوات */
-.info-container {
-  position: absolute;
-  top: 0;
-  margin-top: 150px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: 90%;
-  display: grid;
-  gap: 25px;
-
-  padding-bottom: 50px;
-}
-@media (max-width: 480px) {
-  .info-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* نفس تصميمك السابق بدون تغيير */
-.project-info {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  padding: 25px 30px;
-  border-radius: 20px;
-  color: #3E2723;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  animation: fadeIn 0.8s ease;
-}
-
-.project-info h2 {
-  color: #4E342E;
-  margin-bottom: 10px;
-  font-size: 22px;
-  font-weight: 700;
-  text-shadow: 0 0 4px rgba(0,0,0,0.2);
-}
-
-.project-info p {
-  line-height: 1.7;
-  margin-bottom: 15px;
-  font-size: 16px;
-}
-
-.project-info ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.project-info ul li {
-  margin: 6px 0;
-  font-size: 15px;
-  color: #5D4037;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-button {
-  min-height: 44px;
-}
-
-
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-.side-btn {
-  position: fixed;
-  right: 20px;
-  bottom: 90px;
-  font-size: 22px;
-  border-radius: 50%;
-  padding: 12px;
-  border: none;
-  cursor: pointer;
-}
-/* ------------------------------------------------------
-   Panel
------------------------------------------------------- */
-#overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: none;
-  z-index: 1000;
-  backdrop-filter: blur(2px);
-}
-
-#overlay.active {
-  display: block;
-}
-
-#reminderPanel {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 360px;
-  max-width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, #f8f4f2, #efe6e1);
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.18);
-  transition: right 0.3s ease;
-  z-index: 1001;
-  padding: 16px;
-  overflow-y: auto;
-  box-sizing: border-box;
-  direction: rtl;
-}
-
-#reminderPanel.active {
-  right: 0;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.panel-header h3 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 800;
-  color: #5d4037;
-}
-
-#closeReminderPanel {
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 12px;
-  background: #ef5350;
-  color: #fff;
-  font-size: 22px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(239, 83, 80, 0.25);
-  transition: 0.2s;
-}
-
-#closeReminderPanel:hover {
-  transform: scale(1.06);
-  background: #d32f2f;
-}
-
-#addForm,
-#listView {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-#addForm input,
-#addForm select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 14px 15px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #333;
-  font-size: 16px;
-  outline: none;
-  transition: 0.2s;
-}
-
-#addForm input:focus,
-#addForm select:focus {
-  border-color: #1976d2;
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.12);
-  background: #fff;
-}
-
-#addForm input::placeholder {
-  color: #8d6e63;
-}
-
-#addForm button,
-#listView button {
-  width: 100%;
-  border: none;
-  border-radius: 14px;
-  padding: 14px;
-  font-size: 17px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-#addForm button[onclick="saveReminder()"] {
-  background: #1976d2;
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.22);
-}
-
-#addForm button[onclick="saveReminder()"]:hover {
-  background: #1565c0;
-  transform: translateY(-1px);
-}
-
-#addForm button[onclick="showList()"] {
-  background: #8d6e63;
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(141, 110, 99, 0.2);
-}
-
-#addForm button[onclick="showList()"]:hover {
-  background: #6d4c41;
-}
-
-#listView button[onclick="showForm()"] {
-  background: #00897b;
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(0, 137, 123, 0.18);
-}
-
-#listView button[onclick="showForm()"]:hover {
-  background: #00695c;
-}
-
-#remindersList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-</style>
-<body>
-		<div class="info-container">
-			<div class="project-info">
-			  <h2>مرحباً بك في نظام نبض</h2>
-			  <p>
-				هذا المشروع هو نظام متكامل يهدف إلى تحسين عملية حجز المواعيد الطبية،
-				وتوفير أدوات إسعافية سريعة، بالإضافة إلى دردشة طبية فورية تعتمد على الذكاء الاصطناعي للإجابة عن استفساراتك الصحية.
-			  </p>
-
-			  <ul>
-				<li>🚑 زر طلب الإسعاف الفوري</li>
-				<li>📞 زر الاتصال السريع </li>
-				<li>📍 إرسال موقعك عند الحاجة</li>
-				<li>🏥 البحث عن أقرب مستشفى</li>
-				<li>🤖 بوت طبي للإجابة على أسئلتك</li>
-			  </ul>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 1: اختيار المحافظة</h2>
-			  <p>
-				في هذه الخطوة يقوم المستخدم باختيار المحافظة التي يرغب بالحصول على الخدمة الطبية داخلها.
-				يظهر له جميع محافظات الأردن بشكل واضح ليختار المحافظة المناسبة قبل الانتقال للخطوة التالية.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 2: اختيار نوع المنشأة</h2>
-			  <p>
-				بعد تحديد المحافظة، يختار المستخدم نوع المنشأة الطبية مثل: مركز صحي، مستشفى حكومي،
-				مستشفى خاص، مستشفى عسكري، أو مركز طبي. هذا يساعد النظام على عرض الأماكن المناسبة لاحقًا.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 3: اختيار المستشفى/المركز</h2>
-			  <p>
-				يتم عرض جميع المستشفيات والمراكز الصحية المتوفرة ضمن المحافظة ونوع المنشأة المختارة.
-				يستطيع المستخدم اختيار الجهة المناسبة التي يريد الحجز فيها.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 4: اختيار القسم الطبي</h2>
-			  <p>
-				يعرض النظام الأقسام المتوفرة في المستشفى مثل: الباطنية، العظام، القلب، الجراحة،
-				الأطفال، الأسنان، الأشعة وغيرها، مع إظهار السعر الأساسي لكل قسم.
-				يختار المستخدم القسم المطلوب لعرض الأطباء المتخصصين لاحقًا.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 5: التأمين الصحي</h2>
-			  <p>
-				يتم سؤال المستخدم إذا كان يمتلك تأمينًا صحيًا. هذا الاختيار يؤثر على خطوات إدخال البيانات اللاحقة
-				وأحيانًا على السعر النهائي حسب نوع التأمين.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 6: بيانات التأمين</h2>
-			  <p>
-				إذا اختار المستخدم أن لديه تأمينًا صحيًا، تظهر له حقول لإدخال:
-			  </p>
-			  <ul>
-				<li>رقم وثيقة التأمين</li>
-				<li>اسم شركة التأمين</li>
-				<li>ملاحظات إضافية (اختيارية)</li>
-			  </ul>
-			  <p>
-				بعد تعبئة الحقول يمكنه الضغط على زر المتابعة للاستمرار.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 7: اختيار الطبيب</h2>
-			  <p>
-				يعرض النظام قائمة بالأطباء المتوفرين في القسم المختار، مع عرض مدة الجلسة (20 دقيقة، 30 دقيقة...).
-				يقوم المستخدم باختيار الطبيب المناسب قبل الانتقال للخطوة التالية.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 8: اختيار التاريخ والوقت</h2>
-			  <p>
-				في هذه الخطوة يقوم المستخدم بتحديد تاريخ الموعد من خلال التقويم، ثم اختيار الوقت المناسب
-				من بين الأوقات المتاحة. بمجرد اختيار الوقت، ينتقل المستخدم مباشرة للخطوة النهائية.
-			  </p>
-			</div>
-			<div class="project-info">
-			  <h2>الخطوة 9: مراجعة البيانات وتأكيد الحجز</h2>
-			  <p>
-				يتم عرض ملخص كامل للمعلومات التي أدخلها المستخدم، وتشمل:
-			  </p>
-			  <ul>
-				<li>المحافظة</li>
-				<li>نوع المنشأة</li>
-				<li>اسم المستشفى</li>
-				<li>القسم الطبي</li>
-				<li>اسم الطبيب</li>
-				<li>التاريخ والوقت</li>
-				<li>السعر النهائي</li>
-			  </ul>
-			  <p>
-				بعد ذلك يدخل المستخدم بياناته الشخصية (الاسم، البريد الإلكتروني، رقم الهاتف)
-				ثم يضغط على "تأكيد الحجز" لإتمام العملية بنجاح.
-			  </p>
-			</div>
-		</div>
-
-		<!-- صندوق الدردشة (مخفي افتراضياً) -->
-		<div id="chat-widget" dir="rtl" aria-hidden="true">
-		  <div class="chat-box">
-			<div class="chat-body" id="chat-body">
-			  <div class="bot-message">مرحباً! اسألني أي سؤال طبي.</div>
-			</div>
-			<div class="chat-input">
-			  <input type="text" id="user-input" placeholder="اكتب سؤالك الطبي..." />
-			  <button id="send-btn"></button>
-			</div>
-		  </div>	
-		</div>	
-		
-	  <nav class="navbar navbar-expand-lg navbar-dark px-3">
-		<div class="container-fluid">
-		  <a class="navbar-brand" href="#" id="homeBtn">🏥 نبض</a>
-		  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-			<span class="navbar-toggler-icon"></span>
-		  </button>
-		  <div class="collapse navbar-collapse" id="mainNav">
-			<ul class="navbar-nav ms-auto">
-			  <li class="nav-item">
-				<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
-				  <i class="fas fa-calendar-alt me-1"></i> My bookings
-				</a>
-			  </li>
-			</ul>
-		  </div>
-		</div>
-	  </nav>
-
-	  <!-- Window (Modal) -->
-<!-- صفحة البداية -->
-<div class="container" id="landingPage">
-
-  <!-- Emergency Buttons -->
-  <div class="emergency-container">
-    <button title="هذا زر الاسعاف" class="em-btn" id="btn-call">🚑</button>
-    <button title="هذا زر الاتصال" class="em-btn" id="btn-custom">📞</button>
-    <button title="هذا زر ارسال موقعك" class="em-btn" id="btn-location">📍</button>
-    <button title="هذا زر اقرب مستشفيات" class="em-btn" id="btn-hospitals">🏥</button>
-    <button title="هذا زر البوت" id="chat-toggle">🤖</button>
-    <button class="em-btn logout-btn" onclick="logout()" title="تسجيل الخروج">⏻</button>
-    <button id="openReminderPanel" class="em-btn">🔔</button>
-  </div>
-
-  <!-- المودال -->
-  <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h5 class="modal-title" id="bookingsModalLabel">My current bookings</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="closing"></button>
-        </div>
-
-        <div class="modal-body">
-          There are no current reservations.
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">closing</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- زر البداية -->
-  <div class="text-center mb-3">
-    <button id="startBookingBtn" class="btn btn-main btn-lg">
-      <i class="fas fa-stethoscope me-2"></i> Start booking now
-    </button>
-  </div>
-
-</div>
-	  <div class="container-app d-none" id="bookingApp">
-		<div class="panel-card">
-		  <div class="d-flex justify-content-between align-items-center mb-4">
-			<div>
-			  <h4 class="mb-0">Book your appointment easily</h4>
-			  <div class="small text-muted">Follow the steps to choose your appointment.</div>
-			</div>
-			<div>
-			  <span class="step-pill" data-step="1">1</span>
-			  <span class="step-pill" data-step="2">2</span>
-			  <span class="step-pill" data-step="3">3</span>
-			  <span class="step-pill" data-step="4">4</span>
-			  <span class="step-pill" data-step="5">5</span>
-			  <span class="step-pill" data-step="6">6</span>
-			  <span class="step-pill" data-step="7">7</span>
-			  <span class="step-pill" data-step="8">8</span>
-			  <span class="step-pill" data-step="9">9</span>
-			</div>
-		  </div>
-
-		  <div id="stepsArea">
-			  <div id="step-1" class="step-block">
-				<h5 class="mb-3">Choose the governorate</h5>
-				<div id="govList" class="row g-3"></div>
-			  </div>
-
-			  <div id="step-2" class="step-block d-none">
-				<h5 class="mb-3">Select the type of establishment</h5>
-				<div class="row g-3">
-				  <div class="col-6 col-md-3">
-					<div class="card select-card p-3 text-center" data-type="governmental">
-					  <i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i>
-					  Government hospital
-					</div>
-				  </div>
-
-				  <div class="col-6 col-md-3">
-					<div class="card select-card p-3 text-center" data-type="private">
-					  <i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i>
-					  Private hospital
-					</div>
-				  </div>
-
-				  <div class="col-6 col-md-3">
-					<div class="card select-card p-3 text-center" data-type="healthCenter">
-					  <i class="fas fa-plus-square fa-2x mb-2 text-primary"></i>
-					  Health center
-					</div>
-				  </div>
-				  <div class="col-6 col-md-3">
-					  <div class="card select-card p-3 text-center" data-type="military">
-						<i class="fas fa-shield-alt fa-2x mb-2 text-primary"></i>
-						Military hospital
-					  </div>
-					</div>
-				</div>
-			  </div>
-
-			  <div id="step-3" class="step-block d-none">
-				<h5 class="mb-3">Available Hospitals/Centers</h5>
-				<div id="hospList" class="row g-3"></div>
-			  </div>
-
-			  <div id="step-4" class="step-block d-none">
-				<h5 class="mb-3">Select a section</h5>
-				<div id="deptList" class="row g-3"></div>
-			  </div>
-
-			  <div id="step-5" class="step-block d-none">
-				<h5 class="mb-3">Do you have health insurance?</h5>
-				<div class="mt-3 d-flex gap-2">
-				  <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i> No</button>
-				  <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i> Yes</button>
-				</div>
-			  </div>
-
-			  <div id="step-6" class="step-block d-none">
-				<h5 class="mb-3">Insurance Information</h5>
-				<form id="insForm" class="row g-3">
-				  <div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
-				  <div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
-				  <div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
-				  <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
-				</form>
-			  </div>
-
-			  <div id="step-7" class="step-block d-none">
-				<h5 class="mb-3">Choose a doctor</h5>
-				<div id="docList" class="row g-3"></div>
-			  </div>
-
-			  <div id="step-8" class="step-block d-none">
-				<h5 class="mb-3">Select the date and time</h5>
-				<div class="row">
-				  <div class="col-md-6 mt-2"><label class="form-label">the date</label><input type="date" id="apptDate" class="form-control" /></div>
-				  <div class="col-md-6 mt-2"><label class="form-label">Available times</label><div id="slotsArea" class="mt-2 d-flex flex-wrap"></div></div>
-				</div>
-				<div class="mt-2 small text-muted">Note: Selecting the date and time will take you to the next step.</div>
-			  </div>
-
-			  <div id="step-9" class="step-block d-none">
-				<h5 class="mb-3">Data review</h5>
-				<div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
-
-				<h5 class="mb-3">Customer data</h5>
-				<form id="custForm" class="row g-3">
-				  <div class="col-md-6">
-					<label class="form-label">full name</label>
-					<input id="custName" class="form-control" required>
-					<span id="custNameError" class="text-danger small"></span>
-				  </div>
-
-				  <div class="col-md-6">
-					<label class="form-label">e-mail</label>
-					<input id="custEmail" type="email" class="form-control" required>
-					<span id="custEmailError" class="text-danger small"></span>
-				  </div>
-
-				  <div class="col-md-6">
-					<label class="form-label">The phone</label>
-					<input id="custPhone" class="form-control" required>
-					<span id="custPhoneError" class="text-danger small"></span>
-				  </div>
-
-				  <div class="col-12">
-					<label class="form-label">note</label>
-					<textarea id="custNote" class="form-control" rows="2"></textarea>
-				  </div>
-				</form>
-			  </div>
-			</div>
-
-		  <hr class="my-4">
-		  <div class="d-flex justify-content-between">
-			<button id="prevBtn" class="btn btn-outline-main" disabled><i class="fas fa-arrow-right me-2"></i> the previous</button>
-			<button id="nextBtn" class="btn btn-main"><i class="fas fa-arrow-left me-2"></i> the next</button>
-		  </div>
-		</div>
-	  </div>
-
-	  <div class="modal fade" id="successModal" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
-		  <div class="modal-content">
-			<div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> The booking has been confirmed</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
-			<div class="modal-body" id="modalContent"></div>
-			<div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">closing</button></div>
-		  </div>
-		</div>
-	  </div>
-
-	  <div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
-
-	  <div class="text-center mt-3">
-		<p id="findHospitalsBtn" > 
-		</p>
-	  </div>
-
-		</div>
-		<!-- زر الإشعارات -->
-		
-		<!-- الخلفية -->
-	<div id="overlay"></div>
-
-	<div id="reminderPanel">
-	  <div class="panel-header">
-		<h3>🔔 التنبيهات الطبية</h3>
-		<button id="closeReminderPanel" type="button">✖</button>
-	  </div>
-
-	  <div id="addForm">
-		<input id="taskName" placeholder="اسم التنبيه">
-		<input id="taskDate" type="date">
-		<input id="taskTime" type="time">
-
-		<select id="remindBefore">
-		  <option value="60">قبل ساعة</option>
-		  <option value="30">قبل 30 دقيقة</option>
-		  <option value="15">قبل 15 دقيقة</option>
-		  <option value="10">قبل 10 دقائق</option>
-		  <option value="5">قبل 5 دقائق</option>
-		</select>
-
-		<select id="repeatType">
-		  <option value="none">بدون تكرار</option>
-		  <option value="daily">يومي</option>
-		  <option value="weekly">أسبوعي</option>
-		</select>
-
-		<button type="button" onclick="saveReminder()">💾 حفظ</button>
-		<button type="button" onclick="showList()">📋 منبهاتي</button>
-	  </div>
-
-	  <div id="listView" style="display:none">
-		<button type="button" onclick="showForm()">➕ إضافة</button>
-		<div id="remindersList"></div>
-	  </div>
-	</div>
-	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module">
-  import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-  const authFirebaseConfig = {
-    apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-    authDomain: "nabdapp-3a077.firebaseapp.com",
-    projectId: "nabdapp-3a077",
-    storageBucket: "nabdapp-3a077.appspot.com",
-    messagingSenderId: "675031985272",
-    appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
-  };
-
-  const dataFirebaseConfig = {
-    apiKey: "AIzaSyCH940ESn8v0Ld1ESp---fv0RC_9bf_e70",
-    authDomain: "testing-8208a.firebaseapp.com",
-    projectId: "testing-8208a",
-    storageBucket: "testing-8208a.firebasestorage.app",
-    messagingSenderId: "912654428982",
-    appId: "1:912654428982:web:2aad95677b05765e802d97"
-  };
-
-  const authApp = initializeApp(authFirebaseConfig);
-  const dataApp = initializeApp(dataFirebaseConfig, "dataApp");
-
-  const auth = getAuth(authApp);
-  const db = getFirestore(dataApp);
-
-  window.db = db;
-  window.collection = collection;
-  window.getDocs = getDocs;
-
-  let authChecked = false;
-
-  onAuthStateChanged(auth, async (user) => {
-    if (authChecked) return;
-    authChecked = true;
-
-    if (!user) {
-      window.location.href = "1login.html";
-      return;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام نبض - وزارة الصحة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8D6E63;
+      --accent: #5D4037;
+      --text: #3E2723;
+      --bg: #D7CCC8;
+      --white: #ffffff;
+      --muted: #777;
+      --border: #E0E0E0;
+      --input-bg: #FAFAFA;
     }
 
-    console.log("User logged in:", user.email);
-    await loadFirebaseData();
-  });
+    * {
+      box-sizing: border-box;
+    }
 
-  async function loadFirebaseData() {
-    try {
-      console.log("START loadFirebaseData");
-      console.log("projectId =", dataFirebaseConfig.projectId);
+    body {
+      font-family: "Tajawal", sans-serif;
+      background-color: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
 
-      const hospitalsSnap = await getDocs(collection(db, "hospitals"));
-      console.log("hospitalsSnap.size =", hospitalsSnap.size);
+    .container {
+      background: var(--white);
+      padding: 35px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 460px;
+      text-align: center;
+    }
 
-      const hospitalsData = hospitalsSnap.docs.map(hospitalDoc => {
-        const hospitalRaw = hospitalDoc.data();
-        return {
-          ...hospitalRaw,
-          docId: hospitalDoc.id,
-          id: hospitalRaw.id ?? hospitalDoc.id
-        };
-      });
+    h2 {
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
 
-      window.firebaseHospitals = hospitalsData;
-      window.firebaseDepartments = [];
-      window.firebaseDoctors = [];
+    p.note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: -5px;
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
 
-      window.dispatchEvent(new Event("firebaseDataReady"));
+    input, select {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: "Tajawal", sans-serif;
+      background: var(--input-bg);
+      outline: none;
+    }
 
-      const departmentsData = [];
-      const doctorsData = [];
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 15px;
+      font-family: "Tajawal", sans-serif;
+    }
 
-      for (const hospitalDoc of hospitalsSnap.docs) {
-        const hospitalRaw = hospitalDoc.data();
+    button:hover {
+      background-color: var(--primary);
+    }
 
-        const deptSnap = await getDocs(
-          collection(db, "hospitals", hospitalDoc.id, "departments")
-        );
+    .link {
+      margin-top: 16px;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: block;
+    }
 
-        for (const deptDoc of deptSnap.docs) {
-          const deptRaw = deptDoc.data();
+    .hidden {
+      display: none;
+    }
 
-          departmentsData.push({
-            ...deptRaw,
-            docId: deptDoc.id,
-            id: deptRaw.id ?? deptDoc.id,
-            hospitalDocId: hospitalDoc.id,
-            hospital_id: hospitalRaw.id ?? hospitalDoc.id
-          });
+    .phone-row {
+      display: flex;
+      gap: 10px;
+    }
 
-          const doctorsSnap = await getDocs(
-            collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
-          );
+    .phone-row select {
+      width: 35%;
+    }
 
-          for (const doctorDoc of doctorsSnap.docs) {
-            const doctorRaw = doctorDoc.data();
+    .password-wrap {
+      position: relative;
+    }
 
-            doctorsData.push({
-              ...doctorRaw,
-              docId: doctorDoc.id,
-              id: doctorRaw.id ?? doctorDoc.id,
-              hospitalDocId: hospitalDoc.id,
-              departmentDocId: deptDoc.id,
-              hospital_id: hospitalRaw.id ?? hospitalDoc.id,
-              dept_id: deptRaw.id ?? deptDoc.id
-            });
-          }
-        }
+    .password-wrap input {
+      padding-left: 55px;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 13px;
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toggle-pass:hover {
+      background: transparent;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- تسجيل الدخول -->
+    <div id="loginForm">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="loginNationalID" placeholder="الرقم الوطني" maxlength="10">
+
+      <div class="password-wrap">
+        <input type="password" id="loginPassword" placeholder="كلمة المرور">
+        <button type="button" class="toggle-pass" onclick="togglePassword('loginPassword', this)">إظهار</button>
+      </div>
+
+      <button id="loginBtn">دخول</button>
+
+      <div class="link" onclick="showForm('registerForm')">إنشاء حساب جديد</div>
+      <div class="link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
+    </div>
+
+    <!-- إنشاء حساب -->
+    <div id="registerForm" class="hidden">
+      <h2>إنشاء حساب جديد</h2>
+
+      <input type="text" id="regFirstName" placeholder="الاسم الأول">
+      <input type="text" id="regLastName" placeholder="اسم العائلة">
+      <input type="text" id="regNationalID" placeholder="الرقم الوطني (10 أرقام)" maxlength="10">
+      <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
+
+      <div class="phone-row">
+        <select id="regCountryCode">
+          <option value="+962">JO +962</option>
+        </select>
+        <input type="text" id="regPhone" placeholder="7XXXXXXXX">
+      </div>
+
+      <input type="date" id="regBirthday">
+
+      <select id="regGender">
+        <option value="">الجنس</option>
+        <option value="male">ذكر</option>
+        <option value="female">أنثى</option>
+      </select>
+
+      <div class="password-wrap">
+        <input type="password" id="regPassword" placeholder="كلمة المرور">
+        <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">إظهار</button>
+      </div>
+
+      <button id="registerBtn">إنشاء الحساب</button>
+
+      <div class="link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
+    </div>
+
+    <!-- نسيت كلمة المرور -->
+    <div id="forgotForm" class="hidden">
+      <h2>استعادة كلمة المرور</h2>
+      <p class="note">أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى الإيميل المسجل في الحساب.</p>
+
+      <input type="text" id="forgotNationalID" placeholder="الرقم الوطني" maxlength="10">
+      <button id="forgotBtn">إرسال رابط إعادة التعيين</button>
+
+      <div class="link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      limit
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+      authDomain: "nabdapp-3a077.firebaseapp.com",
+      projectId: "nabdapp-3a077",
+      storageBucket: "nabdapp-3a077.appspot.com",
+      messagingSenderId: "675031985272",
+      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.showForm = (id) => {
+      document.querySelectorAll(".container > div").forEach(div => div.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+    };
+
+    window.togglePassword = (inputId, btn) => {
+      const input = document.getElementById(inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "إخفاء";
+      } else {
+        input.type = "password";
+        btn.textContent = "إظهار";
+      }
+    };
+
+    function isValidNationalID(nid) {
+      const cleaned = nid.trim();
+      return cleaned.length === 10 && /^[0-9]+$/.test(cleaned);
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    }
+
+    function normalizePhone(countryCode, phone) {
+      const cleaned = phone.trim();
+      return countryCode + (cleaned.startsWith("0") ? cleaned.substring(1) : cleaned);
+    }
+
+    async function getUserByNationalID(nationalID) {
+      const q = query(
+        collection(db, "users"),
+        where("nationalID", "==", nationalID),
+        limit(1)
+      );
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return null;
       }
 
-      window.firebaseDepartments = departmentsData;
-      window.firebaseDoctors = doctorsData;
-
-      window.dispatchEvent(new Event("firebaseDataReady"));
-    } catch (error) {
-      console.error("Firebase loading error FULL:", error);
-      alert("حدث خطأ أثناء تحميل البيانات من Firebase: " + error.message);
+      return snapshot.docs[0];
     }
-  }
-  loadFirebaseData();
-  window.logout = function () {
-  signOut(auth).then(() => {
-    alert("تم تسجيل الخروج بنجاح 👋");
-    window.location.href = "1login.html";
-  }).catch((error) => {
-    console.error("Logout error:", error);
-  });
-};
-</script>
-<script>
-	function normalizeFacilityType(type) {
-		const t = String(type || "").trim().toLowerCase();
 
-		if (["governmental", "government", "gov", "حكومي"].includes(t)) return "governmental";
-		if (["private", "خاص"].includes(t)) return "private";
-		if (["healthcenter", "health center", "مركز صحي"].includes(t)) return "healthCenter";
-		if (["medicalcenter", "medical center", "مركز طبي"].includes(t)) return "medicalCenter";
-
-		return String(type || "").trim();
-	  }
- // -------------------------------
-	// Basic Data
-	// -------------------------------
-	function confirmBooking() {
-	  alert("Your booking has been successfully confirmed ✅");
-	}
-
-	const governorates = [
-	  'Amman', 'Irbid', 'Zarqa', 'Balqa', 'Karak', 'Ma,an',
-	  'Tafila', 'Jerash', 'Ajloun', 'Madaba', 'Aqaba', 'Mafraq'
-	];
-
-	// بيانات ستأتي من Firebase
-	let hospitals = [];
-	let Departments = [];
-	let doctors = [];
-
-	// إذا تم تحميل بيانات Firebase من سكربت آخر
-	window.addEventListener("firebaseDataReady", () => {
-	  hospitals = (window.firebaseHospitals || []).map(h => ({
-		...h,
-		gov: String(h.gov || "").trim(),
-		type: normalizeFacilityType(h.type)
-	  }));
-
-	  Departments = (window.firebaseDepartments || []).map(d => ({
-		...d,
-		type: normalizeFacilityType(d.type)
-	  }));
-
-	  doctors = window.firebaseDoctors || [];
-
-	  console.log("🔥 Firebase data ready", {
-		hospitals: hospitals.length,
-		departments: Departments.length,
-		doctors: doctors.length
-	  });
-
-	  
-	  if (bookingState.currentStep === 3) renderHospitals();
-	  if (bookingState.currentStep === 4) renderDepartments();
-	});
-
-	// -------------------------------
-	// Booking status
-	// -------------------------------
-	let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
-
-	let bookingState = {
-	  currentStep: 1,
-	  gov: null,
-	  facilityType: null,
-	  hospital: null,
-	  department: null,
-	  hasInsurance: null,
-	  insuranceDetails: null,
-	  doctor: null,
-	  date: null,
-	  time: null,
-	  price: null,
-	  customer: { name: null, email: null, phone: null, note: null }
-	};
-
-	const maxStep = 9;
-
-	// -------------------------------
-	// Helper Functions
-	// -------------------------------
-	function escapeHtml(str) {
-	  if (!str && str !== 0) return '';
-	  return String(str)
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&#039;');
-	}
-
-	// -------------------------------
-	// Main Navigation Functions
-	// -------------------------------
-	function showStep(n) {
-	  document.querySelectorAll('#stepsArea .step-block').forEach(el => el.classList.add('d-none'));
-	  const el = document.getElementById('step-' + n);
-	  if (el) el.classList.remove('d-none');
-
-	  bookingState.currentStep = n;
-	  updateStepPills();
-	  updateNavButtons();
-
-	  if (n === 4 && bookingState.hospital) renderDepartments();
-	  if (n === 7 && bookingState.department) loadDoctorsForSelectedDepartment();
-
-	  if (n === 8) {
-		enforceDateMin();
-
-		if (!bookingState.date) {
-		  autoFillToday();
-		}
-
-		loadTimeSlotsForSelectedDate();
-	  }
-
-	  if (n === 9 && bookingState.time) updateSummaryCard();
-	}
-
-	function updateStepPills() {
-	  document.querySelectorAll('.step-pill').forEach(p => {
-		const stepNum = Number(p.dataset.step);
-		p.classList.remove('active', 'text-success');
-		if (stepNum === bookingState.currentStep) p.classList.add('active');
-		if (stepNum < bookingState.currentStep) p.classList.add('text-success');
-	  });
-	}
-
-	function updateNavButtons() {
-	  const prevBtn = document.getElementById('prevBtn');
-	  const nextBtn = document.getElementById('nextBtn');
-	  if (!prevBtn || !nextBtn) return;
-
-	  prevBtn.disabled = bookingState.currentStep === 1;
-	  nextBtn.innerHTML =
-		bookingState.currentStep === maxStep
-		  ? '<i class="fas fa-check me-2"></i> Booking confirmation'
-		  : '<i class="fas fa-arrow-left me-2"></i> the next';
-	  prevBtn.innerHTML =
-		'<i class="fas fa-arrow-right me-2"></i> the previous';
-	}
-
-	// -------------------------------
-	// Display and Logic Functions
-	// -------------------------------
-	function renderGovernorates() {
-	  const container = document.getElementById('govList');
-	  if (!container) return;
-	  container.innerHTML = '';
-
-	  governorates.forEach(g => {
-		const col = document.createElement('div');
-		col.className = 'col-6 col-md-3';
-
-		const card = document.createElement('div');
-		card.className = 'card select-card p-3 text-center';
-		card.dataset.gov = g;
-		card.innerHTML = `
-		  <div class="card-body p-0">
-			<i class="fas fa-map-marker-alt fa-lg mb-2 text-primary"></i>
-			<strong>${escapeHtml(g)}</strong>
-		  </div>
-		`;
-
-		col.appendChild(card);
-		container.appendChild(col);
-	  });
-	}
-
-	function selectGovernorate(gov) {
-	  bookingState.gov = gov;
-	  bookingState.facilityType = null;
-	  bookingState.hospital = null;
-	  bookingState.department = null;
-	  bookingState.doctor = null;
-
-	  document.querySelectorAll('[data-gov]').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll('[data-gov]').forEach(el => {
-		if (el.dataset.gov === gov) el.classList.add('selected');
-	  });
-
-	  showStep(2);
-	}
-
-	function selectFacilityType(type) {
-	  bookingState.facilityType = normalizeFacilityType(type);
-	  bookingState.hospital = null;
-	  bookingState.department = null;
-	  bookingState.doctor = null;
-	
-	  document.querySelectorAll('[data-type]').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll('[data-type]').forEach(el => {
-	    if (normalizeFacilityType(el.dataset.type) === bookingState.facilityType) {
-	      el.classList.add('selected');
-	    }
-	  });
-	
-	  renderHospitals();
-	  showStep(3);
-	}
-
-	function renderHospitals() {
-	  const container = document.getElementById('hospList');
-	  if (!container) return;
-	  container.innerHTML = '';
-
-	  console.log("bookingState.gov =", bookingState.gov);
-	  console.log("bookingState.facilityType =", bookingState.facilityType);
-	  console.log("hospitals length =", hospitals.length);
-	  console.log("first 5 hospitals =", hospitals.slice(0, 5));
-
-	  const matched = hospitals.filter(h =>
-		String(h.gov || "").trim().toLowerCase() === String(bookingState.gov || "").trim().toLowerCase() &&
-		String(h.type || "").trim().toLowerCase() === String(bookingState.facilityType || "").trim().toLowerCase()
-	  );
-
-	  console.log("matched length =", matched.length);
-	  console.log("matched sample =", matched.slice(0, 5));
-
-	  if (!matched.length) {
-		container.innerHTML = `
-		  <div class="col-12 p-3 text-muted">
-			<i class="fas fa-info-circle me-2"></i>
-			No facilities are currently available.
-		  </div>
-		`;
-		return;
-	  }
-
-	  matched.forEach(h => {
-		const col = document.createElement('div');
-		col.className = 'col-12 col-md-6';
-
-		const card = document.createElement('div');
-		card.className = 'card p-3 border';
-		card.dataset.hosp = String(h.id);
-
-		card.innerHTML = `
-		  <div>
-			<strong>${escapeHtml(h.name)}</strong>
-			<div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div>
-		  </div>
-		`;
-
-		card.addEventListener('click', () => selectHospital(String(h.id)));
-
-		col.appendChild(card);
-		container.appendChild(col);
-	  });
-
-	  console.log("renderHospitals done");
-	}
-	async function selectHospital(hospId) {
-	  const h = hospitals.find(x => String(x.id) === String(hospId));
-	  if (!h) return;
-
-	  bookingState.hospital = h;
-	  bookingState.department = null;
-	  bookingState.doctor = null;
-
-	  document.querySelectorAll('[data-hosp]').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll('[data-hosp]').forEach(el => {
-		if (String(el.dataset.hosp) === String(hospId)) {
-		  el.classList.add('selected');
-		}
-	  });
-
-	  showStep(4);
-
-	  const c = document.getElementById('deptList');
-	  if (c) {
-		c.innerHTML = `
-		  <div class="col-12 text-muted p-3">
-			<i class="fas fa-spinner fa-spin me-2"></i>
-			Loading departments...
-		  </div>
-		`;
-	  }
-
-	  try {
-		const deptSnap = await window.getDocs(
-		  window.collection(window.db, "hospitals", String(hospId), "departments")
-		);
-
-		Departments = deptSnap.docs.map(deptDoc => {
-		  const deptRaw = deptDoc.data();
-		  return {
-			...deptRaw,
-			docId: deptDoc.id,
-			id: deptRaw.id ?? deptDoc.id,
-			hospital_id: h.id
-		  };
-		});
-
-		console.log("Loaded departments for hospital:", h.name, Departments);
-
-		renderDepartments();
-	  } catch (error) {
-		console.error("Error loading departments:", error);
-		if (c) {
-		  c.innerHTML = `
-			<div class="col-12 text-danger p-3">
-			  <i class="fas fa-exclamation-circle me-2"></i>
-			  Failed to load departments.
-			</div>
-		  `;
-		}
-	  }
-	}
-	function renderDepartments() {
-	  const c = document.getElementById('deptList');
-	  if (!c) return;
-	  c.innerHTML = '';
-
-	  console.log("selected hospital =", bookingState.hospital);
-	  console.log("Departments length =", Departments.length);
-	  console.log("first 5 Departments =", Departments.slice(0, 5));
-
-	  if (!bookingState.hospital) {
-		c.innerHTML = `
-		  <div class="col-12 text-muted p-3">
-			<i class="fas fa-info-circle me-2"></i>
-			Select the hospital first to view the departments.
-		  </div>
-		`;
-		return;
-	  }
-
-	  const matchedDepartments = Departments.filter(d =>
-		String(d.hospital_id) === String(bookingState.hospital.id)
-	  );
-
-	  console.log("matchedDepartments length =", matchedDepartments.length);
-	  console.log("matchedDepartments sample =", matchedDepartments.slice(0, 5));
-
-	  if (!matchedDepartments.length) {
-		c.innerHTML = `
-		  <div class="col-12 text-muted p-3">
-			<i class="fas fa-exclamation-triangle me-2"></i>
-			There are no departments available for this hospital.
-		  </div>
-		`;
-		return;
-	  }
-
-	  matchedDepartments.forEach(d => {
-		const col = document.createElement('div');
-		col.className = 'col-12 col-md-6';
-
-		const card = document.createElement('div');
-		card.className = 'card p-3 border';
-		card.dataset.dept = String(d.id);
-
-		card.innerHTML = `
-		  <div>
-			<strong>${escapeHtml(d.title)}</strong>
-			<div class="small text-muted">Base price: $${escapeHtml(d.basePrice)}</div>
-		  </div>
-		`;
-
-		card.addEventListener('click', () => {
-		  bookingState.department = d;
-		  bookingState.doctor = null;
-
-		  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
-		  card.classList.add('selected');
-
-		  showStep(5);
-		});
-
-		col.appendChild(card);
-		c.appendChild(col);
-	  });
-
-	  console.log("renderDepartments done");
-	}
-
-	function selectDepartment(deptId) {
-	  bookingState.department = Departments.find(d => d.id === deptId);
-	  bookingState.doctor = null;
-
-	  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll('[data-dept]').forEach(el => {
-		if (Number(el.dataset.dept) === deptId) el.classList.add('selected');
-	  });
-
-	  showStep(5);
-	}
-	async function loadDoctorsForSelectedDepartment() {
-	  if (!bookingState.hospital || !bookingState.department) return;
-
-	  const c = document.getElementById('docList');
-	  if (c) {
-		c.innerHTML = `
-		  <div class="col-12 text-muted p-3">
-			<i class="fas fa-spinner fa-spin me-2"></i>
-			Loading doctors...
-		  </div>
-		`;
-	  }
-
-	  try {
-		const doctorsSnap = await window.getDocs(
-		  window.collection(
-			window.db,
-			"hospitals",
-			String(bookingState.hospital.docId),
-			"departments",
-			String(bookingState.department.docId),
-			"doctors"
-		  )
-		);
-
-		doctors = doctorsSnap.docs.map(docDoc => {
-		  const docRaw = docDoc.data();
-		  return {
-			...docRaw,
-			docId: docDoc.id,
-			id: docRaw.id ?? docDoc.id,
-			hospital_id: bookingState.hospital.id,
-			dept_id: bookingState.department.id
-		  };
-		});
-
-		console.log("Loaded doctors:", doctors);
-		renderDoctors();
-	  } catch (error) {
-		console.error("Error loading doctors:", error);
-		if (c) {
-		  c.innerHTML = `
-			<div class="col-12 text-danger p-3">
-			  <i class="fas fa-exclamation-circle me-2"></i>
-			  Failed to load doctors.
-			</div>
-		  `;
-		}
-	  }
-	}
-	function renderDoctors() {
-	  const c = document.getElementById('docList');
-	  if (!c) return;
-	  c.innerHTML = '';
-
-	  if (!bookingState.hospital || !bookingState.department) {
-		c.innerHTML = `
-		  <div class="col-12 text-muted p-3">
-			<i class="fas fa-info-circle me-2"></i>
-			Select the hospital and department first.
-		  </div>
-		`;
-		return;
-	  }
-
-	  if (!doctors.length) {
-		c.innerHTML = `
-		  <div class="col-12 text-muted p-3">
-			<i class="fas fa-exclamation-triangle me-2"></i>
-			No doctors available.
-		  </div>
-		`;
-		return;
-	  }
-
-	  doctors.forEach(doc => {
-		const col = document.createElement('div');
-		col.className = 'col-12 col-md-6';
-
-		const card = document.createElement('div');
-		card.className = 'card p-3 border';
-		card.dataset.doc = String(doc.id);
-
-		card.innerHTML = `
-		  <div>
-			<strong>${escapeHtml(doc.name)}</strong>
-			<div class="small text-muted">
-			  Duration: ${escapeHtml(doc.slotDuration || 30)} min
-			</div>
-		  </div>
-		`;
-
-		card.addEventListener('click', () => selectDoctor(doc));
-
-		col.appendChild(card);
-		c.appendChild(col);
-	  });
-
-	  console.log("renderDoctors done");
-	}
-
-	function selectDoctor(doc) {
-	  if (!doc) return;
-
-	  console.log("DOCTOR SELECTED =>", doc);
-
-	  bookingState.doctor = doc;
-	  bookingState.date = null;
-	  bookingState.time = null;
-
-	  const base = Number(bookingState.department?.basePrice || 0);
-	  bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
-
-	  document.querySelectorAll('[data-doc]').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll('[data-doc]').forEach(el => {
-		if (String(el.dataset.doc) === String(doc.id)) {
-		  el.classList.add('selected');
-		}
-	  });
-
-	  showStep(8);
-	}
-
-	function autoFillToday() {
-	  if (bookingState.date) return;
-
-	  const today = new Date();
-	  const yyyy = today.getFullYear();
-	  const mm = String(today.getMonth() + 1).padStart(2, '0');
-	  const dd = String(today.getDate()).padStart(2, '0');
-
-	  const val = `${yyyy}-${mm}-${dd}`;
-	  const input = document.getElementById('apptDate');
-
-	  if (input) input.value = val;
-	  bookingState.date = val;
-	}
-
-	function enforceDateMin() {
-	  const today = new Date();
-	  const yyyy = today.getFullYear();
-	  const mm = String(today.getMonth() + 1).padStart(2, '0');
-	  const dd = String(today.getDate()).padStart(2, '0');
-
-	  document.getElementById('apptDate').setAttribute('min', `${yyyy}-${mm}-${dd}`);
-	}
-
-	function loadTimeSlotsForSelectedDate() {
-	  console.log("loadTimeSlotsForSelectedDate => doctor:", bookingState.doctor);
-	  console.log("loadTimeSlotsForSelectedDate => date:", bookingState.date);
-
-	  const container = document.getElementById('slotsArea');
-	  if (!container) return;
-	  container.innerHTML = '';
-
-	  if (!bookingState.doctor || !bookingState.date) {
-		container.innerHTML = '<div class="text-muted p-2">Select the doctor and date to view times</div>';
-		return;
-	  }
-	  const slotMin = bookingState.doctor.slotDuration || 30;
-	  const startH = 9, endH = 17;
-	  const slots = [];
-
-	  for (let h = startH; h < endH; h++) {
-		for (let m = 0; m < 60; m += slotMin) {
-		  const hh = String(h).padStart(2, '0');
-		  const mmStr = String(m).padStart(2, '0');
-		  slots.push(`${hh}:${mmStr}`);
-		}
-	  }
-
-	  slots.forEach(s => {
-		const conflict = localBookings.some(b =>
-		  b.doctor_id === bookingState.doctor.id &&
-		  b.date === bookingState.date &&
-		  b.time === s
-		);
-
-		let isPastTime = false;
-		const now = new Date();
-
-		const selected = new Date(bookingState.date + "T" + s + ":00");
-		const today = new Date();
-
-		const isToday =
-		  selected.getFullYear() === today.getFullYear() &&
-		  selected.getMonth() === today.getMonth() &&
-		  selected.getDate() === today.getDate();
-
-		if (isToday && selected <= now) {
-		  isPastTime = true;
-		}
-
-		const btn = document.createElement('button');
-		btn.className = 'btn btn-outline-primary time-slot';
-		btn.dataset.time = s;
-		btn.textContent = s;
-
-		if (conflict) {
-		  btn.disabled = true;
-		  btn.textContent = s + ' (reserved)';
-		  btn.classList.add('disabled');
-		  btn.classList.remove('btn-outline-primary');
-		  btn.classList.add('btn-outline-danger');
-		}
-
-		if (isPastTime) {
-		  btn.disabled = true;
-		  btn.textContent = s + ' (expired)';
-		  btn.classList.add('disabled');
-		  btn.classList.remove('btn-outline-primary');
-		  btn.classList.add('btn-outline-secondary');
-		}
-
-		if (!conflict && !isPastTime) {
-		  btn.addEventListener('click', () => selectTimeSlot(s));
-		}
-
-		container.appendChild(btn);
-	  });
-	}
-
-	function selectTimeSlot(time) {
-	  bookingState.time = time;
-	  document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
-	  document.querySelectorAll(`.time-slot[data-time="${time}"]`).forEach(el => el.classList.add('selected'));
-	  nextStep();
-	}
-
-	function updateSummaryCard() {
-	  const c = document.getElementById('summaryCard');
-	  if (!c) return;
-
-	  const html = `
-		<div class="row">
-		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i> المحافظة</div><strong>${escapeHtml(bookingState.gov || '-')}</strong></div>
-		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-building me-1"></i> نوع المنشأة</div><strong>${escapeHtml(bookingState.facilityType || '-')}</strong></div>
-		</div>
-		<hr class="my-2">
-		<div class="row">
-		  <div class="col-12 mb-2"><div class="small text-muted"><i class="fas fa-hospital me-1"></i> المستشفى</div><strong>${escapeHtml(bookingState.hospital ? bookingState.hospital.name : '-')}</strong></div>
-		</div>
-		<div class="row">
-		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clipboard-list me-1"></i> القسم</div><strong>${escapeHtml(bookingState.department ? bookingState.department.title : '-')}</strong></div>
-		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-user-md me-1"></i> الطبيب</div><strong>${escapeHtml(bookingState.doctor ? bookingState.doctor.name : '-')}</strong></div>
-		</div>
-		<div class="row">
-		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-calendar-alt me-1"></i> التاريخ</div><strong>${escapeHtml(bookingState.date || '-')}</strong></div>
-		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clock me-1"></i> الوقت</div><strong>${escapeHtml(bookingState.time || '-')}</strong></div>
-		</div>
-		<hr class="my-2">
-		<div class="row align-items-center">
-		  <div class="col-6"><div class="small text-muted"><i class="fas fa-money-bill-wave me-1"></i> السعر النهائي</div><h4 class="mb-0 text-success">$${escapeHtml(bookingState.price || '-')}</h4></div>
-		  <div class="col-6 text-end small text-muted"><i class="fas fa-shield-alt me-1"></i> التأمين: ${bookingState.hasInsurance ? 'نعم' : 'لا'}</div>
-		</div>
-	  `;
-	  c.innerHTML = html;
-	}
-
-	function validateCurrentStep() {
-	  const s = bookingState.currentStep;
-
-	  if (s === 1 && !bookingState.gov) { alert('الرجاء اختيار المحافظة.'); return false; }
-	  if (s === 2 && !bookingState.facilityType) { alert('الرجاء اختيار نوع المنشأة.'); return false; }
-	  if (s === 3 && !bookingState.hospital) { alert('الرجاء اختيار المستشفى.'); return false; }
-	  if (s === 4 && !bookingState.department) { alert('الرجاء اختيار القسم.'); return false; }
-	  if (s === 5 && bookingState.hasInsurance === null) { alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
-	  if (s === 6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)) { alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
-	  if (s === 7 && !bookingState.doctor) { alert('الرجاء اختيار الطبيب.'); return false; }
-	  if (s === 8 && (!bookingState.date || !bookingState.time)) { alert('الرجاء اختيار التاريخ والوقت.'); return false; }
-
-	  if (s === 9) {
-		return validateCustomerData();
-	  }
-
-	  return true;
-	}
-
-	function validateCustomerData() {
-	  const name = document.getElementById('custName').value.trim();
-	  const email = document.getElementById('custEmail').value.trim();
-	  const phone = document.getElementById('custPhone').value.trim();
-
-	  const nameErr = document.getElementById('custNameError');
-	  const emailErr = document.getElementById('custEmailError');
-	  const phoneErr = document.getElementById('custPhoneError');
-
-	  nameErr.textContent = "";
-	  emailErr.textContent = "";
-	  phoneErr.textContent = "";
-
-	  let valid = true;
-
-	  if (!name) {
-		nameErr.textContent = "يرجى إدخال الاسم";
-		valid = false;
-	  }
-
-	  if (!email) {
-		emailErr.textContent = "يرجى إدخال الإيميل";
-		valid = false;
-	  } else if (!email.includes("@") || email.startsWith("@") || email.endsWith("@")) {
-		emailErr.textContent = "الإيميل غير صحيح، يجب أن يحتوي على @";
-		valid = false;
-	  }
-
-	  if (!phone) {
-		phoneErr.textContent = "يرجى إدخال رقم الهاتف";
-		valid = false;
-	  } else if (!/^[0-9]{10}$/.test(phone)) {
-		phoneErr.textContent = "رقم الهاتف يجب أن يكون 10 أرقام";
-		valid = false;
-	  }
-
-	  return valid;
-	}
-
-	function commitBooking() {
-	  if (!validateCurrentStep()) return;
-
-	  bookingState.customer.name = document.getElementById('custName').value;
-	  bookingState.customer.email = document.getElementById('custEmail').value;
-	  bookingState.customer.phone = document.getElementById('custPhone').value;
-	  bookingState.customer.note = document.getElementById('custNote').value;
-
-	  const payload = {
-		timestamp: new Date().toISOString(),
-		booking_id: 'B' + Date.now(),
-		status: 'PENDING',
-		gov: bookingState.gov,
-		hospital_name: bookingState.hospital.name,
-		department_title: bookingState.department.title,
-		doctor_name: bookingState.doctor.name,
-		date: bookingState.date,
-		time: bookingState.time,
-		price: bookingState.price,
-		customer_name: bookingState.customer.name,
-		customer_email: bookingState.customer.email,
-		customer_phone: bookingState.customer.phone,
-		doctor_id: bookingState.doctor.id
-	  };
-
-	  localBookings.push(payload);
-	  localStorage.setItem('localBookings', JSON.stringify(localBookings));
-
-	  document.getElementById('modalContent').innerHTML = `
-		<p>Your appointment has been successfully booked!</p>
-		<strong>Booking number:</strong> ${payload.booking_id}
-		<p><strong>Date and time:</strong> ${payload.date} the hour ${payload.time}</p>
-		<p><strong>Amount due:</strong> <span class="text-success">$${payload.price}</span></p>
-	  `;
-
-	  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-	  successModal.show();
-
-	  bookingState = {
-		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
-		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
-		customer:{name:null, email:null, phone:null, note:null}
-	  };
-
-	  goToLandingPage();
-	}
-
-	function nextStep() {
-	  if (!validateCurrentStep()) return;
-
-	  if (bookingState.currentStep === maxStep) {
-		commitBooking();
-	  } else {
-		let targetStep = bookingState.currentStep + 1;
-		if (bookingState.currentStep === 5 && bookingState.hasInsurance === false) {
-		  targetStep = 7;
-		}
-		showStep(targetStep);
-	  }
-	}
-
-	// -------------------------------
-	// Page Display Management
-	// -------------------------------
-	function goToBookingApp() {
-	  document.getElementById('landingPage').classList.add('d-none');
-	  document.getElementById('bookingApp').classList.remove('d-none');
-	  showStep(1);
-	}
-
-	function goToLandingPage() {
-	  document.getElementById('landingPage').classList.remove('d-none');
-	  document.getElementById('bookingApp').classList.add('d-none');
-	  bookingState = {
-		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
-		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
-		customer:{name:null, email:null, phone:null, note:null}
-	  };
-	  renderGovernorates();
-	}
-
-	// -------------------------------
-	// Event Handlers
-	// -------------------------------
-	document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
-	document.getElementById('homeBtn').addEventListener('click', (e) => {
-	  e.preventDefault();
-	  goToLandingPage();
-	});
-
-	document.addEventListener('click', function(e){
-	  const govEl = e.target.closest('[data-gov]');
-	  if(govEl){ selectGovernorate(govEl.dataset.gov); return; }
-
-	  const typeEl = e.target.closest('[data-type]');
-	  if(typeEl){ selectFacilityType(typeEl.dataset.type); return; }
-
-	  const hospEl = e.target.closest('[data-hosp]');
-	  if(hospEl){ selectHospital(parseInt(hospEl.dataset.hosp,10)); return; }
-
-
-	  const docEl = e.target.closest('[data-doc]');
-	  if(docEl){ selectDoctor(parseInt(docEl.dataset.doc,10)); return; }
-
-	  const slotEl = e.target.closest('.time-slot');
-	  if(slotEl && !slotEl.disabled){ selectTimeSlot(slotEl.dataset.time); return; }
-	});
-
-	document.getElementById('apptDate').addEventListener('change', function(){
-	  bookingState.date = this.value;
-	  bookingState.time = null;
-	  loadTimeSlotsForSelectedDate();
-	});
-
-	document.getElementById('insNo').addEventListener('click', function(){
-	  bookingState.hasInsurance = false;
-	  bookingState.insuranceDetails = null;
-	  nextStep();
-	});
-
-	document.getElementById('insYes').addEventListener('click', function(){
-	  bookingState.hasInsurance = true;
-	  nextStep();
-	});
-
-	document.getElementById('insForm').addEventListener('submit', function(e){
-	  e.preventDefault();
-	  if(validateCurrentStep()){
-		bookingState.insuranceDetails = {
-		  company: document.getElementById('insCompany').value,
-		  policy: document.getElementById('insPolicy').value,
-		  note: document.getElementById('insNote').value
-		};
-		nextStep();
-	  }
-	});
-
-	document.getElementById('prevBtn').addEventListener('click', function(){
-	  if(bookingState.currentStep > 1){
-		let targetStep = bookingState.currentStep - 1;
-		if(bookingState.currentStep === 7 && bookingState.hasInsurance === false){
-		  targetStep = 5;
-		}
-		showStep(targetStep);
-	  }
-	});
-
-	document.getElementById('nextBtn').addEventListener('click', nextStep);
-
-	document.addEventListener('DOMContentLoaded', function(){
-	  goToLandingPage();
-	});
-
-	// تعطيل بعض العمليات
-	document.addEventListener('contextmenu', e => e.preventDefault());
-	document.addEventListener('selectstart', e => e.preventDefault());
-	document.addEventListener('dragstart', e => e.preventDefault());
-
-	// -------------------------------
-	// Code GPS
-	// -------------------------------
-	let userLat = null;
-	let userLng = null;
-	const loadingBox = document.getElementById("loadingBox");
-
-	window.onload = function() {
-	  if ("geolocation" in navigator) {
-		navigator.geolocation.getCurrentPosition(
-		  (position) => {
-			userLat = position.coords.latitude;
-			userLng = position.coords.longitude;
-			console.log("Your Location:", userLat, userLng);
-
-			if (loadingBox) {
-			  loadingBox.textContent = "✅ Your location has been successfully determined!";
-			  setTimeout(() => loadingBox.classList.add("hidden"), 1500);
-			}
-		  },
-		  (error) => {
-			console.error("Error getting location:", error.message);
-			if (loadingBox) {
-			  loadingBox.textContent = "⚠️ We were unable to locate you. Please ensure your GPS is enabled and location permissions are granted.";
-			  loadingBox.style.background = "#dc3545";
-			}
-		  },
-		  { enableHighAccuracy: true, timeout: 10000 }
-		);
-	  } else {
-		if (loadingBox) {
-		  loadingBox.textContent = "Your device does not support geolocation (GPS).";
-		  loadingBox.style.background = "#6c757d";
-		}
-	  }
-	};
-
-	function openDirections(hospitalName) {
-	  if (!userLat || !userLng) {
-		alert("⚠️ Your location has not yet been determined. Please wait a moment or activate GPS.");
-		return;
-	  }
-
-	  const destination = encodeURIComponent(hospitalName + " Jordan");
-	  const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destination}&travelmode=driving`;
-	  window.open(mapsUrl, "_blank");
-	}
-
-	// أزرار الطوارئ
-	document.getElementById("btn-call").addEventListener("click", () => {
-	  window.location.href = "tel:112";
-	});
-
-	document.getElementById("btn-custom").addEventListener("click", () => {
-	  const num = prompt("Enter number to call:");
-	  if (num) window.location.href = `tel:${num}`;
-	});
-
-	document.getElementById("btn-location").addEventListener("click", () => {
-	  if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(
-		  pos => {
-			const lat = pos.coords.latitude;
-			const lng = pos.coords.longitude;
-			const msg = `🚨 Emergency! My location:\nhttps://maps.google.com/?q=${lat},${lng}`;
-			const whatsapp = prompt("Enter WhatsApp number (with country code):");
-
-			if (whatsapp) {
-			  const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
-			  window.open(url, "_blank");
-			}
-		  },
-		  () => alert("Please enable GPS.")
-		);
-	  } else {
-		alert("Location not supported.");
-	  }
-	});
-
-	document.getElementById("btn-hospitals").addEventListener("click", () => {
-	  window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
-	});
-	// -------------------------------
-	// Chat
-	// -------------------------------
-	const chatToggle = document.getElementById("chat-toggle");
-	const chatWidget = document.getElementById("chat-widget");
-	const sendBtn = document.getElementById("send-btn");
-	const userInput = document.getElementById("user-input");
-	const chatBody = document.getElementById("chat-body");
-
-	chatToggle.addEventListener("click", () => {
-	  const isOpen = chatWidget.getAttribute("aria-hidden") === "false";
-	  chatWidget.setAttribute("aria-hidden", isOpen ? "true" : "false");
-	});
-
-	function formatBotMessage(text) {
-	  text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-	  text = text.replace(/\n/g, "<br>");
-	  return text;
-	}
-
-	async function askGemini(question) {
-	  const response = await fetch("https://aprojectfortheministryofhealthjs-production.up.railway.app/api/chat", {
-		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ question })
-	  });
-
-	  const data = await response.json();
-
-	  if (!response.ok) {
-		throw new Error(data.answer || "حدث خطأ أثناء الاتصال بالسيرفر.");
-	  }
-
-	  return data.answer || "لم يصلني رد من السيرفر.";
-	}
-
-	function appendMessage(className, content, useHTML = false) {
-	  const div = document.createElement("div");
-	  div.className = className;
-
-	  if (useHTML) div.innerHTML = content;
-	  else div.textContent = content;
-
-	  chatBody.appendChild(div);
-	  chatBody.scrollTop = chatBody.scrollHeight;
-	  return div;
-	}
-
-	async function handleSend() {
-	  const question = userInput.value.trim();
-	  if (!question) return;
-
-	  sendBtn.disabled = true;
-	  userInput.disabled = true;
-
-	  appendMessage("user-message", question);
-	  userInput.value = "";
-
-	  const typingEl = appendMessage("typing", "جاري الكتابة...");
-
-	  try {
-		const answer = await askGemini(question);
-		typingEl.remove();
-		const formatted = formatBotMessage(answer);
-		appendMessage("bot-message", formatted, true);
-	  } catch (err) {
-		typingEl.remove();
-		appendMessage("bot-message", err.message || "حدث خطأ غير متوقع.");
-	  } finally {
-		sendBtn.disabled = false;
-		userInput.disabled = false;
-		userInput.focus();
-	  }
-	}
-
-	sendBtn.addEventListener("click", handleSend);
-	userInput.addEventListener("keydown", (e) => {
-	  if (e.key === "Enter") handleSend();
-	});
-
-	// -------------------------------
-	// Reminder Panel
-	// -------------------------------
-	const panel = document.getElementById("reminderPanel");
-	const overlay = document.getElementById("overlay");
-	const openReminderBtn = document.getElementById("openReminderPanel");
-	const closeReminderBtn = document.getElementById("closeReminderPanel");
-
-	let editingId = null;
-
-	if (openReminderBtn) {
-	  openReminderBtn.addEventListener("click", () => {
-		panel.classList.add("active");
-		overlay.classList.add("active");
-	  });
-	}
-
-	if (closeReminderBtn) {
-	  closeReminderBtn.addEventListener("click", closePanel);
-	}
-
-	if (overlay) {
-	  overlay.addEventListener("click", closePanel);
-	}
-
-	function closePanel() {
-	  panel.classList.remove("active");
-	  overlay.classList.remove("active");
-	}
-
-	function showList() {
-	  document.getElementById("addForm").style.display = "none";
-	  document.getElementById("listView").style.display = "block";
-	  renderList();
-	}
-
-	function showForm() {
-	  document.getElementById("addForm").style.display = "block";
-	  document.getElementById("listView").style.display = "none";
-	  editingId = null;
-
-	  document.getElementById("taskName").value = "";
-	  document.getElementById("taskDate").value = "";
-	  document.getElementById("taskTime").value = "";
-	  document.getElementById("remindBefore").value = "60";
-	  document.getElementById("repeatType").value = "none";
-	}
-
-	function saveReminder() {
-	  const taskName = document.getElementById("taskName");
-	  const taskDate = document.getElementById("taskDate");
-	  const taskTime = document.getElementById("taskTime");
-	  const remindBefore = document.getElementById("remindBefore");
-	  const repeatType = document.getElementById("repeatType");
-
-	  if (!taskName.value.trim() || !taskDate.value || !taskTime.value) {
-		alert("يرجى تعبئة اسم التنبيه والتاريخ والوقت.");
-		return;
-	  }
-
-	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-
-	  const reminder = {
-		id: editingId || Date.now(),
-		name: taskName.value.trim(),
-		date: taskDate.value,
-		time: taskTime.value,
-		before: remindBefore.value,
-		repeat: repeatType.value
-	  };
-
-	  const updated = editingId
-		? reminders.map(r => (r.id === editingId ? reminder : r))
-		: [...reminders, reminder];
-
-	  localStorage.setItem("reminders", JSON.stringify(updated));
-	  editingId = null;
-
-	  alert("✅ تم الحفظ");
-	  showList();
-	}
-
-	function renderList() {
-	  const list = document.getElementById("remindersList");
-	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-
-	  list.innerHTML = "";
-
-	  if (reminders.length === 0) {
-		list.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">لا يوجد منبهات محفوظة</div>`;
-		return;
-	  }
-
-	  reminders.forEach(r => {
-		list.innerHTML += `
-		  <div style="border:1px solid #ddd; padding:10px; margin:8px 0; border-radius:10px; background:#fff;">
-			<b>${r.name}</b><br>
-			⏰ ${r.time} | 📅 ${r.date}<br>
-			🔔 قبل ${r.before} دقيقة | 🔁 ${r.repeat}<br><br>
-			<button type="button" onclick="edit(${r.id})">✏️ تعديل</button>
-			<button type="button" onclick="del(${r.id})">🗑 حذف</button>
-		  </div>
-		`;
-	  });
-	}
-
-	function edit(id) {
-	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-	  const reminder = reminders.find(r => r.id === id);
-	  if (!reminder) return;
-
-	  editingId = id;
-	  document.getElementById("taskName").value = reminder.name;
-	  document.getElementById("taskDate").value = reminder.date;
-	  document.getElementById("taskTime").value = reminder.time;
-	  document.getElementById("remindBefore").value = reminder.before;
-	  document.getElementById("repeatType").value = reminder.repeat;
-
-	  document.getElementById("addForm").style.display = "block";
-	  document.getElementById("listView").style.display = "none";
-	}
-
-	function del(id) {
-	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
-	  const updated = reminders.filter(r => r.id !== id);
-	  localStorage.setItem("reminders", JSON.stringify(updated));
-	  renderList();
-	}
-
-	// -------------------------------
-	// Project Info Slideshow
-	// -------------------------------
-	let current = 0;
-	const steps = document.querySelectorAll(".project-info");
-
-	if (steps.length > 0) {
-	  steps.forEach((step, index) => {
-		step.classList.toggle("active", index === 0);
-	  });
-
-	  function showNext() {
-		steps[current].classList.remove("active");
-		current = (current + 1) % steps.length;
-		steps[current].classList.add("active");
-	  }
-
-	  setInterval(showNext, 10000);
-	}
-
-	// حماية بسيطة
-	(function () {
-	  const stop = (e) => {
-		e.preventDefault();
-		return false;
-	  };
-
-	  ["contextmenu", "copy", "cut", "selectstart", "dragstart"].forEach(evt => {
-		document.addEventListener(evt, stop, { passive: false });
-	  });
-
-	  document.addEventListener("keydown", function (e) {
-		const k = e.key.toUpperCase();
-		if (
-		  (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(k)) ||
-		  (e.ctrlKey && ["U", "S"].includes(k))
-		) {
-		  e.preventDefault();
-		}
-	  });
-	})();
-
-
-</script>
+    document.getElementById("registerBtn").onclick = async () => {
+      const firstName = document.getElementById("regFirstName").value.trim();
+      const lastName = document.getElementById("regLastName").value.trim();
+      const nationalID = document.getElementById("regNationalID").value.trim();
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
+      const countryCode = document.getElementById("regCountryCode").value;
+      const phone = document.getElementById("regPhone").value.trim();
+      const birthday = document.getElementById("regBirthday").value;
+      const gender = document.getElementById("regGender").value;
+      const password = document.getElementById("regPassword").value;
+
+      if (!firstName || !lastName || !nationalID || !email || !phone || !birthday || !gender || !password) {
+        alert("يرجى تعبئة جميع الحقول");
+        return;
+      }
+
+      if (!isValidNationalID(nationalID)) {
+        alert("الرقم الوطني يجب أن يكون 10 أرقام");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        alert("يرجى إدخال بريد إلكتروني صحيح");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("كلمة المرور يجب أن تكون 6 أحرف أو أكثر");
+        return;
+      }
+
+      try {
+        const existingUser = await getUserByNationalID(nationalID);
+        if (existingUser) {
+          alert("هذا الرقم الوطني مستخدم مسبقاً");
+          return;
+        }
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = userCredential.user.uid;
+
+        await setDoc(doc(db, "users", uid), {
+          firstName,
+          lastName,
+          name: firstName + " " + lastName,
+          nationalID,
+          email,
+          phone: normalizePhone(countryCode, phone),
+          birthday,
+          gender,
+          createdAt: new Date().toISOString()
+        });
+
+        alert("✅ تم إنشاء الحساب بنجاح");
+        window.location.href = "1login.html";
+      } catch (err) {
+        if (err.code === "auth/email-already-in-use") {
+          alert("هذا البريد الإلكتروني مستخدم مسبقاً");
+        } else {
+          alert("⚠️ حدث خطأ أثناء إنشاء الحساب: " + err.message);
+        }
+      }
+    };
+
+    document.getElementById("loginBtn").onclick = async () => {
+      const nationalID = document.getElementById("loginNationalID").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      if (!nationalID || !password) {
+        alert("يرجى إدخال الرقم الوطني وكلمة المرور");
+        return;
+      }
+
+      if (!isValidNationalID(nationalID)) {
+        alert("الرقم الوطني غير صحيح");
+        return;
+      }
+
+      try {
+        const userDoc = await getUserByNationalID(nationalID);
+
+        if (!userDoc) {
+          alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
+          return;
+        }
+
+        const userData = userDoc.data();
+        const email = userData.email;
+
+        await signInWithEmailAndPassword(auth, email, password);
+
+        alert("✅ أهلاً بك.. تم تسجيل دخولك بنجاح");
+        window.location.href = "index.html";
+      } catch (err) {
+        alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
+      }
+    };
+
+    document.getElementById("forgotBtn").onclick = async () => {
+      const nationalID = document.getElementById("forgotNationalID").value.trim();
+
+      if (!nationalID) {
+        alert("يرجى إدخال الرقم الوطني");
+        return;
+      }
+
+      if (!isValidNationalID(nationalID)) {
+        alert("الرقم الوطني يجب أن يكون 10 أرقام");
+        return;
+      }
+
+      try {
+        const userDoc = await getUserByNationalID(nationalID);
+
+        if (!userDoc) {
+          alert("لا يوجد حساب مرتبط بهذا الرقم الوطني");
+          return;
+        }
+
+        const userData = userDoc.data();
+        const email = userData.email;
+
+        await sendPasswordResetEmail(auth, email);
+        alert("✅ تم إرسال رابط إعادة تعيين كلمة المرور إلى الإيميل: " + email);
+      } catch (err) {
+        alert("⚠️ تعذر إرسال رابط إعادة التعيين: " + err.message);
+      }
+    };
+  </script>
 </body>
 </html>
-
