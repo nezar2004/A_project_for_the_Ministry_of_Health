@@ -1281,7 +1281,9 @@ button {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
+  window.db = db;
+  window.collection = collection;
+  window.getDocs = getDocs;
   async function loadFirebaseData() {
     try {
       console.log("START loadFirebaseData");
@@ -1613,7 +1615,7 @@ button {
 
 	  console.log("renderHospitals done");
 	}
-	function selectHospital(hospId) {
+	fasync function selectHospital(hospId) {
 	  const h = hospitals.find(x => String(x.id) === String(hospId));
 	  if (!h) return;
 
@@ -1629,7 +1631,46 @@ button {
 	  });
 
 	  showStep(4);
-	  renderDepartments();
+
+	  const c = document.getElementById('deptList');
+	  if (c) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-spinner fa-spin me-2"></i>
+			Loading departments...
+		  </div>
+		`;
+	  }
+
+	  try {
+		const deptSnap = await window.getDocs(
+		  window.collection(window.db, "hospitals", String(hospId), "departments")
+		);
+
+		Departments = deptSnap.docs.map(deptDoc => {
+		  const deptRaw = deptDoc.data();
+		  return {
+			...deptRaw,
+			docId: deptDoc.id,
+			id: deptRaw.id ?? deptDoc.id,
+			hospital_id: h.id
+		  };
+		});
+
+		console.log("Loaded departments for hospital:", h.name, Departments);
+
+		renderDepartments();
+	  } catch (error) {
+		console.error("Error loading departments:", error);
+		if (c) {
+		  c.innerHTML = `
+			<div class="col-12 text-danger p-3">
+			  <i class="fas fa-exclamation-circle me-2"></i>
+			  Failed to load departments.
+			</div>
+		  `;
+		}
+	  }
 	}
 	function renderDepartments() {
 	  const c = document.getElementById('deptList');
