@@ -1474,7 +1474,7 @@ button {
 	  updateNavButtons();
 
 	  if (n === 4 && bookingState.hospital) renderDepartments();
-	  if (n === 7 && bookingState.department) renderDoctors();
+	  if (n === 7 && bookingState.department) loadDoctorsForSelectedDepartment();
 	  if (n === 8 && bookingState.doctor) {
 		autoFillToday();
 		loadTimeSlotsForSelectedDate();
@@ -1723,7 +1723,7 @@ button {
 		  </div>
 		`;
 
-		card.addEventListener('click', async () => {
+		card.addEventListener('click', () => {
 		  bookingState.department = d;
 		  bookingState.doctor = null;
 
@@ -1731,55 +1731,6 @@ button {
 		  card.classList.add('selected');
 
 		  showStep(5);
-
-		  const c = document.getElementById('docList');
-		  if (c) {
-			c.innerHTML = `
-			  <div class="col-12 text-muted p-3">
-				<i class="fas fa-spinner fa-spin me-2"></i>
-				Loading doctors...
-			  </div>
-			`;
-		  }
-
-		  try {
-			const doctorsSnap = await window.getDocs(
-			  window.collection(
-				window.db,
-				"hospitals",
-				String(bookingState.hospital.docId),
-				"departments",
-				String(d.docId),
-				"doctors"
-			  )
-			);
-
-			doctors = doctorsSnap.docs.map(docDoc => {
-			  const docRaw = docDoc.data();
-			  return {
-				...docRaw,
-				docId: docDoc.id,
-				id: docRaw.id ?? docDoc.id,
-				hospital_id: bookingState.hospital.id,
-				dept_id: d.id
-			  };
-			});
-
-			console.log("Loaded doctors:", doctors);
-
-			renderDoctors();
-
-		  } catch (error) {
-			console.error("Error loading doctors:", error);
-			if (c) {
-			  c.innerHTML = `
-				<div class="col-12 text-danger p-3">
-				  <i class="fas fa-exclamation-circle me-2"></i>
-				  Failed to load doctors.
-				</div>
-			  `;
-			}
-		  }
 		});
 
 		col.appendChild(card);
@@ -1800,7 +1751,56 @@ button {
 
 	  showStep(5);
 	}
+	async function loadDoctorsForSelectedDepartment() {
+	  if (!bookingState.hospital || !bookingState.department) return;
 
+	  const c = document.getElementById('docList');
+	  if (c) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-spinner fa-spin me-2"></i>
+			Loading doctors...
+		  </div>
+		`;
+	  }
+
+	  try {
+		const doctorsSnap = await window.getDocs(
+		  window.collection(
+			window.db,
+			"hospitals",
+			String(bookingState.hospital.docId),
+			"departments",
+			String(bookingState.department.docId),
+			"doctors"
+		  )
+		);
+
+		doctors = doctorsSnap.docs.map(docDoc => {
+		  const docRaw = docDoc.data();
+		  return {
+			...docRaw,
+			docId: docDoc.id,
+			id: docRaw.id ?? docDoc.id,
+			hospital_id: bookingState.hospital.id,
+			dept_id: bookingState.department.id
+		  };
+		});
+
+		console.log("Loaded doctors:", doctors);
+		renderDoctors();
+	  } catch (error) {
+		console.error("Error loading doctors:", error);
+		if (c) {
+		  c.innerHTML = `
+			<div class="col-12 text-danger p-3">
+			  <i class="fas fa-exclamation-circle me-2"></i>
+			  Failed to load doctors.
+			</div>
+		  `;
+		}
+	  }
+	}
 	function renderDoctors() {
 	  const c = document.getElementById('docList');
 	  if (!c) return;
