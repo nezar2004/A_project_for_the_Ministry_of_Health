@@ -1273,11 +1273,11 @@ button {
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
+  import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  // Firebase خاص بتسجيل الدخول
   const authFirebaseConfig = {
     apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
     authDomain: "nabdapp-3a077.firebaseapp.com",
@@ -1287,19 +1287,7 @@ button {
     appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
   };
 
-  const authApp = initializeApp(authFirebaseConfig, "authApp");
-  const auth = getAuth(authApp);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "1login.html";
-    } else {
-      console.log("User logged in:", user.email);
-    }
-  });
-
-  // Firebase خاص بالداتا
-  const firebaseConfig = {
+  const dataFirebaseConfig = {
     apiKey: "AIzaSyCH940ESn8v0Ld1ESp---fv0RC_9bf_e70",
     authDomain: "testing-8208a.firebaseapp.com",
     projectId: "testing-8208a",
@@ -1308,16 +1296,35 @@ button {
     appId: "1:912654428982:web:2aad95677b05765e802d97"
   };
 
-  const app = initializeApp(firebaseConfig, "dataApp");
-  const db = getFirestore(app);
+  const authApp = initializeApp(authFirebaseConfig);
+  const dataApp = initializeApp(dataFirebaseConfig, "dataApp");
+
+  const auth = getAuth(authApp);
+  const db = getFirestore(dataApp);
+
   window.db = db;
   window.collection = collection;
   window.getDocs = getDocs;
 
+  let authChecked = false;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (authChecked) return;
+    authChecked = true;
+
+    if (!user) {
+      window.location.href = "1login.html";
+      return;
+    }
+
+    console.log("User logged in:", user.email);
+    await loadFirebaseData();
+  });
+
   async function loadFirebaseData() {
     try {
       console.log("START loadFirebaseData");
-      console.log("projectId =", firebaseConfig.projectId);
+      console.log("projectId =", dataFirebaseConfig.projectId);
 
       const hospitalsSnap = await getDocs(collection(db, "hospitals"));
       console.log("hospitalsSnap.size =", hospitalsSnap.size);
@@ -1335,8 +1342,6 @@ button {
       window.firebaseDepartments = [];
       window.firebaseDoctors = [];
 
-      console.log("Hospitals loaded first:", hospitalsData.length);
-
       window.dispatchEvent(new Event("firebaseDataReady"));
 
       const departmentsData = [];
@@ -1352,15 +1357,13 @@ button {
         for (const deptDoc of deptSnap.docs) {
           const deptRaw = deptDoc.data();
 
-          const department = {
+          departmentsData.push({
             ...deptRaw,
             docId: deptDoc.id,
             id: deptRaw.id ?? deptDoc.id,
             hospitalDocId: hospitalDoc.id,
             hospital_id: hospitalRaw.id ?? hospitalDoc.id
-          };
-
-          departmentsData.push(department);
+          });
 
           const doctorsSnap = await getDocs(
             collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
@@ -1369,7 +1372,7 @@ button {
           for (const doctorDoc of doctorsSnap.docs) {
             const doctorRaw = doctorDoc.data();
 
-            const doctor = {
+            doctorsData.push({
               ...doctorRaw,
               docId: doctorDoc.id,
               id: doctorRaw.id ?? doctorDoc.id,
@@ -1377,9 +1380,7 @@ button {
               departmentDocId: deptDoc.id,
               hospital_id: hospitalRaw.id ?? hospitalDoc.id,
               dept_id: deptRaw.id ?? deptDoc.id
-            };
-
-            doctorsData.push(doctor);
+            });
           }
         }
       }
@@ -1387,20 +1388,21 @@ button {
       window.firebaseDepartments = departmentsData;
       window.firebaseDoctors = doctorsData;
 
-      console.log("All Firebase data loaded:", {
-        hospitals: hospitalsData.length,
-        departments: departmentsData.length,
-        doctors: doctorsData.length
-      });
-
       window.dispatchEvent(new Event("firebaseDataReady"));
     } catch (error) {
       console.error("Firebase loading error FULL:", error);
       alert("حدث خطأ أثناء تحميل البيانات من Firebase: " + error.message);
     }
   }
-
   loadFirebaseData();
+  window.logout = function () {
+  signOut(auth).then(() => {
+    alert("تم تسجيل الخروج بنجاح 👋");
+    window.location.href = "1login.html";
+  }).catch((error) => {
+    console.error("Logout error:", error);
+  });
+};
 </script>
 <script>
 	function normalizeFacilityType(type) {
@@ -2345,19 +2347,6 @@ button {
 	document.getElementById("btn-hospitals").addEventListener("click", () => {
 	  window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
 	});
-	import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-	window.logout = async function () {
-	  try {
-		await signOut(auth);
-		alert("تم تسجيل الخروج بنجاح 👋");
-		window.location.href = "1login.html";
-	  } catch (error) {
-		alert("حدث خطأ أثناء تسجيل الخروج");
-		console.error(error);
-	  }
-	};
-
 	// -------------------------------
 	// Chat
 	// -------------------------------
