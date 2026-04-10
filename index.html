@@ -1122,6 +1122,12 @@ button {
 					  Health center
 					</div>
 				  </div>
+				  <div class="col-6 col-md-3">
+					  <div class="card select-card p-3 text-center" data-type="military">
+						<i class="fas fa-shield-alt fa-2x mb-2 text-primary"></i>
+						Military hospital
+					  </div>
+					</div>
 				</div>
 			  </div>
 
@@ -1860,6 +1866,8 @@ button {
 	}
 
 	function selectDoctor(doc) {
+	  if (!doc) return;
+
 	  console.log("DOCTOR SELECTED =>", doc);
 
 	  bookingState.doctor = doc;
@@ -1977,14 +1985,7 @@ button {
 		container.appendChild(btn);
 	  });
 	}
-	document.getElementById('apptDate').addEventListener('change', function () {
-	  console.log("DATE CHANGED =>", this.value);
-	  console.log("doctor before reload =>", bookingState.doctor);
 
-	  bookingState.date = this.value;
-	  bookingState.time = null;
-	  loadTimeSlotsForSelectedDate();
-	});
 	function selectTimeSlot(time) {
 	  bookingState.time = time;
 	  document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
@@ -2180,8 +2181,6 @@ button {
 	  const hospEl = e.target.closest('[data-hosp]');
 	  if(hospEl){ selectHospital(parseInt(hospEl.dataset.hosp,10)); return; }
 
-	  const deptEl = e.target.closest('[data-dept]');
-	  if(deptEl){ selectDepartment(parseInt(deptEl.dataset.dept,10)); return; }
 
 	  const docEl = e.target.closest('[data-doc]');
 	  if(docEl){ selectDoctor(parseInt(docEl.dataset.doc,10)); return; }
