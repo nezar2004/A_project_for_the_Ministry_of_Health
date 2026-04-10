@@ -1475,12 +1475,17 @@ button {
 
 	  if (n === 4 && bookingState.hospital) renderDepartments();
 	  if (n === 7 && bookingState.department) loadDoctorsForSelectedDepartment();
-	  if (n === 8 && bookingState.doctor) {
-		  if (!bookingState.date) {
-			autoFillToday();
-		  }
-		  loadTimeSlotsForSelectedDate();
+
+	  if (n === 8) {
+		enforceDateMin();
+
+		if (!bookingState.date) {
+		  autoFillToday();
 		}
+
+		loadTimeSlotsForSelectedDate();
+	  }
+
 	  if (n === 9 && bookingState.time) updateSummaryCard();
 	}
 
@@ -1845,7 +1850,7 @@ button {
 		  </div>
 		`;
 
-		card.addEventListener('click', () => selectDoctor(String(doc.id)));
+		card.addEventListener('click', () => selectDoctor(doc));
 
 		col.appendChild(card);
 		c.appendChild(col);
@@ -1854,24 +1859,24 @@ button {
 	  console.log("renderDoctors done");
 	}
 
-	function selectDoctor(docId) {
-	  bookingState.doctor = doctors.find(d => String(d.id) === String(docId));
+	function selectDoctor(doc) {
+	  console.log("DOCTOR SELECTED =>", doc);
+
+	  bookingState.doctor = doc;
 	  bookingState.date = null;
 	  bookingState.time = null;
-	  bookingState.price = null;
+
+	  const base = Number(bookingState.department?.basePrice || 0);
+	  bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
 
 	  document.querySelectorAll('[data-doc]').forEach(el => el.classList.remove('selected'));
 	  document.querySelectorAll('[data-doc]').forEach(el => {
-		if (String(el.dataset.doc) === String(docId)) {
+		if (String(el.dataset.doc) === String(doc.id)) {
 		  el.classList.add('selected');
 		}
 	  });
 
-	  const base = Number(bookingState.department.basePrice || 0);
-	  bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
-
 	  showStep(8);
-
 	}
 
 	function autoFillToday() {
@@ -1883,9 +1888,10 @@ button {
 	  const dd = String(today.getDate()).padStart(2, '0');
 
 	  const val = `${yyyy}-${mm}-${dd}`;
-	  document.getElementById('apptDate').value = val;
+	  const input = document.getElementById('apptDate');
+
+	  if (input) input.value = val;
 	  bookingState.date = val;
-	  enforceDateMin();
 	}
 
 	function enforceDateMin() {
@@ -1898,16 +1904,17 @@ button {
 	}
 
 	function loadTimeSlotsForSelectedDate() {
+	  console.log("loadTimeSlotsForSelectedDate => doctor:", bookingState.doctor);
+	  console.log("loadTimeSlotsForSelectedDate => date:", bookingState.date);
+
 	  const container = document.getElementById('slotsArea');
 	  if (!container) return;
-
 	  container.innerHTML = '';
 
 	  if (!bookingState.doctor || !bookingState.date) {
 		container.innerHTML = '<div class="text-muted p-2">Select the doctor and date to view times</div>';
 		return;
 	  }
-
 	  const slotMin = bookingState.doctor.slotDuration || 30;
 	  const startH = 9, endH = 17;
 	  const slots = [];
@@ -1970,7 +1977,14 @@ button {
 		container.appendChild(btn);
 	  });
 	}
+	document.getElementById('apptDate').addEventListener('change', function () {
+	  console.log("DATE CHANGED =>", this.value);
+	  console.log("doctor before reload =>", bookingState.doctor);
 
+	  bookingState.date = this.value;
+	  bookingState.time = null;
+	  loadTimeSlotsForSelectedDate();
+	});
 	function selectTimeSlot(time) {
 	  bookingState.time = time;
 	  document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
@@ -2216,11 +2230,7 @@ button {
 	});
 
 	document.getElementById('nextBtn').addEventListener('click', nextStep);
-	document.getElementById('apptDate').addEventListener('change', function () {
-	  bookingState.date = this.value;
-	  bookingState.time = null;
-	  loadTimeSlotsForSelectedDate();
-	});
+
 	document.addEventListener('DOMContentLoaded', function(){
 	  goToLandingPage();
 	});
