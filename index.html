@@ -1554,10 +1554,16 @@ button {
 	  if (!container) return;
 	  container.innerHTML = '';
 
+	  console.log("bookingState.gov =", bookingState.gov);
+	  console.log("bookingState.facilityType =", bookingState.facilityType);
+	  console.log("hospitals =", hospitals);
+
 	  const matched = hospitals.filter(h =>
 		String(h.gov || "").trim().toLowerCase() === String(bookingState.gov || "").trim().toLowerCase() &&
 		String(h.type || "").trim().toLowerCase() === String(bookingState.facilityType || "").trim().toLowerCase()
 	  );
+
+	  console.log("matched =", matched);
 
 	  if (!matched.length) {
 		container.innerHTML = `
