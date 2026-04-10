@@ -2212,7 +2212,11 @@ button {
 	});
 
 	document.getElementById('nextBtn').addEventListener('click', nextStep);
-
+	document.getElementById('apptDate').addEventListener('change', function () {
+	  bookingState.date = this.value;
+	  bookingState.time = null;
+	  loadTimeSlotsForSelectedDate();
+	});
 	document.addEventListener('DOMContentLoaded', function(){
 	  goToLandingPage();
 	});
