@@ -1723,7 +1723,7 @@ button {
 		  </div>
 		`;
 
-		card.addEventListener('click', () => {
+		card.addEventListener('click', async () => {
 		  bookingState.department = d;
 		  bookingState.doctor = null;
 
@@ -1731,6 +1731,55 @@ button {
 		  card.classList.add('selected');
 
 		  showStep(5);
+
+		  const c = document.getElementById('docList');
+		  if (c) {
+			c.innerHTML = `
+			  <div class="col-12 text-muted p-3">
+				<i class="fas fa-spinner fa-spin me-2"></i>
+				Loading doctors...
+			  </div>
+			`;
+		  }
+
+		  try {
+			const doctorsSnap = await window.getDocs(
+			  window.collection(
+				window.db,
+				"hospitals",
+				String(bookingState.hospital.docId),
+				"departments",
+				String(d.docId),
+				"doctors"
+			  )
+			);
+
+			doctors = doctorsSnap.docs.map(docDoc => {
+			  const docRaw = docDoc.data();
+			  return {
+				...docRaw,
+				docId: docDoc.id,
+				id: docRaw.id ?? docDoc.id,
+				hospital_id: bookingState.hospital.id,
+				dept_id: d.id
+			  };
+			});
+
+			console.log("Loaded doctors:", doctors);
+
+			renderDoctors();
+
+		  } catch (error) {
+			console.error("Error loading doctors:", error);
+			if (c) {
+			  c.innerHTML = `
+				<div class="col-12 text-danger p-3">
+				  <i class="fas fa-exclamation-circle me-2"></i>
+				  Failed to load doctors.
+				</div>
+			  `;
+			}
+		  }
 		});
 
 		col.appendChild(card);
@@ -1761,43 +1810,35 @@ button {
 		c.innerHTML = `
 		  <div class="col-12 text-muted p-3">
 			<i class="fas fa-info-circle me-2"></i>
-			Select the hospital and then the department to view the doctors.
+			Select the hospital and department first.
 		  </div>
 		`;
 		return;
 	  }
 
-	  const matched = doctors.filter(d =>
-		String(d.hospital_id) === String(bookingState.hospital.id) &&
-		String(d.dept_id) === String(bookingState.department.id)
-	  );
-
-	  if (!matched.length) {
+	  if (!doctors.length) {
 		c.innerHTML = `
 		  <div class="col-12 text-muted p-3">
 			<i class="fas fa-exclamation-triangle me-2"></i>
-			There are no doctors available for this department.
+			No doctors available.
 		  </div>
 		`;
 		return;
 	  }
 
-	  matched.forEach(doc => {
+	  doctors.forEach(doc => {
 		const col = document.createElement('div');
 		col.className = 'col-12 col-md-6';
 
 		const card = document.createElement('div');
-		card.className = 'card select-card p-3';
+		card.className = 'card p-3 border';
 		card.dataset.doc = String(doc.id);
 
 		card.innerHTML = `
-		  <div class="card-body p-0 d-flex justify-content-between align-items-center">
-			<div>
-			  <strong><i class="fas fa-user-md me-2 text-primary"></i> ${escapeHtml(doc.name)}</strong>
-			  <div class="small text-muted">Duration: ${escapeHtml(doc.slotDuration || 30)} minute</div>
-			</div>
-			<div>
-			  <i class="fas fa-angle-left" style="font-size:1.6rem;color:var(--primary)"></i>
+		  <div>
+			<strong>${escapeHtml(doc.name)}</strong>
+			<div class="small text-muted">
+			  Duration: ${escapeHtml(doc.slotDuration || 30)} min
 			</div>
 		  </div>
 		`;
@@ -1807,6 +1848,8 @@ button {
 		col.appendChild(card);
 		c.appendChild(col);
 	  });
+
+	  console.log("renderDoctors done");
 	}
 
 	function selectDoctor(docId) {
