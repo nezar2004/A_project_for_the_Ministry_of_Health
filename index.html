@@ -1569,14 +1569,16 @@ button {
 
 	  console.log("bookingState.gov =", bookingState.gov);
 	  console.log("bookingState.facilityType =", bookingState.facilityType);
-	  console.log("hospitals =", hospitals);
+	  console.log("hospitals length =", hospitals.length);
+	  console.log("first 5 hospitals =", hospitals.slice(0, 5));
 
 	  const matched = hospitals.filter(h =>
 		String(h.gov || "").trim().toLowerCase() === String(bookingState.gov || "").trim().toLowerCase() &&
 		String(h.type || "").trim().toLowerCase() === String(bookingState.facilityType || "").trim().toLowerCase()
 	  );
 
-	  console.log("matched =", matched);
+	  console.log("matched length =", matched.length);
+	  console.log("matched sample =", matched.slice(0, 5));
 
 	  if (!matched.length) {
 		container.innerHTML = `
@@ -1593,20 +1595,13 @@ button {
 		col.className = 'col-12 col-md-6';
 
 		const card = document.createElement('div');
-		card.className = 'card select-card p-3';
+		card.className = 'card p-3 border';
 		card.dataset.hosp = String(h.id);
 
 		card.innerHTML = `
-		  <div class="card-body p-0">
-			<div class="d-flex justify-content-between align-items-center">
-			  <div>
-				<strong>${escapeHtml(h.name)}</strong>
-				<div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div>
-			  </div>
-			  <div>
-				<i class="fas fa-hospital" style="font-size:1.8rem;color:var(--primary)"></i>
-			  </div>
-			</div>
+		  <div>
+			<strong>${escapeHtml(h.name)}</strong>
+			<div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div>
 		  </div>
 		`;
 
@@ -1615,6 +1610,8 @@ button {
 		col.appendChild(card);
 		container.appendChild(col);
 	  });
+
+	  console.log("renderHospitals done");
 	}
 
 	function renderDepartments() {
