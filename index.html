@@ -1613,7 +1613,24 @@ button {
 
 	  console.log("renderHospitals done");
 	}
+	function selectHospital(hospId) {
+	  const h = hospitals.find(x => String(x.id) === String(hospId));
+	  if (!h) return;
 
+	  bookingState.hospital = h;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
+
+	  document.querySelectorAll('[data-hosp]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-hosp]').forEach(el => {
+		if (String(el.dataset.hosp) === String(hospId)) {
+		  el.classList.add('selected');
+		}
+	  });
+
+	  showStep(4);
+	  renderDepartments();
+	}
 	function renderDepartments() {
 	  const c = document.getElementById('deptList');
 	  if (!c) return;
