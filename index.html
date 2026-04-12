@@ -1092,9 +1092,9 @@ button {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="closing"></button>
         </div>
 
-        <div class="modal-body">
-          There are no current reservations.
-        </div>
+        <div class="modal-body" id="bookingsListBody">
+		  There are no current reservations.
+		</div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">closing</button>
@@ -1255,7 +1255,7 @@ button {
 	  <div class="modal fade" id="successModal" tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered">
 		  <div class="modal-content">
-			<div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> The booking has been confirmed</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+			<div class="modal-header bg-success text-white"><h5 class="modal-title"><i class="fas fa-paper-plane me-2"></i> Booking request sent</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
 			<div class="modal-body" id="modalContent"></div>
 			<div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">closing</button></div>
 		  </div>
@@ -2149,10 +2149,10 @@ button {
 	function commitBooking() {
 	  if (!validateCurrentStep()) return;
 
-	  bookingState.customer.name = document.getElementById('custName').value;
-	  bookingState.customer.email = document.getElementById('custEmail').value;
-	  bookingState.customer.phone = document.getElementById('custPhone').value;
-	  bookingState.customer.note = document.getElementById('custNote').value;
+	  bookingState.customer.name = document.getElementById('custName').value.trim();
+	  bookingState.customer.email = document.getElementById('custEmail').value.trim();
+	  bookingState.customer.phone = document.getElementById('custPhone').value.trim();
+	  bookingState.customer.note = document.getElementById('custNote').value.trim();
 
 	  const payload = {
 		timestamp: new Date().toISOString(),
@@ -2168,26 +2168,38 @@ button {
 		customer_name: bookingState.customer.name,
 		customer_email: bookingState.customer.email,
 		customer_phone: bookingState.customer.phone,
+		customer_note: bookingState.customer.note,
 		doctor_id: bookingState.doctor.id
 	  };
 
 	  localBookings.push(payload);
 	  localStorage.setItem('localBookings', JSON.stringify(localBookings));
-
+	  console.log("saved booking payload =", payload);
+      renderBookings();
 	  document.getElementById('modalContent').innerHTML = `
-		<p>Your appointment has been successfully booked!</p>
-		<strong>Booking number:</strong> ${payload.booking_id}
-		<p><strong>Date and time:</strong> ${payload.date} the hour ${payload.time}</p>
+		<p>Your booking request has been sent successfully.</p>
+		<p><strong>Booking number:</strong> ${payload.booking_id}</p>
+		<p><strong>Date and time:</strong> ${payload.date} at ${payload.time}</p>
 		<p><strong>Amount due:</strong> <span class="text-success">$${payload.price}</span></p>
+		<p><strong>Status:</strong> Pending approval</p>
 	  `;
 
 	  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
 	  successModal.show();
 
 	  bookingState = {
-		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
-		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
-		customer:{name:null, email:null, phone:null, note:null}
+		currentStep: 1,
+		gov: null,
+		facilityType: null,
+		hospital: null,
+		department: null,
+		hasInsurance: null,
+		insuranceDetails: null,
+		doctor: null,
+		date: null,
+		time: null,
+		price: null,
+		customer: { name: null, email: null, phone: null, note: null }
 	  };
 
 	  goToLandingPage();
@@ -2625,7 +2637,61 @@ button {
 	  localStorage.setItem("reminders", JSON.stringify(updated));
 	  renderList();
 	}
+	// -------------------------------
+	// booking 
+	// -------------------------------
+	function getStatusBadge(status) {
+	  const s = String(status || "").toUpperCase();
 
+	  if (s === "APPROVED") {
+		return `<span style="padding:4px 10px;border-radius:999px;background:#d4edda;color:#155724;font-weight:bold;">Approved</span>`;
+	  }
+
+	  if (s === "REJECTED") {
+		return `<span style="padding:4px 10px;border-radius:999px;background:#f8d7da;color:#721c24;font-weight:bold;">Rejected</span>`;
+	  }
+
+	  return `<span style="padding:4px 10px;border-radius:999px;background:#fff3cd;color:#856404;font-weight:bold;">Pending</span>`;
+	}
+
+	function renderBookings() {
+	  const bookingsBody = document.getElementById("bookingsListBody");
+	  if (!bookingsBody) return;
+
+	  const bookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
+	  console.log("localBookings =", bookings);
+
+	  if (!bookings.length) {
+		bookingsBody.innerHTML = `There are no current reservations.`;
+		return;
+	  }
+
+	  bookingsBody.innerHTML = bookings.map(b => {
+		const bookingNumber = b.booking_id || b.id || "-";
+		const department = b.department_title || b.department_name || "-";
+		const status = b.status || "PENDING";
+
+		return `
+		  <div style="border:1px solid #ddd; border-radius:12px; padding:12px; margin-bottom:10px; background:#fff;">
+			<div><strong>Booking number:</strong> ${bookingNumber}</div>
+			<div><strong>Doctor:</strong> ${b.doctor_name || "-"}</div>
+			<div><strong>Hospital:</strong> ${b.hospital_name || "-"}</div>
+			<div><strong>Department:</strong> ${department}</div>
+			<div><strong>Date and time:</strong> ${(b.date || "-")} ${(b.time || "-")}</div>
+			<div><strong>Amount due:</strong> $${b.price ?? "-"}</div>
+			<div><strong>Status:</strong> ${getStatusBadge(status)}</div>
+		  </div>
+		`;
+	  }).join("");
+	}
+
+	const bookingsModal = document.getElementById("bookingsModal");
+
+	if (bookingsModal) {
+	  bookingsModal.addEventListener("show.bs.modal", () => {
+		renderBookings();
+	  });
+	}
 	// -------------------------------
 	// Project Info Slideshow
 	// -------------------------------
@@ -2645,7 +2711,7 @@ button {
 
 	  setInterval(showNext, 10000);
 	}
-
+	
 	// حماية بسيطة
 	(function () {
 	  const stop = (e) => {
@@ -2667,7 +2733,7 @@ button {
 		}
 	  });
 	})();
-
+	
 
 </script>
 </body>
