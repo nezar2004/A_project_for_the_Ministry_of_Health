@@ -603,7 +603,6 @@ header, .top-bar {
     font-size: 0.8rem;
   }
 
-  /* Chat mobile position */
   #chat-toggle {
     bottom: 20px !important;
     right: 20px !important;
@@ -611,9 +610,17 @@ header, .top-bar {
   }
 
   #chat-widget {
+    top: 0 !important;
+    right: -100% !important;
+    bottom: auto !important;
     width: 90vw !important;
-    height: 70vh !important;
-    right: 5vw !important;
+    max-width: 360px !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  #chat-widget.active {
+    right: 0 !important;
   }
 
   .emergency-container {
@@ -632,7 +639,7 @@ header, .top-bar {
     width: 140px;
     height: 140px;
     opacity: 0.04;
-	pointer-events: none !important;
+    pointer-events: none !important;
   }
 
   .landing-card,
@@ -650,10 +657,17 @@ header, .top-bar {
   }
 
   #chat-widget {
-    bottom: 70px !important;
-    width: 90% !important;
-    height: 65vh !important;
-    right: 10px !important;
+    top: 0 !important;
+    right: -100% !important;
+    bottom: auto !important;
+    width: 92vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  #chat-widget.active {
+    right: 0 !important;
   }
 }
 .em-btn {
