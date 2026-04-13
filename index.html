@@ -1153,14 +1153,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 			<div class="container-fluid">
 			  <a class="navbar-brand" href="#" id="homeBtn">🏥 نبض</a>
 
-			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-				<span class="navbar-toggler-icon"></span>
-			  </button>
+			 <button id="menuToggleBtn" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
 
 			  <div class="collapse navbar-collapse" id="mainNav">
 				<ul class="navbar-nav ms-auto">
 				  <li class="nav-item">
-					<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
+					<a id="myBookingsBtn" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
 					  <i class="fas fa-calendar-alt me-1"></i> My bookings
 					</a>
 				  </li>
@@ -1343,7 +1343,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 				<form id="insForm" class="row g-3">
 				  <div class="col-md-6"><label class="form-label">Insurance company</label><input id="insCompany" class="form-control" required></div>
 				  <div class="col-md-6"><label class="form-label">Policy number</label><input id="insPolicy" class="form-control" required></div>
-				  <div class="col-12"><label class="form-label">Note (optional)</label><textarea id="insNote" class="form-control" rows="2"></textarea></div>
+
 				  <div class="col-12"><button type="submit" class="btn btn-main"><i class="fas fa-save me-2"></i> Save and follow</button></div>
 				</form>
 			  </div>
@@ -2381,17 +2381,30 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	function goToBookingApp() {
 	  document.getElementById('landingPage').classList.add('d-none');
 	  document.getElementById('bookingApp').classList.remove('d-none');
+
+	  document.getElementById('menuToggleBtn').classList.add('d-none');
+
+	  // 🔥 اخفاء My bookings
+	  document.getElementById('myBookingsBtn').classList.add('d-none');
+
 	  showStep(1);
 	}
 
 	function goToLandingPage() {
 	  document.getElementById('landingPage').classList.remove('d-none');
 	  document.getElementById('bookingApp').classList.add('d-none');
+
+	  document.getElementById('menuToggleBtn').classList.remove('d-none');
+
+	  // 🔥 اظهار My bookings
+	  document.getElementById('myBookingsBtn').classList.remove('d-none');
+
 	  bookingState = {
 		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
 		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
 		customer:{name:null, email:null, phone:null, note:null}
 	  };
+
 	  renderGovernorates();
 	}
 
