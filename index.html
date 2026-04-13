@@ -28,7 +28,25 @@
   --glow: #4E342E;
   --text-light: #3E2723;
 }
+#bookingApp {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 999;
+  padding: 0 12px;
+}
+#bookingApp::-webkit-scrollbar {
+  width: 0px;
+}
 
+#bookingApp {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 /* ------------------------------------------------------
    Global Rules
 ------------------------------------------------------ */
