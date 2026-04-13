@@ -2335,8 +2335,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  document.getElementById('modalContent').innerHTML = `
 		<p>Your booking request has been sent successfully.</p>
 		<p><strong>Booking number:</strong> ${payload.booking_id}</p>
-		<p><strong>Date and time:</strong> ${payload.date} at ${payload.time}</p>
-		<p><strong>Amount due:</strong> <span class="text-success">$${payload.price}</span></p>
+		<p><strong>Date and time:</strong> ${payload.date} at ${payload.time}</p><br>
+		
 		<p><strong>Status:</strong> Pending approval</p>
 	  `;
 
