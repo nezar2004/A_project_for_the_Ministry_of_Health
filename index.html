@@ -2833,8 +2833,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 			<div><strong>Doctor:</strong> ${b.doctor_name || "-"}</div>
 			<div><strong>Hospital:</strong> ${b.hospital_name || "-"}</div>
 			<div><strong>Department:</strong> ${department}</div>
-			<div><strong>Date and time:</strong> ${(b.date || "-")} ${(b.time || "-")}</div>
-			<div><strong>Amount due:</strong> $${b.price ?? "-"}</div>
+			<div><strong>Date and time:</strong> ${(b.date || "-")} ${(b.time || "-")}</div><br>
+			
 			<div><strong>Status:</strong> ${getStatusBadge(status)}</div>
 		  </div>
 		`;
