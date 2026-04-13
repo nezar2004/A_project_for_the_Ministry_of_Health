@@ -944,7 +944,61 @@ button {
   gap: 10px;
   margin-top: 6px;
 }
+.mobile-emergency-menu {
+  display: none;
+}
 
+/* قائمة الموبايل */
+.mobile-emergency-menu {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* كل عنصر */
+.mobile-emergency-menu .nav-item {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.mobile-emergency-menu .nav-item:last-child {
+  border-bottom: none;
+}
+
+/* الرابط */
+.mobile-emergency-menu .nav-link {
+  position: relative;
+  display: block;
+  text-align: center !important;
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9) !important;
+}
+
+/* النص */
+.mobile-emergency-menu .menu-text {
+  display: block;
+}
+
+/* الأيقونة على اليمين */
+.mobile-emergency-menu .menu-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* hover */
+.mobile-emergency-menu .nav-link:hover {
+  color: var(--glow) !important;
+  text-shadow: 0 0 8px var(--accent);
+}
+
+/* يظهر فقط بالموبايل */
+@media (max-width: 991px) {
+  .mobile-emergency-menu {
+    display: block;
+  }
+}
 </style>
 <body>
 		<div class="info-container">
@@ -960,7 +1014,7 @@ button {
 				<li>📞 زر الاتصال السريع </li>
 				<li>📍 إرسال موقعك عند الحاجة</li>
 				<li>🏥 البحث عن أقرب مستشفى</li>
-				<li>🤖 بوت طبي للإجابة على أسئلتك</li>
+				<li>🤖 مساعدك الطبي ل الاجابة على اسئلتك</li>
 			  </ul>
 			</div>
 			<div class="project-info">
@@ -1067,38 +1121,88 @@ button {
 		  </div>
 		</div>	
 		
-	  <nav class="navbar navbar-expand-lg navbar-dark px-3">
-		<div class="container-fluid">
-		  <a class="navbar-brand" href="#" id="homeBtn">🏥 نبض</a>
-		  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-			<span class="navbar-toggler-icon"></span>
-		  </button>
-		  <div class="collapse navbar-collapse" id="mainNav">
-			<ul class="navbar-nav ms-auto">
-			  <li class="nav-item">
-				<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
-				  <i class="fas fa-calendar-alt me-1"></i> My bookings
-				</a>
-			  </li>
-			</ul>
-		  </div>
-		</div>
-	  </nav>
+	    <nav class="navbar navbar-expand-lg navbar-dark px-3">
+			<div class="container-fluid">
+			  <a class="navbar-brand" href="#" id="homeBtn">🏥 نبض</a>
 
-	  <!-- Window (Modal) -->
-<!-- صفحة البداية -->
-<div class="container" id="landingPage">
+			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
 
-  <!-- Emergency Buttons -->
-  <div class="emergency-container">
-    <button title="هذا زر الاسعاف" class="em-btn" id="btn-call">🚑</button>
-    <button title="هذا زر الاتصال" class="em-btn" id="btn-custom">📞</button>
-    <button title="هذا زر ارسال موقعك" class="em-btn" id="btn-location">📍</button>
-    <button title="هذا زر اقرب مستشفيات" class="em-btn" id="btn-hospitals">🏥</button>
-    <button title="هذا زر البوت" id="chat-toggle">🤖</button>
-    <button class="em-btn logout-btn" onclick="logout()" title="تسجيل الخروج">⏻</button>
-    <button id="openReminderPanel" class="em-btn">🔔</button>
-  </div>
+			  <div class="collapse navbar-collapse" id="mainNav">
+				<ul class="navbar-nav ms-auto">
+				  <li class="nav-item">
+					<a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
+					  <i class="fas fa-calendar-alt me-1"></i> My bookings
+					</a>
+				  </li>
+				</ul>
+
+				<ul class="navbar-nav text-center mobile-emergency-menu d-lg-none">
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="document.getElementById('btn-call').click()">
+					  <span class="menu-icon">🚑</span>
+					  <span class="menu-text">طلب الإسعاف</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="document.getElementById('btn-custom').click()">
+					  <span class="menu-icon">📞</span>
+					  <span class="menu-text">اتصال سريع</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="document.getElementById('btn-location').click()">
+					  <span class="menu-icon">📍</span>
+					  <span class="menu-text">إرسال موقعي</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="document.getElementById('btn-hospitals').click()">
+					  <span class="menu-icon">🏥</span>
+					  <span class="menu-text">أقرب مستشفيات</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="document.getElementById('chat-toggle').click()">
+					  <span class="menu-icon">🤖</span>
+					  <span class="menu-text">البوت الطبي</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="logout()">
+					  <span class="menu-icon">⏻</span>
+					  <span class="menu-text">تسجيل الخروج</span>
+					</a>
+				  </li>
+
+				  <li class="nav-item">
+					<a class="nav-link" href="#" onclick="document.getElementById('openReminderPanel').click()">
+					  <span class="menu-icon">🔔</span>
+					  <span class="menu-text">التنبيهات</span>
+					</a>
+				  </li>
+				</ul>
+			  </div>
+			</div>
+		  </nav>
+
+		  <div class="container" id="landingPage">
+
+			<div class="emergency-container d-none d-lg-flex">
+			  <button title="زر الاسعاف" class="em-btn" id="btn-call">🚑</button>
+			  <button title="زرالاتصال" class="em-btn" id="btn-custom">📞</button>
+			  <button title="زر ارسالالموقع" class="em-btn" id="btn-location">📍</button>
+			  <button title="زر اقرب مستشفى" class="em-btn" id="btn-hospitals">🏥</button>
+			  <button title="زر المساعد الطبي" class="em-btn" id="chat-toggle">🤖</button>
+			  <button class="em-btn logout-btn" onclick="logout()" title="تسجيل الخروج">⏻</button>
+			  <button id="openReminderPanel" class="em-btn">🔔</button>
+			</div>
 
   <!-- المودال -->
   <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
@@ -1124,10 +1228,10 @@ button {
 
   <!-- زر البداية -->
   <div class="text-center mb-3">
-    <button id="startBookingBtn" class="btn btn-main btn-lg">
-      <i class="fas fa-stethoscope me-2"></i> Start booking now
-    </button>
-  </div>
+      <button id="startBookingBtn" class="btn btn-main btn-lg">
+        <i class="fas fa-stethoscope me-2"></i> Start booking now
+      </button>
+    </div>
 
 </div>
 	  <div class="container-app d-none" id="bookingApp">
@@ -2756,4 +2860,3 @@ button {
 </script>
 </body>
 </html>
-
