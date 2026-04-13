@@ -947,14 +947,14 @@ button {
 .mobile-emergency-menu {
   display: none;
 }
+/*------------------------*/
 
-/* قائمة الموبايل */
 .mobile-emergency-menu {
   width: 100%;
   margin-top: 10px;
 }
 
-/* كل عنصر */
+
 .mobile-emergency-menu .nav-item {
   border-bottom: 1px solid rgba(255,255,255,0.12);
 }
@@ -963,7 +963,7 @@ button {
   border-bottom: none;
 }
 
-/* الرابط */
+
 .mobile-emergency-menu .nav-link {
   position: relative;
   display: block;
@@ -974,12 +974,12 @@ button {
   color: rgba(255,255,255,0.9) !important;
 }
 
-/* النص */
+
 .mobile-emergency-menu .menu-text {
   display: block;
 }
 
-/* الأيقونة على اليمين */
+
 .mobile-emergency-menu .menu-icon {
   position: absolute;
   right: 18px;
@@ -987,17 +987,44 @@ button {
   transform: translateY(-50%);
 }
 
-/* hover */
+
 .mobile-emergency-menu .nav-link:hover {
   color: var(--glow) !important;
   text-shadow: 0 0 8px var(--accent);
 }
 
-/* يظهر فقط بالموبايل */
+
 @media (max-width: 991px) {
   .mobile-emergency-menu {
     display: block;
   }
+}
+/*----------------------*/
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 </style>
 <body>
@@ -1405,8 +1432,14 @@ button {
 
 	  <div id="addForm">
 		<input id="taskName" placeholder="اسم التنبيه">
-		<input id="taskDate" type="date">
-		<input id="taskTime" type="time">
+		<div class="input-wrapper">
+		  <input type="date">
+		  <span class="icon">📅</span>
+		</div>
+		<div class="input-wrapper">
+			<input id="taskTime" type="time">
+			<span class="icon">⏰</span>
+		</div>
 
 		<select id="remindBefore">
 		  <option value="60">قبل ساعة</option>
