@@ -1433,13 +1433,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	  <div id="addForm">
 		<input id="taskName" placeholder="اسم التنبيه">
+
 		<div class="input-wrapper">
-		  <input type="date">
+		  <input id="taskDate" type="date">
 		  <span class="icon">📅</span>
 		</div>
+
 		<div class="input-wrapper">
-			<input id="taskTime" type="time">
-			<span class="icon">⏰</span>
+		  <input id="taskTime" type="time">
+		  <span class="icon">⏰</span>
 		</div>
 
 		<select id="remindBefore">
@@ -2681,12 +2683,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	// -------------------------------
 	// Reminder Panel
 	// -------------------------------
+	var editingId = null;
 	const panel = document.getElementById("reminderPanel");
 	const overlay = document.getElementById("overlay");
 	const openReminderBtn = document.getElementById("openReminderPanel");
 	const closeReminderBtn = document.getElementById("closeReminderPanel");
 
-	let editingId = null;
+	
 
 	if (openReminderBtn) {
 	  openReminderBtn.addEventListener("click", () => {
@@ -2727,33 +2730,35 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	}
 
 	function saveReminder() {
-	  const taskName = document.getElementById("taskName");
-	  const taskDate = document.getElementById("taskDate");
-	  const taskTime = document.getElementById("taskTime");
-	  const remindBefore = document.getElementById("remindBefore");
-	  const repeatType = document.getElementById("repeatType");
+	  const taskName = document.getElementById("taskName").value.trim();
+	  const taskDate = document.getElementById("taskDate").value;
+	  const taskTime = document.getElementById("taskTime").value;
+	  const remindBefore = document.getElementById("remindBefore").value;
+	  const repeatType = document.getElementById("repeatType").value;
 
-	  if (!taskName.value.trim() || !taskDate.value || !taskTime.value) {
+	  if (!taskName || !taskDate || !taskTime) {
 		alert("يرجى تعبئة اسم التنبيه والتاريخ والوقت.");
 		return;
 	  }
 
-	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
 	  const reminder = {
 		id: editingId || Date.now(),
-		name: taskName.value.trim(),
-		date: taskDate.value,
-		time: taskTime.value,
-		before: remindBefore.value,
-		repeat: repeatType.value
+		name: taskName,
+		date: taskDate,
+		time: taskTime,
+		before: remindBefore,
+		repeat: repeatType
 	  };
 
-	  const updated = editingId
-		? reminders.map(r => (r.id === editingId ? reminder : r))
-		: [...reminders, reminder];
+	  if (editingId) {
+		reminders = reminders.map(r => r.id === editingId ? reminder : r);
+	  } else {
+		reminders.push(reminder);
+	  }
 
-	  localStorage.setItem("reminders", JSON.stringify(updated));
+	  localStorage.setItem("reminders", JSON.stringify(reminders));
 	  editingId = null;
 
 	  alert("✅ تم الحفظ");
