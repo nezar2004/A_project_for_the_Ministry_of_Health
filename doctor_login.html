@@ -405,31 +405,8 @@
             to the doctor profile in Firestore so each doctor can only view their own bookings.
           </p>
         </div>
-
-        <div class="feature-grid">
-          <div class="feature">
-            <strong>Automatic doctor linking</strong>
-            <span>The signed-in account is linked to a doctor profile using email and saved under the doctor record.</span>
-          </div>
-          <div class="feature">
-            <strong>Private booking access</strong>
-            <span>No doctor can see another doctor’s bookings because the dashboard filters by doctor identity.</span>
-          </div>
-          <div class="feature">
-            <strong>Realtime updates</strong>
-            <span>New bookings appear instantly using Firebase realtime listeners, not polling every 5 seconds.</span>
-          </div>
-          <div class="feature">
-            <strong>Fast workflow</strong>
-            <span>Approve, reject, or reschedule from a clean side panel with strong UX and clear information layout.</span>
-          </div>
-        </div>
       </div>
 
-      <div class="helper">
-        Use the same email that is linked to the doctor in your Firestore data.  
-        After login, the doctor is redirected automatically to <strong>doctor_dashboard.html</strong>.
-      </div>
     </section>
 
     <section class="panel login">
@@ -457,15 +434,7 @@
         <div id="loginError" class="error"></div>
         <div id="loginSuccess" class="success"></div>
 
-        <div class="helper">
-          Best practice:
-          <br>
-          1. Save each doctor in <strong>doctors</strong> collection.
-          <br>
-          2. Store <strong>email</strong>, <strong>doctor_id</strong>, <strong>name</strong>, <strong>hospital_name</strong>, <strong>department_title</strong>.
-          <br>
-          3. Save every patient booking into <strong>allBookings</strong> with <strong>doctor_id</strong> and <strong>doctor_email</strong>.
-        </div>
+        
       </div>
     </section>
   </div>
