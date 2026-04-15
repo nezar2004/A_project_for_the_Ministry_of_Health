@@ -68,7 +68,7 @@ body {
       left: -120px;
       top: -130px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(37, 99, 235, 0.16), transparent 65%);
+      background: radial-gradient(circle, rgba(99, 232, 193, 0.16), transparent 65%);
       pointer-events: none;
     }
 
@@ -80,7 +80,7 @@ body {
       right: -100px;
       bottom: -120px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(37, 99, 235, 0.12), transparent 65%);
+      background: radial-gradient(circle, rgba(99, 232, 193, 0.12), transparent 65%);
       pointer-events: none;
     }
 
