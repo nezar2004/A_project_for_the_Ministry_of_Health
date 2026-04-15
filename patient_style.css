@@ -9,7 +9,7 @@
       --white: #ffffff;
       --text: #3e2723;
       --muted: #7b6f6b;
-      --border: #e8dddd;
+      --border: #d3fdfc;
       --input-bg: #fcfaf9;
       --shadow: 0 18px 45px rgba(78, 52, 46, 0.14);
       --shadow-soft: 0 10px 25px rgba(78, 52, 46, 0.08);
@@ -84,7 +84,7 @@
 
     .auth-side {
       background:
-        linear-gradient(160deg, rgba(78,52,46,0.95), rgba(109,76,65,0.92)),
+        linear-gradient(160deg, rgba(99, 232, 193,0.95), rgba(174, 246, 232,0.92)),
         linear-gradient(180deg, #6d4c41, #4e342e);
       color: #fff;
       padding: 48px 38px;
