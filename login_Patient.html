@@ -565,6 +565,34 @@
         text-align: center;
       }
     }
+	.row-buttons {
+	  display: flex;
+	  gap: 12px;
+	  margin-top: 10px;
+	}
+
+	.row-buttons button {
+	  flex: 1;
+	  height: 54px;
+	  border-radius: 15px;
+	  font-size: 15px;
+	  font-weight: 800;
+	  cursor: pointer;
+	}
+
+	/* زر تسجيل الدخول (أزرق/أساسي) */
+	.main-btn {
+	  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+	  color: white;
+	  border: none;
+	}
+
+	/* زر الرجوع */
+	.secondary-btn {
+	  background: white;
+	  border: 1px solid #e5edf7;
+	  color: #132238;
+	}
   </style>
 </head>
 <body>
@@ -629,7 +657,10 @@
               </div>
             </div>
 
-            <button id="loginBtn" class="main-btn">دخول</button>
+            <div class="row-buttons">
+			  <button id="loginBtn" class="main-btn">تسجيل الدخول</button>
+			  <button type="button" class="secondary-btn" onclick="goHome()">الصفحة الرئيسية</button>
+			</div>
           </div>
 
           <div class="link-group">
@@ -944,6 +975,9 @@
         alert("⚠️ تعذر إرسال رابط إعادة التعيين: " + err.message);
       }
     };
+	window.goHome = function () {
+	  window.location.href = "index.html"; // غيرها حسب اسم الصفحة الرئيسية عندك
+	};
   </script>
 </body>
 </html>
