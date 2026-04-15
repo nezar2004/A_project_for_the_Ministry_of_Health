@@ -4,100 +4,303 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>نظام نبض - وزارة الصحة</title>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --primary: #8D6E63;
-      --accent: #5D4037;
-      --text: #3E2723;
-      --bg: #D7CCC8;
+      --primary: #6d4c41;
+      --primary-dark: #4e342e;
+      --primary-light: #8d6e63;
+      --secondary: #f5ebe7;
+      --accent: #a1887f;
+      --bg: linear-gradient(135deg, #f7f3f1 0%, #e7dbd6 100%);
       --white: #ffffff;
-      --muted: #777;
-      --border: #E0E0E0;
-      --input-bg: #FAFAFA;
+      --text: #3e2723;
+      --muted: #7b6f6b;
+      --border: #e8dddd;
+      --input-bg: #fcfaf9;
+      --shadow: 0 18px 45px rgba(78, 52, 46, 0.14);
+      --shadow-soft: 0 10px 25px rgba(78, 52, 46, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: "Tajawal", sans-serif;
-      background-color: var(--bg);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
       margin: 0;
-      padding: 20px;
+      min-height: 100vh;
+      font-family: "Tajawal", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(8px);
+    }
+
+    body::before {
+      width: 280px;
+      height: 280px;
+      top: -80px;
+      right: -80px;
+      background: rgba(141, 110, 99, 0.16);
+    }
+
+    body::after {
+      width: 240px;
+      height: 240px;
+      bottom: -70px;
+      left: -70px;
+      background: rgba(109, 76, 65, 0.12);
+    }
+
+    .auth-shell {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 680px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.03fr 0.97fr;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-side {
+      background:
+        linear-gradient(160deg, rgba(78,52,46,0.95), rgba(109,76,65,0.92)),
+        linear-gradient(180deg, #6d4c41, #4e342e);
+      color: #fff;
+      padding: 48px 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-side::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      top: -60px;
+      left: -60px;
+    }
+
+    .auth-side::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      bottom: -50px;
+      right: -40px;
+    }
+
+    .brand-wrap,
+    .side-footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 22px;
+      width: fit-content;
+    }
+
+    .brand-title {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      line-height: 1.3;
+    }
+
+    .brand-subtitle {
+      font-size: 17px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.88);
+      margin: 0 0 28px;
+      max-width: 420px;
+    }
+
+    .side-cards {
+      display: grid;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .mini-card strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .mini-card span {
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .side-footer {
+      font-size: 13px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.8);
+      margin-top: 30px;
+    }
+
+    .auth-main {
+      padding: 36px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.96));
     }
 
     .container {
-      background: var(--white);  
-      padding: 35px;
-      border-radius: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 460px;
+      max-width: 440px;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid #f1e7e3;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 30px 24px;
+    }
+
+    .form-top {
       text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #8d6e63, #5d4037);
+      color: #fff;
+      font-size: 26px;
+      box-shadow: 0 10px 24px rgba(93, 64, 55, 0.22);
     }
 
     h2 {
-      color: var(--accent);
-      margin-bottom: 20px;
-      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 29px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
     }
 
     p.note {
       font-size: 13px;
       color: var(--muted);
-      margin-top: -5px;
-      margin-bottom: 10px;
-      line-height: 1.8;
+      margin: 4px 0 14px;
+      line-height: 1.9;
+      background: #f9f4f2;
+      border: 1px solid #efe3de;
+      padding: 12px 14px;
+      border-radius: 14px;
+      text-align: right;
     }
 
-    input, select {
+    .fields {
+      margin-top: 18px;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      padding-right: 3px;
+    }
+
+    input,
+    select {
       width: 100%;
-      padding: 14px;
-      margin: 10px 0;
+      height: 52px;
+      padding: 0 16px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 15px;
       font-size: 15px;
       font-family: "Tajawal", sans-serif;
       background: var(--input-bg);
+      color: var(--text);
       outline: none;
+      transition: 0.25s ease;
     }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-top: 15px;
-      font-family: "Tajawal", sans-serif;
+    input::placeholder {
+      color: #aa9d99;
     }
 
-    button:hover {
-      background-color: var(--primary);
-    }
-
-    .link {
-      margin-top: 16px;
-      color: var(--primary);
-      cursor: pointer;
-      font-size: 14px;
-      text-decoration: none;
-      display: block;
-    }
-
-    .hidden {
-      display: none;
+    input:focus,
+    select:focus {
+      border-color: var(--primary-light);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(141, 110, 99, 0.12);
     }
 
     .phone-row {
@@ -106,7 +309,12 @@
     }
 
     .phone-row select {
-      width: 35%;
+      width: 34%;
+      min-width: 100px;
+    }
+
+    .phone-row input {
+      flex: 1;
     }
 
     .password-wrap {
@@ -114,95 +322,420 @@
     }
 
     .password-wrap input {
-      padding-left: 55px;
+      padding-left: 82px;
     }
 
     .toggle-pass {
       position: absolute;
-      left: 10px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
       border: none;
-      background: transparent;
-      color: var(--accent);
+      background: #efe6e2;
+      color: var(--primary-dark);
       cursor: pointer;
       font-size: 13px;
+      font-weight: 700;
       width: auto;
-      padding: 0;
+      padding: 8px 12px;
       margin: 0;
+      border-radius: 10px;
+      transition: 0.25s ease;
+      font-family: "Tajawal", sans-serif;
     }
 
     .toggle-pass:hover {
-      background: transparent;
+      background: #e4d4cd;
+      color: var(--primary-dark);
+    }
+
+    button.main-btn {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s ease;
+      margin-top: 8px;
+      font-family: "Tajawal", sans-serif;
+      box-shadow: 0 12px 24px rgba(109, 76, 65, 0.22);
+    }
+
+    button.main-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(109, 76, 65, 0.26);
+    }
+
+    .link-group {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .link {
       color: var(--primary);
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.2s ease;
+      font-weight: 700;
+    }
+
+    .link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .form-section {
+      animation: fadeUp 0.28s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .auth-shell {
+        grid-template-columns: 1fr;
+        max-width: 620px;
+      }
+
+      .auth-side {
+        padding: 34px 26px;
+      }
+
+      .brand-title {
+        font-size: 32px;
+      }
+
+      .auth-main {
+        padding: 24px 20px 28px;
+      }
+
+      .form-card {
+        padding: 28px 22px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 14px;
+        align-items: stretch;
+      }
+
+      .auth-shell {
+        min-height: auto;
+        border-radius: 24px;
+      }
+
+      .auth-side {
+        padding: 28px 20px;
+      }
+
+      .brand-title {
+        font-size: 28px;
+      }
+
+      .brand-subtitle {
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      .mini-card {
+        padding: 14px;
+      }
+
+      .auth-main {
+        padding: 18px 14px 20px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .form-card {
+        border-radius: 22px;
+        padding: 24px 18px;
+      }
+
+      h2 {
+        font-size: 25px;
+      }
+
+      .form-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+      }
+
+      input,
+      select,
+      button.main-btn {
+        height: 50px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .auth-shell {
+        border-radius: 18px;
+      }
+
+      .auth-side {
+        padding: 22px 16px;
+      }
+
+      .brand-badge {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      .brand-title {
+        font-size: 23px;
+      }
+
+      .brand-subtitle {
+        font-size: 14px;
+      }
+
+      .auth-main {
+        padding: 12px;
+      }
+
+      .form-card {
+        padding: 20px 14px;
+        border-radius: 18px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .input-label {
+        font-size: 13px;
+      }
+
+      .phone-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .phone-row select {
+        width: 100%;
+      }
+
+      .password-wrap input {
+        padding-left: 74px;
+      }
+
+      .toggle-pass {
+        left: 10px;
+        font-size: 12px;
+        padding: 7px 10px;
+      }
+
+      .link {
+        font-size: 13px;
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="auth-shell">
+    <!-- الجهة الجمالية -->
+    <div class="auth-side">
+      <div class="brand-wrap">
+        <div class="brand-badge">💙 نظام نبض الطبي</div>
+        <h1 class="brand-title">بوابة المرضى</h1>
+        <p class="brand-subtitle">
+          سجّل دخولك للوصول إلى خدمات الحجز الطبية، متابعة المواعيد، وإدارة حسابك بسهولة
+          ضمن واجهة حديثة ومريحة وواضحة.
+        </p>
 
-    <!-- تسجيل الدخول -->
-    <div id="loginForm">
-      <h2>تسجيل الدخول</h2>
-      <input type="text" id="loginNationalID" placeholder="الرقم الوطني" maxlength="10">
+        <div class="side-cards">
+          <div class="mini-card">
+            <strong>حجز أسرع وأسهل</strong>
+            <span>تنقل واضح بين تسجيل الدخول، إنشاء الحساب، واستعادة كلمة المرور.</span>
+          </div>
 
-      <div class="password-wrap">
-        <input type="password" id="loginPassword" placeholder="كلمة المرور">
-        <button type="button" class="toggle-pass" onclick="togglePassword('loginPassword', this)">إظهار</button>
+          <div class="mini-card">
+            <strong>تصميم متجاوب</strong>
+            <span>يظهر بشكل مرتب على الكمبيوتر، التابلت، والموبايل بدون تخريب.</span>
+          </div>
+
+          <div class="mini-card">
+            <strong>تجربة استخدام أفضل</strong>
+            <span>ألوان هادئة، حقول أوضح، ومسافات مريحة مشابهة لواجهة الدكتور.</span>
+          </div>
+        </div>
       </div>
 
-      <button id="loginBtn">دخول</button>
-
-      <div class="link" onclick="showForm('registerForm')">إنشاء حساب جديد</div>
-      <div class="link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
-    </div>
-
-    <!-- إنشاء حساب -->
-    <div id="registerForm" class="hidden">
-      <h2>إنشاء حساب جديد</h2>
-
-      <input type="text" id="regFirstName" placeholder="الاسم الأول">
-      <input type="text" id="regLastName" placeholder="اسم العائلة">
-      <input type="text" id="regNationalID" placeholder="الرقم الوطني (10 أرقام)" maxlength="10">
-      <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
-
-      <div class="phone-row">
-        <select id="regCountryCode">
-          <option value="+962">JO +962</option>
-        </select>
-        <input type="text" id="regPhone" placeholder="7XXXXXXXX">
+      <div class="side-footer">
+        وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية
       </div>
+    </div>
 
-      <input type="date" id="regBirthday">
+    <!-- الجهة الرئيسية -->
+    <div class="auth-main">
+      <div class="container">
 
-      <select id="regGender">
-        <option value="">الجنس</option>
-        <option value="male">ذكر</option>
-        <option value="female">أنثى</option>
-      </select>
+        <!-- تسجيل الدخول -->
+        <div id="loginForm" class="form-card form-section">
+          <div class="form-top">
+            <div class="form-icon">👤</div>
+            <h2>تسجيل الدخول</h2>
+            <p class="subtitle">أدخل بياناتك للوصول إلى حساب المريض</p>
+          </div>
 
-      <div class="password-wrap">
-        <input type="password" id="regPassword" placeholder="كلمة المرور">
-        <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">إظهار</button>
+          <div class="fields">
+            <div class="input-group">
+              <label class="input-label" for="loginNationalID">الرقم الوطني</label>
+              <input type="text" id="loginNationalID" placeholder="أدخل الرقم الوطني" maxlength="10">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="loginPassword">كلمة المرور</label>
+              <div class="password-wrap">
+                <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                <button type="button" class="toggle-pass" onclick="togglePassword('loginPassword', this)">إظهار</button>
+              </div>
+            </div>
+
+            <button id="loginBtn" class="main-btn">دخول</button>
+          </div>
+
+          <div class="link-group">
+            <div class="link" onclick="showForm('registerForm')">إنشاء حساب جديد</div>
+            <div class="link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
+          </div>
+        </div>
+
+        <!-- إنشاء حساب -->
+        <div id="registerForm" class="form-card form-section hidden">
+          <div class="form-top">
+            <div class="form-icon">📝</div>
+            <h2>إنشاء حساب جديد</h2>
+            <p class="subtitle">املأ البيانات التالية لإنشاء حساب المريض</p>
+          </div>
+
+          <div class="fields">
+            <div class="input-group">
+              <label class="input-label" for="regFirstName">الاسم الأول</label>
+              <input type="text" id="regFirstName" placeholder="أدخل الاسم الأول">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="regLastName">اسم العائلة</label>
+              <input type="text" id="regLastName" placeholder="أدخل اسم العائلة">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="regNationalID">الرقم الوطني</label>
+              <input type="text" id="regNationalID" placeholder="الرقم الوطني (10 أرقام)" maxlength="10">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="regEmail">البريد الإلكتروني</label>
+              <input type="email" id="regEmail" placeholder="أدخل البريد الإلكتروني">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label">رقم الهاتف</label>
+              <div class="phone-row">
+                <select id="regCountryCode">
+                  <option value="+962">JO +962</option>
+                </select>
+                <input type="text" id="regPhone" placeholder="7XXXXXXXX">
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="regBirthday">تاريخ الميلاد</label>
+              <input type="date" id="regBirthday">
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="regGender">الجنس</label>
+              <select id="regGender">
+                <option value="">اختر الجنس</option>
+                <option value="male">ذكر</option>
+                <option value="female">أنثى</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="regPassword">كلمة المرور</label>
+              <div class="password-wrap">
+                <input type="password" id="regPassword" placeholder="أدخل كلمة المرور">
+                <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">إظهار</button>
+              </div>
+            </div>
+
+            <button id="registerBtn" class="main-btn">إنشاء الحساب</button>
+          </div>
+
+          <div class="link-group">
+            <div class="link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
+          </div>
+        </div>
+
+        <!-- نسيت كلمة المرور -->
+        <div id="forgotForm" class="form-card form-section hidden">
+          <div class="form-top">
+            <div class="form-icon">🔐</div>
+            <h2>استعادة كلمة المرور</h2>
+            <p class="subtitle">استرجاع الوصول إلى الحساب بخطوات بسيطة</p>
+          </div>
+
+          <p class="note">
+            أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني
+            المسجل في الحساب.
+          </p>
+
+          <div class="fields">
+            <div class="input-group">
+              <label class="input-label" for="forgotNationalID">الرقم الوطني</label>
+              <input type="text" id="forgotNationalID" placeholder="أدخل الرقم الوطني" maxlength="10">
+            </div>
+
+            <button id="forgotBtn" class="main-btn">إرسال رابط إعادة التعيين</button>
+          </div>
+
+          <div class="link-group">
+            <div class="link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
+          </div>
+        </div>
+
       </div>
-
-      <button id="registerBtn">إنشاء الحساب</button>
-
-      <div class="link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
     </div>
-
-    <!-- نسيت كلمة المرور -->
-    <div id="forgotForm" class="hidden">
-      <h2>استعادة كلمة المرور</h2>
-      <p class="note">أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى الإيميل المسجل في الحساب.</p>
-
-      <input type="text" id="forgotNationalID" placeholder="الرقم الوطني" maxlength="10">
-      <button id="forgotBtn">إرسال رابط إعادة التعيين</button>
-
-      <div class="link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
-    </div>
-
   </div>
 
   <script type="module">
