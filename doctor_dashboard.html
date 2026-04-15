@@ -858,6 +858,130 @@
       table { min-width: 920px; }
       .drawer { width: 100%; }
     }
+	/* 📱 تحسين كامل للداشبورد على الموبايل */
+	@media (max-width: 768px) {
+
+	  body {
+		padding: 8px !important;
+	  }
+
+	  .shell {
+		grid-template-columns: 1fr !important;
+		width: 100% !important;
+		margin: 0 !important;
+		gap: 12px;
+	  }
+
+	  /* السايدبار يصير فوق */
+	  .sidebar {
+		position: static !important;
+		width: 100%;
+	  }
+
+	  /* الهيرو */
+	  .hero,
+	  .board,
+	  .sidebar {
+		padding: 14px !important;
+	  }
+
+	  /* الإحصائيات */
+	  .stats-grid {
+		grid-template-columns: 1fr !important;
+	  }
+
+	  /* البحث */
+	  .search-wrap {
+		width: 100% !important;
+	  }
+
+	  /* الأزرار */
+	  .hero-actions,
+	  .footer-actions,
+	  .nav-group {
+		flex-direction: column !important;
+		display: flex;
+	  }
+
+	  .nav-button,
+	  .primary-button,
+	  .ghost-button,
+	  .soft-button,
+	  .danger-button {
+		width: 100% !important;
+	  }
+
+	  /* الجدول أهم شي */
+	  .table-wrap {
+		overflow-x: auto;
+	  }
+
+	  table {
+		min-width: 800px;
+	  }
+
+	  /* النصوص */
+	  .hero-copy h3 {
+		font-size: 22px !important;
+	  }
+
+	  .hero-copy p {
+		font-size: 14px !important;
+	  }
+	}
+
+
+	/* 📱 تلفونات صغيرة */
+	@media (max-width: 480px) {
+
+	  body {
+		padding: 6px !important;
+	  }
+
+	  .hero,
+	  .board,
+	  .sidebar {
+		padding: 12px !important;
+	  }
+
+	  /* تصغير الخط */
+	  h1 {
+		font-size: 16px !important;
+	  }
+
+	  h2 {
+		font-size: 18px !important;
+	  }
+
+	  h3 {
+		font-size: 18px !important;
+	  }
+
+	  /* الإحصائيات */
+	  .stat-value {
+		font-size: 22px !important;
+	  }
+
+	  /* الأزرار */
+	  .primary-button,
+	  .ghost-button,
+	  .soft-button,
+	  .danger-button {
+		padding: 10px !important;
+		font-size: 13px !important;
+	  }
+
+	  /* drawer */
+	  .drawer {
+		width: 100% !important;
+	  }
+
+	  /* التفاصيل */
+	  .detail-grid,
+	  .field-grid {
+		grid-template-columns: 1fr !important;
+	  }
+	}
   </style>
 </head>
 <body>
