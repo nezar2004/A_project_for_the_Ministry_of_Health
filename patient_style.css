@@ -362,6 +362,27 @@
       box-shadow: 0 16px 28px rgba(109, 76, 65, 0.26);
     }
 
+    button.secondary-btn {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s ease;
+      margin-top: 8px;
+      font-family: "Tajawal", sans-serif;
+      box-shadow: 0 12px 24px rgba(109, 76, 65, 0.22);
+    }
+
+    button.secondary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(109, 76, 65, 0.26);
+    }
+
     .link-group {
       margin-top: 16px;
       display: flex;
