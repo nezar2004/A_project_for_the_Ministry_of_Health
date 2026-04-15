@@ -4,12 +4,12 @@
       --surface-strong: #ffffff;
       --line: #e6eefb;
       --text: #10233b;
-      --muted: #d3fdfc;
-      --primary: #2563eb;
-      --primary-strong: #1d4ed8;
+      --muted: #b7f7f7;
+      --primary: #73e8c3;
+      --primary-strong: #3CE1AE;
       --primary-soft: #dbeafe;
       --success-soft: #dcfce7;
-      --shadow: 0 22px 55px rgba(15, 23, 42, 0.08);
+      --shadow: 0 22px 55px rgba(211, 253, 252, 0.08);
       --radius-xl: 30px;
       --radius-lg: 22px;
       --radius-md: 16px;
