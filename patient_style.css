@@ -356,9 +356,6 @@
       margin-top: 8px;
       font-family: "Tajawal", sans-serif;
       box-shadow: 0 12px 24px rgba(109, 76, 65, 0.22);
-	  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-	  color: white;
-	  border: none;
     }
 
     .main-btn:hover {
@@ -383,7 +380,6 @@
       cursor: pointer;
       transition: 0.25s ease;
       margin-top: 8px;
-      font-family: "Tajawal", sans-serif;
       box-shadow: 0 12px 24px rgba(109, 76, 65, 0.22);
     }
 
