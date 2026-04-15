@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام نبض - وزارة الصحة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8D6E63;
+      --accent: #5D4037;
+      --text: #3E2723;
+      --bg: #D7CCC8;
+      --white: #ffffff;
+      --muted: #777;
+      --border: #E0E0E0;
+      --input-bg: #FAFAFA;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Tajawal", sans-serif;
+      background-color: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background: var(--white);  
+      padding: 35px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 460px;
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    p.note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: -5px;
+      margin-bottom: 10px;
+      line-height: 1.8;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: "Tajawal", sans-serif;
+      background: var(--input-bg);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 15px;
+      font-family: "Tajawal", sans-serif;
+    }
+
+    button:hover {
+      background-color: var(--primary);
+    }
+
+    .link {
+      margin-top: 16px;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .phone-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-row select {
+      width: 35%;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-left: 55px;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 13px;
+      width: auto;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toggle-pass:hover {
+      background: transparent;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- تسجيل الدخول -->
+    <div id="loginForm">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="loginNationalID" placeholder="الرقم الوطني" maxlength="10">
+
+      <div class="password-wrap">
+        <input type="password" id="loginPassword" placeholder="كلمة المرور">
+        <button type="button" class="toggle-pass" onclick="togglePassword('loginPassword', this)">إظهار</button>
+      </div>
+
+      <button id="loginBtn">دخول</button>
+
+      <div class="link" onclick="showForm('registerForm')">إنشاء حساب جديد</div>
+      <div class="link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
+    </div>
+
+    <!-- إنشاء حساب -->
+    <div id="registerForm" class="hidden">
+      <h2>إنشاء حساب جديد</h2>
+
+      <input type="text" id="regFirstName" placeholder="الاسم الأول">
+      <input type="text" id="regLastName" placeholder="اسم العائلة">
+      <input type="text" id="regNationalID" placeholder="الرقم الوطني (10 أرقام)" maxlength="10">
+      <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
+
+      <div class="phone-row">
+        <select id="regCountryCode">
+          <option value="+962">JO +962</option>
+        </select>
+        <input type="text" id="regPhone" placeholder="7XXXXXXXX">
+      </div>
+
+      <input type="date" id="regBirthday">
+
+      <select id="regGender">
+        <option value="">الجنس</option>
+        <option value="male">ذكر</option>
+        <option value="female">أنثى</option>
+      </select>
+
+      <div class="password-wrap">
+        <input type="password" id="regPassword" placeholder="كلمة المرور">
+        <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">إظهار</button>
+      </div>
+
+      <button id="registerBtn">إنشاء الحساب</button>
+
+      <div class="link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
+    </div>
+
+    <!-- نسيت كلمة المرور -->
+    <div id="forgotForm" class="hidden">
+      <h2>استعادة كلمة المرور</h2>
+      <p class="note">أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى الإيميل المسجل في الحساب.</p>
+
+      <input type="text" id="forgotNationalID" placeholder="الرقم الوطني" maxlength="10">
+      <button id="forgotBtn">إرسال رابط إعادة التعيين</button>
+
+      <div class="link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      query,
+      where,
+      getDocs,
+      limit
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+      authDomain: "nabdapp-3a077.firebaseapp.com",
+      projectId: "nabdapp-3a077",
+      storageBucket: "nabdapp-3a077.appspot.com",
+      messagingSenderId: "675031985272",
+      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.showForm = (id) => {
+      document.querySelectorAll(".container > div").forEach(div => div.classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+    };
+
+    window.togglePassword = (inputId, btn) => {
+      const input = document.getElementById(inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "إخفاء";
+      } else {
+        input.type = "password";
+        btn.textContent = "إظهار";
+      }
+    };
+
+    function isValidNationalID(nid) {
+      const cleaned = nid.trim();
+      return cleaned.length === 10 && /^[0-9]+$/.test(cleaned);
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    }
+
+    function normalizePhone(countryCode, phone) {
+      const cleaned = phone.trim();
+      return countryCode + (cleaned.startsWith("0") ? cleaned.substring(1) : cleaned);
+    }
+
+    async function getUserByNationalID(nationalID) {
+      const q = query(
+        collection(db, "users"),
+        where("nationalID", "==", nationalID),
+        limit(1)
+      );
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return null;
+      }
+
+      return snapshot.docs[0];
+    }
+
+    document.getElementById("registerBtn").onclick = async () => {
+      const firstName = document.getElementById("regFirstName").value.trim();
+      const lastName = document.getElementById("regLastName").value.trim();
+      const nationalID = document.getElementById("regNationalID").value.trim();
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
+      const countryCode = document.getElementById("regCountryCode").value;
+      const phone = document.getElementById("regPhone").value.trim();
+      const birthday = document.getElementById("regBirthday").value;
+      const gender = document.getElementById("regGender").value;
+      const password = document.getElementById("regPassword").value;
+
+      if (!firstName || !lastName || !nationalID || !email || !phone || !birthday || !gender || !password) {
+        alert("يرجى تعبئة جميع الحقول");
+        return;
+      }
+
+      if (!isValidNationalID(nationalID)) {
+        alert("الرقم الوطني يجب أن يكون 10 أرقام");
+        return;
+      }
+
+      if (!isValidEmail(email)) {
+        alert("يرجى إدخال بريد إلكتروني صحيح");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("كلمة المرور يجب أن تكون 6 أحرف أو أكثر");
+        return;
+      }
+
+      try {
+        const existingUser = await getUserByNationalID(nationalID);
+        if (existingUser) {
+          alert("هذا الرقم الوطني مستخدم مسبقاً");
+          return;
+        }
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = userCredential.user.uid;
+
+        await setDoc(doc(db, "users", uid), {
+          firstName,
+          lastName,
+          name: firstName + " " + lastName,
+          nationalID,
+          email,
+          phone: normalizePhone(countryCode, phone),
+          birthday,
+          gender,
+          createdAt: new Date().toISOString()
+        });
+
+        alert("✅ تم إنشاء الحساب بنجاح");
+        window.location.href = "1login.html";
+      } catch (err) {
+        if (err.code === "auth/email-already-in-use") {
+          alert("هذا البريد الإلكتروني مستخدم مسبقاً");
+        } else {
+          alert("⚠️ حدث خطأ أثناء إنشاء الحساب: " + err.message);
+        }
+      }
+    };
+
+    document.getElementById("loginBtn").onclick = async () => {
+      const nationalID = document.getElementById("loginNationalID").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      if (!nationalID || !password) {
+        alert("يرجى إدخال الرقم الوطني وكلمة المرور");
+        return;
+      }
+
+      if (!isValidNationalID(nationalID)) {
+        alert("الرقم الوطني غير صحيح");
+        return;
+      }
+
+      try {
+        const userDoc = await getUserByNationalID(nationalID);
+
+        if (!userDoc) {
+          alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
+          return;
+        }
+
+        const userData = userDoc.data();
+        const email = userData.email;
+
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "Patient_booking_page.html";
+      } catch (err) {
+        alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
+      }
+    };
+
+    document.getElementById("forgotBtn").onclick = async () => {
+      const nationalID = document.getElementById("forgotNationalID").value.trim();
+
+      if (!nationalID) {
+        alert("يرجى إدخال الرقم الوطني");
+        return;
+      }
+
+      if (!isValidNationalID(nationalID)) {
+        alert("الرقم الوطني يجب أن يكون 10 أرقام");
+        return;
+      }
+
+      try {
+        const userDoc = await getUserByNationalID(nationalID);
+
+        if (!userDoc) {
+          alert("لا يوجد حساب مرتبط بهذا الرقم الوطني");
+          return;
+        }
+
+        const userData = userDoc.data();
+        const email = userData.email;
+
+        await sendPasswordResetEmail(auth, email);
+        alert("✅ تم إرسال رابط إعادة تعيين كلمة المرور إلى الإيميل: " + email);
+      } catch (err) {
+        alert("⚠️ تعذر إرسال رابط إعادة التعيين: " + err.message);
+      }
+    };
+  </script>
+</body>
+</html>

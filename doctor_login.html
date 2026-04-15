@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Login</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --text:#132238;
+      --muted:#64748b;
+      --primary:#2563eb;
+      --primary-2:#1d4ed8;
+      --line:#e5edf7;
+      --card:rgba(255,255,255,0.88);
+      --danger:#dc2626;
+      --danger-bg:#fee2e2;
+      --shadow:0 20px 50px rgba(15,23,42,.08);
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:"Inter",sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(37,99,235,.08), transparent 24%),
+        radial-gradient(circle at left center, rgba(22,163,74,.06), transparent 18%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    body{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+
+    .shell{
+      width:min(1100px,100%);
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .panel{
+      background:var(--card);
+      backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:34px;
+      position:relative;
+      min-height:620px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:
+        linear-gradient(180deg, rgba(37,99,235,.07), rgba(37,99,235,.01)),
+        white;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand-icon{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:white;
+      font-size:24px;
+      font-weight:900;
+      box-shadow:0 16px 30px rgba(37,99,235,.24);
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      font-weight:900;
+    }
+
+    .brand p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .hero-copy h2{
+      margin:0 0 14px;
+      font-size:clamp(30px,4vw,50px);
+      line-height:1.05;
+      letter-spacing:-.03em;
+      font-weight:900;
+      max-width:560px;
+    }
+
+    .hero-copy p{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.9;
+      max-width:580px;
+    }
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-top:24px;
+    }
+
+    .feature{
+      background:rgba(255,255,255,.85);
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 14px 30px rgba(15,23,42,.04);
+    }
+
+    .feature strong{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+    }
+
+    .feature span{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .login{
+      padding:34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .login h3{
+      margin:0 0 8px;
+      font-size:32px;
+      letter-spacing:-.03em;
+      font-weight:900;
+    }
+
+    .login p{
+      margin:0 0 24px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .form{
+      display:grid;
+      gap:14px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:8px;
+      font-size:13px;
+      font-weight:800;
+      color:#475569;
+    }
+
+    .field input{
+      width:100%;
+      border:1px solid var(--line);
+      outline:none;
+      background:white;
+      border-radius:16px;
+      padding:15px 16px;
+      font:inherit;
+      color:var(--text);
+      transition:.2s ease;
+      box-shadow:0 8px 18px rgba(15,23,42,.03);
+    }
+
+    .field input:focus{
+      border-color:#93c5fd;
+      box-shadow:0 0 0 4px rgba(37,99,235,.10);
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .button{
+      border:0;
+      cursor:pointer;
+      border-radius:16px;
+      padding:15px 16px;
+      font:inherit;
+      font-weight:900;
+      transition:.2s ease;
+    }
+
+    .button:hover{transform:translateY(-1px)}
+    .primary{
+      background:linear-gradient(135deg,var(--primary),var(--primary-2));
+      color:white;
+      box-shadow:0 14px 24px rgba(37,99,235,.22);
+    }
+
+    .secondary{
+      background:white;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .helper{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:18px;
+      background:#f8fafc;
+      border:1px solid #e8eef5;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.8;
+    }
+
+    .error{
+      display:none;
+      margin-top:14px;
+      padding:13px 14px;
+      border-radius:16px;
+      background:var(--danger-bg);
+      color:#991b1b;
+      font-size:13px;
+      font-weight:700;
+      border:1px solid #fecaca;
+    }
+
+    .success{
+      display:none;
+      margin-top:14px;
+      padding:13px 14px;
+      border-radius:16px;
+      background:#dcfce7;
+      color:#166534;
+      font-size:13px;
+      font-weight:700;
+      border:1px solid #bbf7d0;
+    }
+
+    @media (max-width: 900px){
+      .shell{grid-template-columns:1fr}
+      .hero{min-height:auto}
+      .row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="panel hero">
+      <div>
+        <div class="brand">
+          <div class="brand-icon">D</div>
+          <div>
+            <h1>Nabd Doctor Access</h1>
+            <p>Separate secure login for doctors only</p>
+          </div>
+        </div>
+
+        <div class="hero-copy" style="margin-top:34px;">
+          <h2>Elegant doctor login with direct access to personal bookings.</h2>
+          <p>
+            This page signs the doctor in using Firebase Authentication, then automatically links the account
+            to the doctor profile in Firestore so each doctor can only view their own bookings.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature">
+            <strong>Automatic doctor linking</strong>
+            <span>The signed-in account is linked to a doctor profile using email and saved under the doctor record.</span>
+          </div>
+          <div class="feature">
+            <strong>Private booking access</strong>
+            <span>No doctor can see another doctor’s bookings because the dashboard filters by doctor identity.</span>
+          </div>
+          <div class="feature">
+            <strong>Realtime updates</strong>
+            <span>New bookings appear instantly using Firebase realtime listeners, not polling every 5 seconds.</span>
+          </div>
+          <div class="feature">
+            <strong>Fast workflow</strong>
+            <span>Approve, reject, or reschedule from a clean side panel with strong UX and clear information layout.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="helper">
+        Use the same email that is linked to the doctor in your Firestore data.  
+        After login, the doctor is redirected automatically to <strong>doctor-dashboard.html</strong>.
+      </div>
+    </section>
+
+    <section class="panel login">
+      <div>
+        <h3>Doctor sign in</h3>
+        <p>Enter the doctor email and password to open the secure dashboard.</p>
+
+        <form id="doctorLoginForm" class="form">
+          <div class="field">
+            <label for="doctorEmail">Doctor email</label>
+            <input id="doctorEmail" type="email" placeholder="doctor@example.com" required />
+          </div>
+
+          <div class="field">
+            <label for="doctorPassword">Password</label>
+            <input id="doctorPassword" type="password" placeholder="Enter your password" required />
+          </div>
+
+          <div class="row">
+            <button class="button primary" type="submit">Login to dashboard</button>
+            <button class="button secondary" id="goPatientLogin" type="button">Back to main login</button>
+          </div>
+        </form>
+
+        <div id="loginError" class="error"></div>
+        <div id="loginSuccess" class="success"></div>
+
+        <div class="helper">
+          Best practice:
+          <br>
+          1. Save each doctor in <strong>doctors</strong> collection.
+          <br>
+          2. Store <strong>email</strong>, <strong>doctor_id</strong>, <strong>name</strong>, <strong>hospital_name</strong>, <strong>department_title</strong>.
+          <br>
+          3. Save every patient booking into <strong>allBookings</strong> with <strong>doctor_id</strong> and <strong>doctor_email</strong>.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const authFirebaseConfig = {
+      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+      authDomain: "nabdapp-3a077.firebaseapp.com",
+      projectId: "nabdapp-3a077",
+      storageBucket: "nabdapp-3a077.appspot.com",
+      messagingSenderId: "675031985272",
+      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
+    };
+
+    const bookingsFirebaseConfig = {
+      apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
+      authDomain: "dataofdoctor.firebaseapp.com",
+      projectId: "dataofdoctor",
+      storageBucket: "dataofdoctor.firebasestorage.app",
+      messagingSenderId: "305140405001",
+      appId: "1:305140405001:web:7e54658907133ef9ff39d8"
+    };
+
+    const authApp = initializeApp(authFirebaseConfig);
+    const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
+    const auth = getAuth(authApp);
+    const bookingsDb = getFirestore(bookingsApp);
+
+    const form = document.getElementById("doctorLoginForm");
+    const emailInput = document.getElementById("doctorEmail");
+    const passwordInput = document.getElementById("doctorPassword");
+    const loginError = document.getElementById("loginError");
+    const loginSuccess = document.getElementById("loginSuccess");
+    const goPatientLogin = document.getElementById("goPatientLogin");
+
+    function showError(message) {
+      loginError.textContent = message;
+      loginError.style.display = "block";
+      loginSuccess.style.display = "none";
+    }
+
+    function showSuccess(message) {
+      loginSuccess.textContent = message;
+      loginSuccess.style.display = "block";
+      loginError.style.display = "none";
+    }
+
+    async function ensureDoctorDocument(user) {
+      const ref = doc(bookingsDb, "doctors", user.uid);
+      const snap = await getDoc(ref);
+
+      if (!snap.exists()) {
+        await setDoc(ref, {
+          doctor_id: user.uid,
+          user_uid: user.uid,
+          email: (user.email || "").trim().toLowerCase(),
+          name: user.displayName || "Doctor",
+          hospital_name: "Hospital not assigned",
+          department_title: "Department not assigned",
+          specialty: "General",
+          available: false,
+          role: "doctor",
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      } else {
+        await setDoc(ref, {
+          user_uid: user.uid,
+          email: (user.email || "").trim().toLowerCase(),
+          role: "doctor",
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          await ensureDoctorDocument(user);
+          window.location.href = "doctor-dashboard.html";
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = emailInput.value.trim().toLowerCase();
+      const password = passwordInput.value;
+
+      loginError.style.display = "none";
+      loginSuccess.style.display = "none";
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        await ensureDoctorDocument(cred.user);
+        showSuccess("Login successful. Redirecting to doctor dashboard...");
+        setTimeout(() => {
+          window.location.href = "doctor-dashboard.html";
+        }, 600);
+      } catch (error) {
+        console.error("Doctor login error:", error);
+        showError("Login failed. Check the doctor email and password.");
+      }
+    });
+
+    goPatientLogin.addEventListener("click", () => {
+      window.location.href = "1login.html";
+    });
+  </script>
+</body>
+</html>

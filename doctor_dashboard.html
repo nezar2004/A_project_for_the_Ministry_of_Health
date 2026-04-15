@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Secure Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: rgba(255, 255, 255, 0.84);
+      --line: #e8edf5;
+      --text: #132238;
+      --muted: #62748a;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --success-soft: #dcfce7;
+      --warning-soft: #fef3c7;
+      --danger-soft: #fee2e2;
+      --shadow: 0 20px 50px rgba(16, 24, 40, 0.08);
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%),
+        radial-gradient(circle at left center, rgba(22, 163, 74, 0.06), transparent 18%),
+        var(--bg);
+      color: var(--text);
+      transition: background .35s ease;
+    }
+
+    body { min-height: 100vh; }
+
+    .shell {
+      width: min(1440px, calc(100% - 28px));
+      margin: 18px auto;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      padding: 18px;
+      overflow: hidden;
+      animation: liftIn .55s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 12px 25px rgba(37, 99, 235, 0.28);
+      font-size: 20px;
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      line-height: 1.2;
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .doctor-panel {
+      background: linear-gradient(180deg, rgba(37, 99, 235, 0.10), rgba(37, 99, 235, 0.02));
+      border: 1px solid rgba(37, 99, 235, 0.12);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: .25s ease;
+    }
+
+    .doctor-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0f172a, #334155);
+      flex-shrink: 0;
+      transition: transform .25s ease;
+    }
+
+    .doctor-panel:hover .avatar { transform: scale(1.04) rotate(-2deg); }
+
+    .doctor-meta h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .doctor-meta p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .status-chip.online {
+      background: var(--success-soft);
+      color: #166534;
+      border-color: #bbf7d0;
+      animation: pulseGlow 2.4s infinite;
+    }
+
+    .status-chip.offline {
+      background: #eef2f7;
+      color: #475569;
+      border-color: #dbe4ee;
+    }
+
+    .nav-group {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .nav-button,
+    .ghost-button,
+    .primary-button,
+    .danger-button,
+    .soft-button,
+    .filter-tab,
+    .icon-button,
+    .mini-button {
+      border: 0;
+      font: inherit;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .nav-button {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .nav-button:hover,
+    .filter-tab:hover,
+    .ghost-button:hover,
+    .primary-button:hover,
+    .danger-button:hover,
+    .soft-button:hover,
+    .icon-button:hover,
+    .mini-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .nav-button.active {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 12px 25px rgba(37, 99, 235, 0.24);
+    }
+
+    .nav-badge {
+      min-width: 30px;
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(15, 23, 42, 0.06);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .nav-button.active .nav-badge {
+      background: rgba(255, 255, 255, 0.18);
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .ghost-button,
+    .primary-button,
+    .danger-button,
+    .soft-button {
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 800;
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      box-shadow: 0 14px 24px rgba(37, 99, 235, 0.24);
+    }
+
+    .ghost-button {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .soft-button {
+      background: #eef4ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+    }
+
+    .danger-button {
+      background: var(--danger-soft);
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .main { display: grid; gap: 20px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      animation: liftIn .55s ease;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -60px -120px auto;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.12), transparent 62%);
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero-copy h3 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-copy p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 720px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .icon-button {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--text);
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.04);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.05);
+      transition: .25s ease;
+    }
+
+    .stat-card:hover { transform: translateY(-3px); }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .stat-caption {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .live-banner {
+      margin-top: 18px;
+      display: none;
+      background: linear-gradient(135deg, rgba(22,163,74,0.12), rgba(37,99,235,0.10));
+      border: 1px solid rgba(37,99,235,0.12);
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-weight: 800;
+      color: #0f172a;
+      animation: liftIn .35s ease;
+    }
+
+    .board {
+      padding: 20px;
+      animation: liftIn .55s ease;
+    }
+
+    .board-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .board-title h4 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .board-title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .search-wrap {
+      min-width: 280px;
+      flex: 1 1 320px;
+      max-width: 460px;
+      position: relative;
+    }
+
+    .search-wrap i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
+
+    .search-wrap input,
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      outline: none;
+      background: white;
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font: inherit;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03);
+      transition: .2s ease;
+    }
+
+    .search-wrap input {
+      padding-left: 44px;
+      min-height: 52px;
+    }
+
+    .search-wrap input:focus,
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .filter-tab {
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+      font-weight: 800;
+    }
+
+    .filter-tab.active {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 12px 22px rgba(37, 99, 235, 0.20);
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      background: white;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #f8fafc; }
+
+    th, td {
+      text-align: left;
+      padding: 16px 18px;
+      border-bottom: 1px solid #edf2f7;
+      vertical-align: middle;
+      font-size: 14px;
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      font-weight: 900;
+    }
+
+    tbody tr {
+      transition: .2s ease;
+      animation: liftIn .35s ease;
+      cursor: pointer;
+    }
+
+    tbody tr:hover { background: #fbfdff; }
+
+    .patient-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .patient-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #e0ecff, #dbeafe);
+      color: #1d4ed8;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .patient-info strong,
+    .doctor-inline strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .patient-info span,
+    .doctor-inline span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .status-pending { background: var(--warning-soft); color: #92400e; border-color: #fde68a; }
+    .status-approved { background: var(--success-soft); color: #166534; border-color: #bbf7d0; }
+    .status-rejected { background: var(--danger-soft); color: #991b1b; border-color: #fecaca; }
+    .status-rescheduled { background: var(--primary-soft); color: #1d4ed8; border-color: #bfdbfe; }
+
+    .action-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .mini-button {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .mini-button.primary {
+      background: #eef4ff;
+      color: #1d4ed8;
+      border-color: #dbeafe;
+    }
+
+    .empty-state {
+      padding: 54px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state i {
+      display: inline-grid;
+      place-items: center;
+      width: 68px;
+      height: 68px;
+      border-radius: 22px;
+      background: #f8fafc;
+      color: #94a3b8;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.38);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 80;
+    }
+
+    .drawer-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(560px, 100%);
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(18px);
+      border-left: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: -24px 0 60px rgba(15, 23, 42, 0.14);
+      transform: translateX(100%);
+      transition: .28s ease;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer.active { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .drawer-title h5 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .drawer-title p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .drawer-body {
+      padding: 20px;
+      overflow: auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .detail-section {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .detail-section h6 {
+      margin: 0 0 14px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .detail-item {
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .detail-item label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #64748b;
+      margin-bottom: 7px;
+    }
+
+    .detail-item div {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #475569;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 104px;
+    }
+
+    .drawer-footer {
+      margin-top: auto;
+      padding: 16px 20px 20px;
+      border-top: 1px solid #edf2f7;
+      background: rgba(255, 255, 255, 0.9);
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .helper-text {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .toast-wrap {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 120;
+      display: grid;
+      gap: 10px;
+    }
+
+    .toast {
+      min-width: 280px;
+      max-width: 360px;
+      background: rgba(15, 23, 42, 0.92);
+      color: white;
+      padding: 14px 16px;
+      border-radius: 16px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.24);
+      animation: slideIn .25s ease;
+    }
+
+    .toast strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .toast span {
+      font-size: 13px;
+      color: rgba(255,255,255,.82);
+      line-height: 1.55;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(244, 247, 251, 0.85);
+      backdrop-filter: blur(10px);
+      display: grid;
+      place-items: center;
+      z-index: 150;
+      transition: .3s ease;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-box {
+      width: min(360px, calc(100% - 30px));
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid var(--line);
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 14px;
+      border: 4px solid #dbeafe;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.18); }
+      70% { box-shadow: 0 0 0 16px rgba(37, 99, 235, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    @keyframes liftIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 1180px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 16px, 100%);
+        gap: 14px;
+        margin: 8px auto 18px;
+      }
+
+      .hero,
+      .board,
+      .sidebar { padding: 16px; }
+      .stats-grid,
+      .detail-grid,
+      .field-grid,
+      .footer-actions { grid-template-columns: 1fr; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 920px; }
+      .drawer { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <h3 style="margin:0 0 8px; font-size:22px; font-weight:900;">Preparing secure dashboard</h3>
+      <p style="margin:0; color:#64748b; line-height:1.7;">Loading doctor identity, live booking stream, and appointment actions.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar card">
+      <div class="brand">
+        <div class="brand-icon"><i class="fa-solid fa-stethoscope"></i></div>
+        <div>
+          <h1>Nabd Doctor Panel</h1>
+          <p>Secure real-time control over your daily bookings</p>
+        </div>
+      </div>
+
+      <section class="doctor-panel">
+        <div class="doctor-top">
+          <div class="avatar" id="doctorAvatar">DR</div>
+          <div class="doctor-meta">
+            <h2 id="doctorName">Loading doctor...</h2>
+            <p id="doctorSubline">Hospital · Department · Specialty</p>
+          </div>
+        </div>
+
+        <button id="availabilityButton" class="status-chip offline" type="button">
+          <i class="fa-solid fa-circle"></i>
+          <span id="availabilityLabel">Offline</span>
+        </button>
+      </section>
+
+      <div class="nav-group">
+        <button class="nav-button active" data-sidebar-filter="ALL" type="button">
+          <span><i class="fa-solid fa-table-list" style="margin-right:8px;"></i>All Bookings</span>
+          <span class="nav-badge" id="countAll">0</span>
+        </button>
+
+        <button class="nav-button" data-sidebar-filter="PENDING" type="button">
+          <span><i class="fa-solid fa-hourglass-half" style="margin-right:8px;"></i>Pending</span>
+          <span class="nav-badge" id="countPending">0</span>
+        </button>
+
+        <button class="nav-button" data-sidebar-filter="APPROVED" type="button">
+          <span><i class="fa-solid fa-circle-check" style="margin-right:8px;"></i>Approved</span>
+          <span class="nav-badge" id="countApproved">0</span>
+        </button>
+
+        <button class="nav-button" data-sidebar-filter="REJECTED" type="button">
+          <span><i class="fa-solid fa-circle-xmark" style="margin-right:8px;"></i>Rejected</span>
+          <span class="nav-badge" id="countRejected">0</span>
+        </button>
+
+        <button class="nav-button" data-sidebar-filter="RESCHEDULED" type="button">
+          <span><i class="fa-solid fa-calendar-days" style="margin-right:8px;"></i>Rescheduled</span>
+          <span class="nav-badge" id="countRescheduled">0</span>
+        </button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button id="refreshButton" class="soft-button" type="button">
+          <i class="fa-solid fa-rotate-right" style="margin-right:8px;"></i>Refresh bookings
+        </button>
+        <button id="logoutButton" class="ghost-button" type="button">
+          <i class="fa-solid fa-arrow-right-from-bracket" style="margin-right:8px;"></i>Logout
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="hero card">
+        <div class="hero-top">
+          <div class="hero-copy">
+            <h3>Manage your appointments with clarity and speed</h3>
+            <p>
+              Review every booking request, confirm or reject in one tap, and reschedule with a cleaner workflow.
+              Full patient details appear only when you open the booking card, so the main table stays tidy and easy to scan.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <button id="heroRefreshButton" class="ghost-button" type="button">
+              <i class="fa-solid fa-rotate-right" style="margin-right:8px;"></i>Sync now
+            </button>
+            <button id="focusPendingButton" class="primary-button" type="button">
+              <i class="fa-solid fa-hourglass-half" style="margin-right:8px;"></i>Focus pending
+            </button>
+          </div>
+        </div>
+
+        <div id="liveBanner" class="live-banner">
+          <i class="fa-solid fa-bolt" style="margin-right:8px; color:#2563eb;"></i>
+          <span id="liveBannerText">Live update received</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">All bookings</div>
+            <div class="stat-value" id="statAll">0</div>
+            <div class="stat-caption">Everything linked to this doctor account</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending review</div>
+            <div class="stat-value" id="statPending">0</div>
+            <div class="stat-caption">Waiting for approval, rejection, or reschedule</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Approved</div>
+            <div class="stat-value" id="statApproved">0</div>
+            <div class="stat-caption">Confirmed appointments for the doctor</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="statToday">0</div>
+            <div class="stat-caption">Bookings scheduled for today</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="board card">
+        <div class="board-top">
+          <div class="board-title">
+            <h4>Booking queue</h4>
+            <p>Click on any row or on Booking Confirming to open the full booking details and actions.</p>
+          </div>
+
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" type="text" placeholder="Search by patient, phone, email, booking number, hospital, or department" />
+          </div>
+        </div>
+
+        <div class="filters">
+          <button class="filter-tab active" data-filter="ALL" type="button">All</button>
+          <button class="filter-tab" data-filter="PENDING" type="button">Pending</button>
+          <button class="filter-tab" data-filter="APPROVED" type="button">Approved</button>
+          <button class="filter-tab" data-filter="REJECTED" type="button">Rejected</button>
+          <button class="filter-tab" data-filter="RESCHEDULED" type="button">Rescheduled</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Hospital / Department</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+
+  <aside id="bookingDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <h5>Booking details</h5>
+        <p>Full booking information appears here after selecting a row.</p>
+      </div>
+      <button id="closeDrawerButton" class="icon-button" type="button" aria-label="Close details panel">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <section class="detail-section">
+        <h6>Patient information</h6>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Full name</label><div id="detailPatientName">-</div></div>
+          <div class="detail-item"><label>Phone</label><div id="detailPatientPhone">-</div></div>
+          <div class="detail-item"><label>Email</label><div id="detailPatientEmail">-</div></div>
+          <div class="detail-item"><label>Current status</label><div id="detailStatus">-</div></div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h6>Appointment information</h6>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Booking number</label><div id="detailBookingId">-</div></div>
+          <div class="detail-item"><label>Hospital</label><div id="detailHospital">-</div></div>
+          <div class="detail-item"><label>Department</label><div id="detailDepartment">-</div></div>
+          <div class="detail-item"><label>Doctor</label><div id="detailDoctor">-</div></div>
+          <div class="detail-item"><label>Date</label><div id="detailDate">-</div></div>
+          <div class="detail-item"><label>Time</label><div id="detailTime">-</div></div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h6>Patient note</h6>
+        <div class="detail-item">
+          <label>Extra note</label>
+          <div id="detailNote">No note was added.</div>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h6>Reschedule booking</h6>
+        <div class="field-grid">
+          <div class="field">
+            <label for="rescheduleDate">New date</label>
+            <input id="rescheduleDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="rescheduleTime">New time</label>
+            <input id="rescheduleTime" type="time" />
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <label for="rescheduleReason">Reason or note for the patient</label>
+          <textarea id="rescheduleReason" placeholder="Optional message to explain the new time or any important instruction"></textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="drawer-footer">
+      <div class="footer-actions">
+        <button id="approveButton" class="primary-button" type="button">
+          <i class="fa-solid fa-circle-check" style="margin-right:8px;"></i>Approve
+        </button>
+        <button id="rejectButton" class="danger-button" type="button">
+          <i class="fa-solid fa-circle-xmark" style="margin-right:8px;"></i>Reject
+        </button>
+        <button id="rescheduleButton" class="soft-button" type="button">
+          <i class="fa-solid fa-calendar-days" style="margin-right:8px;"></i>Reschedule
+        </button>
+      </div>
+      <div class="helper-text">
+        Deletion is intentionally disabled. The doctor can only approve, reject, or assign a new date and time.
+      </div>
+    </div>
+  </aside>
+
+  <div id="toastWrap" class="toast-wrap"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      getDoc,
+      updateDoc,
+      doc,
+      query,
+      where,
+      serverTimestamp,
+      setDoc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const authFirebaseConfig = {
+      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+      authDomain: "nabdapp-3a077.firebaseapp.com",
+      projectId: "nabdapp-3a077",
+      storageBucket: "nabdapp-3a077.appspot.com",
+      messagingSenderId: "675031985272",
+      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
+    };
+
+    const bookingsFirebaseConfig = {
+      apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
+      authDomain: "dataofdoctor.firebaseapp.com",
+      projectId: "dataofdoctor",
+      storageBucket: "dataofdoctor.firebasestorage.app",
+      messagingSenderId: "305140405001",
+      appId: "1:305140405001:web:7e54658907133ef9ff39d8"
+    };
+
+    const authApp = initializeApp(authFirebaseConfig);
+    const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
+    const auth = getAuth(authApp);
+    const bookingsDb = getFirestore(bookingsApp);
+
+    const state = {
+      authUser: null,
+      doctorProfile: null,
+      doctorId: null,
+      bookings: [],
+      activeFilter: "ALL",
+      searchTerm: "",
+      selectedBooking: null,
+      loading: true,
+      unsubscribeBookings: null,
+      hasLiveBooted: false,
+      lastSeenIds: new Set()
+    };
+
+    const manualDoctorFallback = {
+      doctor_id: null,
+      name: "Doctor",
+      hospital_name: "Not linked yet",
+      department_title: "Not linked yet",
+      specialty: "General",
+      available: false,
+      email: ""
+    };
+
+    const elements = {
+      loadingOverlay: document.getElementById("loadingOverlay"),
+      doctorAvatar: document.getElementById("doctorAvatar"),
+      doctorName: document.getElementById("doctorName"),
+      doctorSubline: document.getElementById("doctorSubline"),
+      availabilityButton: document.getElementById("availabilityButton"),
+      availabilityLabel: document.getElementById("availabilityLabel"),
+      refreshButton: document.getElementById("refreshButton"),
+      heroRefreshButton: document.getElementById("heroRefreshButton"),
+      focusPendingButton: document.getElementById("focusPendingButton"),
+      logoutButton: document.getElementById("logoutButton"),
+      searchInput: document.getElementById("searchInput"),
+      bookingsTableBody: document.getElementById("bookingsTableBody"),
+      drawer: document.getElementById("bookingDrawer"),
+      drawerBackdrop: document.getElementById("drawerBackdrop"),
+      closeDrawerButton: document.getElementById("closeDrawerButton"),
+      approveButton: document.getElementById("approveButton"),
+      rejectButton: document.getElementById("rejectButton"),
+      rescheduleButton: document.getElementById("rescheduleButton"),
+      rescheduleDate: document.getElementById("rescheduleDate"),
+      rescheduleTime: document.getElementById("rescheduleTime"),
+      rescheduleReason: document.getElementById("rescheduleReason"),
+      toastWrap: document.getElementById("toastWrap"),
+      liveBanner: document.getElementById("liveBanner"),
+      liveBannerText: document.getElementById("liveBannerText"),
+      statAll: document.getElementById("statAll"),
+      statPending: document.getElementById("statPending"),
+      statApproved: document.getElementById("statApproved"),
+      statToday: document.getElementById("statToday"),
+      countAll: document.getElementById("countAll"),
+      countPending: document.getElementById("countPending"),
+      countApproved: document.getElementById("countApproved"),
+      countRejected: document.getElementById("countRejected"),
+      countRescheduled: document.getElementById("countRescheduled"),
+      detailPatientName: document.getElementById("detailPatientName"),
+      detailPatientPhone: document.getElementById("detailPatientPhone"),
+      detailPatientEmail: document.getElementById("detailPatientEmail"),
+      detailStatus: document.getElementById("detailStatus"),
+      detailBookingId: document.getElementById("detailBookingId"),
+      detailHospital: document.getElementById("detailHospital"),
+      detailDepartment: document.getElementById("detailDepartment"),
+      detailDoctor: document.getElementById("detailDoctor"),
+      detailDate: document.getElementById("detailDate"),
+      detailTime: document.getElementById("detailTime"),
+      detailNote: document.getElementById("detailNote")
+    };
+
+    function escapeHtml(value) {
+      if (value === null || value === undefined) return "";
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function getInitials(name = "Doctor") {
+      return String(name)
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map(part => part[0]?.toUpperCase() || "")
+        .join("") || "DR";
+    }
+
+    function normalizeStatus(status) {
+      const s = String(status || "PENDING").trim().toUpperCase();
+      if (["APPROVED", "REJECTED", "RESCHEDULED", "PENDING"].includes(s)) return s;
+      return "PENDING";
+    }
+
+    function statusBadge(status) {
+      const normalized = normalizeStatus(status);
+      if (normalized === "APPROVED") return `<span class="status-badge status-approved"><i class="fa-solid fa-circle-check"></i>Approved</span>`;
+      if (normalized === "REJECTED") return `<span class="status-badge status-rejected"><i class="fa-solid fa-circle-xmark"></i>Rejected</span>`;
+      if (normalized === "RESCHEDULED") return `<span class="status-badge status-rescheduled"><i class="fa-solid fa-calendar-days"></i>Rescheduled</span>`;
+      return `<span class="status-badge status-pending"><i class="fa-solid fa-hourglass-half"></i>Pending</span>`;
+    }
+
+    function todayDateString() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const d = String(now.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
+
+    function setLoading(isLoading) {
+      state.loading = isLoading;
+      elements.loadingOverlay.classList.toggle("hidden", !isLoading);
+    }
+
+    function showToast(title, message) {
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.innerHTML = `<strong>${escapeHtml(title)}</strong><span>${escapeHtml(message)}</span>`;
+      elements.toastWrap.appendChild(toast);
+      setTimeout(() => toast.remove(), 3200);
+    }
+
+    function showLiveBanner(message) {
+      elements.liveBannerText.textContent = message;
+      elements.liveBanner.style.display = "block";
+      clearTimeout(showLiveBanner._timer);
+      showLiveBanner._timer = setTimeout(() => {
+        elements.liveBanner.style.display = "none";
+      }, 2600);
+    }
+
+    function setActiveFilter(filter) {
+      state.activeFilter = filter;
+
+      document.querySelectorAll(".filter-tab").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.filter === filter);
+      });
+
+      document.querySelectorAll(".nav-button[data-sidebar-filter]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.sidebarFilter === filter);
+      });
+
+      renderBookingsTable();
+    }
+
+    function bookingMatchesDoctor(booking) {
+      if (!state.doctorProfile || !state.authUser) return false;
+
+      const bookingDoctorId = String(booking.doctor_id || "");
+      const bookingDoctorEmail = String(booking.doctor_email || "").trim().toLowerCase();
+      const bookingDoctorName = String(booking.doctor_name || "").trim().toLowerCase();
+
+      const doctorId = String(state.doctorProfile.doctor_id || state.doctorId || "");
+      const doctorEmail = String(state.authUser.email || state.doctorProfile.email || "").trim().toLowerCase();
+      const doctorName = String(state.doctorProfile.name || "").trim().toLowerCase();
+      const userUid = String(state.authUser.uid || "");
+      const profileUid = String(state.doctorProfile.user_uid || "");
+
+      return (
+        (doctorId && bookingDoctorId === doctorId) ||
+        (doctorEmail && bookingDoctorEmail === doctorEmail) ||
+        (doctorName && bookingDoctorName === doctorName) ||
+        (profileUid && bookingDoctorId === profileUid) ||
+        (userUid && bookingDoctorId === userUid)
+      );
+    }
+
+    function getFilteredBookings() {
+      const term = state.searchTerm.trim().toLowerCase();
+
+      return state.bookings.filter(booking => {
+        const matchesStatus = state.activeFilter === "ALL" || normalizeStatus(booking.status) === state.activeFilter;
+        if (!matchesStatus) return false;
+
+        if (!term) return true;
+
+        const haystack = [
+          booking.booking_id,
+          booking.customer_name,
+          booking.customer_email,
+          booking.customer_phone,
+          booking.hospital_name,
+          booking.department_title,
+          booking.doctor_name,
+          booking.date,
+          booking.time,
+          booking.status
+        ].join(" ").toLowerCase();
+
+        return haystack.includes(term);
+      });
+    }
+
+    function updateDoctorCard() {
+      const profile = state.doctorProfile || manualDoctorFallback;
+      const name = profile.name || profile.doctor_name || "Doctor";
+      const hospital = profile.hospital_name || "Hospital not assigned";
+      const department = profile.department_title || "Department not assigned";
+      const specialty = profile.specialty || "General";
+      const available = !!profile.available;
+
+      elements.doctorAvatar.textContent = getInitials(name);
+      elements.doctorName.textContent = name;
+      elements.doctorSubline.textContent = `${hospital} · ${department} · ${specialty}`;
+      elements.availabilityButton.classList.toggle("online", available);
+      elements.availabilityButton.classList.toggle("offline", !available);
+      elements.availabilityLabel.textContent = available ? "Available" : "Offline";
+
+      document.body.style.background = available
+        ? "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.09), transparent 18%), var(--bg)"
+        : "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.06), transparent 18%), var(--bg)";
+    }
+
+    function updateStats() {
+      const bookings = state.bookings;
+      const counts = {
+        all: bookings.length,
+        pending: bookings.filter(b => normalizeStatus(b.status) === "PENDING").length,
+        approved: bookings.filter(b => normalizeStatus(b.status) === "APPROVED").length,
+        rejected: bookings.filter(b => normalizeStatus(b.status) === "REJECTED").length,
+        rescheduled: bookings.filter(b => normalizeStatus(b.status) === "RESCHEDULED").length,
+        today: bookings.filter(b => String(b.date || "") === todayDateString()).length
+      };
+
+      elements.statAll.textContent = counts.all;
+      elements.statPending.textContent = counts.pending;
+      elements.statApproved.textContent = counts.approved;
+      elements.statToday.textContent = counts.today;
+      elements.countAll.textContent = counts.all;
+      elements.countPending.textContent = counts.pending;
+      elements.countApproved.textContent = counts.approved;
+      elements.countRejected.textContent = counts.rejected;
+      elements.countRescheduled.textContent = counts.rescheduled;
+    }
+
+    function renderBookingsTable() {
+      const rows = getFilteredBookings();
+
+      if (!rows.length) {
+        elements.bookingsTableBody.innerHTML = `
+          <tr>
+            <td colspan="6">
+              <div class="empty-state">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                <div style="font-weight:900; font-size:18px; color:#0f172a; margin-bottom:6px;">No bookings match the current view</div>
+                <div>Try changing the filter, searching with another keyword, or waiting for a live update.</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      elements.bookingsTableBody.innerHTML = rows.map(booking => {
+        const patientName = escapeHtml(booking.customer_name || "Unknown patient");
+        const patientEmail = escapeHtml(booking.customer_email || "No email");
+        const hospital = escapeHtml(booking.hospital_name || "-");
+        const department = escapeHtml(booking.department_title || "-");
+        const bookingDate = escapeHtml(booking.date || "-");
+        const bookingTime = escapeHtml(booking.time || "-");
+        const initials = getInitials(booking.customer_name || "PT");
+
+        return `
+          <tr data-booking-id="${escapeHtml(booking.id)}" class="booking-row">
+            <td>
+              <div class="patient-cell">
+                <div class="patient-avatar">${escapeHtml(initials)}</div>
+                <div class="patient-info">
+                  <strong>${patientName}</strong>
+                  <span>${patientEmail}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="doctor-inline">
+                <strong>${hospital}</strong>
+                <span>${department}</span>
+              </div>
+            </td>
+            <td>${bookingDate}</td>
+            <td>${bookingTime}</td>
+            <td>${statusBadge(booking.status)}</td>
+            <td>
+              <div class="action-row">
+                <button class="mini-button primary open-details-button" data-id="${escapeHtml(booking.id)}" type="button">Booking Confirming</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function fillDrawer(booking) {
+      elements.detailPatientName.textContent = booking.customer_name || "-";
+      elements.detailPatientPhone.textContent = booking.customer_phone || "-";
+      elements.detailPatientEmail.textContent = booking.customer_email || "-";
+      elements.detailStatus.innerHTML = statusBadge(booking.status);
+      elements.detailBookingId.textContent = booking.booking_id || booking.id || "-";
+      elements.detailHospital.textContent = booking.hospital_name || "-";
+      elements.detailDepartment.textContent = booking.department_title || "-";
+      elements.detailDoctor.textContent = booking.doctor_name || state.doctorProfile?.name || "-";
+      elements.detailDate.textContent = booking.date || "-";
+      elements.detailTime.textContent = booking.time || "-";
+      elements.detailNote.textContent = booking.customer_note || "No note was added.";
+      elements.rescheduleDate.value = booking.date || "";
+      elements.rescheduleTime.value = booking.time || "";
+      elements.rescheduleReason.value = booking.reschedule_reason || "";
+    }
+
+    function openDrawer(bookingId) {
+      const booking = state.bookings.find(item => item.id === bookingId);
+      if (!booking) return;
+      state.selectedBooking = booking;
+      fillDrawer(booking);
+      elements.drawer.classList.add("active");
+      elements.drawerBackdrop.classList.add("active");
+      elements.drawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDrawer() {
+      state.selectedBooking = null;
+      elements.drawer.classList.remove("active");
+      elements.drawerBackdrop.classList.remove("active");
+      elements.drawer.setAttribute("aria-hidden", "true");
+    }
+
+    async function findDoctorProfile(user) {
+      const directRef = doc(bookingsDb, "doctors", user.uid);
+      const directSnap = await getDoc(directRef);
+      if (directSnap.exists()) {
+        return {
+          id: directSnap.id,
+          ...directSnap.data(),
+          doctor_id: directSnap.data().doctor_id || directSnap.id,
+          user_uid: user.uid,
+          email: String(user.email || directSnap.data().email || "").trim().toLowerCase()
+        };
+      }
+
+      const normalizedEmail = String(user.email || "").trim().toLowerCase();
+      const byEmailQuery = query(collection(bookingsDb, "doctors"), where("email", "==", normalizedEmail));
+      const emailSnap = await getDocs(byEmailQuery);
+      if (!emailSnap.empty) {
+        const first = emailSnap.docs[0];
+        return {
+          id: first.id,
+          ...first.data(),
+          doctor_id: first.data().doctor_id || first.id,
+          user_uid: user.uid,
+          email: normalizedEmail
+        };
+      }
+
+      const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
+      const matchedBooking = bookingsSnap.docs
+        .map(d => ({ id: d.id, ...d.data() }))
+        .find(item => String(item.doctor_email || "").trim().toLowerCase() === normalizedEmail);
+
+      if (matchedBooking) {
+        return {
+          doctor_id: matchedBooking.doctor_id || user.uid,
+          name: matchedBooking.doctor_name || user.displayName || "Doctor",
+          hospital_name: matchedBooking.hospital_name || "Hospital not assigned",
+          department_title: matchedBooking.department_title || "Department not assigned",
+          specialty: matchedBooking.department_title || "General",
+          available: false,
+          email: normalizedEmail,
+          user_uid: user.uid
+        };
+      }
+
+      return {
+        ...manualDoctorFallback,
+        doctor_id: user.uid,
+        user_uid: user.uid,
+        email: normalizedEmail,
+        name: user.displayName || manualDoctorFallback.name
+      };
+    }
+
+    async function ensureDoctorProfileDocument(user, profile) {
+      if (!user?.uid) return;
+      const ref = doc(bookingsDb, "doctors", user.uid);
+      const baseProfile = {
+        doctor_id: profile.doctor_id || profile.id || user.uid,
+        name: profile.name || user.displayName || "Doctor",
+        email: String(user.email || "").trim().toLowerCase(),
+        hospital_name: profile.hospital_name || "Hospital not assigned",
+        department_title: profile.department_title || "Department not assigned",
+        specialty: profile.specialty || "General",
+        available: !!profile.available,
+        user_uid: user.uid,
+        role: "doctor",
+        updatedAt: serverTimestamp()
+      };
+      await setDoc(ref, baseProfile, { merge: true });
+    }
+
+    function subscribeToBookings() {
+      if (state.unsubscribeBookings) {
+        state.unsubscribeBookings();
+        state.unsubscribeBookings = null;
+      }
+
+      state.unsubscribeBookings = onSnapshot(collection(bookingsDb, "allBookings"), (snapshot) => {
+        const rawBookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        const filtered = rawBookings
+          .filter(bookingMatchesDoctor)
+          .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+
+        const currentIds = new Set(filtered.map(item => item.id));
+
+        if (state.hasLiveBooted) {
+          const newItems = filtered.filter(item => !state.lastSeenIds.has(item.id));
+          if (newItems.length) {
+            showToast("New booking", `${newItems.length} new booking request${newItems.length > 1 ? "s have" : " has"} arrived.`);
+            showLiveBanner(`${newItems.length} new booking request${newItems.length > 1 ? "s" : ""} received in real time.`);
+          } else if (snapshot.docChanges().some(change => change.type === "modified")) {
+            showLiveBanner("A booking was updated in real time.");
+          }
+        }
+
+        state.bookings = filtered;
+        state.lastSeenIds = currentIds;
+        state.hasLiveBooted = true;
+        updateStats();
+        renderBookingsTable();
+
+        if (state.selectedBooking) {
+          const refreshed = state.bookings.find(item => item.id === state.selectedBooking.id);
+          if (refreshed) {
+            state.selectedBooking = refreshed;
+            fillDrawer(refreshed);
+          }
+        }
+
+        setLoading(false);
+      }, (error) => {
+        console.error("Realtime subscription error:", error);
+        setLoading(false);
+        showToast("Live updates failed", error.message || "Could not subscribe to booking updates.");
+      });
+    }
+
+    async function refreshDashboard(showMessage = false) {
+      setLoading(true);
+      try {
+        if (!state.authUser) throw new Error("No authenticated user");
+
+        state.doctorProfile = await findDoctorProfile(state.authUser);
+        state.doctorId = state.doctorProfile.doctor_id || state.authUser.uid;
+
+        if (!state.doctorProfile.user_uid || state.doctorProfile.user_uid !== state.authUser.uid) {
+          state.doctorProfile.user_uid = state.authUser.uid;
+        }
+
+        await ensureDoctorProfileDocument(state.authUser, state.doctorProfile);
+        updateDoctorCard();
+        subscribeToBookings();
+
+        if (showMessage) {
+          showToast("Dashboard synced", "Latest booking data has been loaded successfully.");
+        }
+      } catch (error) {
+        console.error("Dashboard refresh error:", error);
+        setLoading(false);
+        showToast("Loading error", error.message || "Unable to refresh the doctor dashboard.");
+      }
+    }
+
+    async function updateAvailability() {
+      if (!state.authUser || !state.doctorProfile) return;
+
+      try {
+        const nextValue = !state.doctorProfile.available;
+        const ref = doc(bookingsDb, "doctors", state.authUser.uid);
+        await updateDoc(ref, {
+          available: nextValue,
+          updatedAt: serverTimestamp()
+        });
+
+        state.doctorProfile.available = nextValue;
+        updateDoctorCard();
+        showToast("Status updated", nextValue ? "Doctor is now marked as available." : "Doctor is now marked as offline.");
+      } catch (error) {
+        console.error("Availability update error:", error);
+        showToast("Update failed", error.message || "Could not change the doctor status.");
+      }
+    }
+
+    async function updateBookingStatus(status, extra = {}) {
+      const booking = state.selectedBooking;
+      if (!booking) {
+        showToast("No booking selected", "Open a booking first, then apply an action.");
+        return;
+      }
+
+      try {
+        const payload = {
+          status,
+          updatedAt: serverTimestamp(),
+          reviewed_by_uid: state.authUser?.uid || null,
+          reviewed_by_name: state.doctorProfile?.name || "Doctor",
+          ...extra
+        };
+
+        const bookingRef = doc(bookingsDb, "allBookings", booking.id);
+        await updateDoc(bookingRef, payload);
+
+        state.bookings = state.bookings.map(item =>
+          item.id === booking.id ? { ...item, ...extra, status } : item
+        );
+
+        const updated = state.bookings.find(item => item.id === booking.id);
+        state.selectedBooking = updated;
+        fillDrawer(updated);
+        updateStats();
+        renderBookingsTable();
+        showToast("Booking updated", `The booking status is now ${status.toLowerCase()}.`);
+      } catch (error) {
+        console.error("Booking action error:", error);
+        showToast("Action failed", error.message || "The booking could not be updated.");
+      }
+    }
+
+    async function approveSelectedBooking() {
+      await updateBookingStatus("APPROVED", {
+        approvedAt: serverTimestamp()
+      });
+    }
+
+    async function rejectSelectedBooking() {
+      await updateBookingStatus("REJECTED", {
+        rejectedAt: serverTimestamp()
+      });
+    }
+
+    async function rescheduleSelectedBooking() {
+      const newDate = elements.rescheduleDate.value;
+      const newTime = elements.rescheduleTime.value;
+      const reason = elements.rescheduleReason.value.trim();
+
+      if (!newDate || !newTime) {
+        showToast("Missing values", "Please choose both a new date and a new time.");
+        return;
+      }
+
+      await updateBookingStatus("RESCHEDULED", {
+        date: newDate,
+        time: newTime,
+        reschedule_reason: reason,
+        rescheduledAt: serverTimestamp()
+      });
+    }
+
+    function wireEvents() {
+      elements.availabilityButton.addEventListener("click", updateAvailability);
+      elements.refreshButton.addEventListener("click", () => refreshDashboard(true));
+      elements.heroRefreshButton.addEventListener("click", () => refreshDashboard(true));
+      elements.focusPendingButton.addEventListener("click", () => setActiveFilter("PENDING"));
+
+      elements.logoutButton.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          window.location.href = "doctor-login.html";
+        } catch (error) {
+          console.error("Logout error:", error);
+          showToast("Logout failed", error.message || "Could not sign out the current user.");
+        }
+      });
+
+      elements.searchInput.addEventListener("input", (event) => {
+        state.searchTerm = event.target.value || "";
+        renderBookingsTable();
+      });
+
+      document.querySelectorAll(".filter-tab").forEach(button => {
+        button.addEventListener("click", () => setActiveFilter(button.dataset.filter));
+      });
+
+      document.querySelectorAll(".nav-button[data-sidebar-filter]").forEach(button => {
+        button.addEventListener("click", () => setActiveFilter(button.dataset.sidebarFilter));
+      });
+
+      elements.bookingsTableBody.addEventListener("click", (event) => {
+        const openButton = event.target.closest(".open-details-button");
+        if (openButton) {
+          openDrawer(openButton.dataset.id);
+          return;
+        }
+
+        const row = event.target.closest(".booking-row");
+        if (row?.dataset.bookingId) {
+          openDrawer(row.dataset.bookingId);
+        }
+      });
+
+      elements.closeDrawerButton.addEventListener("click", closeDrawer);
+      elements.drawerBackdrop.addEventListener("click", closeDrawer);
+      elements.approveButton.addEventListener("click", approveSelectedBooking);
+      elements.rejectButton.addEventListener("click", rejectSelectedBooking);
+      elements.rescheduleButton.addEventListener("click", rescheduleSelectedBooking);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeDrawer();
+      });
+    }
+
+    async function boot() {
+      wireEvents();
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          window.location.href = "doctor-login.html";
+          return;
+        }
+
+        state.authUser = user;
+        await refreshDashboard(false);
+      });
+    }
+
+    boot();
+  </script>
+</body>
+</html>

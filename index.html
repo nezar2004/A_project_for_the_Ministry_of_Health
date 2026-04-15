@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نبض | الصفحة الرئيسية</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg: #f4f8ff;
+      --surface: rgba(255,255,255,0.84);
+      --surface-strong: #ffffff;
+      --line: #e6eefb;
+      --text: #10233b;
+      --muted: #62748a;
+      --primary: #2563eb;
+      --primary-strong: #1d4ed8;
+      --primary-soft: #dbeafe;
+      --success-soft: #dcfce7;
+      --shadow: 0 22px 55px rgba(15, 23, 42, 0.08);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Cairo", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.08), transparent 22%),
+        radial-gradient(circle at center right, rgba(22, 163, 74, 0.05), transparent 18%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    .shell {
+      width: min(1320px, 100%);
+      display: grid;
+      gap: 20px;
+      animation: fadeUp 0.7s ease;
+    }
+
+    .hero-card,
+    .choice-card {
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.72);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+    }
+
+    .hero-card {
+      overflow: hidden;
+      position: relative;
+      min-height: 620px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      left: -120px;
+      top: -130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.16), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -100px;
+      bottom: -120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.12), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      padding: 40px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: white;
+      font-size: 26px;
+      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.22);
+    }
+
+    .brand-text h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .brand-text p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .hero-copy {
+      margin: 30px 0 22px;
+      max-width: 720px;
+    }
+
+    .hero-copy .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      font-weight: 800;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .hero-copy h2 {
+      margin: 0 0 16px;
+      font-size: clamp(34px, 5vw, 60px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 900;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 2;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 18px;
+      padding: 16px 24px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.22s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: white;
+      box-shadow: 0 18px 28px rgba(37, 99, 235, 0.24);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    .hero-visual {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .visual-shell {
+      width: min(100%, 430px);
+      display: grid;
+      gap: 14px;
+    }
+
+    .floating-card {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.06);
+      animation: floatY 4.4s ease-in-out infinite;
+    }
+
+    .floating-card:nth-child(2) { animation-delay: .6s; }
+    .floating-card:nth-child(3) { animation-delay: 1.2s; }
+
+    .floating-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .floating-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: var(--primary-strong);
+      background: var(--primary-soft);
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .floating-title {
+      font-size: 15px;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .floating-subtitle {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      font-weight: 600;
+    }
+
+    .choice-card {
+      padding: 28px;
+      display: none;
+      animation: fadeUp 0.35s ease;
+    }
+
+    .choice-card.active {
+      display: block;
+    }
+
+    .choice-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .choice-top h3 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .choice-top p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 600;
+    }
+
+    .back-button {
+      border: 0;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.22s ease;
+    }
+
+    .back-button:hover { transform: translateY(-2px); }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .portal-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,248,255,0.95));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 24px;
+      min-height: 280px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+      transition: 0.24s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .portal-card::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      top: -80px;
+      left: -70px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.10), transparent 68%);
+      pointer-events: none;
+    }
+
+    .portal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 45px rgba(15, 23, 42, 0.10);
+    }
+
+    .portal-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .doctor-icon {
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+    }
+
+    .user-icon {
+      background: var(--success-soft);
+      color: #166534;
+    }
+
+    .portal-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .portal-copy {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.9;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-list {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-list span {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #28405d;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .portal-list i {
+      color: var(--primary-strong);
+    }
+
+    .portal-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .portal-button {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      border-radius: 18px;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.22s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .portal-button:hover { transform: translateY(-2px); }
+
+    .portal-button.doctor {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: white;
+      box-shadow: 0 18px 28px rgba(37, 99, 235, 0.22);
+    }
+
+    .portal-button.user {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: white;
+      box-shadow: 0 18px 28px rgba(22, 163, 74, 0.18);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 1100px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        padding-top: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      .hero-content,
+      .choice-card { padding: 22px; }
+      .hero-stats,
+      .choice-grid { grid-template-columns: 1fr; }
+      .hero-copy p,
+      .choice-top p,
+      .portal-copy { font-size: 14px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero-card">
+      <div class="hero-content">
+        <div>
+          <div class="brand">
+            <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+            <div class="brand-text">
+              <h1>تطبيق نبض</h1>
+              <p>منصة صحية ذكية لتنظيم الوصول والرعاية</p>
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <div class="eyebrow">
+              <i class="fa-solid fa-bolt"></i>
+              تجربة دخول مرتبة وسريعة
+            </div>
+            <h2>مرحبًا بك في تطبيق نبض</h2>
+            <p>
+              ابدأ رحلتك من شاشة افتتاحية أنيقة وواضحة. من هنا يمكن للطبيب أو للمريض الوصول بسرعة إلى المسار الصحيح
+              داخل التطبيق، بدون تعقيد وبواجهة مريحة بصريًا وسهلة جدًا في الاستخدام.
+            </p>
+
+            <div class="hero-actions">
+              <button id="openLoginOptions" class="btn btn-primary" type="button">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                تسجيل الدخول
+              </button>
+              <button id="scrollToOptions" class="btn btn-secondary" type="button">
+                <i class="fa-solid fa-compass"></i>
+                استعراض الخيارات
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>واجهة واضحة</strong>
+              <span>تنقل مباشر من الصفحة الترحيبية إلى نوع الحساب المناسب.</span>
+            </div>
+            <div class="stat">
+              <strong>دخول منفصل</strong>
+              <span>مسار مخصص للدكاترة ومسار مستقل للمرضى أو المستخدمين.</span>
+            </div>
+            <div class="stat">
+              <strong>تجربة مريحة</strong>
+              <span>تصميم نظيف، سريع، ومتجاوب على الجوال والكمبيوتر.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="visual-shell">
+          <div class="floating-card">
+            <div class="floating-head">
+              <div class="floating-icon"><i class="fa-solid fa-user-doctor"></i></div>
+              <div>
+                <p class="floating-title">بوابة الدكاترة</p>
+                <p class="floating-subtitle">دخول آمن للطبيب مع وصول مباشر إلى واجهة الإدارة والمتابعة.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-card">
+            <div class="floating-head">
+              <div class="floating-icon"><i class="fa-solid fa-user"></i></div>
+              <div>
+                <p class="floating-title">بوابة المرضى</p>
+                <p class="floating-subtitle">وصول سريع للمستخدمين والمرضى لتسجيل الدخول وإدارة الخدمات.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="floating-card">
+            <div class="floating-head">
+              <div class="floating-icon"><i class="fa-solid fa-shield-heart"></i></div>
+              <div>
+                <p class="floating-title">بداية منظمة</p>
+                <p class="floating-subtitle">نقطة دخول واحدة ثم اختيار واضح حسب نوع الحساب.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="loginOptionsSection" class="choice-card">
+      <div class="choice-top">
+        <div>
+          <h3>اختر نوع تسجيل الدخول</h3>
+          <p>حدد المسار المناسب لك للانتقال إلى صفحة تسجيل الدخول الخاصة بالدكاترة أو المرضى/المستخدمين.</p>
+        </div>
+
+        <button id="backToWelcome" class="back-button" type="button">
+          <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
+          رجوع
+        </button>
+      </div>
+
+      <div class="choice-grid">
+        <article class="portal-card">
+          <div>
+            <div class="portal-head">
+              <div class="portal-icon doctor-icon"><i class="fa-solid fa-user-doctor"></i></div>
+              <div>
+                <h4 class="portal-title">دخول الدكاترة</h4>
+              </div>
+            </div>
+
+            <p class="portal-copy">
+              هذا المسار مخصص للأطباء للوصول إلى لوحة التحكم، متابعة الحجوزات، الموافقة أو الرفض،
+              وإدارة المواعيد بطريقة احترافية ومنظمة.
+            </p>
+
+            <div class="portal-list">
+              <span><i class="fa-solid fa-circle-check"></i>لوحة تحكم خاصة بالطبيب</span>
+              <span><i class="fa-solid fa-circle-check"></i>إدارة الحجوزات والموافقة عليها</span>
+              <span><i class="fa-solid fa-circle-check"></i>متابعة الحالات والمواعيد مباشرة</span>
+            </div>
+          </div>
+
+          <div class="portal-actions">
+            <button id="goDoctorLogin" class="portal-button doctor" type="button">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              تسجيل دخول الدكاترة
+            </button>
+          </div>
+        </article>
+
+        <article class="portal-card">
+          <div>
+            <div class="portal-head">
+              <div class="portal-icon user-icon"><i class="fa-solid fa-user"></i></div>
+              <div>
+                <h4 class="portal-title">دخول المرضى / المستخدمين</h4>
+              </div>
+            </div>
+
+            <p class="portal-copy">
+              هذا المسار مخصص للمرضى أو المستخدمين للوصول إلى صفحة تسجيل الدخول الخاصة بهم،
+              ومن ثم استخدام خدمات التطبيق مثل الحجز والمتابعة والتنبيهات.
+            </p>
+
+            <div class="portal-list">
+              <span><i class="fa-solid fa-circle-check"></i>تسجيل دخول مخصص للمستخدم</span>
+              <span><i class="fa-solid fa-circle-check"></i>الوصول للحجز والخدمات الصحية</span>
+              <span><i class="fa-solid fa-circle-check"></i>واجهة بسيطة وسهلة وواضحة</span>
+            </div>
+          </div>
+
+          <div class="portal-actions">
+            <button id="goUserLogin" class="portal-button user" type="button">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              تسجيل دخول المرضى والمستخدمين
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const openLoginOptions = document.getElementById("openLoginOptions");
+    const scrollToOptions = document.getElementById("scrollToOptions");
+    const backToWelcome = document.getElementById("backToWelcome");
+    const loginOptionsSection = document.getElementById("loginOptionsSection");
+    const goDoctorLogin = document.getElementById("goDoctorLogin");
+    const goUserLogin = document.getElementById("goUserLogin");
+
+    function showOptions() {
+      loginOptionsSection.classList.add("active");
+      loginOptionsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function hideOptions() {
+      loginOptionsSection.classList.remove("active");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    openLoginOptions.addEventListener("click", showOptions);
+    scrollToOptions.addEventListener("click", showOptions);
+    backToWelcome.addEventListener("click", hideOptions);
+
+    goDoctorLogin.addEventListener("click", () => {
+      window.location.href = "doctor-login.html";
+    });
+
+    goUserLogin.addEventListener("click", () => {
+      window.location.href = "login_Patient.html";
+    });
+  </script>
+</body>
+</html>
