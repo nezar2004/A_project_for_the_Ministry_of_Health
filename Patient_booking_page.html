@@ -1936,7 +1936,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 		const card = document.createElement('div');
 		card.className = 'card p-3 border';
-		card.dataset.hosp = String(h.id);
+		card.dataset.hosp = String(h.docId);
 
 		card.innerHTML = `
 		  <div>
@@ -1945,7 +1945,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		  </div>
 		`;
 
-		card.addEventListener('click', () => selectHospital(String(h.id)));
+		card.addEventListener('click', () => selectHospital(String(h.docId)));
 
 		col.appendChild(card);
 		container.appendChild(col);
@@ -1954,7 +1954,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  console.log("renderHospitals done");
 	}
 	async function selectHospital(hospId) {
-	  const h = hospitals.find(x => String(x.id) === String(hospId));
+	  const h = hospitals.find(x => String(x.docId) === String(hospId));
 	  if (!h) return;
 
 	  bookingState.hospital = h;
