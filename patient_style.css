@@ -323,7 +323,7 @@
       top: 50%;
       transform: translateY(-50%);
       border: none;
-      background: #21c991;
+      background: #88efd4;
       color: var(--primary-dark);
       cursor: pointer;
       font-size: 13px;
@@ -337,7 +337,7 @@
     }
 
     .toggle-pass:hover {
-      background: #e4d4cd;
+      background: #d3fdfc;
       color: var(--primary-dark);
     }
 
