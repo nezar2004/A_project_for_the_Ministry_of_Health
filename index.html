@@ -556,7 +556,10 @@
               </button>
             </div>
           </div>
-
+          <button id="langToggle"
+            style="padding:8px 14px; border-radius:12px; border:1px solid #e5e7eb; background:white; font-weight:800; cursor:pointer;">
+            🌐 EN
+          </button>
           <div class="hero-stats">
             <div class="stat">
               <strong>واجهة واضحة</strong>
@@ -712,6 +715,53 @@
 
     goUserLogin.addEventListener("click", () => {
       window.location.href = "login_Patient.html";
+    });
+    const translations = {
+      en: {
+        logout: "Logout",
+        refresh: "Refresh bookings"
+      },
+      ar: {
+        logout: "تسجيل الخروج",
+        refresh: "تحديث الحجوزات"
+      }
+    };
+    
+    function applyLanguage(lang) {
+      localStorage.setItem("app_lang", lang);
+    
+      // اتجاه الصفحة
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    
+      const t = translations[lang];
+    
+      // غير النصوص
+      const logoutBtn = document.getElementById("logoutButton");
+      const refreshBtn = document.getElementById("refreshButton");
+    
+      if (logoutBtn) {
+        logoutBtn.innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i> ${t.logout}`;
+      }
+    
+      if (refreshBtn) {
+        refreshBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> ${t.refresh}`;
+      }
+    
+      // نص الزر
+      document.getElementById("langToggle").textContent =
+        lang === "ar" ? "🌐 EN" : "🌐 AR";
+    }
+    
+    // تحميل اللغة المحفوظة
+    const savedLang = localStorage.getItem("app_lang") || "en";
+    applyLanguage(savedLang);
+    
+    // عند الضغط
+    document.getElementById("langToggle").addEventListener("click", () => {
+      const current = localStorage.getItem("app_lang") || "en";
+      const next = current === "en" ? "ar" : "en";
+      applyLanguage(next);
     });
   </script>
 </body>
