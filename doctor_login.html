@@ -393,16 +393,17 @@
         <div class="brand">
           <div class="brand-icon">D</div>
           <div>
-            <h1>Nabd Doctor Access</h1>
-            <p>Separate secure login for doctors only</p>
+            <h1>بوابة الأطباء - نبض</h1>
+            <p>نظام آمن وسريع لإدارة المواعيد الطبية<</p>
           </div>
         </div>
 
         <div class="hero-copy" style="margin-top:34px;">
-          <h2>Elegant doctor login with direct access to personal bookings.</h2>
+          <h2>تحكم كامل بحجوزاتك الطبية بكل سهولة واحترافية</h2>
           <p>
-            This page signs the doctor in using Firebase Authentication, then automatically links the account
-            to the doctor profile in Firestore so each doctor can only view their own bookings.
+                مرحبًا بك في نظام نبض للأطباء، حيث يمكنك متابعة حجوزات المرضى، إدارة مواعيدك،
+				والوصول إلى معلوماتك بكل أمان وسرعة. تم تصميم هذه المنصة لتوفر لك تجربة سهلة،
+				منظمة، وفعّالة تساعدك على التركيز في تقديم أفضل رعاية ممكنة.
           </p>
         </div>
       </div>
@@ -411,23 +412,23 @@
 
     <section class="panel login">
       <div>
-        <h3>Doctor sign in</h3>
-        <p>Enter the doctor email and password to open the secure dashboard.</p>
+        <h3>تسجيل دخول</h3>
+        <p>أدخل البريد الإلكتروني وكلمة المرور الخاصة بالطبيب لفتح لوحة التحكم الآمنة.</p>
 
         <form id="doctorLoginForm" class="form">
           <div class="field">
-            <label for="doctorEmail">Doctor email</label>
+            <label for="doctorEmail">بريد الطبيب الإلكتروني</label>
             <input id="doctorEmail" type="email" placeholder="doctor@example.com" required />
           </div>
 
           <div class="field">
-            <label for="doctorPassword">Password</label>
+            <label for="doctorPassword">كملة المرور</label>
             <input id="doctorPassword" type="password" placeholder="Enter your password" required />
           </div>
 
           <div class="row">
-            <button class="button primary" type="submit">Login to dashboard</button>
-            <button class="button secondary" id="goPatientLogin" type="button">Back to main login</button>
+            <button class="button primary" type="submit">تسجيل الدخول إلى لوحة التحكم</button>
+            <button class="button secondary" id="goPatientLogin" type="button">الصفحة الرئيسية</button>
           </div>
         </form>
 
@@ -438,117 +439,171 @@
       </div>
     </section>
   </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  const doctorFirebaseConfig = {
+    apiKey: "AIzaSyClPA_4ZjzUrnERb_k-6yBtgb9AB7QIryA",
+    authDomain: "dataofhosp.firebaseapp.com",
+    projectId: "dataofhosp",
+    storageBucket: "dataofhosp.firebasestorage.app",
+    messagingSenderId: "908860921572",
+    appId: "1:908860921572:web:1fce145520ef5ecd7b7ef1"
+  };
 
-    const authFirebaseConfig = {
-      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-      authDomain: "nabdapp-3a077.firebaseapp.com",
-      projectId: "nabdapp-3a077",
-      storageBucket: "nabdapp-3a077.appspot.com",
-      messagingSenderId: "675031985272",
-      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
-    };
+  const doctorApp = initializeApp(doctorFirebaseConfig);
+  const auth = getAuth(doctorApp);
+  const db = getFirestore(doctorApp);
 
-    const bookingsFirebaseConfig = {
-      apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
-      authDomain: "dataofdoctor.firebaseapp.com",
-      projectId: "dataofdoctor",
-      storageBucket: "dataofdoctor.firebasestorage.app",
-      messagingSenderId: "305140405001",
-      appId: "1:305140405001:web:7e54658907133ef9ff39d8"
-    };
+  const form = document.getElementById("doctorLoginForm");
+  const emailInput = document.getElementById("doctorEmail");
+  const passwordInput = document.getElementById("doctorPassword");
+  const loginError = document.getElementById("loginError");
+  const loginSuccess = document.getElementById("loginSuccess");
+  const goPatientLogin = document.getElementById("goPatientLogin");
 
-    const authApp = initializeApp(authFirebaseConfig);
-    const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
-    const auth = getAuth(authApp);
-    const bookingsDb = getFirestore(bookingsApp);
+  function showError(message) {
+    loginError.textContent = message;
+    loginError.style.display = "block";
+    loginSuccess.style.display = "none";
+  }
 
-    const form = document.getElementById("doctorLoginForm");
-    const emailInput = document.getElementById("doctorEmail");
-    const passwordInput = document.getElementById("doctorPassword");
-    const loginError = document.getElementById("loginError");
-    const loginSuccess = document.getElementById("loginSuccess");
-    const goPatientLogin = document.getElementById("goPatientLogin");
+  function showSuccess(message) {
+    loginSuccess.textContent = message;
+    loginSuccess.style.display = "block";
+    loginError.style.display = "none";
+  }
 
-    function showError(message) {
-      loginError.textContent = message;
-      loginError.style.display = "block";
-      loginSuccess.style.display = "none";
-    }
+  function normalizeEmail(email) {
+    return String(email || "").trim().toLowerCase();
+  }
 
-    function showSuccess(message) {
-      loginSuccess.textContent = message;
-      loginSuccess.style.display = "block";
-      loginError.style.display = "none";
-    }
+  async function findDoctorByEmail(email) {
+    const hospitalsSnap = await getDocs(collection(db, "hospitals"));
 
-    async function ensureDoctorDocument(user) {
-      const ref = doc(bookingsDb, "doctors", user.uid);
-      const snap = await getDoc(ref);
+    for (const hospitalDoc of hospitalsSnap.docs) {
+      const hospitalData = hospitalDoc.data();
 
-      if (!snap.exists()) {
-        await setDoc(ref, {
-          doctor_id: user.uid,
-          user_uid: user.uid,
-          email: (user.email || "").trim().toLowerCase(),
-          name: user.displayName || "Doctor",
-          hospital_name: "Hospital not assigned",
-          department_title: "Department not assigned",
-          specialty: "General",
-          available: false,
-          role: "doctor",
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-      } else {
-        await setDoc(ref, {
-          user_uid: user.uid,
-          email: (user.email || "").trim().toLowerCase(),
-          role: "doctor",
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-      }
-    }
+      const departmentsSnap = await getDocs(
+        collection(db, "hospitals", hospitalDoc.id, "departments")
+      );
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          await ensureDoctorDocument(user);
-          window.location.href = "doctor_dashboard.html";
-        } catch (error) {
-          console.error(error);
+      for (const deptDoc of departmentsSnap.docs) {
+        const deptData = deptDoc.data();
+
+        const doctorsSnap = await getDocs(
+          collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
+        );
+
+        for (const doctorDoc of doctorsSnap.docs) {
+          const doctorData = doctorDoc.data();
+          const doctorEmail = normalizeEmail(doctorData.email);
+
+          if (doctorEmail === email) {
+            return {
+              uid: "",
+              email: doctorEmail,
+              doctorDocId: doctorDoc.id,
+              doctorId: doctorData.id ?? doctorDoc.id,
+              doctorKey: doctorData.doctorKey || "",
+              name: doctorData.name || "",
+              hospitalDocId: hospitalDoc.id,
+              hospitalId: hospitalData.id ?? hospitalDoc.id,
+              hospitalName: doctorData.hospitalName || hospitalData.name || "",
+              departmentDocId: deptDoc.id,
+              departmentId: deptData.id ?? deptDoc.id,
+              departmentTitle: doctorData.departmentName || deptData.title || "",
+              hospitalType: doctorData.hospitalType || hospitalData.type || "",
+              slotDuration: doctorData.slotDuration || 0
+            };
+          }
         }
       }
-    });
+    }
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    return null;
+  }
 
-      const email = emailInput.value.trim().toLowerCase();
-      const password = passwordInput.value;
+  async function saveDoctorSession(user, doctorData) {
+    const sessionData = {
+      uid: user.uid,
+      email: normalizeEmail(user.email),
+      doctorDocId: doctorData.doctorDocId,
+      doctorId: doctorData.doctorId,
+      doctorKey: doctorData.doctorKey,
+      name: doctorData.name,
+      hospitalDocId: doctorData.hospitalDocId,
+      hospitalId: doctorData.hospitalId,
+      hospitalName: doctorData.hospitalName,
+      departmentDocId: doctorData.departmentDocId,
+      departmentId: doctorData.departmentId,
+      departmentTitle: doctorData.departmentTitle,
+      hospitalType: doctorData.hospitalType,
+      slotDuration: doctorData.slotDuration
+    };
 
-      loginError.style.display = "none";
-      loginSuccess.style.display = "none";
+    sessionStorage.setItem("doctorAuth", JSON.stringify(sessionData));
+  }
 
-      try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        await ensureDoctorDocument(cred.user);
-        showSuccess("Login successful. Redirecting to doctor dashboard...");
-        setTimeout(() => {
-          window.location.href = "doctor_dashboard.html";
-        }, 600);
-      } catch (error) {
-        console.error("Doctor login error:", error);
-        showError("Login failed. Check the doctor email and password.");
+  async function handleDoctorLogin(user) {
+    const email = normalizeEmail(user.email);
+    const doctorData = await findDoctorByEmail(email);
+
+    if (!doctorData) {
+      throw new Error("doctor-not-found-in-firestore");
+    }
+
+    await saveDoctorSession(user, doctorData);
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+
+    try {
+      await handleDoctorLogin(user);
+      window.location.href = "doctor_dashboard.html";
+    } catch (error) {
+      console.error("Auto login error:", error);
+    }
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = normalizeEmail(emailInput.value);
+    const password = passwordInput.value;
+
+    loginError.style.display = "none";
+    loginSuccess.style.display = "none";
+
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      await handleDoctorLogin(cred.user);
+
+      showSuccess("تم تسجيل الدخول بنجاح");
+      setTimeout(() => {
+        window.location.href = "doctor_dashboard.html";
+      }, 600);
+    } catch (error) {
+      console.error("Doctor login error:", error);
+
+      if (error.code === "auth/invalid-credential") {
+        showError("الإيميل أو كلمة المرور غير صحيحة");
+      } else if (error.message === "doctor-not-found-in-firestore") {
+        showError("تم تسجيل الدخول لكن هذا الدكتور غير موجود داخل قاعدة بيانات الدكاترة");
+      } else {
+        showError("حدث خطأ أثناء تسجيل الدخول");
       }
-    });
+    }
+  });
 
+  if (goPatientLogin) {
     goPatientLogin.addEventListener("click", () => {
       window.location.href = "index.html";
     });
-  </script>
+  }
+</script>
 </body>
 </html>
