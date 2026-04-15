@@ -1473,7 +1473,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   const authFirebaseConfig = {
     apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
@@ -1492,30 +1492,79 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     messagingSenderId: "912654428982",
     appId: "1:912654428982:web:2aad95677b05765e802d97"
   };
+  const bookingsFirebaseConfig = {
+	  apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
+	  authDomain: "dataofdoctor.firebaseapp.com",
+	  projectId: "dataofdoctor",
+	  storageBucket: "dataofdoctor.firebasestorage.app",
+	  messagingSenderId: "305140405001",
+	  appId: "1:305140405001:web:7e54658907133ef9ff39d8"
+	};
+   async function saveBookingToFirebase(payload) {
+	  try {
+		const user = auth.currentUser;
+		if (!user) throw new Error("No logged in user");
 
+		const booking = {
+		  ...payload,
+		  user_uid: user.uid,
+		  user_email: (user.email || "").trim().toLowerCase()
+		};
+
+		const docRef = await addDoc(
+		  collection(bookingsDb, "users", user.uid, "bookings"),
+		  booking
+		);
+
+		console.log("🔥 booking saved", docRef.id);
+		return docRef.id;
+	  } catch (error) {
+		console.error("❌ error:", error);
+		throw error;
+	  }
+	}
+
+	window.saveBookingToFirebase = saveBookingToFirebase;
+	
   const authApp = initializeApp(authFirebaseConfig);
   const dataApp = initializeApp(dataFirebaseConfig, "dataApp");
+  const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
 
   const auth = getAuth(authApp);
   const db = getFirestore(dataApp);
+  const bookingsDb = getFirestore(bookingsApp);
 
   window.db = db;
   window.collection = collection;
   window.getDocs = getDocs;
+  window.query = query;
+  window.where = where;
+  window.bookingsDb = bookingsDb;
+  window.auth = auth;
 
   let authChecked = false;
 
   onAuthStateChanged(auth, async (user) => {
-    if (authChecked) return;
-    authChecked = true;
+	  if (authChecked) return;
+	  authChecked = true;
 
-    if (!user) {
-      window.location.href = "1login.html";
-      return;
-    }
+	  if (!user) {
+		localStorage.removeItem("currentUserUid");
+		localStorage.removeItem("currentUserEmail");
+		window.location.href = "1login.html";
+		return;
+	  }
 
-    console.log("User logged in:", user.email);
-    await loadFirebaseData();
+	  console.log("User logged in:", user.email);
+
+	  window.currentUserEmail = (user.email || "").trim().toLowerCase();
+	  window.currentUserUid = user.uid;
+
+	  localStorage.setItem("currentUserUid", user.uid);
+	  localStorage.setItem("currentUserEmail", (user.email || "").trim().toLowerCase());
+
+	  await loadFirebaseData();
+	  await renderBookings();
   });
 
   async function loadFirebaseData() {
@@ -1615,8 +1664,61 @@ input[type="time"]::-webkit-calendar-picker-indicator {
  // -------------------------------
 	// Basic Data
 	// -------------------------------
-	function confirmBooking() {
-	  alert("Your booking has been successfully confirmed ✅");
+	async function confirmBooking() {
+	  try {
+		const payload = {
+		  booking_id: "B" + Date.now(),
+		  status: "PENDING",
+
+		  gov: bookingState.gov || "",
+		  facility_type: bookingState.facilityType || "",
+
+		  hospital_name: bookingState.hospital?.name || "",
+		  department_title: bookingState.department?.title || "",
+		  doctor_name: bookingState.doctor?.name || "",
+		  doctor_id: bookingState.doctor?.id || "",
+
+		  date: bookingState.date || "",
+		  time: bookingState.time || "",
+		  price: bookingState.price || 0,
+
+		  customer_name: document.getElementById("custName").value.trim(),
+		  customer_email: document.getElementById("custEmail").value.trim(),
+		  customer_phone: document.getElementById("custPhone").value.trim(),
+		  customer_note: document.getElementById("custNote").value.trim(),
+
+		  createdAt: Date.now()
+		};
+
+		localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
+		localBookings.push(payload);
+		localStorage.setItem("localBookings", JSON.stringify(localBookings));
+
+		await window.saveBookingToFirebase(payload);
+		await renderBookings();
+
+		alert("Your booking has been successfully confirmed ✅");
+
+		bookingState = {
+		  currentStep: 1,
+		  gov: null,
+		  facilityType: null,
+		  hospital: null,
+		  department: null,
+		  hasInsurance: null,
+		  insuranceDetails: null,
+		  doctor: null,
+		  date: null,
+		  time: null,
+		  price: null,
+		  customer: { name: null, email: null, phone: null, note: null }
+		};
+
+		goToLandingPage();
+	  } catch (error) {
+		console.error("confirmBooking error:", error);
+		alert("حدث خطأ أثناء حفظ الحجز");
+	  }
 	}
 
 	const governorates = [
@@ -2367,7 +2469,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  if (!validateCurrentStep()) return;
 
 	  if (bookingState.currentStep === maxStep) {
-		commitBooking();
+		confirmBooking();
 	  } else {
 		let targetStep = bookingState.currentStep + 1;
 		if (bookingState.currentStep === 5 && bookingState.hasInsurance === false) {
@@ -2828,42 +2930,82 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  return `<span style="padding:4px 10px;border-radius:999px;background:#fff3cd;color:#856404;font-weight:bold;">Pending</span>`;
 	}
 
-	function renderBookings() {
+	async function renderBookings() {
+	  console.log("🔥 renderBookings started");
+
 	  const bookingsBody = document.getElementById("bookingsListBody");
 	  if (!bookingsBody) return;
 
-	  const bookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
-	  console.log("localBookings =", bookings);
+	  bookingsBody.innerHTML = "Loading...";
 
-	  if (!bookings.length) {
-		bookingsBody.innerHTML = `There are no current reservations.`;
-		return;
-	  }
+	  try {
+		const localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
 
-	  bookingsBody.innerHTML = bookings.map(b => {
-		const bookingNumber = b.booking_id || b.id || "-";
-		const department = b.department_title || b.department_name || "-";
-		const status = b.status || "PENDING";
+		const uid =
+		  auth.currentUser?.uid ||
+		  window.currentUserUid ||
+		  localStorage.getItem("currentUserUid");
 
-		return `
+		let firebaseBookings = [];
+
+		if (uid) {
+		  const snap = await window.getDocs(
+			window.collection(window.bookingsDb, "users", uid, "bookings")
+		  );
+
+		  firebaseBookings = snap.docs.map(doc => ({
+			id: doc.id,
+			...doc.data()
+		  }));
+		}
+
+		const allBookings = [...firebaseBookings];
+
+		localBookings.forEach(localItem => {
+		  const exists = allBookings.some(fb =>
+			String(fb.booking_id) === String(localItem.booking_id)
+		  );
+
+		  if (!exists) {
+			allBookings.push({
+			  ...localItem,
+			  isLocalOnly: true
+			});
+		  }
+		});
+
+		allBookings.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+
+		console.log("🔥 merged bookings:", allBookings);
+
+		if (!allBookings.length) {
+		  bookingsBody.innerHTML = "There are no current reservations.";
+		  return;
+		}
+
+		bookingsBody.innerHTML = allBookings.map(b => `
 		  <div style="border:1px solid #ddd; border-radius:12px; padding:12px; margin-bottom:10px; background:#fff;">
-			<div><strong>Booking number:</strong> ${bookingNumber}</div>
+			<div><strong>Booking number:</strong> ${b.booking_id || "-"}</div>
 			<div><strong>Doctor:</strong> ${b.doctor_name || "-"}</div>
 			<div><strong>Hospital:</strong> ${b.hospital_name || "-"}</div>
-			<div><strong>Department:</strong> ${department}</div>
+			<div><strong>Department:</strong> ${b.department_title || "-"}</div>
 			<div><strong>Date and time:</strong> ${(b.date || "-")} ${(b.time || "-")}</div><br>
-			
-			<div><strong>Status:</strong> ${getStatusBadge(status)}</div>
+			<div><strong>Status:</strong> ${getStatusBadge(b.status || "PENDING")}</div>
+			${b.isLocalOnly ? '<div style="margin-top:8px;font-size:12px;color:#777;">Saved locally</div>' : ''}
 		  </div>
-		`;
-	  }).join("");
+		`).join("");
+
+	  } catch (error) {
+		console.error("Error loading bookings:", error);
+		bookingsBody.innerHTML = "حدث خطأ أثناء تحميل الحجوزات.";
+	  }
 	}
+	const myBookingsBtn = document.getElementById("myBookingsBtn");
 
-	const bookingsModal = document.getElementById("bookingsModal");
-
-	if (bookingsModal) {
-	  bookingsModal.addEventListener("show.bs.modal", () => {
-		renderBookings();
+	if (myBookingsBtn) {
+	  myBookingsBtn.addEventListener("click", async () => {
+		console.log("🔥 myBookingsBtn clicked");
+		await renderBookings();
 	  });
 	}
 	// -------------------------------
