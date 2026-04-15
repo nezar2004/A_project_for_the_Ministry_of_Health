@@ -267,6 +267,123 @@
       .hero{min-height:auto}
       .row{grid-template-columns:1fr}
     }
+	/* 📱 Tablets & Mobile */
+	@media (max-width: 768px) {
+
+	  body {
+		padding: 12px;
+	  }
+
+	  /* يخلي التصميم عمودي */
+	  .shell {
+		grid-template-columns: 1fr !important;
+	  }
+
+	  .hero-card {
+		grid-template-columns: 1fr !important;
+	  }
+
+	  /* تقليل البادينج */
+	  .hero-content,
+	  .choice-card,
+	  .panel,
+	  .login,
+	  .hero {
+		padding: 20px !important;
+	  }
+
+	  /* كل الكروت تصير تحت بعض */
+	  .choice-grid,
+	  .hero-stats,
+	  .feature-grid {
+		grid-template-columns: 1fr !important;
+	  }
+
+	  /* الأزرار full width */
+	  .btn,
+	  .portal-button,
+	  .back-button,
+	  .button {
+		width: 100% !important;
+	  }
+
+	  /* ترتيب الأزرار عمودي */
+	  .hero-actions,
+	  .portal-actions,
+	  .row {
+		flex-direction: column !important;
+		grid-template-columns: 1fr !important;
+	  }
+
+	  /* النصوص */
+	  .hero-copy h2 {
+		font-size: 28px !important;
+		line-height: 1.2;
+	  }
+
+	  .hero-copy p,
+	  .portal-copy,
+	  .choice-top p,
+	  .stat span,
+	  .feature span {
+		font-size: 14px !important;
+	  }
+
+	  /* منع السكرول الأفقي */
+	  html, body {
+		overflow-x: hidden;
+	  }
+	}
+
+	/* 📱 Small phones */
+	@media (max-width: 480px) {
+
+	  body {
+		padding: 8px;
+	  }
+
+	  .hero-content,
+	  .choice-card,
+	  .panel,
+	  .login,
+	  .hero {
+		padding: 16px !important;
+	  }
+
+	  /* تصغير العناوين */
+	  h1 {
+		font-size: 20px !important;
+	  }
+
+	  h2 {
+		font-size: 24px !important;
+	  }
+
+	  h3 {
+		font-size: 20px !important;
+	  }
+
+	  /* تصغير الأزرار */
+	  .btn,
+	  .portal-button,
+	  .button {
+		padding: 12px !important;
+		font-size: 14px !important;
+	  }
+
+	  /* الحقول */
+	  input {
+		padding: 12px !important;
+		font-size: 14px !important;
+	  }
+
+	  /* الكروت */
+	  .portal-card,
+	  .feature,
+	  .stat {
+		padding: 14px !important;
+	  }
+	}
   </style>
 </head>
 <body>
@@ -311,7 +428,7 @@
 
       <div class="helper">
         Use the same email that is linked to the doctor in your Firestore data.  
-        After login, the doctor is redirected automatically to <strong>doctor-dashboard.html</strong>.
+        After login, the doctor is redirected automatically to <strong>doctor_dashboard.html</strong>.
       </div>
     </section>
 
@@ -431,7 +548,7 @@
       if (user) {
         try {
           await ensureDoctorDocument(user);
-          window.location.href = "doctor-dashboard.html";
+          window.location.href = "doctor_dashboard.html";
         } catch (error) {
           console.error(error);
         }
@@ -452,7 +569,7 @@
         await ensureDoctorDocument(cred.user);
         showSuccess("Login successful. Redirecting to doctor dashboard...");
         setTimeout(() => {
-          window.location.href = "doctor-dashboard.html";
+          window.location.href = "doctor_dashboard.html";
         }, 600);
       } catch (error) {
         console.error("Doctor login error:", error);
@@ -461,7 +578,7 @@
     });
 
     goPatientLogin.addEventListener("click", () => {
-      window.location.href = "1login.html";
+      window.location.href = "login_Patient.html";
     });
   </script>
 </body>
