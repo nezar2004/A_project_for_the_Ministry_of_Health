@@ -107,6 +107,29 @@
       justify-content: space-between;
     }
 
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .lang-toggle {
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: white;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.22s ease;
+      color: var(--text);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .lang-toggle:hover { transform: translateY(-2px); }
+
     .brand {
       display: flex;
       align-items: center;
@@ -518,6 +541,8 @@
       .portal-copy { font-size: 14px; }
       .hero-actions { flex-direction: column; }
       .btn { width: 100%; }
+      .topbar { flex-direction: column; align-items: stretch; }
+      .lang-toggle { width: 100%; }
     }
   </style>
 </head>
@@ -526,21 +551,27 @@
     <section class="hero-card">
       <div class="hero-content">
         <div>
-          <div class="brand">
-            <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-            <div class="brand-text">
-              <h1>تطبيق نبض</h1>
-              <p>منصة صحية ذكية لتنظيم الوصول والرعاية</p>
+          <div class="topbar">
+            <div class="brand">
+              <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+              <div class="brand-text">
+                <h1 data-key="appName">تطبيق نبض</h1>
+                <p data-key="appDesc">منصة صحية ذكية لتنظيم الوصول والرعاية</p>
+              </div>
             </div>
+
+            <button id="langToggle" class="lang-toggle" type="button">🌐 EN</button>
           </div>
 
           <div class="hero-copy">
             <div class="eyebrow">
               <i class="fa-solid fa-bolt"></i>
-              تجربة دخول مرتبة وسريعة
+              <span data-key="eyebrowText">تجربة دخول مرتبة وسريعة</span>
             </div>
-            <h2>مرحبًا بك في تطبيق نبض</h2>
-            <p>
+
+            <h2 data-key="welcomeTitle">مرحبًا بك في تطبيق نبض</h2>
+
+            <p data-key="welcomeText">
               ابدأ رحلتك من شاشة افتتاحية أنيقة وواضحة. من هنا يمكن للطبيب أو للمريض الوصول بسرعة إلى المسار الصحيح
               داخل التطبيق، بدون تعقيد وبواجهة مريحة بصريًا وسهلة جدًا في الاستخدام.
             </p>
@@ -548,30 +579,28 @@
             <div class="hero-actions">
               <button id="openLoginOptions" class="btn btn-primary" type="button">
                 <i class="fa-solid fa-right-to-bracket"></i>
-                تسجيل الدخول
+                <span data-key="loginBtn">تسجيل الدخول</span>
               </button>
+
               <button id="scrollToOptions" class="btn btn-secondary" type="button">
                 <i class="fa-solid fa-compass"></i>
-                استعراض الخيارات
+                <span data-key="exploreBtn">استعراض الخيارات</span>
               </button>
             </div>
           </div>
-          <button id="langToggle"
-            style="padding:8px 14px; border-radius:12px; border:1px solid #e5e7eb; background:white; font-weight:800; cursor:pointer;">
-            🌐 EN
-          </button>
+
           <div class="hero-stats">
             <div class="stat">
-              <strong>واجهة واضحة</strong>
-              <span>تنقل مباشر من الصفحة الترحيبية إلى نوع الحساب المناسب.</span>
+              <strong data-key="stat1Title">واجهة واضحة</strong>
+              <span data-key="stat1Text">تنقل مباشر من الصفحة الترحيبية إلى نوع الحساب المناسب.</span>
             </div>
             <div class="stat">
-              <strong>دخول منفصل</strong>
-              <span>مسار مخصص للدكاترة ومسار مستقل للمرضى أو المستخدمين.</span>
+              <strong data-key="stat2Title">دخول منفصل</strong>
+              <span data-key="stat2Text">مسار مخصص للدكاترة ومسار مستقل للمرضى أو المستخدمين.</span>
             </div>
             <div class="stat">
-              <strong>تجربة مريحة</strong>
-              <span>تصميم نظيف، سريع، ومتجاوب على الجوال والكمبيوتر.</span>
+              <strong data-key="stat3Title">تجربة مريحة</strong>
+              <span data-key="stat3Text">تصميم نظيف، سريع، ومتجاوب على الجوال والكمبيوتر.</span>
             </div>
           </div>
         </div>
@@ -583,8 +612,8 @@
             <div class="floating-head">
               <div class="floating-icon"><i class="fa-solid fa-user-doctor"></i></div>
               <div>
-                <p class="floating-title">بوابة الدكاترة</p>
-                <p class="floating-subtitle">دخول آمن للطبيب مع وصول مباشر إلى واجهة الإدارة والمتابعة.</p>
+                <p class="floating-title" data-key="floating1Title">بوابة الدكاترة</p>
+                <p class="floating-subtitle" data-key="floating1Text">دخول آمن للطبيب مع وصول مباشر إلى واجهة الإدارة والمتابعة.</p>
               </div>
             </div>
           </div>
@@ -593,8 +622,8 @@
             <div class="floating-head">
               <div class="floating-icon"><i class="fa-solid fa-user"></i></div>
               <div>
-                <p class="floating-title">بوابة المرضى</p>
-                <p class="floating-subtitle">وصول سريع للمستخدمين والمرضى لتسجيل الدخول وإدارة الخدمات.</p>
+                <p class="floating-title" data-key="floating2Title">بوابة المرضى</p>
+                <p class="floating-subtitle" data-key="floating2Text">وصول سريع للمستخدمين والمرضى لتسجيل الدخول وإدارة الخدمات.</p>
               </div>
             </div>
           </div>
@@ -603,8 +632,8 @@
             <div class="floating-head">
               <div class="floating-icon"><i class="fa-solid fa-shield-heart"></i></div>
               <div>
-                <p class="floating-title">بداية منظمة</p>
-                <p class="floating-subtitle">نقطة دخول واحدة ثم اختيار واضح حسب نوع الحساب.</p>
+                <p class="floating-title" data-key="floating3Title">بداية منظمة</p>
+                <p class="floating-subtitle" data-key="floating3Text">نقطة دخول واحدة ثم اختيار واضح حسب نوع الحساب.</p>
               </div>
             </div>
           </div>
@@ -615,13 +644,13 @@
     <section id="loginOptionsSection" class="choice-card">
       <div class="choice-top">
         <div>
-          <h3>اختر نوع تسجيل الدخول</h3>
-          <p>حدد المسار المناسب لك للانتقال إلى صفحة تسجيل الدخول الخاصة بالدكاترة أو المرضى/المستخدمين.</p>
+          <h3 data-key="chooseLoginType">اختر نوع تسجيل الدخول</h3>
+          <p data-key="chooseLoginText">حدد المسار المناسب لك للانتقال إلى صفحة تسجيل الدخول الخاصة بالدكاترة أو المرضى/المستخدمين.</p>
         </div>
 
         <button id="backToWelcome" class="back-button" type="button">
           <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
-          رجوع
+          <span data-key="backBtn">رجوع</span>
         </button>
       </div>
 
@@ -631,26 +660,25 @@
             <div class="portal-head">
               <div class="portal-icon doctor-icon"><i class="fa-solid fa-user-doctor"></i></div>
               <div>
-                <h4 class="portal-title">دخول الدكاترة</h4>
+                <h4 class="portal-title" data-key="doctorPortal">دخول الدكاترة</h4>
               </div>
             </div>
 
-            <p class="portal-copy">
-              هذا المسار مخصص للأطباء للوصول إلى لوحة التحكم، متابعة الحجوزات، الموافقة أو الرفض،
-              وإدارة المواعيد بطريقة احترافية ومنظمة.
+            <p class="portal-copy" data-key="doctorPortalText">
+              هذا المسار مخصص للأطباء للوصول إلى لوحة التحكم، متابعة الحجوزات، الموافقة أو الرفض، وإدارة المواعيد بطريقة احترافية ومنظمة.
             </p>
 
             <div class="portal-list">
-              <span><i class="fa-solid fa-circle-check"></i>لوحة تحكم خاصة بالطبيب</span>
-              <span><i class="fa-solid fa-circle-check"></i>إدارة الحجوزات والموافقة عليها</span>
-              <span><i class="fa-solid fa-circle-check"></i>متابعة الحالات والمواعيد مباشرة</span>
+              <span><i class="fa-solid fa-circle-check"></i><span data-key="doctorPoint1">لوحة تحكم خاصة بالطبيب</span></span>
+              <span><i class="fa-solid fa-circle-check"></i><span data-key="doctorPoint2">إدارة الحجوزات والموافقة عليها</span></span>
+              <span><i class="fa-solid fa-circle-check"></i><span data-key="doctorPoint3">متابعة الحالات والمواعيد مباشرة</span></span>
             </div>
           </div>
 
           <div class="portal-actions">
             <button id="goDoctorLogin" class="portal-button doctor" type="button">
               <i class="fa-solid fa-right-to-bracket"></i>
-              تسجيل دخول الدكاترة
+              <span data-key="doctorLoginBtn">تسجيل دخول الدكاترة</span>
             </button>
           </div>
         </article>
@@ -660,26 +688,25 @@
             <div class="portal-head">
               <div class="portal-icon user-icon"><i class="fa-solid fa-user"></i></div>
               <div>
-                <h4 class="portal-title">دخول المرضى / المستخدمين</h4>
+                <h4 class="portal-title" data-key="userPortal">دخول المرضى / المستخدمين</h4>
               </div>
             </div>
 
-            <p class="portal-copy">
-              هذا المسار مخصص للمرضى أو المستخدمين للوصول إلى صفحة تسجيل الدخول الخاصة بهم،
-              ومن ثم استخدام خدمات التطبيق مثل الحجز والمتابعة والتنبيهات.
+            <p class="portal-copy" data-key="userPortalText">
+              هذا المسار مخصص للمرضى أو المستخدمين للوصول إلى صفحة تسجيل الدخول الخاصة بهم، ومن ثم استخدام خدمات التطبيق مثل الحجز والمتابعة والتنبيهات.
             </p>
 
             <div class="portal-list">
-              <span><i class="fa-solid fa-circle-check"></i>تسجيل دخول مخصص للمستخدم</span>
-              <span><i class="fa-solid fa-circle-check"></i>الوصول للحجز والخدمات الصحية</span>
-              <span><i class="fa-solid fa-circle-check"></i>واجهة بسيطة وسهلة وواضحة</span>
+              <span><i class="fa-solid fa-circle-check"></i><span data-key="userPoint1">تسجيل دخول مخصص للمستخدم</span></span>
+              <span><i class="fa-solid fa-circle-check"></i><span data-key="userPoint2">الوصول للحجز والخدمات الصحية</span></span>
+              <span><i class="fa-solid fa-circle-check"></i><span data-key="userPoint3">واجهة بسيطة وسهلة وواضحة</span></span>
             </div>
           </div>
 
           <div class="portal-actions">
             <button id="goUserLogin" class="portal-button user" type="button">
               <i class="fa-solid fa-right-to-bracket"></i>
-              تسجيل دخول المرضى والمستخدمين
+              <span data-key="userLoginBtn">تسجيل دخول المرضى والمستخدمين</span>
             </button>
           </div>
         </article>
@@ -694,6 +721,7 @@
     const loginOptionsSection = document.getElementById("loginOptionsSection");
     const goDoctorLogin = document.getElementById("goDoctorLogin");
     const goUserLogin = document.getElementById("goUserLogin");
+    const langToggle = document.getElementById("langToggle");
 
     function showOptions() {
       loginOptionsSection.classList.add("active");
@@ -716,51 +744,107 @@
     goUserLogin.addEventListener("click", () => {
       window.location.href = "login_Patient.html";
     });
+
     const translations = {
-      en: {
-        logout: "Logout",
-        refresh: "Refresh bookings"
-      },
       ar: {
-        logout: "تسجيل الخروج",
-        refresh: "تحديث الحجوزات"
+        pageTitle: "نبض | الصفحة الرئيسية",
+        appName: "تطبيق نبض",
+        appDesc: "منصة صحية ذكية لتنظيم الوصول والرعاية",
+        eyebrowText: "تجربة دخول مرتبة وسريعة",
+        welcomeTitle: "مرحبًا بك في تطبيق نبض",
+        welcomeText: "ابدأ رحلتك من شاشة افتتاحية أنيقة وواضحة. من هنا يمكن للطبيب أو للمريض الوصول بسرعة إلى المسار الصحيح داخل التطبيق، بدون تعقيد وبواجهة مريحة بصريًا وسهلة جدًا في الاستخدام.",
+        loginBtn: "تسجيل الدخول",
+        exploreBtn: "استعراض الخيارات",
+        stat1Title: "واجهة واضحة",
+        stat1Text: "تنقل مباشر من الصفحة الترحيبية إلى نوع الحساب المناسب.",
+        stat2Title: "دخول منفصل",
+        stat2Text: "مسار مخصص للدكاترة ومسار مستقل للمرضى أو المستخدمين.",
+        stat3Title: "تجربة مريحة",
+        stat3Text: "تصميم نظيف، سريع، ومتجاوب على الجوال والكمبيوتر.",
+        floating1Title: "بوابة الدكاترة",
+        floating1Text: "دخول آمن للطبيب مع وصول مباشر إلى واجهة الإدارة والمتابعة.",
+        floating2Title: "بوابة المرضى",
+        floating2Text: "وصول سريع للمستخدمين والمرضى لتسجيل الدخول وإدارة الخدمات.",
+        floating3Title: "بداية منظمة",
+        floating3Text: "نقطة دخول واحدة ثم اختيار واضح حسب نوع الحساب.",
+        chooseLoginType: "اختر نوع تسجيل الدخول",
+        chooseLoginText: "حدد المسار المناسب لك للانتقال إلى صفحة تسجيل الدخول الخاصة بالدكاترة أو المرضى/المستخدمين.",
+        backBtn: "رجوع",
+        doctorPortal: "دخول الدكاترة",
+        doctorPortalText: "هذا المسار مخصص للأطباء للوصول إلى لوحة التحكم، متابعة الحجوزات، الموافقة أو الرفض، وإدارة المواعيد بطريقة احترافية ومنظمة.",
+        doctorPoint1: "لوحة تحكم خاصة بالطبيب",
+        doctorPoint2: "إدارة الحجوزات والموافقة عليها",
+        doctorPoint3: "متابعة الحالات والمواعيد مباشرة",
+        doctorLoginBtn: "تسجيل دخول الدكاترة",
+        userPortal: "دخول المرضى / المستخدمين",
+        userPortalText: "هذا المسار مخصص للمرضى أو المستخدمين للوصول إلى صفحة تسجيل الدخول الخاصة بهم، ومن ثم استخدام خدمات التطبيق مثل الحجز والمتابعة والتنبيهات.",
+        userPoint1: "تسجيل دخول مخصص للمستخدم",
+        userPoint2: "الوصول للحجز والخدمات الصحية",
+        userPoint3: "واجهة بسيطة وسهلة وواضحة",
+        userLoginBtn: "تسجيل دخول المرضى والمستخدمين"
+      },
+      en: {
+        pageTitle: "Nabd | Home",
+        appName: "Nabd App",
+        appDesc: "A smart healthcare platform for organized access and care",
+        eyebrowText: "Smooth and organized login experience",
+        welcomeTitle: "Welcome to Nabd App",
+        welcomeText: "Start your journey from an elegant and clear opening screen. From here, both doctors and patients can quickly reach the correct path inside the app with no complexity and with a visually comfortable, easy-to-use interface.",
+        loginBtn: "Login",
+        exploreBtn: "Explore options",
+        stat1Title: "Clear interface",
+        stat1Text: "Direct navigation from the welcome page to the correct account type.",
+        stat2Title: "Separate access",
+        stat2Text: "A dedicated path for doctors and an independent path for patients or users.",
+        stat3Title: "Comfortable experience",
+        stat3Text: "Clean, fast, and responsive design on mobile and desktop.",
+        floating1Title: "Doctors portal",
+        floating1Text: "Secure doctor access with direct entry to management and follow-up.",
+        floating2Title: "Patients portal",
+        floating2Text: "Quick access for users and patients to sign in and manage services.",
+        floating3Title: "Organized start",
+        floating3Text: "A single entry point, then a clear choice based on the account type.",
+        chooseLoginType: "Choose login type",
+        chooseLoginText: "Select the path that suits you to go to the doctor login page or the patient/user login page.",
+        backBtn: "Back",
+        doctorPortal: "Doctors Login",
+        doctorPortalText: "This path is dedicated to doctors to access the dashboard, review bookings, approve or reject requests, and manage appointments professionally.",
+        doctorPoint1: "Private doctor dashboard",
+        doctorPoint2: "Manage and approve bookings",
+        doctorPoint3: "Track cases and appointments directly",
+        doctorLoginBtn: "Doctors Login",
+        userPortal: "Patients / Users Login",
+        userPortalText: "This path is dedicated to patients or users to access their login page, then use app services such as booking, follow-up, and notifications.",
+        userPoint1: "Dedicated user login",
+        userPoint2: "Access bookings and health services",
+        userPoint3: "Simple and clear interface",
+        userLoginBtn: "Patients / Users Login"
       }
     };
-    
+
     function applyLanguage(lang) {
       localStorage.setItem("app_lang", lang);
-    
-      // اتجاه الصفحة
+
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-    
-      const t = translations[lang];
-    
-      // غير النصوص
-      const logoutBtn = document.getElementById("logoutButton");
-      const refreshBtn = document.getElementById("refreshButton");
-    
-      if (logoutBtn) {
-        logoutBtn.innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i> ${t.logout}`;
-      }
-    
-      if (refreshBtn) {
-        refreshBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> ${t.refresh}`;
-      }
-    
-      // نص الزر
-      document.getElementById("langToggle").textContent =
-        lang === "ar" ? "🌐 EN" : "🌐 AR";
+      document.title = translations[lang].pageTitle;
+
+      document.querySelectorAll("[data-key]").forEach(el => {
+        const key = el.getAttribute("data-key");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      langToggle.textContent = lang === "ar" ? "🌐 EN" : "🌐 AR";
     }
-    
-    // تحميل اللغة المحفوظة
-    const savedLang = localStorage.getItem("app_lang") || "en";
+
+    const savedLang = localStorage.getItem("app_lang") || "ar";
     applyLanguage(savedLang);
-    
-    // عند الضغط
-    document.getElementById("langToggle").addEventListener("click", () => {
-      const current = localStorage.getItem("app_lang") || "en";
-      const next = current === "en" ? "ar" : "en";
+
+    langToggle.addEventListener("click", () => {
+      const current = localStorage.getItem("app_lang") || "ar";
+      const next = current === "ar" ? "en" : "ar";
       applyLanguage(next);
     });
   </script>
