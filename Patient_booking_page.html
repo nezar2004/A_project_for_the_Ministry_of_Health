@@ -1527,7 +1527,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	window.saveBookingToFirebase = saveBookingToFirebase;
 	
   const authApp = initializeApp(authFirebaseConfig);
-  const dataApp = initializeApp(dataFirebaseConfig, "dataApp");
+  const dataApp = initializeApp(firebaseConfig, "dataApp");
   const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
 
   const auth = getAuth(authApp);
@@ -1570,7 +1570,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   async function loadFirebaseData() {
     try {
       console.log("START loadFirebaseData");
-      console.log("projectId =", dataFirebaseConfig.projectId);
+      console.log("projectId =", firebaseConfig.projectId);
 
       const hospitalsSnap = await getDocs(collection(db, "hospitals"));
       console.log("hospitalsSnap.size =", hospitalsSnap.size);
