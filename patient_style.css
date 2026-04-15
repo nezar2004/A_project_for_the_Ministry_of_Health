@@ -394,7 +394,7 @@
     }
 
     .link {
-      color: var(--primary);
+      color: var(--primary-dark);
       cursor: pointer;
       font-size: 14px;
       text-decoration: none;
