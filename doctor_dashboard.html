@@ -1245,14 +1245,14 @@
       onSnapshot
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const authFirebaseConfig = {
-      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-      authDomain: "nabdapp-3a077.firebaseapp.com",
-      projectId: "nabdapp-3a077",
-      storageBucket: "nabdapp-3a077.appspot.com",
-      messagingSenderId: "675031985272",
-      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
-    };
+    const doctorFirebaseConfig = {
+	  apiKey: "AIzaSyClPA_4ZjzUrnERb_k-6yBtgb9AB7QIryA",
+	  authDomain: "dataofhosp.firebaseapp.com",
+	  projectId: "dataofhosp",
+	  storageBucket: "dataofhosp.firebasestorage.app",
+	  messagingSenderId: "908860921572",
+	  appId: "1:908860921572:web:1fce145520ef5ecd7b7ef1"
+	};
 
     const bookingsFirebaseConfig = {
       apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
@@ -1263,7 +1263,7 @@
       appId: "1:305140405001:web:7e54658907133ef9ff39d8"
     };
 
-    const authApp = initializeApp(authFirebaseConfig);
+    const authApp = initializeApp(doctorFirebaseConfig);
     const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
     const auth = getAuth(authApp);
     const bookingsDb = getFirestore(bookingsApp);
@@ -1463,26 +1463,49 @@
         return haystack.includes(term);
       });
     }
+	function getDoctorWorkplaces() {
+	  const hospitals = [...new Set(
+		state.bookings
+		  .map(b => String(b.hospital_name || "").trim())
+		  .filter(Boolean)
+	  )];
 
+	  const departments = [...new Set(
+		state.bookings
+		  .map(b => String(b.department_title || "").trim())
+		  .filter(Boolean)
+	  )];
+
+	  return { hospitals, departments };
+	}
     function updateDoctorCard() {
-      const profile = state.doctorProfile || manualDoctorFallback;
-      const name = profile.name || profile.doctor_name || "Doctor";
-      const hospital = profile.hospital_name || "Hospital not assigned";
-      const department = profile.department_title || "Department not assigned";
-      const specialty = profile.specialty || "General";
-      const available = !!profile.available;
+	  const profile = state.doctorProfile || manualDoctorFallback;
+	  const name = profile.name || profile.doctor_name || "Doctor";
+	  const specialty = profile.specialty || "General";
+	  const available = !!profile.available;
 
-      elements.doctorAvatar.textContent = getInitials(name);
-      elements.doctorName.textContent = name;
-      elements.doctorSubline.textContent = `${hospital} · ${department} · ${specialty}`;
-      elements.availabilityButton.classList.toggle("online", available);
-      elements.availabilityButton.classList.toggle("offline", !available);
-      elements.availabilityLabel.textContent = available ? "Available" : "Offline";
+	  const { hospitals, departments } = getDoctorWorkplaces();
 
-      document.body.style.background = available
-        ? "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.09), transparent 18%), var(--bg)"
-        : "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.06), transparent 18%), var(--bg)";
-    }
+	  const hospitalsText = hospitals.length
+		? hospitals.join(" | ")
+		: (profile.hospital_name || "Hospital not assigned");
+
+	  const departmentsText = departments.length
+		? departments.join(" | ")
+		: (profile.department_title || "Department not assigned");
+
+	  elements.doctorAvatar.textContent = getInitials(name);
+	  elements.doctorName.textContent = name;
+	  elements.doctorSubline.textContent = `${hospitalsText} · ${departmentsText} · ${specialty}`;
+
+	  elements.availabilityButton.classList.toggle("online", available);
+	  elements.availabilityButton.classList.toggle("offline", !available);
+	  elements.availabilityLabel.textContent = available ? "Available" : "Offline";
+
+	  document.body.style.background = available
+		? "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.09), transparent 18%), var(--bg)"
+		: "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.06), transparent 18%), var(--bg)";
+	}
 
     function updateStats() {
       const bookings = state.bookings;
@@ -1696,6 +1719,7 @@
         state.bookings = filtered;
         state.lastSeenIds = currentIds;
         state.hasLiveBooted = true;
+		updateDoctorCard();
         updateStats();
         renderBookingsTable();
 
