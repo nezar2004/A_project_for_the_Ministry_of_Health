@@ -2968,14 +2968,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		let firebaseBookings = [];
 
 		if (uid) {
+		  console.log("UID used for bookings =", uid);
+		  console.log("auth.currentUser?.uid =", auth.currentUser?.uid);
+		  console.log("window.currentUserUid =", window.currentUserUid);
+		  console.log("localStorage currentUserUid =", localStorage.getItem("currentUserUid"));
+
 		  const snap = await window.getDocs(
 			window.collection(window.bookingsDb, "users", uid, "bookings")
 		  );
+
+		  console.log("Firebase bookings count =", snap.size);
 
 		  firebaseBookings = snap.docs.map(doc => ({
 			id: doc.id,
 			...doc.data()
 		  }));
+
+		  console.log("Firebase bookings data =", firebaseBookings);
+		} else {
+		  console.log("No UID found for renderBookings");
 		}
 
 		const allBookings = [...firebaseBookings];
