@@ -2955,7 +2955,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  const bookingsBody = document.getElementById("bookingsListBody");
 	  if (!bookingsBody) return;
 
-	  bookingsBody.innerHTML = "Loading...";
+	  bookingsBody.innerHTML = "Loading.";
 
 	  try {
 		const localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
