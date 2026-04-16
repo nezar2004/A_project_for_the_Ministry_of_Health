@@ -1675,7 +1675,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 		  hospital_name: bookingState.hospital?.name || "",
 		  department_title: bookingState.department?.title || "",
-		  doctor_name: bookingState.doctor?.doctor_name || "",
+		  doctor_name: bookingState.doctor?.name || bookingState.doctor?.doctor_name || "",
 		  doctor_id: bookingState.doctor?.id || "",
 
 		  date: bookingState.date || "",
@@ -2120,6 +2120,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 			...docRaw,
 			docId: docDoc.id,
 			id: docRaw.id ?? docDoc.id,
+			name: docRaw.name || docRaw.doctor_name || "",
+			slotDuration: docRaw.slotDuration || 30,
 			hospital_id: bookingState.hospital.id,
 			dept_id: bookingState.department.id
 		  };
@@ -2174,7 +2176,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 		card.innerHTML = `
 		  <div>
-			<strong>${escapeHtml(doc.doctor_name)}</strong>
+			<strong>${escapeHtml(doc.name || doc.doctor_name || "")}</strong>
 			<div class="small text-muted">
 			  Duration: ${escapeHtml(doc.slotDuration || 30)} min
 			</div>
