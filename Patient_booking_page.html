@@ -1511,13 +1511,21 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		  user_email: (user.email || "").trim().toLowerCase()
 		};
 
-		const docRef = await addDoc(
+		const userDocRef = await addDoc(
 		  collection(bookingsDb, "users", user.uid, "bookings"),
 		  booking
 		);
 
-		console.log("🔥 booking saved", docRef.id);
-		return docRef.id;
+		await addDoc(
+		  collection(bookingsDb, "allBookings"),
+		  {
+			...booking,
+			source_booking_doc_id: userDocRef.id
+		  }
+		);
+
+		console.log("🔥 booking saved", userDocRef.id);
+		return userDocRef.id;
 	  } catch (error) {
 		console.error("❌ error:", error);
 		throw error;
@@ -1676,7 +1684,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		  hospital_name: bookingState.hospital?.name || "",
 		  department_title: bookingState.department?.title || "",
 		  doctor_name: bookingState.doctor?.name || bookingState.doctor?.doctor_name || "",
-		  doctor_id: bookingState.doctor?.id || "",
+		  doctor_id: bookingState.doctor?.doctorKey || bookingState.doctor?.id || "",
+		  doctor_email: bookingState.doctor?.email || "",
 
 		  date: bookingState.date || "",
 		  time: bookingState.time || "",
@@ -2116,12 +2125,20 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 		doctors = doctorsSnap.docs.map(docDoc => {
 		  const docRaw = docDoc.data();
+
 		  return {
 			...docRaw,
 			docId: docDoc.id,
-			id: docRaw.id ?? docDoc.id,
+
+			// نخلي id هو المفتاح الثابت للدكتور إن وجد
+			id: docRaw.doctorKey ?? docRaw.id ?? docDoc.id,
+
+			// نخزنهم صراحة عشان نستخدمهم وقت الحجز
+			doctorKey: docRaw.doctorKey ?? docRaw.id ?? docDoc.id,
 			name: docRaw.name || docRaw.doctor_name || "",
+			email: (docRaw.email || "").trim().toLowerCase(),
 			slotDuration: docRaw.slotDuration || 30,
+
 			hospital_id: bookingState.hospital.id,
 			dept_id: bookingState.department.id
 		  };
