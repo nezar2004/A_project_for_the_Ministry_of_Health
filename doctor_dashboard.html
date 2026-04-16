@@ -1786,39 +1786,53 @@
     }
 
     async function updateBookingStatus(status, extra = {}) {
-      const booking = state.selectedBooking;
-      if (!booking) {
-        showToast("No booking selected", "Open a booking first, then apply an action.");
-        return;
-      }
+	  const booking = state.selectedBooking;
+	  if (!booking) {
+		showToast("No booking selected", "Open a booking first, then apply an action.");
+		return;
+	  }
 
-      try {
-        const payload = {
-          status,
-          updatedAt: serverTimestamp(),
-          reviewed_by_uid: state.authUser?.uid || null,
-          reviewed_by_name: state.doctorProfile?.name || "Doctor",
-          ...extra
-        };
+	  try {
+		const payload = {
+		  status,
+		  updatedAt: serverTimestamp(),
+		  reviewed_by_uid: state.authUser?.uid || null,
+		  reviewed_by_name: state.doctorProfile?.name || "Doctor",
+		  ...extra
+		};
 
-        const bookingRef = doc(bookingsDb, "allBookings", booking.id);
-        await updateDoc(bookingRef, payload);
+		// 1) تحديث allBookings
+		const bookingRef = doc(bookingsDb, "allBookings", booking.id);
+		await updateDoc(bookingRef, payload);
 
-        state.bookings = state.bookings.map(item =>
-          item.id === booking.id ? { ...item, ...extra, status } : item
-        );
+		// 2) تحديث نسخة المستخدم
+		if (booking.user_uid && booking.source_booking_doc_id) {
+		  const userBookingRef = doc(
+			bookingsDb,
+			"users",
+			booking.user_uid,
+			"bookings",
+			booking.source_booking_doc_id
+		  );
 
-        const updated = state.bookings.find(item => item.id === booking.id);
-        state.selectedBooking = updated;
-        fillDrawer(updated);
-        updateStats();
-        renderBookingsTable();
-        showToast("Booking updated", `The booking status is now ${status.toLowerCase()}.`);
-      } catch (error) {
-        console.error("Booking action error:", error);
-        showToast("Action failed", error.message || "The booking could not be updated.");
-      }
-    }
+		  await updateDoc(userBookingRef, payload);
+		}
+
+		state.bookings = state.bookings.map(item =>
+		  item.id === booking.id ? { ...item, ...payload } : item
+		);
+
+		const updated = state.bookings.find(item => item.id === booking.id);
+		state.selectedBooking = updated;
+		fillDrawer(updated);
+		updateStats();
+		renderBookingsTable();
+		showToast("Booking updated", `The booking status is now ${status.toLowerCase()}.`);
+	  } catch (error) {
+		console.error("Booking action error:", error);
+		showToast("Action failed", error.message || "The booking could not be updated.");
+	  }
+	}
 
     async function approveSelectedBooking() {
       await updateBookingStatus("APPROVED", {
@@ -1908,7 +1922,7 @@
 
       onAuthStateChanged(auth, async (user) => {
         if (!user) {
-          window.location.href = "doctor_login.html";
+          window.location.href = "doctor-login.html";
           return;
         }
 
