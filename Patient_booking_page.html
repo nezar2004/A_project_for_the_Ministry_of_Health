@@ -1675,7 +1675,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 		  hospital_name: bookingState.hospital?.name || "",
 		  department_title: bookingState.department?.title || "",
-		  doctor_name: bookingState.doctor?.name || "",
+		  doctor_name: bookingState.doctor?.doctor_name || "",
 		  doctor_id: bookingState.doctor?.id || "",
 
 		  date: bookingState.date || "",
@@ -2174,7 +2174,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 		card.innerHTML = `
 		  <div>
-			<strong>${escapeHtml(doc.name)}</strong>
+			<strong>${escapeHtml(doc.doctor_name)}</strong>
 			<div class="small text-muted">
 			  Duration: ${escapeHtml(doc.slotDuration || 30)} min
 			</div>
