@@ -1492,14 +1492,14 @@
 
 	  const hospitalsText = hospitals.length
 		? hospitals.join(" | ")
-		: (profile.hospital_name || "Hospital not assigned");
+		: (profile.hospital_name || profile.hospitalName || "Hospital not assigned");
 
 	  const departmentsText = departments.length
 		? departments.join(" | ")
-		: (profile.department_title || "Department not assigned");
+		: (profile.department_title || profile.departmentName || "Department not assigned");
 
 	  elements.doctorAvatar.textContent = getInitials(name);
-	  const name = profile.name || profile.doctor_name || "Doctor";
+	  elements.doctorName.textContent = name;
 	  elements.doctorSubline.textContent = `${hospitalsText} · ${departmentsText} · ${specialty}`;
 
 	  elements.availabilityButton.classList.toggle("online", available);
