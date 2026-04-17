@@ -1065,9 +1065,8 @@
           <div class="hero-copy">
             <h3>Manage your appointments with clarity and speed</h3>
             <p>
-              Review every booking request, confirm or reject in one tap, and reschedule with a cleaner workflow.
-              Full patient details appear only when you open the booking card, so the main table stays tidy and easy to scan.
-            </p>
+			  Manage your appointments with ease — review requests, respond instantly, and keep your schedule organized in one clear dashboard.
+			</p>
           </div>
 
           <div class="hero-actions">
@@ -1611,85 +1610,44 @@
     async function findDoctorProfile(user) {
 	  const normalizedEmail = String(user.email || "").trim().toLowerCase();
 
-	  // 1) محاولة من uid
-	  const directRef = doc(bookingsDb, "doctors", user.uid);
-	  const directSnap = await getDoc(directRef);
-
-	  if (directSnap.exists()) {
-		const data = directSnap.data();
-
-		const foundName =
-		  data.name ||
-		  data.doctor_name ||
-		  data.doctorName ||
-		  "";
-
-		// إذا الاسم فعلي ومش fallback
-		if (foundName && foundName !== "Doctor") {
-		  return {
-			id: directSnap.id,
-			...data,
-			doctor_id: data.doctor_id || data.doctorKey || directSnap.id,
-			user_uid: user.uid,
-			email: String(user.email || data.email || "").trim().toLowerCase(),
-			name: foundName,
-			hospital_name: data.hospital_name || data.hospitalName || "Hospital not assigned",
-			department_title: data.department_title || data.departmentName || "Department not assigned",
-			specialty: data.specialty || data.department_title || data.departmentName || "General"
-		  };
-		}
-	  }
-
-	  // 2) محاولة من الإيميل
-	  const byEmailQuery = query(
-		collection(bookingsDb, "doctors"),
-		where("email", "==", normalizedEmail)
-	  );
-	  const emailSnap = await getDocs(byEmailQuery);
-
-	  if (!emailSnap.empty) {
-		const first = emailSnap.docs[0];
-		const data = first.data();
-
-		return {
-		  id: first.id,
-		  ...data,
-		  doctor_id: data.doctor_id || data.doctorKey || first.id,
-		  user_uid: user.uid,
-		  email: normalizedEmail,
-		  name: data.name || data.doctor_name || data.doctorName || "Doctor",
-		  hospital_name: data.hospital_name || data.hospitalName || "Hospital not assigned",
-		  department_title: data.department_title || data.departmentName || "Department not assigned",
-		  specialty: data.specialty || data.department_title || data.departmentName || "General"
-		};
-	  }
-
-	  // 3) محاولة من allBookings
 	  const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
-	  const matchedBooking = bookingsSnap.docs
-		.map(d => ({ id: d.id, ...d.data() }))
-		.find(item => String(item.doctor_email || "").trim().toLowerCase() === normalizedEmail);
 
-	  if (matchedBooking) {
+	  const doctorBookings = bookingsSnap.docs
+		.map(d => ({ id: d.id, ...d.data() }))
+		.filter(item =>
+		  String(item.doctor_email || item.doctorEmail || "")
+			.trim()
+			.toLowerCase() === normalizedEmail
+		);
+
+	  if (doctorBookings.length) {
+		const latestBooking = doctorBookings.sort((a, b) => {
+		  const aTime = a.updatedAt?.seconds || a.createdAt?.seconds || 0;
+		  const bTime = b.updatedAt?.seconds || b.createdAt?.seconds || 0;
+		  return bTime - aTime;
+		})[0];
+
 		return {
-		  doctor_id: matchedBooking.doctor_id || matchedBooking.doctorKey || user.uid,
-		  name: matchedBooking.doctor_name || matchedBooking.name || user.displayName || "Doctor",
-		  hospital_name: matchedBooking.hospital_name || matchedBooking.hospitalName || "Hospital not assigned",
-		  department_title: matchedBooking.department_title || matchedBooking.departmentName || "Department not assigned",
-		  specialty: matchedBooking.specialty || matchedBooking.department_title || matchedBooking.departmentName || "General",
+		  doctor_id: latestBooking.doctor_id || latestBooking.doctorKey || user.uid,
+		  name: latestBooking.doctor_name || latestBooking.doctorName || "Doctor",
+		  hospital_name: latestBooking.hospital_name || latestBooking.hospitalName || "Hospital not assigned",
+		  department_title: latestBooking.department_title || latestBooking.departmentName || "Department not assigned",
+		  specialty: latestBooking.specialty || latestBooking.department_title || latestBooking.departmentName || "General",
 		  available: false,
 		  email: normalizedEmail,
 		  user_uid: user.uid
 		};
 	  }
 
-	  // 4) fallback
 	  return {
-		...manualDoctorFallback,
 		doctor_id: user.uid,
-		user_uid: user.uid,
+		name: user.displayName || "Doctor",
+		hospital_name: "Hospital not assigned",
+		department_title: "Department not assigned",
+		specialty: "General",
+		available: false,
 		email: normalizedEmail,
-		name: user.displayName || manualDoctorFallback.name
+		user_uid: user.uid
 	  };
 	}
 
@@ -1802,7 +1760,7 @@
           state.doctorProfile.user_uid = state.authUser.uid;
         }
 
-        await ensureDoctorProfileDocument(state.authUser, state.doctorProfile);
+			
         updateDoctorCard();
         subscribeToBookings();
 
