@@ -117,18 +117,20 @@
     }
 
     .avatar {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 20px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #0f172a, #334155);
-      flex-shrink: 0;
-      transition: transform .25s ease;
-    }
+	  width: 58px;
+	  height: 58px;
+	  border-radius: 18px;
+	  overflow: hidden;
+	  flex-shrink: 0;
+	  background: #e2e8f0;
+	}
+
+	.avatar img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	  display: block;
+	}
 
     .doctor-panel:hover .avatar { transform: scale(1.04) rotate(-2deg); }
 
@@ -1005,7 +1007,9 @@
 
       <section class="doctor-panel">
         <div class="doctor-top">
-          <div class="avatar" id="doctorAvatar">DR</div>
+          <div class="avatar">
+			<img id="doctorAvatarImage" src="https://i.pinimg.com/736x/6d/31/44/6d3144b4d6d0d8f6d9a4c7d6c4bb8e0e.jpg" alt="Doctor">
+		  </div>
           <div class="doctor-meta">
             <h2 id="doctorName">Loading doctor...</h2>
             <p id="doctorSubline">Hospital · Department · Specialty</p>
