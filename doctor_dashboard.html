@@ -1008,7 +1008,7 @@
       <section class="doctor-panel">
         <div class="doctor-top">
           <div class="avatar">
-			<img id="doctorAvatarImage" src="https://i.pinimg.com/736x/6d/31/44/6d3144b4d6d0d8f6d9a4c7d6c4bb8e0e.jpg" alt="Doctor">
+			<img id="doctorAvatarImage" src="https://www.pinterest.com/pin/477100154296966490/.jpg" alt="Doctor">
 		  </div>
           <div class="doctor-meta">
             <h2 id="doctorName">Loading doctor...</h2>
@@ -1425,7 +1425,7 @@
 
       const bookingDoctorId = String(booking.doctor_id || "");
       const bookingDoctorEmail = String(booking.doctor_email || "").trim().toLowerCase();
-      const bookingDoctorName = String(booking.doctor_name || "").trim().toLowerCase();
+      const bookingDoctorName = String(booking.doctor_name || booking.doctorName || "").trim().toLowerCase();
 
       const doctorId = String(state.doctorProfile.doctor_id || state.doctorId || "");
       const doctorEmail = String(state.authUser.email || state.doctorProfile.email || "").trim().toLowerCase();
@@ -1470,13 +1470,13 @@
 	function getDoctorWorkplaces() {
 	  const hospitals = [...new Set(
 		state.bookings
-		  .map(b => String(b.hospital_name || "").trim())
+		  .map(b => String(b.hospital_name || b.hospitalName || "").trim())
 		  .filter(Boolean)
 	  )];
 
 	  const departments = [...new Set(
 		state.bookings
-		  .map(b => String(b.department_title || "").trim())
+		  .map(b => String(b.department_title || b.departmentName || "").trim())
 		  .filter(Boolean)
 	  )];
 
@@ -1484,8 +1484,19 @@
 	}
     function updateDoctorCard() {
 	  const profile = state.doctorProfile || manualDoctorFallback;
-	  const name = profile.name || profile.doctor_name || "Doctor";
-	  const specialty = profile.specialty || "General";
+
+	  const name =
+		profile.name ||
+		profile.doctor_name ||
+		profile.doctorName ||
+		"Doctor";
+
+	  const specialty =
+		profile.specialty ||
+		profile.department_title ||
+		profile.departmentName ||
+		"General";
+
 	  const available = !!profile.available;
 
 	  const { hospitals, departments } = getDoctorWorkplaces();
@@ -1504,33 +1515,7 @@
 	  elements.availabilityButton.classList.toggle("online", available);
 	  elements.availabilityButton.classList.toggle("offline", !available);
 	  elements.availabilityLabel.textContent = available ? "Available" : "Offline";
-
-	  document.body.style.background = available
-		? "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.09), transparent 18%), var(--bg)"
-		: "radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%), radial-gradient(circle at left center, rgba(22, 163, 74, 0.06), transparent 18%), var(--bg)";
 	}
-
-    function updateStats() {
-      const bookings = state.bookings;
-      const counts = {
-        all: bookings.length,
-        pending: bookings.filter(b => normalizeStatus(b.status) === "PENDING").length,
-        approved: bookings.filter(b => normalizeStatus(b.status) === "APPROVED").length,
-        rejected: bookings.filter(b => normalizeStatus(b.status) === "REJECTED").length,
-        rescheduled: bookings.filter(b => normalizeStatus(b.status) === "RESCHEDULED").length,
-        today: bookings.filter(b => String(b.date || "") === todayDateString()).length
-      };
-
-      elements.statAll.textContent = counts.all;
-      elements.statPending.textContent = counts.pending;
-      elements.statApproved.textContent = counts.approved;
-      elements.statToday.textContent = counts.today;
-      elements.countAll.textContent = counts.all;
-      elements.countPending.textContent = counts.pending;
-      elements.countApproved.textContent = counts.approved;
-      elements.countRejected.textContent = counts.rejected;
-      elements.countRescheduled.textContent = counts.rescheduled;
-    }
 
     function renderBookingsTable() {
       const rows = getFilteredBookings();
@@ -1590,21 +1575,21 @@
     }
 
     function fillDrawer(booking) {
-      elements.detailPatientName.textContent = booking.customer_name || "-";
-      elements.detailPatientPhone.textContent = booking.customer_phone || "-";
-      elements.detailPatientEmail.textContent = booking.customer_email || "-";
-      elements.detailStatus.innerHTML = statusBadge(booking.status);
-      elements.detailBookingId.textContent = booking.booking_id || booking.id || "-";
-      elements.detailHospital.textContent = booking.hospital_name || "-";
-      elements.detailDepartment.textContent = booking.department_title || "-";
-      elements.detailDoctor.textContent = booking.doctor_name || state.doctorProfile?.name || "-";
-      elements.detailDate.textContent = booking.date || "-";
-      elements.detailTime.textContent = booking.time || "-";
-      elements.detailNote.textContent = booking.customer_note || "No note was added.";
-      elements.rescheduleDate.value = booking.date || "";
-      elements.rescheduleTime.value = booking.time || "";
-      elements.rescheduleReason.value = booking.reschedule_reason || "";
-    }
+	  elements.detailPatientName.textContent = booking.customer_name || booking.customerName || "-";
+	  elements.detailPatientPhone.textContent = booking.customer_phone || booking.customerPhone || "-";
+	  elements.detailPatientEmail.textContent = booking.customer_email || booking.customerEmail || "-";
+	  elements.detailStatus.innerHTML = statusBadge(booking.status);
+	  elements.detailBookingId.textContent = booking.booking_id || booking.bookingId || booking.id || "-";
+	  elements.detailHospital.textContent = booking.hospital_name || booking.hospitalName || "-";
+	  elements.detailDepartment.textContent = booking.department_title || booking.departmentName || "-";
+	  elements.detailDoctor.textContent = booking.doctor_name || booking.doctorName || state.doctorProfile?.name || "-";
+	  elements.detailDate.textContent = booking.date || "-";
+	  elements.detailTime.textContent = booking.time || "-";
+	  elements.detailNote.textContent = booking.customer_note || booking.customerNote || "No note was added.";
+	  elements.rescheduleDate.value = booking.date || "";
+	  elements.rescheduleTime.value = booking.time || "";
+	  elements.rescheduleReason.value = booking.reschedule_reason || "";
+	}
 
     function openDrawer(bookingId) {
       const booking = state.bookings.find(item => item.id === bookingId);
@@ -1624,76 +1609,117 @@
     }
 
     async function findDoctorProfile(user) {
-      const directRef = doc(bookingsDb, "doctors", user.uid);
-      const directSnap = await getDoc(directRef);
-      if (directSnap.exists()) {
-        return {
-          id: directSnap.id,
-          ...directSnap.data(),
-          doctor_id: directSnap.data().doctor_id || directSnap.id,
-          user_uid: user.uid,
-          email: String(user.email || directSnap.data().email || "").trim().toLowerCase()
-        };
-      }
+	  const normalizedEmail = String(user.email || "").trim().toLowerCase();
 
-      const normalizedEmail = String(user.email || "").trim().toLowerCase();
-      const byEmailQuery = query(collection(bookingsDb, "doctors"), where("email", "==", normalizedEmail));
-      const emailSnap = await getDocs(byEmailQuery);
-      if (!emailSnap.empty) {
-        const first = emailSnap.docs[0];
-        return {
-          id: first.id,
-          ...first.data(),
-          doctor_id: first.data().doctor_id || first.id,
-          user_uid: user.uid,
-          email: normalizedEmail
-        };
-      }
+	  // 1) محاولة من uid
+	  const directRef = doc(bookingsDb, "doctors", user.uid);
+	  const directSnap = await getDoc(directRef);
 
-      const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
-      const matchedBooking = bookingsSnap.docs
-        .map(d => ({ id: d.id, ...d.data() }))
-        .find(item => String(item.doctor_email || "").trim().toLowerCase() === normalizedEmail);
+	  if (directSnap.exists()) {
+		const data = directSnap.data();
 
-      if (matchedBooking) {
-        return {
-          doctor_id: matchedBooking.doctor_id || user.uid,
-          name: matchedBooking.doctor_name || user.displayName || "Doctor",
-          hospital_name: matchedBooking.hospital_name || "Hospital not assigned",
-          department_title: matchedBooking.department_title || "Department not assigned",
-          specialty: matchedBooking.department_title || "General",
-          available: false,
-          email: normalizedEmail,
-          user_uid: user.uid
-        };
-      }
+		const foundName =
+		  data.name ||
+		  data.doctor_name ||
+		  data.doctorName ||
+		  "";
 
-      return {
-        ...manualDoctorFallback,
-        doctor_id: user.uid,
-        user_uid: user.uid,
-        email: normalizedEmail,
-        name: user.displayName || manualDoctorFallback.name
-      };
-    }
+		// إذا الاسم فعلي ومش fallback
+		if (foundName && foundName !== "Doctor") {
+		  return {
+			id: directSnap.id,
+			...data,
+			doctor_id: data.doctor_id || data.doctorKey || directSnap.id,
+			user_uid: user.uid,
+			email: String(user.email || data.email || "").trim().toLowerCase(),
+			name: foundName,
+			hospital_name: data.hospital_name || data.hospitalName || "Hospital not assigned",
+			department_title: data.department_title || data.departmentName || "Department not assigned",
+			specialty: data.specialty || data.department_title || data.departmentName || "General"
+		  };
+		}
+	  }
+
+	  // 2) محاولة من الإيميل
+	  const byEmailQuery = query(
+		collection(bookingsDb, "doctors"),
+		where("email", "==", normalizedEmail)
+	  );
+	  const emailSnap = await getDocs(byEmailQuery);
+
+	  if (!emailSnap.empty) {
+		const first = emailSnap.docs[0];
+		const data = first.data();
+
+		return {
+		  id: first.id,
+		  ...data,
+		  doctor_id: data.doctor_id || data.doctorKey || first.id,
+		  user_uid: user.uid,
+		  email: normalizedEmail,
+		  name: data.name || data.doctor_name || data.doctorName || "Doctor",
+		  hospital_name: data.hospital_name || data.hospitalName || "Hospital not assigned",
+		  department_title: data.department_title || data.departmentName || "Department not assigned",
+		  specialty: data.specialty || data.department_title || data.departmentName || "General"
+		};
+	  }
+
+	  // 3) محاولة من allBookings
+	  const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
+	  const matchedBooking = bookingsSnap.docs
+		.map(d => ({ id: d.id, ...d.data() }))
+		.find(item => String(item.doctor_email || "").trim().toLowerCase() === normalizedEmail);
+
+	  if (matchedBooking) {
+		return {
+		  doctor_id: matchedBooking.doctor_id || matchedBooking.doctorKey || user.uid,
+		  name: matchedBooking.doctor_name || matchedBooking.name || user.displayName || "Doctor",
+		  hospital_name: matchedBooking.hospital_name || matchedBooking.hospitalName || "Hospital not assigned",
+		  department_title: matchedBooking.department_title || matchedBooking.departmentName || "Department not assigned",
+		  specialty: matchedBooking.specialty || matchedBooking.department_title || matchedBooking.departmentName || "General",
+		  available: false,
+		  email: normalizedEmail,
+		  user_uid: user.uid
+		};
+	  }
+
+	  // 4) fallback
+	  return {
+		...manualDoctorFallback,
+		doctor_id: user.uid,
+		user_uid: user.uid,
+		email: normalizedEmail,
+		name: user.displayName || manualDoctorFallback.name
+	  };
+	}
 
     async function ensureDoctorProfileDocument(user, profile) {
-      if (!user?.uid) return;
-      const ref = doc(bookingsDb, "doctors", user.uid);
-      const baseProfile = {
-        doctor_id: profile.doctor_id || profile.id || user.uid,
-        name: profile.name || user.displayName || "Doctor",
-        email: String(user.email || "").trim().toLowerCase(),
-        hospital_name: profile.hospital_name || "Hospital not assigned",
-        department_title: profile.department_title || "Department not assigned",
-        specialty: profile.specialty || "General",
-        available: !!profile.available,
-        user_uid: user.uid,
-        role: "doctor",
-        updatedAt: serverTimestamp()
-      };
-      await setDoc(ref, baseProfile, { merge: true });
-    }
+	  if (!user?.uid) return;
+
+	  const realName =
+		profile.name ||
+		profile.doctor_name ||
+		profile.doctorName ||
+		user.displayName ||
+		"";
+
+	  const ref = doc(bookingsDb, "doctors", user.uid);
+
+	  const baseProfile = {
+		doctor_id: profile.doctor_id || profile.doctorKey || profile.id || user.uid,
+		name: realName || "Doctor",
+		email: String(user.email || "").trim().toLowerCase(),
+		hospital_name: profile.hospital_name || profile.hospitalName || "Hospital not assigned",
+		department_title: profile.department_title || profile.departmentName || "Department not assigned",
+		specialty: profile.specialty || profile.department_title || profile.departmentName || "General",
+		available: !!profile.available,
+		user_uid: user.uid,
+		role: "doctor",
+		updatedAt: serverTimestamp()
+	  };
+
+	  await setDoc(ref, baseProfile, { merge: true });
+	}
 
     function subscribeToBookings() {
       if (state.unsubscribeBookings) {
