@@ -1495,7 +1495,7 @@
 		: (profile.department_title || "Department not assigned");
 
 	  elements.doctorAvatar.textContent = getInitials(name);
-	  elements.doctorName.textContent = name;
+	  const name = profile.name || profile.doctor_name || "Doctor";
 	  elements.doctorSubline.textContent = `${hospitalsText} · ${departmentsText} · ${specialty}`;
 
 	  elements.availabilityButton.classList.toggle("online", available);
