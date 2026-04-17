@@ -860,7 +860,6 @@
       table { min-width: 920px; }
       .drawer { width: 100%; }
     }
-	/* 📱 تحسين كامل للداشبورد على الموبايل */
 	@media (max-width: 768px) {
 
 	  body {
@@ -874,30 +873,25 @@
 		gap: 12px;
 	  }
 
-	  /* السايدبار يصير فوق */
 	  .sidebar {
 		position: static !important;
 		width: 100%;
 	  }
 
-	  /* الهيرو */
 	  .hero,
 	  .board,
 	  .sidebar {
 		padding: 14px !important;
 	  }
 
-	  /* الإحصائيات */
 	  .stats-grid {
 		grid-template-columns: 1fr !important;
 	  }
 
-	  /* البحث */
 	  .search-wrap {
 		width: 100% !important;
 	  }
 
-	  /* الأزرار */
 	  .hero-actions,
 	  .footer-actions,
 	  .nav-group {
@@ -913,7 +907,6 @@
 		width: 100% !important;
 	  }
 
-	  /* الجدول أهم شي */
 	  .table-wrap {
 		overflow-x: auto;
 	  }
@@ -922,7 +915,6 @@
 		min-width: 800px;
 	  }
 
-	  /* النصوص */
 	  .hero-copy h3 {
 		font-size: 22px !important;
 	  }
@@ -933,7 +925,6 @@
 	}
 
 
-	/* 📱 تلفونات صغيرة */
 	@media (max-width: 480px) {
 
 	  body {
@@ -945,8 +936,6 @@
 	  .sidebar {
 		padding: 12px !important;
 	  }
-
-	  /* تصغير الخط */
 	  h1 {
 		font-size: 16px !important;
 	  }
@@ -958,13 +947,9 @@
 	  h3 {
 		font-size: 18px !important;
 	  }
-
-	  /* الإحصائيات */
 	  .stat-value {
 		font-size: 22px !important;
 	  }
-
-	  /* الأزرار */
 	  .primary-button,
 	  .ghost-button,
 	  .soft-button,
@@ -972,17 +957,17 @@
 		padding: 10px !important;
 		font-size: 13px !important;
 	  }
-
-	  /* drawer */
 	  .drawer {
 		width: 100% !important;
 	  }
-
-	  /* التفاصيل */
 	  .detail-grid,
 	  .field-grid {
 		grid-template-columns: 1fr !important;
 	  }
+	}
+	#closeDrawerButton {
+	  position: relative;
+	  z-index: 9999;
 	}
   </style>
 </head>
@@ -1775,24 +1760,27 @@
     }
 
     async function updateAvailability() {
-      if (!state.authUser || !state.doctorProfile) return;
+	  if (!state.authUser || !state.doctorProfile) return;
 
-      try {
-        const nextValue = !state.doctorProfile.available;
-        const ref = doc(bookingsDb, "doctors", state.authUser.uid);
-        await updateDoc(ref, {
-          available: nextValue,
-          updatedAt: serverTimestamp()
-        });
+	  try {
+		const nextValue = !state.doctorProfile.available;
+		const ref = doc(bookingsDb, "doctors", state.authUser.uid);
 
-        state.doctorProfile.available = nextValue;
-        updateDoctorCard();
-        showToast("Status updated", nextValue ? "Doctor is now marked as available." : "Doctor is now marked as offline.");
-      } catch (error) {
-        console.error("Availability update error:", error);
-        showToast("Update failed", error.message || "Could not change the doctor status.");
-      }
-    }
+		
+		await setDoc(ref, {
+		  available: nextValue,
+		  updatedAt: serverTimestamp()
+		}, { merge: true });
+
+		state.doctorProfile.available = nextValue;
+		updateDoctorCard();
+
+		showToast("Status updated", nextValue ? "Doctor is now available." : "Doctor is now offline.");
+	  } catch (error) {
+		console.error("Availability update error:", error);
+		showToast("Update failed", error.message);
+	  }
+	}
 
     async function updateBookingStatus(status, extra = {}) {
 	  const booking = state.selectedBooking;
@@ -1810,11 +1798,11 @@
 		  ...extra
 		};
 
-		// 1) تحديث allBookings
+		
 		const bookingRef = doc(bookingsDb, "allBookings", booking.id);
 		await updateDoc(bookingRef, payload);
 
-		// 2) تحديث نسخة المستخدم
+		
 		if (booking.user_uid && booking.source_booking_doc_id) {
 		  const userBookingRef = doc(
 			bookingsDb,
