@@ -1008,7 +1008,7 @@
       <section class="doctor-panel">
         <div class="doctor-top">
           <div class="avatar">
-			<img id="doctorAvatarImage" src="https://www.pinterest.com/pin/477100154296966490/.jpg" alt="Doctor">
+			<img id="doctorAvatarImage" src="https://i.pinimg.com/736x/e8/5c/2a/e85c2a3f58626353b461aaffba8bda87.jpg" alt="Doctor">
 		  </div>
           <div class="doctor-meta">
             <h2 id="doctorName">Loading doctor...</h2>
@@ -1767,8 +1767,30 @@
         showToast("Live updates failed", error.message || "Could not subscribe to booking updates.");
       });
     }
+	function updateStats() {
+	  const bookings = state.bookings;
 
-    async function refreshDashboard(showMessage = false) {
+	  const counts = {
+		all: bookings.length,
+		pending: bookings.filter(b => normalizeStatus(b.status) === "PENDING").length,
+		approved: bookings.filter(b => normalizeStatus(b.status) === "APPROVED").length,
+		rejected: bookings.filter(b => normalizeStatus(b.status) === "REJECTED").length,
+		rescheduled: bookings.filter(b => normalizeStatus(b.status) === "RESCHEDULED").length,
+		today: bookings.filter(b => String(b.date || "") === todayDateString()).length
+	  };
+
+	  elements.statAll.textContent = counts.all;
+	  elements.statPending.textContent = counts.pending;
+	  elements.statApproved.textContent = counts.approved;
+	  elements.statToday.textContent = counts.today;
+
+	  elements.countAll.textContent = counts.all;
+	  elements.countPending.textContent = counts.pending;
+	  elements.countApproved.textContent = counts.approved;
+	  elements.countRejected.textContent = counts.rejected;
+	  elements.countRescheduled.textContent = counts.rescheduled;
+	}
+		async function refreshDashboard(showMessage = false) {
       setLoading(true);
       try {
         if (!state.authUser) throw new Error("No authenticated user");
