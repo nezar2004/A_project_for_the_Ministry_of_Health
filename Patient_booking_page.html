@@ -3057,7 +3057,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  bookingsBody.innerHTML = "Loading.";
 
 	  try {
-		const localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
+		let localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
+
+		// حذف الحجوزات القديمة من localStorage
+		localBookings = localBookings.filter(isBookingStillValid);
+		localStorage.setItem("localBookings", JSON.stringify(localBookings));
 
 		const uid =
 		  auth.currentUser?.uid ||
@@ -3082,6 +3086,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 			id: doc.id,
 			...doc.data()
 		  }));
+
+		  // فلترة الحجوزات القديمة من Firebase وقت العرض
+		  firebaseBookings = firebaseBookings.filter(isBookingStillValid);
 
 		  console.log("Firebase bookings data =", firebaseBookings);
 		} else {
@@ -3194,7 +3201,25 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		}
 	  }
 	}
+	function normalizeDateOnly(dateValue) {
+	  if (!dateValue) return null;
 
+	  const d = new Date(dateValue);
+	  if (isNaN(d.getTime())) return null;
+
+	  d.setHours(0, 0, 0, 0);
+	  return d;
+	}
+
+	function isBookingStillValid(booking) {
+	  const bookingDate = normalizeDateOnly(booking.date);
+	  if (!bookingDate) return true; // إذا التاريخ ناقص خليه يبين
+
+	  const today = new Date();
+	  today.setHours(0, 0, 0, 0);
+
+	  return bookingDate >= today;
+	}
 </script>
 </body>
 </html>
