@@ -2930,8 +2930,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	const openReminderBtn = document.getElementById("openReminderPanel");
 	const closeReminderBtn = document.getElementById("closeReminderPanel");
 
-	
-
 	if (openReminderBtn) {
 	  openReminderBtn.addEventListener("click", () => {
 		panel.classList.add("active");
@@ -3000,6 +2998,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  }
 
 	  localStorage.setItem("reminders", JSON.stringify(reminders));
+	  localStorage.removeItem(`notified_${reminder.id}_${reminder.date}_${reminder.time}`);
 	  editingId = null;
 
 	  alert("✅ تم الحفظ");
@@ -3048,10 +3047,62 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	function del(id) {
 	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const reminderToDelete = reminders.find(r => r.id === id);
+
 	  const updated = reminders.filter(r => r.id !== id);
 	  localStorage.setItem("reminders", JSON.stringify(updated));
+
+	  if (reminderToDelete) {
+		localStorage.removeItem(`notified_${reminderToDelete.id}_${reminderToDelete.date}_${reminderToDelete.time}`);
+	  }
+
 	  renderList();
 	}
+
+	function requestNotificationPermission() {
+	  if ("Notification" in window && Notification.permission === "default") {
+		Notification.requestPermission();
+	  }
+	}
+
+	function getReminderNotifyTime(reminder) {
+	  const reminderDateTime = new Date(`${reminder.date}T${reminder.time}`);
+	  const beforeMinutes = Number(reminder.before || 0);
+	  return reminderDateTime.getTime() - (beforeMinutes * 60 * 1000);
+	}
+
+	function sendReminderNotification(reminder) {
+	  const title = "🔔 تذكير طبي";
+	  const body = `${reminder.name} - موعدك الساعة ${reminder.time}`;
+
+	  if ("Notification" in window && Notification.permission === "granted") {
+		new Notification(title, {
+		  body: body,
+		  icon: "https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg"
+		});
+	  } else {
+		alert(`${title}\n${body}`);
+	  }
+	}
+
+	function checkReminders() {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const now = Date.now();
+
+	  reminders.forEach(reminder => {
+		const notifyTime = getReminderNotifyTime(reminder);
+		const notifiedKey = `notified_${reminder.id}_${reminder.date}_${reminder.time}`;
+
+		if (now >= notifyTime && !localStorage.getItem(notifiedKey)) {
+		  sendReminderNotification(reminder);
+		  localStorage.setItem(notifiedKey, "1");
+		}
+	  });
+	}
+
+	requestNotificationPermission();
+	checkReminders();
+	setInterval(checkReminders, 30000);
 	// -------------------------------
 	// booking 
 	// -------------------------------
