@@ -1026,6 +1026,100 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   height: 100%;
   cursor: pointer;
 }
+/* My Bookings Modal */
+#bookingsModal .modal-dialog {
+  max-width: 560px;
+}
+
+#bookingsModal .modal-content {
+  border: none;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+#bookingsModal .modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #eee3df;
+  background: linear-gradient(180deg, #fffdfc, #f7f0ed);
+}
+
+#bookingsModal .modal-title {
+  color: #4E342E;
+  font-weight: 800;
+  font-size: 1.45rem;
+}
+
+#bookingsModal .modal-body {
+  padding: 24px;
+  color: #6d4c41;
+  font-size: 1.05rem;
+  background: #fff;
+}
+
+#bookingsModal .modal-footer.bookings-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px 24px;
+  border-top: 1px solid #eee3df;
+  background: #fffaf8;
+}
+
+#bookingsModal .modal-footer.bookings-footer .btn {
+  min-width: 140px;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+.booking-close-btn {
+  background: #7b8794;
+  color: #fff;
+}
+
+.booking-close-btn:hover {
+  background: #66707a;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.booking-refresh-btn {
+  background: linear-gradient(135deg, #8D6E63, #6D4C41);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(109, 76, 65, 0.22);
+}
+
+.booking-refresh-btn:hover {
+  background: linear-gradient(135deg, #7b5e54, #5d4037);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(109, 76, 65, 0.28);
+}
+
+#bookingsModal .btn-close {
+  filter: none;
+  opacity: 0.7;
+}
+
+#bookingsModal .btn-close:hover {
+  opacity: 1;
+}
+
+@media (max-width: 576px) {
+  #bookingsModal .modal-footer.bookings-footer {
+    flex-direction: column;
+  }
+
+  #bookingsModal .modal-footer.bookings-footer .btn {
+    width: 100%;
+  }
+}
 </style>
 <body>
 		<div class="info-container">
@@ -1246,10 +1340,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		  There are no current reservations.
 		</div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">closing</button>
-        </div>
+        <div class="modal-footer bookings-footer">
+		  <button type="button" class="btn booking-close-btn" data-bs-dismiss="modal">
+			closing
+		  </button>
 
+		  <button type="button" class="btn booking-refresh-btn" onclick="refreshBookings()">
+			<i class="fas fa-rotate-right me-2"></i> Refresh
+		  </button>
+		</div>
       </div>
     </div>
   </div>
@@ -1467,7 +1566,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		<div id="remindersList"></div>
 	  </div>
 	</div>
-	
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
   import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -3079,7 +3178,22 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		}
 	  });
 	})();
-	
+	async function refreshBookings() {
+	  const container = document.getElementById("bookingsListBody");
+
+	  if (container) {
+		container.innerHTML = "🔄 Updating...";
+	  }
+
+	  try {
+		await renderBookings(); // هاي الدالة أصلاً عندك
+	  } catch (error) {
+		console.error("Refresh error:", error);
+		if (container) {
+		  container.innerHTML = "❌ Failed to refresh";
+		}
+	  }
+	}
 
 </script>
 </body>
