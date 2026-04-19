@@ -8,7 +8,7 @@
       --primary: #a7ffe3;
       --primary-strong: #3CE1AE;
       --primary-soft: #dbeafe;
-      --success-soft: #dcfce7;
+      --success-soft: #2da981;
       --shadow: 0 22px 55px rgba(174, 246, 232, 0.08);
       --radius-xl: 30px;
       --radius-lg: 22px;
@@ -468,7 +468,7 @@ body {
     }
 
     .portal-button.user {
-      background: linear-gradient(135deg, #16a34a, #15803d);
+      background: linear-gradient(135deg, #2da981, #3ce1ac);
       color: white;
       box-shadow: 0 18px 28px rgba(22, 163, 74, 0.18);
     }
