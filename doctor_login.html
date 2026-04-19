@@ -1,443 +1,598 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Doctor Login</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>تسجيل دخول الطبيب - نبض</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg:#f4f7fb;
-      --text:#132238;
-      --muted:#64748b;
-      --primary:#2563eb;
-      --primary-2:#1d4ed8;
-      --line:#e5edf7;
-      --card:rgba(255,255,255,0.88);
-      --danger:#dc2626;
-      --danger-bg:#fee2e2;
-      --shadow:0 20px 50px rgba(15,23,42,.08);
+    :root {
+      --primary: #49cfa7;
+      --primary-dark: #2fb98f;
+      --primary-light: #79ddc1;
+      --secondary: #ecfaf5;
+      --accent: #8ce0c7;
+      --bg: linear-gradient(135deg, #7ad7c0 0%, #53c8b0 55%, #38bea2 100%);
+      --white: #ffffff;
+      --text: #10352d;
+      --muted: #6b7f79;
+      --border: #d9eee7;
+      --input-bg: #fcfffe;
+      --shadow: 0 18px 45px rgba(26, 77, 64, 0.14);
+      --shadow-soft: 0 10px 25px rgba(26, 77, 64, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
     }
 
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      padding:0;
-      font-family:"Inter",sans-serif;
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Tajawal", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(10px);
+    }
+
+    body::before {
+      width: 280px;
+      height: 280px;
+      top: -80px;
+      right: -80px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    body::after {
+      width: 240px;
+      height: 240px;
+      bottom: -70px;
+      left: -70px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .auth-shell {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 680px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1.03fr 0.97fr;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-side {
       background:
-        radial-gradient(circle at top right, rgba(37,99,235,.08), transparent 24%),
-        radial-gradient(circle at left center, rgba(22,163,74,.06), transparent 18%),
-        var(--bg);
-      color:var(--text);
+        linear-gradient(160deg, rgba(46, 182, 140, 0.94), rgba(62, 202, 162, 0.92)),
+        linear-gradient(180deg, #49cfa7, #2fb98f);
+      color: #fff;
+      padding: 48px 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
     }
 
-    body{
-      min-height:100vh;
-      display:grid;
-      place-items:center;
-      padding:18px;
+    .auth-side::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -60px;
+      left: -60px;
     }
 
-    .shell{
-      width:min(1100px,100%);
-      display:grid;
-      grid-template-columns:1.05fr .95fr;
-      gap:18px;
-      align-items:stretch;
+    .auth-side::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      bottom: -50px;
+      right: -40px;
     }
 
-    .panel{
-      background:var(--card);
-      backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,.7);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
+    .brand-wrap,
+    .side-footer {
+      position: relative;
+      z-index: 1;
     }
 
-    .hero{
-      padding:34px;
-      position:relative;
-      min-height:620px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      background:
-        linear-gradient(180deg, rgba(37,99,235,.07), rgba(37,99,235,.01)),
-        white;
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 22px;
+      width: fit-content;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
+    .brand-title {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      line-height: 1.3;
     }
 
-    .brand-icon{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,var(--primary),var(--primary-2));
-      color:white;
-      font-size:24px;
-      font-weight:900;
-      box-shadow:0 16px 30px rgba(37,99,235,.24);
+    .brand-subtitle {
+      font-size: 17px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.88);
+      margin: 0 0 28px;
+      max-width: 420px;
     }
 
-    .brand h1{
-      margin:0;
-      font-size:20px;
-      font-weight:900;
+    .side-cards {
+      display: grid;
+      gap: 14px;
+      margin-top: 10px;
     }
 
-    .brand p{
-      margin:5px 0 0;
-      color:var(--muted);
-      font-size:13px;
+    .mini-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
 
-    .hero-copy h2{
-      margin:0 0 14px;
-      font-size:clamp(30px,4vw,50px);
-      line-height:1.05;
-      letter-spacing:-.03em;
-      font-weight:900;
-      max-width:560px;
+    .mini-card strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
     }
 
-    .hero-copy p{
-      margin:0;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.9;
-      max-width:580px;
+    .mini-card span {
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.82);
     }
 
-    .feature-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-      margin-top:24px;
+    .side-footer {
+      font-size: 13px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.8);
+      margin-top: 30px;
     }
 
-    .feature{
-      background:rgba(255,255,255,.85);
-      border:1px solid rgba(255,255,255,.9);
-      border-radius:20px;
-      padding:18px;
-      box-shadow:0 14px 30px rgba(15,23,42,.04);
+    .auth-main {
+      padding: 36px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.96));
     }
 
-    .feature strong{
-      display:block;
-      margin-bottom:8px;
-      font-size:14px;
+    .container {
+      width: 100%;
+      max-width: 440px;
     }
 
-    .feature span{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.7;
+    .form-card {
+      background: var(--white);
+      border: 1px solid #e1f1eb;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      padding: 30px 24px;
     }
 
-    .login{
-      padding:34px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
+    .form-top {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
-    .login h3{
-      margin:0 0 8px;
-      font-size:32px;
-      letter-spacing:-.03em;
-      font-weight:900;
+    .form-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #49cfa7, #2fb98f);
+      color: #fff;
+      font-size: 26px;
+      box-shadow: 0 10px 24px rgba(47, 185, 143, 0.24);
     }
 
-    .login p{
-      margin:0 0 24px;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:14px;
+    h2 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 29px;
     }
 
-    .form{
-      display:grid;
-      gap:14px;
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
     }
 
-    .field label{
-      display:block;
-      margin-bottom:8px;
-      font-size:13px;
-      font-weight:800;
-      color:#475569;
+    .fields {
+      margin-top: 18px;
     }
 
-    .field input{
-      width:100%;
-      border:1px solid var(--line);
-      outline:none;
-      background:white;
-      border-radius:16px;
-      padding:15px 16px;
-      font:inherit;
-      color:var(--text);
-      transition:.2s ease;
-      box-shadow:0 8px 18px rgba(15,23,42,.03);
+    .input-group {
+      margin-bottom: 14px;
     }
 
-    .field input:focus{
-      border-color:#93c5fd;
-      box-shadow:0 0 0 4px rgba(37,99,235,.10);
+    .input-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      padding-right: 3px;
     }
 
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
+    input {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      font-size: 15px;
+      font-family: "Tajawal", sans-serif;
+      background: var(--input-bg);
+      color: var(--text);
+      outline: none;
+      transition: 0.25s ease;
     }
 
-    .button{
-      border:0;
-      cursor:pointer;
-      border-radius:16px;
-      padding:15px 16px;
-      font:inherit;
-      font-weight:900;
-      transition:.2s ease;
+    input::placeholder {
+      color: #9fb1ab;
     }
 
-    .button:hover{transform:translateY(-1px)}
-    .primary{
-      background:linear-gradient(135deg,var(--primary),var(--primary-2));
-      color:white;
-      box-shadow:0 14px 24px rgba(37,99,235,.22);
+    input:focus {
+      border-color: var(--primary-light);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(73, 207, 167, 0.12);
     }
 
-    .secondary{
-      background:white;
-      color:var(--text);
-      border:1px solid var(--line);
+    .password-wrap {
+      position: relative;
     }
 
-    .helper{
-      margin-top:18px;
-      padding:14px 16px;
-      border-radius:18px;
-      background:#f8fafc;
-      border:1px solid #e8eef5;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.8;
+    .password-wrap input {
+      padding-left: 82px;
     }
 
-    .error{
-      display:none;
-      margin-top:14px;
-      padding:13px 14px;
-      border-radius:16px;
-      background:var(--danger-bg);
-      color:#991b1b;
-      font-size:13px;
-      font-weight:700;
-      border:1px solid #fecaca;
+    .toggle-pass {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: #e6f8f2;
+      color: var(--primary-dark);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      width: auto;
+      padding: 8px 12px;
+      margin: 0;
+      border-radius: 10px;
+      transition: 0.25s ease;
+      font-family: "Tajawal", sans-serif;
     }
 
-    .success{
-      display:none;
-      margin-top:14px;
-      padding:13px 14px;
-      border-radius:16px;
-      background:#dcfce7;
-      color:#166534;
-      font-size:13px;
-      font-weight:700;
-      border:1px solid #bbf7d0;
+    .toggle-pass:hover {
+      background: #d9f3ea;
     }
 
-    @media (max-width: 900px){
-      .shell{grid-template-columns:1fr}
-      .hero{min-height:auto}
-      .row{grid-template-columns:1fr}
+    .row-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
     }
-	/* 📱 Tablets & Mobile */
-	@media (max-width: 768px) {
 
-	  body {
-		padding: 12px;
-	  }
+    .row-buttons button {
+      flex: 1;
+      height: 54px;
+      border-radius: 15px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: "Tajawal", sans-serif;
+      transition: 0.25s ease;
+    }
 
-	  /* يخلي التصميم عمودي */
-	  .shell {
-		grid-template-columns: 1fr !important;
-	  }
+    .main-btn {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      border: none;
+      box-shadow: 0 12px 24px rgba(47, 185, 143, 0.22);
+    }
 
-	  .hero-card {
-		grid-template-columns: 1fr !important;
-	  }
+    .main-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(47, 185, 143, 0.26);
+    }
 
-	  /* تقليل البادينج */
-	  .hero-content,
-	  .choice-card,
-	  .panel,
-	  .login,
-	  .hero {
-		padding: 20px !important;
-	  }
+    .secondary-btn {
+      background: white;
+      border: 1px solid #dfe9e5;
+      color: #132238;
+    }
 
-	  /* كل الكروت تصير تحت بعض */
-	  .choice-grid,
-	  .hero-stats,
-	  .feature-grid {
-		grid-template-columns: 1fr !important;
-	  }
+    .secondary-btn:hover {
+      transform: translateY(-2px);
+    }
 
-	  /* الأزرار full width */
-	  .btn,
-	  .portal-button,
-	  .back-button,
-	  .button {
-		width: 100% !important;
-	  }
+    .message {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 700;
+    }
 
-	  /* ترتيب الأزرار عمودي */
-	  .hero-actions,
-	  .portal-actions,
-	  .row {
-		flex-direction: column !important;
-		grid-template-columns: 1fr !important;
-	  }
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
 
-	  /* النصوص */
-	  .hero-copy h2 {
-		font-size: 28px !important;
-		line-height: 1.2;
-	  }
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
 
-	  .hero-copy p,
-	  .portal-copy,
-	  .choice-top p,
-	  .stat span,
-	  .feature span {
-		font-size: 14px !important;
-	  }
+    @media (max-width: 992px) {
+      .auth-shell {
+        grid-template-columns: 1fr;
+        max-width: 620px;
+      }
 
-	  /* منع السكرول الأفقي */
-	  html, body {
-		overflow-x: hidden;
-	  }
-	}
+      .auth-side {
+        padding: 34px 26px;
+      }
 
-	/* 📱 Small phones */
-	@media (max-width: 480px) {
+      .brand-title {
+        font-size: 32px;
+      }
 
-	  body {
-		padding: 8px;
-	  }
+      .auth-main {
+        padding: 24px 20px 28px;
+      }
 
-	  .hero-content,
-	  .choice-card,
-	  .panel,
-	  .login,
-	  .hero {
-		padding: 16px !important;
-	  }
+      .form-card {
+        padding: 28px 22px;
+      }
+    }
 
-	  /* تصغير العناوين */
-	  h1 {
-		font-size: 20px !important;
-	  }
+    @media (max-width: 768px) {
+      body {
+        padding: 14px;
+        align-items: stretch;
+      }
 
-	  h2 {
-		font-size: 24px !important;
-	  }
+      .auth-shell {
+        min-height: auto;
+        border-radius: 24px;
+      }
 
-	  h3 {
-		font-size: 20px !important;
-	  }
+      .auth-side {
+        padding: 28px 20px;
+      }
 
-	  /* تصغير الأزرار */
-	  .btn,
-	  .portal-button,
-	  .button {
-		padding: 12px !important;
-		font-size: 14px !important;
-	  }
+      .brand-title {
+        font-size: 28px;
+      }
 
-	  /* الحقول */
-	  input {
-		padding: 12px !important;
-		font-size: 14px !important;
-	  }
+      .brand-subtitle {
+        font-size: 15px;
+        line-height: 1.8;
+      }
 
-	  /* الكروت */
-	  .portal-card,
-	  .feature,
-	  .stat {
-		padding: 14px !important;
-	  }
-	}
+      .mini-card {
+        padding: 14px;
+      }
+
+      .auth-main {
+        padding: 18px 14px 20px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .form-card {
+        border-radius: 22px;
+        padding: 24px 18px;
+      }
+
+      h2 {
+        font-size: 25px;
+      }
+
+      .form-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+      }
+
+      input,
+      .row-buttons button {
+        height: 50px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .auth-shell {
+        border-radius: 18px;
+      }
+
+      .auth-side {
+        padding: 22px 16px;
+      }
+
+      .brand-badge {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+
+      .brand-title {
+        font-size: 23px;
+      }
+
+      .brand-subtitle {
+        font-size: 14px;
+      }
+
+      .auth-main {
+        padding: 12px;
+      }
+
+      .form-card {
+        padding: 20px 14px;
+        border-radius: 18px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .input-label {
+        font-size: 13px;
+      }
+
+      .password-wrap input {
+        padding-left: 74px;
+      }
+
+      .toggle-pass {
+        left: 10px;
+        font-size: 12px;
+        padding: 7px 10px;
+      }
+
+      .row-buttons {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <section class="panel hero">
-      <div>
-        <div class="brand">
-          <div class="brand-icon">D</div>
-          <div>
-            <h1>بوابة الأطباء - نبض</h1>
-            <p>نظام آمن وسريع لإدارة المواعيد الطبية<</p>
-          </div>
-        </div>
 
-        <div class="hero-copy" style="margin-top:34px;">
-          <h2>تحكم كامل بحجوزاتك الطبية بكل سهولة واحترافية</h2>
-          <p>
-                مرحبًا بك في نظام نبض للأطباء، حيث يمكنك متابعة حجوزات المرضى، إدارة مواعيدك،
-				والوصول إلى معلوماتك بكل أمان وسرعة. تم تصميم هذه المنصة لتوفر لك تجربة سهلة،
-				منظمة، وفعّالة تساعدك على التركيز في تقديم أفضل رعاية ممكنة.
-          </p>
+  <div class="auth-shell">
+    <div class="auth-side">
+      <div class="brand-wrap">
+        <div class="brand-badge">💚 نظام نبض الطبي</div>
+        <h1 class="brand-title">بوابة الأطباء</h1>
+        <p class="brand-subtitle">
+          سجّل دخولك للوصول إلى لوحة الطبيب، متابعة حجوزات المرضى، وإدارة مواعيدك
+          بسهولة ضمن واجهة حديثة وسريعة وواضحة.
+        </p>
+
+        <div class="side-cards">
+          <div class="mini-card">
+            <strong>إدارة أسرع للمواعيد</strong>
+            <span>تنقل واضح داخل لوحة الطبيب لمتابعة الحجوزات والطلبات بسهولة.</span>
+          </div>
+
+          <div class="mini-card">
+            <strong>واجهة متجاوبة</strong>
+            <span>تظهر بشكل مرتب على الكمبيوتر، التابلت، والموبايل بدون تخريب.</span>
+          </div>
+
+          <div class="mini-card">
+            <strong>تجربة منظمة وواضحة</strong>
+            <span>ألوان هادئة، حقول أوضح، ومسافات مريحة بنفس ستايل بوابة المرضى.</span>
+          </div>
         </div>
       </div>
 
-    </section>
-
-    <section class="panel login">
-      <div>
-        <h3>تسجيل دخول</h3>
-        <p>أدخل البريد الإلكتروني وكلمة المرور الخاصة بالطبيب لفتح لوحة التحكم الآمنة.</p>
-
-        <form id="doctorLoginForm" class="form">
-          <div class="field">
-            <label for="doctorEmail">بريد الطبيب الإلكتروني</label>
-            <input id="doctorEmail" type="email" placeholder="doctor@example.com" required />
-          </div>
-
-          <div class="field">
-            <label for="doctorPassword">كملة المرور</label>
-            <input id="doctorPassword" type="password" placeholder="Enter your password" required />
-          </div>
-
-          <div class="row">
-            <button class="button primary" type="submit">تسجيل الدخول إلى لوحة التحكم</button>
-            <button class="button secondary" id="goPatientLogin" type="button">الصفحة الرئيسية</button>
-          </div>
-        </form>
-
-        <div id="loginError" class="error"></div>
-        <div id="loginSuccess" class="success"></div>
-
-        
+      <div class="side-footer">
+        وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية
       </div>
-    </section>
+    </div>
+
+    <div class="auth-main">
+      <div class="container">
+        <div class="form-card">
+          <div class="form-top">
+            <div class="form-icon">🩺</div>
+            <h2>تسجيل دخول الطبيب</h2>
+            <p class="subtitle">أدخل البريد الإلكتروني وكلمة المرور للوصول إلى لوحة التحكم</p>
+          </div>
+
+          <form id="doctorLoginForm" class="fields">
+            <div class="input-group">
+              <label class="input-label" for="doctorEmail">البريد الإلكتروني</label>
+              <input id="doctorEmail" type="email" placeholder="doctor@example.com" required>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="doctorPassword">كلمة المرور</label>
+              <div class="password-wrap">
+                <input id="doctorPassword" type="password" placeholder="أدخل كلمة المرور" required>
+                <button type="button" class="toggle-pass" onclick="togglePassword('doctorPassword', this)">إظهار</button>
+              </div>
+            </div>
+
+            <div class="row-buttons">
+              <button class="main-btn" type="submit">تسجيل الدخول</button>
+              <button class="secondary-btn" id="goHomeBtn" type="button">الصفحة الرئيسية</button>
+            </div>
+          </form>
+
+          <div id="loginError" class="message error"></div>
+          <div id="loginSuccess" class="message success"></div>
+        </div>
+      </div>
+    </div>
   </div>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -462,18 +617,38 @@
   const passwordInput = document.getElementById("doctorPassword");
   const loginError = document.getElementById("loginError");
   const loginSuccess = document.getElementById("loginSuccess");
-  const goPatientLogin = document.getElementById("goPatientLogin");
+  const goHomeBtn = document.getElementById("goHomeBtn");
+
+  window.togglePassword = function (inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    if (input.type === "password") {
+      input.type = "text";
+      if (btn) btn.textContent = "إخفاء";
+    } else {
+      input.type = "password";
+      if (btn) btn.textContent = "إظهار";
+    }
+  };
 
   function showError(message) {
+    if (!loginError || !loginSuccess) return;
     loginError.textContent = message;
     loginError.style.display = "block";
     loginSuccess.style.display = "none";
   }
 
   function showSuccess(message) {
+    if (!loginError || !loginSuccess) return;
     loginSuccess.textContent = message;
     loginSuccess.style.display = "block";
     loginError.style.display = "none";
+  }
+
+  function hideMessages() {
+    if (loginError) loginError.style.display = "none";
+    if (loginSuccess) loginSuccess.style.display = "none";
   }
 
   function normalizeEmail(email) {
@@ -569,38 +744,50 @@
     }
   });
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const email = normalizeEmail(emailInput.value);
-    const password = passwordInput.value;
+      const email = normalizeEmail(emailInput?.value);
+      const password = passwordInput?.value || "";
 
-    loginError.style.display = "none";
-    loginSuccess.style.display = "none";
+      hideMessages();
 
-    try {
-      const cred = await signInWithEmailAndPassword(auth, email, password);
-      await handleDoctorLogin(cred.user);
-
-      showSuccess("تم تسجيل الدخول بنجاح");
-      setTimeout(() => {
-        window.location.href = "doctor_dashboard.html";
-      }, 600);
-    } catch (error) {
-      console.error("Doctor login error:", error);
-
-      if (error.code === "auth/invalid-credential") {
-        showError("الإيميل أو كلمة المرور غير صحيحة");
-      } else if (error.message === "doctor-not-found-in-firestore") {
-        showError("تم تسجيل الدخول لكن هذا الدكتور غير موجود داخل قاعدة بيانات الدكاترة");
-      } else {
-        showError("حدث خطأ أثناء تسجيل الدخول");
+      if (!email || !password) {
+        showError("يرجى إدخال البريد الإلكتروني وكلمة المرور");
+        return;
       }
-    }
-  });
 
-  if (goPatientLogin) {
-    goPatientLogin.addEventListener("click", () => {
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        await handleDoctorLogin(cred.user);
+
+        showSuccess("تم تسجيل الدخول بنجاح");
+        setTimeout(() => {
+          window.location.href = "doctor_dashboard.html";
+        }, 600);
+      } catch (error) {
+        console.error("Doctor login error:", error);
+
+        if (error.code === "auth/invalid-credential") {
+          showError("الإيميل أو كلمة المرور غير صحيحة");
+        } else if (error.code === "auth/user-not-found") {
+          showError("هذا الحساب غير موجود");
+        } else if (error.code === "auth/wrong-password") {
+          showError("كلمة المرور غير صحيحة");
+        } else if (error.code === "auth/invalid-email") {
+          showError("صيغة البريد الإلكتروني غير صحيحة");
+        } else if (error.message === "doctor-not-found-in-firestore") {
+          showError("تم تسجيل الدخول لكن هذا الدكتور غير موجود داخل قاعدة بيانات الدكاترة");
+        } else {
+          showError("حدث خطأ أثناء تسجيل الدخول");
+        }
+      }
+    });
+  }
+
+  if (goHomeBtn) {
+    goHomeBtn.addEventListener("click", () => {
       window.location.href = "index.html";
     });
   }
