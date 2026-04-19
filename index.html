@@ -634,7 +634,7 @@
             <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
             <div class="brand-text">
               <h1>تطبيق نبض</h1>
-              <p>نظام ذكي لحجز المواعيد وإدارة الخدمات الطبية بسهولة</p>
+              <p>منصة صحية ذكية لتنظيم المواعيد والخدمات الطبية</p>
             </div>
           </div>
 
@@ -672,10 +672,7 @@
           <p>حدد نوع الحساب للانتقال إلى صفحة الدخول المناسبة ومتابعة استخدام خدمات النظام بسهولة.</p>
         </div>
 
-        <button id="backToWelcome" class="back-button" type="button">
-          <i class="fa-solid fa-arrow-right" style="margin-left:8px;"></i>
-          رجوع
-        </button>
+
       </div>
 
       <div class="choice-grid">
@@ -739,12 +736,11 @@
       </div>
     </section>
   </div>
-</body>
-
+	
   <script>
     const openLoginOptions = document.getElementById("openLoginOptions");
     const scrollToOptions = document.getElementById("scrollToOptions");
-    const backToWelcome = document.getElementById("backToWelcome");
+    
     const loginOptionsSection = document.getElementById("loginOptionsSection");
     const goDoctorLogin = document.getElementById("goDoctorLogin");
     const goUserLogin = document.getElementById("goUserLogin");
@@ -761,7 +757,7 @@
 
     openLoginOptions.addEventListener("click", showOptions);
     scrollToOptions.addEventListener("click", showOptions);
-    backToWelcome.addEventListener("click", hideOptions);
+    
 
     goDoctorLogin.addEventListener("click", () => {
       window.location.href = "doctor_login.html";
@@ -773,4 +769,3 @@
   </script>
 </body>
 </html>
-
