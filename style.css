@@ -389,13 +389,13 @@ body {
     }
 
     .doctor-icon {
-      background: var(--primary-soft);
+      background: #3ce1ac;
       color: var(--primary-strong);
     }
 
     .user-icon {
       background: var(--success-soft);
-      color: #166534;
+      color: #1e7156;
     }
 
     .portal-title {
