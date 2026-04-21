@@ -982,22 +982,27 @@
 	  });
 	}
 	function setupAvatarUpload() {
-	  const avatarImg = elements.doctorAvatarImage;
+	  const avatarImg = document.getElementById("doctorAvatarImage");
 	  const input = document.getElementById("avatarInput");
 	  const changeBtn = document.getElementById("changeAvatarBtn");
 	  const removeBtn = document.getElementById("removeAvatarBtn");
 
+	  // 🔥 تحقق مهم
+	  if (!avatarImg || !input || !changeBtn || !removeBtn) {
+		console.log("❌ عناصر الصورة مش موجودة");
+		return;
+	  }
+
+	  const defaultImage = "https://i.pinimg.com/1200x/5f/3f/6c/5f3f6c01a7a094a8e55ef2fceda485cc.jpg";
 
 	  const saved = localStorage.getItem("doctorAvatar");
 	  if (saved) {
 		avatarImg.src = saved;
 	  }
 
-
 	  changeBtn.addEventListener("click", () => {
 		input.click();
 	  });
-
 
 	  input.addEventListener("change", () => {
 		const file = input.files[0];
@@ -1006,17 +1011,16 @@
 		const reader = new FileReader();
 		reader.onload = (e) => {
 		  avatarImg.src = e.target.result;
-
 		  localStorage.setItem("doctorAvatar", e.target.result);
 		};
 
 		reader.readAsDataURL(file);
 	  });
 
-
 	  removeBtn.addEventListener("click", () => {
-		avatarImg.src = "https://i.pinimg.com/1200x/5f/3f/6c/5f3f6c01a7a094a8e55ef2fceda485cc.jpg";
+		avatarImg.src = defaultImage;
 		localStorage.removeItem("doctorAvatar");
+		input.value = "";
 	  });
 	}
 
