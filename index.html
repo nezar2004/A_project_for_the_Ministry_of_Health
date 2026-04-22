@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>نبض | الصفحة الرئيسية</title>
-
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d6efd">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -734,32 +735,40 @@
   </div>
 	
   <script>
-    const openLoginOptions = document.getElementById("openLoginOptions");
-    const scrollToOptions = document.getElementById("scrollToOptions");
-    
-    const loginOptionsSection = document.getElementById("loginOptionsSection");
-    const goDoctorLogin = document.getElementById("goDoctorLogin");
-    const goUserLogin = document.getElementById("goUserLogin");
+  const openLoginOptions = document.getElementById("openLoginOptions");
+  const scrollToOptions = document.getElementById("scrollToOptions");
+  
+  const loginOptionsSection = document.getElementById("loginOptionsSection");
+  const goDoctorLogin = document.getElementById("goDoctorLogin");
+  const goUserLogin = document.getElementById("goUserLogin");
 
-    function showOptions() {
-      loginOptionsSection.classList.add("active");
-      loginOptionsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  function showOptions() {
+    loginOptionsSection.classList.add("active");
+    loginOptionsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
-    function hideOptions() {
-      loginOptionsSection.classList.remove("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+  function hideOptions() {
+    loginOptionsSection.classList.remove("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-    openLoginOptions.addEventListener("click", showOptions);    
+  openLoginOptions.addEventListener("click", showOptions);    
 
-    goDoctorLogin.addEventListener("click", () => {
-      window.location.href = "doctor_login.html";
-    });
+  goDoctorLogin.addEventListener("click", () => {
+    window.location.href = "doctor_login.html";
+  });
 
-    goUserLogin.addEventListener("click", () => {
-      window.location.href = "login_Patient.html";
-    });
-  </script>
+  goUserLogin.addEventListener("click", () => {
+    window.location.href = "login_Patient.html";
+  });
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("SW registered"))
+    .catch(err => console.log("SW error:", err));
+}
+</script>
 </body>
 </html>
