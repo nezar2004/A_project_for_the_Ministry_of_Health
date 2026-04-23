@@ -1,0 +1,3511 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MedReach</title>
+	<!-- Successfully clicked the button (Favicon) -->
+    <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+:root {
+  --primary: #49cfa7;
+  --primary-dark: #2fb98f;
+  --secondary: #7fdcc1;
+  --accent: #23906f;
+  --glow: #1b6f57;
+  --text-light: #18362f;
+  --muted: #6b8780;
+  --bg-soft: #dff5ee;
+  --bg-soft-2: #cdeee3;
+  --surface: rgba(255,255,255,0.78);
+  --surface-strong: rgba(255,255,255,0.9);
+  --border: rgba(73, 207, 167, 0.18);
+  --shadow: 0 12px 30px rgba(20, 60, 48, 0.12);
+}
+
+#bookingApp {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 999;
+  padding: 0 12px;
+}
+
+#bookingApp::-webkit-scrollbar {
+  width: 0px;
+}
+
+#bookingApp {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  position: relative;
+  direction: rtl;
+}
+
+body {
+  background:
+    radial-gradient(circle at top right, rgba(73, 207, 167, 0.16), transparent 24%),
+    radial-gradient(circle at left center, rgba(255, 255, 255, 0.22), transparent 18%),
+    linear-gradient(135deg, var(--bg-soft) 0%, var(--bg-soft-2) 100%);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 360px;
+  height: 360px;
+  background: url('https://cdn.pixabay.com/photo/2017/07/19/13/11/medical-2519808_1280.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.05;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* NAVBAR */
+nav.navbar {
+  width: 100%;
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+  padding: 15px 25px;
+  box-shadow: 0 8px 24px rgba(47, 185, 143, 0.08);
+  animation: fadeInDown 1s ease forwards;
+}
+
+.navbar-brand {
+  color: var(--glow);
+  font-weight: 800;
+  font-size: 1.6rem;
+  text-shadow: none;
+}
+
+.nav-link {
+  color: var(--text-light) !important;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--primary-dark) !important;
+  text-shadow: none;
+}
+
+/* CONTAINER */
+.container-app {
+  width: 100%;
+  max-width: 1000px;
+  padding: 25px;
+  margin: 40px auto;
+  animation: fadeInUp 1.2s ease forwards;
+  position: relative;
+  z-index: 1;
+}
+
+/* CARDS */
+.landing-card,
+.panel-card,
+.hero-banner {
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 2.2rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow);
+  transition: 0.35s ease;
+}
+
+.landing-card:hover,
+.panel-card:hover,
+.hero-banner:hover {
+  background: var(--surface-strong);
+  box-shadow: 0 18px 36px rgba(47, 185, 143, 0.14);
+  transform: translateY(-4px);
+}
+
+/* Typography */
+h1, h4, h5, h6, h2, h3 {
+  color: var(--glow);
+  text-shadow: none;
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* Buttons */
+.btn-main {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none;
+  color: #fff;
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(47, 185, 143, 0.18);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(47, 185, 143, 0.22);
+}
+
+.btn-outline-main {
+  background: rgba(255,255,255,0.72);
+  color: var(--glow);
+  border: 1px solid #cfe9df;
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-weight: 700;
+  transition: 0.25s ease;
+}
+
+.btn-outline-main:hover {
+  background: #ecfaf5;
+  transform: translateY(-2px);
+}
+
+/* Forms */
+.form-control,
+.form-select {
+  width: 100%;
+  background: rgba(255,255,255,0.84);
+  border: 1px solid #d8eee7;
+  color: var(--text-light);
+  border-radius: 14px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  transition: 0.25s ease;
+}
+
+.form-control::placeholder {
+  color: #87a39b;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(73, 207, 167, 0.12);
+  border-color: #8adcc1;
+  outline: none;
+}
+
+/* Steps */
+.step-pill {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  color: var(--glow);
+  font-weight: 700;
+  margin: 6px 4px;
+  border: 1px solid #d9eee7;
+  transition: 0.25s ease;
+}
+
+.step-pill.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(47, 185, 143, 0.18);
+}
+
+/* Footer */
+footer {
+  width: 100%;
+  background: rgba(255,255,255,0.4);
+  border-top: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  padding: 1rem 0;
+  color: var(--glow);
+  box-shadow: 0 -5px 15px rgba(47, 185, 143, 0.08);
+}
+
+/* Loading Box */
+#loadingBox {
+  background: rgba(73, 207, 167, 0.94);
+  color: white;
+  padding: 18px 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(20, 60, 48, 0.18);
+  font-size: 17px;
+  font-weight: 700;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+  transition: 0.4s;
+}
+
+#loadingBox.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  visibility: hidden;
+}
+
+/* EMERGENCY BUTTONS */
+.btn-emergency {
+  background-color: #d32f2f;
+  color: white;
+  font-size: 1.1rem;
+  padding: 14px 26px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(255,0,0,0.25);
+  transition: 0.25s ease;
+}
+
+.btn-emergency:hover {
+  background-color: #b71c1c;
+  box-shadow: 0 0 22px rgba(255,0,0,0.35);
+}
+
+.emergency-container {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 9999;
+}
+
+.em-btn,
+#chat-toggle {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.45);
+  backdrop-filter: blur(8px);
+  color: var(--glow);
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  transition: 0.25s ease;
+}
+
+.logout-btn {
+  background: rgba(192, 57, 43, 0.72) !important;
+  color: #fff !important;
+}
+
+.em-btn:hover,
+#chat-toggle:hover {
+  transform: scale(1.08);
+  background: rgba(255,255,255,0.62);
+}
+
+/* CHAT WIDGET */
+#chat-widget {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 360px;
+  height: 100%;
+  background: linear-gradient(180deg, #f7fffb, #eaf8f2);
+  box-shadow: -10px 0 30px rgba(0,0,0,0.14);
+  transition: right 0.3s ease;
+  z-index: 1001;
+}
+
+#chat-widget.active {
+  right: 0;
+}
+
+.chat-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.chat-body {
+  background: linear-gradient(180deg, #edf9f4, #def3ea);
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-body::-webkit-scrollbar {
+  width: 0;
+}
+
+.bot-message {
+  background: rgba(255,255,255,0.78);
+  border: 1px solid rgba(73, 207, 167, 0.16);
+  color: #27443d;
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  max-width: 82%;
+  width: fit-content;
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: right;
+  direction: rtl;
+}
+
+.user-message {
+  max-width: 70%;
+  padding: 10px 15px;
+  margin: 6px 0 6px auto;
+  border-radius: 15px 15px 0 15px;
+  font-size: 15px;
+  line-height: 1.5;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  text-align: right;
+  direction: rtl;
+  display: block;
+  width: fit-content;
+  word-wrap: break-word;
+  clear: both;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  align-items: center;
+  background: #f6fcf9;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.chat-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 16px;
+  border-radius: 22px;
+  background: #ffffff;
+  border: 1px solid #d8eee7;
+  color: #333;
+  font-size: 15px;
+}
+
+.chat-input button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.15s;
+  color: #fff;
+}
+
+.chat-input button::before {
+  content: "➤";
+  font-size: 20px;
+}
+
+.chat-input button:hover {
+  transform: scale(1.06);
+}
+
+.bot-message,
+.user-message {
+  animation: fadeIn 0.25s ease;
+}
+
+.typing {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(73, 207, 167, 0.14);
+  color: #27443d;
+  padding: 10px 15px;
+  border-radius: 15px 15px 15px 0;
+  width: fit-content;
+  margin-bottom: 10px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.chat-input button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* TIME SLOTS */
+.time-slot,
+.btn-outline-primary.time-slot {
+  background: rgba(255,255,255,0.82) !important;
+  border: 1px solid #cde9df !important;
+  color: var(--glow) !important;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-weight: 700;
+  transition: 0.25s ease;
+  backdrop-filter: blur(6px);
+}
+
+.time-slot:hover {
+  background: #ecfaf5 !important;
+  border-color: #8adcc1 !important;
+  transform: translateY(-2px);
+}
+
+/* FIXED HEADER / SIDE BUTTONS */
+header, .top-bar {
+  position: fixed;
+  z-index: 100 !important;
+}
+
+.booking-banner {
+  position: fixed;
+  z-index: 90 !important;
+}
+
+.side-buttons {
+  position: fixed;
+  z-index: 800;
+}
+
+/* INFO */
+.info-container {
+  position: absolute;
+  top: 0;
+  margin-top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  display: grid;
+  gap: 25px;
+  padding-bottom: 50px;
+}
+
+@media (max-width: 480px) {
+  .info-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project-info {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.8s ease;
+}
+
+.project-info h2 {
+  color: var(--glow);
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  text-shadow: none;
+}
+
+.project-info p {
+  line-height: 1.8;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.project-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-info ul li {
+  margin: 6px 0;
+  font-size: 15px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+button {
+  min-height: 44px;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.side-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 90px;
+  font-size: 22px;
+  border-radius: 50%;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+/* PANEL */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  display: none;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+#overlay.active {
+  display: block;
+}
+
+#reminderPanel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 360px;
+  max-width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #f7fffb, #eaf8f2);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.14);
+  transition: right 0.3s ease;
+  z-index: 1001;
+  padding: 16px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  direction: rtl;
+}
+
+#reminderPanel.active {
+  right: 0;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #f4fcf8;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--glow);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#closeReminderPanel,
+#closeChat {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 12px;
+  background: #f25f57;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(239, 83, 80, 0.22);
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+#closeReminderPanel:hover,
+#closeChat:hover {
+  transform: scale(1.05);
+  background: #e14c43;
+}
+
+#addForm,
+#listView {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#addForm input,
+#addForm select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 15px;
+  border: 1px solid #d8eee7;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #333;
+  font-size: 16px;
+  outline: none;
+  transition: 0.2s;
+}
+
+#addForm input:focus,
+#addForm select:focus {
+  border-color: #49cfa7;
+  box-shadow: 0 0 0 3px rgba(73, 207, 167, 0.12);
+  background: #fff;
+}
+
+#addForm input::placeholder {
+  color: #8aa39c;
+}
+
+#addForm button,
+#listView button {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#addForm button[onclick="saveReminder()"] {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(47, 185, 143, 0.22);
+}
+
+#addForm button[onclick="saveReminder()"]:hover {
+  transform: translateY(-1px);
+}
+
+#addForm button[onclick="showList()"] {
+  background: #dff5ee;
+  color: var(--glow);
+  border: 1px solid #ccefe2;
+}
+
+#addForm button[onclick="showList()"]:hover {
+  background: #ecfaf5;
+}
+
+#listView button[onclick="showForm()"] {
+  background: #1f9c78;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(31, 156, 120, 0.18);
+}
+
+#listView button[onclick="showForm()"]:hover {
+  background: #188462;
+}
+
+#remindersList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.mobile-emergency-menu {
+  display: none;
+}
+
+.mobile-emergency-menu {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.mobile-emergency-menu .nav-item {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.mobile-emergency-menu .nav-item:last-child {
+  border-bottom: none;
+}
+
+.mobile-emergency-menu .nav-link {
+  position: relative;
+  display: block;
+  text-align: center !important;
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light) !important;
+}
+
+.mobile-emergency-menu .menu-text {
+  display: block;
+}
+
+.mobile-emergency-menu .menu-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mobile-emergency-menu .nav-link:hover {
+  color: var(--primary-dark) !important;
+  text-shadow: none;
+}
+
+@media (max-width: 991px) {
+  .mobile-emergency-menu {
+    display: block;
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 35px;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* My Bookings Modal */
+#bookingsModal .modal-dialog {
+  max-width: 560px;
+}
+
+#bookingsModal .modal-content {
+  border: none;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
+}
+
+#bookingsModal .modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5f3ed;
+  background: linear-gradient(180deg, #fffdfc, #f4fcf8);
+}
+
+#bookingsModal .modal-title {
+  color: var(--glow);
+  font-weight: 800;
+  font-size: 1.45rem;
+}
+
+#bookingsModal .modal-body {
+  padding: 24px;
+  color: var(--text-light);
+  font-size: 1.05rem;
+  background: #fff;
+}
+
+#bookingsModal .modal-footer.bookings-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px 24px;
+  border-top: 1px solid #e5f3ed;
+  background: #f9fefc;
+}
+
+#bookingsModal .modal-footer.bookings-footer .btn {
+  min-width: 140px;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+.booking-close-btn {
+  background: #7b8794;
+  color: #fff;
+}
+
+.booking-close-btn:hover {
+  background: #66707a;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.booking-refresh-btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(47, 185, 143, 0.22);
+}
+
+.booking-refresh-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(47, 185, 143, 0.28);
+}
+
+#bookingsModal .btn-close {
+  filter: none;
+  opacity: 0.7;
+}
+
+#bookingsModal .btn-close:hover {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    background-position: center top;
+    background-size: cover;
+  }
+
+  body::after {
+    width: 180px;
+    height: 180px;
+    opacity: 0.04;
+    top: 55%;
+  }
+
+  nav.navbar {
+    padding: 10px 15px;
+    text-align: center;
+  }
+
+  .navbar-brand {
+    font-size: 1.3rem;
+  }
+
+  .container-app {
+    padding: 15px;
+    margin: 20px auto;
+  }
+
+  .btn-main,
+  .btn-outline-main,
+  .btn-emergency {
+    width: 100%;
+    font-size: 1rem;
+    padding: 13px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+
+  #chat-toggle {
+    bottom: 20px !important;
+    right: 20px !important;
+    transform: scale(0.9);
+  }
+
+  #chat-widget {
+    top: 0 !important;
+    right: -100% !important;
+    bottom: auto !important;
+    width: 90vw !important;
+    max-width: 360px !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  #chat-widget.active {
+    right: 0 !important;
+  }
+
+  .emergency-container {
+    top: 140px !important;
+    left: 10px !important;
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 576px) {
+  #bookingsModal .modal-footer.bookings-footer {
+    flex-direction: column;
+  }
+
+  #bookingsModal .modal-footer.bookings-footer .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  body::after {
+    width: 140px;
+    height: 140px;
+    opacity: 0.03;
+    pointer-events: none !important;
+  }
+
+  .landing-card,
+  .panel-card,
+  .hero-banner {
+    padding: 1rem !important;
+    margin: 0.8rem 0 !important;
+    border-radius: 14px !important;
+  }
+
+  .booking-banner {
+    width: 90%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #chat-widget {
+    top: 0 !important;
+    right: -100% !important;
+    bottom: auto !important;
+    width: 92vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  #chat-widget.active {
+    right: 0 !important;
+  }
+}
+
+.em-btn {
+  pointer-events: auto !important;
+  z-index: 999999 !important;
+}
+
+#landingPage .emergency-container {
+  display: flex;
+}
+.navbar-toggler-icon {
+  filter: invert(52%) sepia(91%) saturate(400%) hue-rotate(110deg);
+}
+</style>
+<body>
+<div class="info-container">
+  <div class="project-info">
+    <h2 data-i18n="welcome_title">مرحباً بك في نظام أمل</h2>
+    <p data-i18n="welcome_desc">
+      نظام أمل يساعدك على حجز موعدك الطبي بخطوات واضحة وسريعة، مع أدوات مساندة مفيدة مثل
+      التنبيهات، المساعد الطبي، ووسائل الوصول السريع للخدمات الطارئة.
+    </p>
+
+    <ul>
+      <li data-i18n="welcome_li_1">⭐ للعودة إلى الصفحة الرئيسية أثناء الحجز اضغط على شعار أمل</li>
+      <li data-i18n="welcome_li_2">🚑 طلب إسعاف سريع عند الحاجة</li>
+      <li data-i18n="welcome_li_3">📞 اتصال سريع بالجهة المناسبة</li>
+      <li data-i18n="welcome_li_4">📍 مشاركة موقعك للوصول إليك بسهولة</li>
+      <li data-i18n="welcome_li_5">🏥 البحث عن أقرب المستشفيات</li>
+      <li data-i18n="welcome_li_6">🤖 مساعد طبي للإجابة عن استفساراتك العامة</li>
+      <li data-i18n="welcome_li_7">🔔 تنبيهات لتذكيرك بالمواعيد المهمة</li>
+    </ul>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step1_title">الخطوة 1: اختيار المحافظة</h2>
+    <p data-i18n="step1_desc">
+      ابدأ بتحديد المحافظة التي تريد الحجز داخلها، حتى يعرض لك النظام الجهات الطبية المتوفرة
+      ضمن نفس المنطقة.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step2_title">الخطوة 2: اختيار نوع الجهة الطبية</h2>
+    <p data-i18n="step2_desc">
+      اختر نوع الجهة التي تريد الحجز فيها، مثل مستشفى حكومي أو خاص أو عسكري أو مركز صحي،
+      ليتم عرض الخيارات المناسبة لك بدقة.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step3_title">الخطوة 3: اختيار المستشفى أو المركز</h2>
+    <p data-i18n="step3_desc">
+      ستظهر لك الجهات الطبية المتاحة حسب المحافظة ونوع الجهة المختار، ثم تختار المكان الأنسب
+      لإتمام الحجز.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step4_title">الخطوة 4: اختيار القسم الطبي</h2>
+    <p data-i18n="step4_desc">
+      اختر القسم المطلوب مثل الباطنية أو الأطفال أو العظام أو الأسنان، حتى يعرض لك النظام
+      الأطباء المتوفرين في هذا التخصص.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step5_title">الخطوة 5: التأمين الصحي</h2>
+    <p data-i18n="step5_desc">
+      حدّد ما إذا كان لديك تأمين صحي، لأن هذا الخيار قد يؤثر على البيانات المطلوبة وطريقة
+      متابعة الحجز.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step6_title">الخطوة 6: إدخال بيانات التأمين</h2>
+    <p data-i18n="step6_desc">
+      إذا كان لديك تأمين، أدخل البيانات المطلوبة حتى يتم حفظها مع الطلب بشكل صحيح.
+    </p>
+    <ul>
+      <li data-i18n="step6_li_1">اسم شركة التأمين</li>
+      <li data-i18n="step6_li_2">رقم وثيقة التأمين</li>
+      <li data-i18n="step6_li_3">ملاحظات إضافية عند الحاجة</li>
+    </ul>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step7_title">الخطوة 7: اختيار الطبيب</h2>
+    <p data-i18n="step7_desc">
+      ستظهر لك قائمة الأطباء المتاحين داخل القسم المختار، مع معلومات تساعدك على اختيار الطبيب
+      المناسب قبل الانتقال للموعد.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step8_title">الخطوة 8: اختيار التاريخ والوقت</h2>
+    <p data-i18n="step8_desc">
+      اختر اليوم المناسب ثم حدّد الوقت المتاح من القائمة، وبعدها ينتقل النظام بك مباشرة إلى
+      خطوة المراجعة النهائية.
+    </p>
+  </div>
+
+  <div class="project-info">
+    <h2 data-i18n="step9_title">الخطوة 9: مراجعة الحجز وتأكيده</h2>
+    <p data-i18n="step9_desc_1">
+      في هذه المرحلة تظهر لك جميع تفاصيل الحجز لمراجعتها قبل الإرسال النهائي.
+    </p>
+    <ul>
+      <li data-i18n="step9_li_1">المحافظة</li>
+      <li data-i18n="step9_li_2">نوع الجهة الطبية</li>
+      <li data-i18n="step9_li_3">اسم المستشفى أو المركز</li>
+      <li data-i18n="step9_li_4">القسم الطبي</li>
+      <li data-i18n="step9_li_5">اسم الطبيب</li>
+      <li data-i18n="step9_li_6">التاريخ والوقت</li>
+      <li data-i18n="step9_li_7">التكلفة النهائية إن وجدت</li>
+    </ul>
+    <p data-i18n="step9_desc_2">
+      بعد ذلك تدخل بياناتك الشخصية وتضغط على زر تأكيد الحجز لإرسال الطلب بنجاح.
+    </p>
+  </div>
+</div>
+
+<!-- صندوق الدردشة -->
+<div id="chat-widget" dir="rtl">
+  <div class="chat-box">
+    <div class="panel-header">
+      <h3 data-i18n="chat_title">المساعد الطبي</h3>
+      <button id="closeChat" type="button">✖</button>
+    </div>
+
+    <div class="chat-body" id="chat-body">
+      <div class="bot-message" data-i18n="chat_welcome">مرحباً، أنا المساعد الطبي. اكتب سؤالك وسأحاول مساعدتك.</div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="user-input" data-placeholder="chat_placeholder" placeholder="اكتب استفسارك الطبي هنا..." />
+      <button id="send-btn"></button>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark px-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" id="homeBtn" data-i18n="app_name">🏥 أمل</a>
+
+    <button id="menuToggleBtn" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a id="myBookingsBtn" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#bookingsModal">
+            <i class="fas fa-calendar-alt me-1"></i> <span data-i18n="my_bookings">حجوزاتي</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav text-center mobile-emergency-menu d-lg-none">
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="document.getElementById('btn-call').click()">
+            <span class="menu-icon">🚑</span>
+            <span class="menu-text" data-i18n="emergency_request">طلب إسعاف</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="document.getElementById('btn-custom').click()">
+            <span class="menu-icon">📞</span>
+            <span class="menu-text" data-i18n="quick_call">اتصال سريع</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="document.getElementById('btn-location').click()">
+            <span class="menu-icon">📍</span>
+            <span class="menu-text" data-i18n="send_location">إرسال موقعي</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="document.getElementById('btn-hospitals').click()">
+            <span class="menu-icon">🏥</span>
+            <span class="menu-text" data-i18n="nearest_hospitals">أقرب المستشفيات</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="document.getElementById('chat-toggle').click()">
+            <span class="menu-icon">🤖</span>
+            <span class="menu-text" data-i18n="chat_title">المساعد الطبي</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="logout()">
+            <span class="menu-icon">⏻</span>
+            <span class="menu-text" data-i18n="logout">تسجيل الخروج</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="document.getElementById('openReminderPanel').click()">
+            <span class="menu-icon">🔔</span>
+            <span class="menu-text" data-i18n="reminders">التنبيهات</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container" id="landingPage">
+  <div class="emergency-container d-none d-lg-flex">
+    <button title="طلب إسعاف" class="em-btn" id="btn-call">🚑</button>
+    <button title="اتصال سريع" class="em-btn" id="btn-custom">📞</button>
+    <button title="إرسال الموقع" class="em-btn" id="btn-location">📍</button>
+    <button title="أقرب المستشفيات" class="em-btn" id="btn-hospitals">🏥</button>
+    <button title="المساعد الطبي" class="em-btn" id="chat-toggle">🤖</button>
+    <button class="em-btn logout-btn" onclick="logout()" title="تسجيل الخروج">⏻</button>
+    <button id="openReminderPanel" class="em-btn" title="التنبيهات">🔔</button>
+  </div>
+
+  <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookingsModalLabel" data-i18n="current_bookings">حجوزاتي الحالية</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+        </div>
+
+        <div class="modal-body" id="bookingsListBody" data-i18n="no_current_bookings">
+          لا توجد حجوزات حالية.
+        </div>
+
+        <div class="modal-footer bookings-footer">
+          <button type="button" class="btn booking-close-btn" data-bs-dismiss="modal" data-i18n="close_btn">
+            إغلاق
+          </button>
+
+          <button type="button" class="btn booking-refresh-btn" onclick="refreshBookings()">
+            <i class="fas fa-rotate-right me-2"></i> <span data-i18n="refresh_btn">تحديث</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mb-3">
+    <button id="startBookingBtn" class="btn btn-main btn-lg">
+      <i class="fas fa-stethoscope me-2"></i> <span data-i18n="start_booking">ابدأ الحجز الآن</span>
+    </button>
+  </div>
+</div>
+
+<div class="container-app d-none" id="bookingApp">
+  <div class="panel-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h4 class="mb-0" data-i18n="booking_title">احجز موعدك بسهولة</h4>
+        <div class="small text-muted" data-i18n="booking_subtitle">اتبع الخطوات التالية لإتمام الحجز بشكل صحيح.</div>
+      </div>
+      <div>
+        <span class="step-pill" data-step="1">1</span>
+        <span class="step-pill" data-step="2">2</span>
+        <span class="step-pill" data-step="3">3</span>
+        <span class="step-pill" data-step="4">4</span>
+        <span class="step-pill" data-step="5">5</span>
+        <span class="step-pill" data-step="6">6</span>
+        <span class="step-pill" data-step="7">7</span>
+        <span class="step-pill" data-step="8">8</span>
+        <span class="step-pill" data-step="9">9</span>
+      </div>
+    </div>
+
+    <div id="stepsArea">
+      <div id="step-1" class="step-block">
+        <h5 class="mb-3" data-i18n="book_step1">اختر المحافظة</h5>
+        <div id="govList" class="row g-3"></div>
+      </div>
+
+      <div id="step-2" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step2">اختر نوع الجهة الطبية</h5>
+        <div class="row g-3">
+          <div class="col-6 col-md-3">
+            <div class="card select-card p-3 text-center" data-type="governmental">
+              <i class="fas fa-hospital-alt fa-2x mb-2 text-primary"></i>
+              <span data-i18n="government_hospital">مستشفى حكومي</span>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="card select-card p-3 text-center" data-type="private">
+              <i class="fas fa-clinic-medical fa-2x mb-2 text-primary"></i>
+              <span data-i18n="private_hospital">مستشفى خاص</span>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="card select-card p-3 text-center" data-type="healthCenter">
+              <i class="fas fa-plus-square fa-2x mb-2 text-primary"></i>
+              <span data-i18n="health_center">مركز صحي</span>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <div class="card select-card p-3 text-center" data-type="military">
+              <i class="fas fa-shield-alt fa-2x mb-2 text-primary"></i>
+              <span data-i18n="military_hospital">مستشفى عسكري</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="step-3" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step3">المستشفيات والمراكز المتاحة</h5>
+        <div id="hospList" class="row g-3"></div>
+      </div>
+
+      <div id="step-4" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step4">اختر القسم الطبي</h5>
+        <div id="deptList" class="row g-3"></div>
+      </div>
+
+      <div id="step-5" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step5">هل لديك تأمين صحي؟</h5>
+        <div class="mt-3 d-flex gap-2">
+          <button id="insNo" class="btn btn-outline-main"><i class="fas fa-times me-2"></i><span data-i18n="no_btn">لا</span></button>
+          <button id="insYes" class="btn btn-main"><i class="fas fa-check me-2"></i><span data-i18n="yes_btn">نعم</span></button>
+        </div>
+      </div>
+
+      <div id="step-6" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step6">بيانات التأمين</h5>
+        <form id="insForm" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" data-i18n="insurance_company">اسم شركة التأمين</label>
+            <input id="insCompany" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" data-i18n="policy_number">رقم الوثيقة</label>
+            <input id="insPolicy" class="form-control" required>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-main">
+              <i class="fas fa-save me-2"></i> <span data-i18n="save_continue">حفظ ومتابعة</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="step-7" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step7">اختر الطبيب</h5>
+        <div id="docList" class="row g-3"></div>
+      </div>
+
+      <div id="step-8" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step8">اختر التاريخ والوقت</h5>
+        <div class="row">
+          <div class="col-md-6 mt-2">
+            <label class="form-label" data-i18n="date_label">التاريخ</label>
+            <input type="date" id="apptDate" class="form-control" />
+          </div>
+          <div class="col-md-6 mt-2">
+            <label class="form-label" data-i18n="available_times">الأوقات المتاحة</label>
+            <div id="slotsArea" class="mt-2 d-flex flex-wrap"></div>
+          </div>
+        </div>
+        <div class="mt-2 small text-muted" data-i18n="step8_note">بعد اختيار التاريخ والوقت سيتم نقلك مباشرة إلى خطوة المراجعة.</div>
+      </div>
+
+      <div id="step-9" class="step-block d-none">
+        <h5 class="mb-3" data-i18n="book_step9">مراجعة البيانات</h5>
+        <div id="summaryCard" class="panel-card mb-4 p-4 border border-primary-subtle"></div>
+
+        <h5 class="mb-3" data-i18n="patient_data">بيانات المريض</h5>
+        <form id="custForm" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" data-i18n="full_name">الاسم الكامل</label>
+            <input id="custName" class="form-control" required>
+            <span id="custNameError" class="text-danger small"></span>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" data-i18n="email_label">البريد الإلكتروني</label>
+            <input id="custEmail" type="email" class="form-control" required>
+            <span id="custEmailError" class="text-danger small"></span>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" data-i18n="phone_label">رقم الهاتف</label>
+            <input id="custPhone" class="form-control" required>
+            <span id="custPhoneError" class="text-danger small"></span>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label" data-i18n="note_label">ملاحظة</label>
+            <textarea id="custNote" class="form-control" rows="2"></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <hr class="my-4">
+    <div class="d-flex justify-content-between">
+      <button id="prevBtn" class="btn btn-outline-main" disabled>
+        <i class="fas fa-arrow-right me-2"></i> <span data-i18n="prev_btn">السابق</span>
+      </button>
+      <button id="nextBtn" class="btn btn-main">
+        <i class="fas fa-arrow-left me-2"></i> <span data-i18n="next_btn">التالي</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title"><i class="fas fa-paper-plane me-2"></i> <span data-i18n="success_title">تم إرسال طلب الحجز</span></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+      </div>
+      <div class="modal-body" id="modalContent"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-i18n="close_btn">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="map" style="width: 100%; height: 500px; border-radius: 15px; margin-top: 20px;"></div>
+
+<div class="text-center mt-3">
+  <p id="findHospitalsBtn"></p>
+</div>
+
+<div id="overlay"></div>
+
+<div id="reminderPanel">
+  <div class="panel-header">
+    <h3 data-i18n="reminders_title">🔔 التنبيهات الطبية</h3>
+    <button id="closeReminderPanel" type="button">✖</button>
+  </div>
+
+  <div id="addForm">
+    <input id="taskName" data-placeholder="reminder_name_placeholder" placeholder="اسم التنبيه">
+
+    <div class="input-wrapper">
+      <input id="taskDate" type="date">
+      <span class="icon">📅</span>
+    </div>
+
+    <div class="input-wrapper">
+      <input id="taskTime" type="time">
+      <span class="icon">⏰</span>
+    </div>
+
+    <select id="remindBefore">
+      <option value="60" data-i18n="before_hour">قبل ساعة</option>
+      <option value="30" data-i18n="before_30">قبل 30 دقيقة</option>
+      <option value="15" data-i18n="before_15">قبل 15 دقيقة</option>
+      <option value="10" data-i18n="before_10">قبل 10 دقائق</option>
+      <option value="5" data-i18n="before_5">قبل 5 دقائق</option>
+    </select>
+
+    <select id="repeatType">
+      <option value="none" data-i18n="repeat_none">بدون تكرار</option>
+      <option value="daily" data-i18n="repeat_daily">يومي</option>
+      <option value="weekly" data-i18n="repeat_weekly">أسبوعي</option>
+    </select>
+
+    <button type="button" onclick="saveReminder()" data-i18n="save_btn">💾 حفظ</button>
+    <button type="button" onclick="showList()" data-i18n="my_reminders">📋 منبهاتي</button>
+  </div>
+
+  <div id="listView" style="display:none">
+    <button type="button" onclick="showForm()" data-i18n="add_btn">➕ إضافة</button>
+    <div id="remindersList"></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module">
+  import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  const authFirebaseConfig = {
+    apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
+    authDomain: "nabdapp-3a077.firebaseapp.com",
+    projectId: "nabdapp-3a077",
+    storageBucket: "nabdapp-3a077.appspot.com",
+    messagingSenderId: "675031985272",
+    appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
+  };
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyClPA_4ZjzUrnERb_k-6yBtgb9AB7QIryA",
+    authDomain: "dataofhosp.firebaseapp.com",
+    projectId: "dataofhosp",
+    storageBucket: "dataofhosp.firebasestorage.app",
+    messagingSenderId: "908860921572",
+    appId: "1:908860921572:web:1fce145520ef5ecd7b7ef1"
+  };
+  const bookingsFirebaseConfig = {
+	  apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
+	  authDomain: "dataofdoctor.firebaseapp.com",
+	  projectId: "dataofdoctor",
+	  storageBucket: "dataofdoctor.firebasestorage.app",
+	  messagingSenderId: "305140405001",
+	  appId: "1:305140405001:web:7e54658907133ef9ff39d8"
+	};
+   async function saveBookingToFirebase(payload) {
+	  try {
+		const user = auth.currentUser;
+		if (!user) throw new Error("No logged in user");
+
+		const booking = {
+		  ...payload,
+		  user_uid: user.uid,
+		  user_email: (user.email || "").trim().toLowerCase()
+		};
+
+		const userDocRef = await addDoc(
+		  collection(bookingsDb, "users", user.uid, "bookings"),
+		  booking
+		);
+
+		await addDoc(
+		  collection(bookingsDb, "allBookings"),
+		  {
+			...booking,
+			source_booking_doc_id: userDocRef.id
+		  }
+		);
+
+		console.log("🔥 booking saved", userDocRef.id);
+		return userDocRef.id;
+	  } catch (error) {
+		console.error("❌ error:", error);
+		throw error;
+	  }
+	}
+
+	window.saveBookingToFirebase = saveBookingToFirebase;
+	
+  const authApp = initializeApp(authFirebaseConfig);
+  const dataApp = initializeApp(firebaseConfig, "dataApp");
+  const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
+
+  const auth = getAuth(authApp);
+  const db = getFirestore(dataApp);
+  const bookingsDb = getFirestore(bookingsApp);
+
+  window.db = db;
+  window.collection = collection;
+  window.getDocs = getDocs;
+  window.query = query;
+  window.where = where;
+  window.bookingsDb = bookingsDb;
+  window.auth = auth;
+
+  let authChecked = false;
+
+  onAuthStateChanged(auth, async (user) => {
+	  if (authChecked) return;
+	  authChecked = true;
+
+	  if (!user) {
+		localStorage.removeItem("currentUserUid");
+		localStorage.removeItem("currentUserEmail");
+		window.location.href = "login_Patient.html";
+		return;
+	  }
+
+	  console.log("User logged in:", user.email);
+
+	  window.currentUserEmail = (user.email || "").trim().toLowerCase();
+	  window.currentUserUid = user.uid;
+
+	  localStorage.setItem("currentUserUid", user.uid);
+	  localStorage.setItem("currentUserEmail", (user.email || "").trim().toLowerCase());
+
+	  await loadFirebaseData();
+	  await renderBookings();
+  });
+
+  async function loadFirebaseData() {
+    try {
+      console.log("START loadFirebaseData");
+      console.log("projectId =", firebaseConfig.projectId);
+
+      const hospitalsSnap = await getDocs(collection(db, "hospitals"));
+      console.log("hospitalsSnap.size =", hospitalsSnap.size);
+
+      const hospitalsData = hospitalsSnap.docs.map(hospitalDoc => {
+        const hospitalRaw = hospitalDoc.data();
+        return {
+          ...hospitalRaw,
+          docId: hospitalDoc.id,
+          id: hospitalRaw.id ?? hospitalDoc.id
+        };
+      });
+
+      window.firebaseHospitals = hospitalsData;
+      window.firebaseDepartments = [];
+      window.firebaseDoctors = [];
+
+      window.dispatchEvent(new Event("firebaseDataReady"));
+
+      const departmentsData = [];
+      const doctorsData = [];
+
+      for (const hospitalDoc of hospitalsSnap.docs) {
+        const hospitalRaw = hospitalDoc.data();
+
+        const deptSnap = await getDocs(
+          collection(db, "hospitals", hospitalDoc.id, "departments")
+        );
+
+        for (const deptDoc of deptSnap.docs) {
+          const deptRaw = deptDoc.data();
+
+          departmentsData.push({
+            ...deptRaw,
+            docId: deptDoc.id,
+            id: deptRaw.id ?? deptDoc.id,
+            hospitalDocId: hospitalDoc.id,
+            hospital_id: hospitalRaw.id ?? hospitalDoc.id
+          });
+
+          const doctorsSnap = await getDocs(
+            collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
+          );
+
+          for (const doctorDoc of doctorsSnap.docs) {
+            const doctorRaw = doctorDoc.data();
+
+            doctorsData.push({
+              ...doctorRaw,
+              docId: doctorDoc.id,
+              id: doctorRaw.id ?? doctorDoc.id,
+              hospitalDocId: hospitalDoc.id,
+              departmentDocId: deptDoc.id,
+              hospital_id: hospitalRaw.id ?? hospitalDoc.id,
+              dept_id: deptRaw.id ?? deptDoc.id
+            });
+          }
+        }
+      }
+
+      window.firebaseDepartments = departmentsData;
+      window.firebaseDoctors = doctorsData;
+
+      window.dispatchEvent(new Event("firebaseDataReady"));
+    } catch (error) {
+      console.error("Firebase loading error FULL:", error);
+      alert("حدث خطأ أثناء تحميل البيانات من Firebase: " + error.message);
+    }
+  }
+  loadFirebaseData();
+  window.logout = function () {
+  signOut(auth).then(() => {
+    alert("تم تسجيل الخروج بنجاح 👋");
+    window.location.href = "login_Patient.html";
+  }).catch((error) => {
+    console.error("Logout error:", error);
+  });
+};
+</script>
+<script>
+	function normalizeFacilityType(type) {
+		const t = String(type || "").trim().toLowerCase();
+
+		if (["governmental", "government", "gov", "حكومي"].includes(t)) return "governmental";
+		if (["private", "خاص"].includes(t)) return "private";
+		if (["healthcenter", "health center", "مركز صحي"].includes(t)) return "healthCenter";
+		if (["medicalcenter", "medical center", "مركز طبي"].includes(t)) return "medicalCenter";
+
+		return String(type || "").trim();
+	  }
+ // -------------------------------
+	// Basic Data
+	// -------------------------------
+	async function confirmBooking() {
+	  try {
+		const payload = {
+		  booking_id: "B" + Date.now(),
+		  status: "PENDING",
+
+		  gov: bookingState.gov || "",
+		  facility_type: bookingState.facilityType || "",
+
+		  hospital_name: bookingState.hospital?.name || "",
+		  department_title: bookingState.department?.title || "",
+		  doctor_name: bookingState.doctor?.name || bookingState.doctor?.doctor_name || "",
+		  doctor_id: bookingState.doctor?.doctorKey || bookingState.doctor?.id || "",
+		  doctor_email: bookingState.doctor?.email || "",
+
+		  date: bookingState.date || "",
+		  time: bookingState.time || "",
+		  price: bookingState.price || 0,
+
+		  customer_name: document.getElementById("custName").value.trim(),
+		  customer_email: document.getElementById("custEmail").value.trim(),
+		  customer_phone: document.getElementById("custPhone").value.trim(),
+		  customer_note: document.getElementById("custNote").value.trim(),
+
+		  createdAt: Date.now()
+		};
+
+		localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
+		localBookings.push(payload);
+		localStorage.setItem("localBookings", JSON.stringify(localBookings));
+
+		await window.saveBookingToFirebase(payload);
+		await renderBookings();
+
+		alert("Your booking has been successfully confirmed ✅");
+
+		bookingState = {
+		  currentStep: 1,
+		  gov: null,
+		  facilityType: null,
+		  hospital: null,
+		  department: null,
+		  hasInsurance: null,
+		  insuranceDetails: null,
+		  doctor: null,
+		  date: null,
+		  time: null,
+		  price: null,
+		  customer: { name: null, email: null, phone: null, note: null }
+		};
+
+		goToLandingPage();
+	  } catch (error) {
+		console.error("confirmBooking error:", error);
+		alert("حدث خطأ أثناء حفظ الحجز");
+	  }
+	}
+
+	const governorates = [
+	  'Amman', 'Irbid', 'Zarqa', 'Balqa', 'Karak', 'Maan',
+	  'Tafila', 'Jerash', 'Ajloun', 'Madaba', 'Aqaba', 'Mafraq'
+	];
+
+	// بيانات ستأتي من Firebase
+	let hospitals = [];
+	let Departments = [];
+	let doctors = [];
+
+	// إذا تم تحميل بيانات Firebase من سكربت آخر
+	window.addEventListener("firebaseDataReady", () => {
+	  hospitals = (window.firebaseHospitals || []).map(h => ({
+		...h,
+		gov: String(h.gov || "").trim(),
+		type: normalizeFacilityType(h.type)
+	  }));
+
+	  Departments = (window.firebaseDepartments || []).map(d => ({
+		...d,
+		type: normalizeFacilityType(d.type)
+	  }));
+
+	  doctors = window.firebaseDoctors || [];
+
+	  console.log("🔥 Firebase data ready", {
+		hospitals: hospitals.length,
+		departments: Departments.length,
+		doctors: doctors.length
+	  });
+
+	  
+	  if (bookingState.currentStep === 3) renderHospitals();
+	  if (bookingState.currentStep === 4) renderDepartments();
+	});
+
+	// -------------------------------
+	// Booking status
+	// -------------------------------
+	let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
+
+	let bookingState = {
+	  currentStep: 1,
+	  gov: null,
+	  facilityType: null,
+	  hospital: null,
+	  department: null,
+	  hasInsurance: null,
+	  insuranceDetails: null,
+	  doctor: null,
+	  date: null,
+	  time: null,
+	  price: null,
+	  customer: { name: null, email: null, phone: null, note: null }
+	};
+
+	const maxStep = 9;
+
+	// -------------------------------
+	// Helper Functions
+	// -------------------------------
+	function escapeHtml(str) {
+	  if (!str && str !== 0) return '';
+	  return String(str)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+	}
+
+	// -------------------------------
+	// Main Navigation Functions
+	// -------------------------------
+	function showStep(n) {
+	  document.querySelectorAll('#stepsArea .step-block').forEach(el => el.classList.add('d-none'));
+	  const el = document.getElementById('step-' + n);
+	  if (el) el.classList.remove('d-none');
+
+	  bookingState.currentStep = n;
+	  updateStepPills();
+	  updateNavButtons();
+
+	  if (n === 4 && bookingState.hospital) renderDepartments();
+	  if (n === 7 && bookingState.department) loadDoctorsForSelectedDepartment();
+
+	  if (n === 8) {
+		enforceDateMin();
+
+		if (!bookingState.date) {
+		  autoFillToday();
+		}
+
+		loadTimeSlotsForSelectedDate();
+	  }
+
+	  if (n === 9 && bookingState.time) updateSummaryCard();
+	}
+
+	function updateStepPills() {
+	  document.querySelectorAll('.step-pill').forEach(p => {
+		const stepNum = Number(p.dataset.step);
+		p.classList.remove('active', 'text-success');
+		if (stepNum === bookingState.currentStep) p.classList.add('active');
+		if (stepNum < bookingState.currentStep) p.classList.add('text-success');
+	  });
+	}
+
+	function updateNavButtons() {
+	  const prevBtn = document.getElementById('prevBtn');
+	  const nextBtn = document.getElementById('nextBtn');
+	  if (!prevBtn || !nextBtn) return;
+
+	  prevBtn.disabled = bookingState.currentStep === 1;
+	  nextBtn.innerHTML =
+		bookingState.currentStep === maxStep
+		  ? '<i class="fas fa-check me-2"></i> تأكيد الحجز'
+		  : '<i class="fas fa-arrow-left me-2"></i> التالي';
+	  prevBtn.innerHTML =
+		'<i class="fas fa-arrow-right me-2"></i> السابق';
+	}
+
+	// -------------------------------
+	// Display and Logic Functions
+	// -------------------------------
+	function renderGovernorates() {
+	  const container = document.getElementById('govList');
+	  if (!container) return;
+	  container.innerHTML = '';
+
+	  governorates.forEach(g => {
+		const col = document.createElement('div');
+		col.className = 'col-6 col-md-3';
+
+		const card = document.createElement('div');
+		card.className = 'card select-card p-3 text-center';
+		card.dataset.gov = g;
+		card.innerHTML = `
+		  <div class="card-body p-0">
+			<i class="fas fa-map-marker-alt fa-lg mb-2 text-primary"></i>
+			<strong>${escapeHtml(g)}</strong>
+		  </div>
+		`;
+
+		col.appendChild(card);
+		container.appendChild(col);
+	  });
+	}
+
+	function selectGovernorate(gov) {
+	  bookingState.gov = gov;
+	  bookingState.facilityType = null;
+	  bookingState.hospital = null;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
+
+	  document.querySelectorAll('[data-gov]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-gov]').forEach(el => {
+		if (el.dataset.gov === gov) el.classList.add('selected');
+	  });
+
+	  showStep(2);
+	}
+
+	function selectFacilityType(type) {
+	  bookingState.facilityType = normalizeFacilityType(type);
+	  bookingState.hospital = null;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
+	
+	  document.querySelectorAll('[data-type]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-type]').forEach(el => {
+	    if (normalizeFacilityType(el.dataset.type) === bookingState.facilityType) {
+	      el.classList.add('selected');
+	    }
+	  });
+	
+	  renderHospitals();
+	  showStep(3);
+	}
+
+	function renderHospitals() {
+	  const container = document.getElementById('hospList');
+	  if (!container) return;
+	  container.innerHTML = '';
+
+	  console.log("bookingState.gov =", bookingState.gov);
+	  console.log("bookingState.facilityType =", bookingState.facilityType);
+	  console.log("hospitals length =", hospitals.length);
+	  console.log("first 5 hospitals =", hospitals.slice(0, 5));
+
+	  const matched = hospitals.filter(h =>
+		String(h.gov || "").trim().toLowerCase() === String(bookingState.gov || "").trim().toLowerCase() &&
+		String(h.type || "").trim().toLowerCase() === String(bookingState.facilityType || "").trim().toLowerCase()
+	  );
+
+	  console.log("matched length =", matched.length);
+	  console.log("matched sample =", matched.slice(0, 5));
+
+	  if (!matched.length) {
+		container.innerHTML = `
+		  <div class="col-12 p-3 text-muted">
+			<i class="fas fa-info-circle me-2"></i>
+			No facilities are currently available.
+		  </div>
+		`;
+		return;
+	  }
+
+	  matched.forEach(h => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
+
+		const card = document.createElement('div');
+		card.className = 'card p-3 border';
+		card.dataset.hosp = String(h.docId);
+
+		card.innerHTML = `
+		  <div>
+			<strong>${escapeHtml(h.name)}</strong>
+			<div class="small text-muted">${escapeHtml(h.type)} — ${escapeHtml(h.gov)}</div>
+		  </div>
+		`;
+
+		card.addEventListener('click', () => selectHospital(String(h.docId)));
+
+		col.appendChild(card);
+		container.appendChild(col);
+	  });
+
+	  console.log("renderHospitals done");
+	}
+	async function selectHospital(hospId) {
+	  const h = hospitals.find(x => String(x.docId) === String(hospId));
+	  if (!h) return;
+
+	  bookingState.hospital = h;
+	  bookingState.department = null;
+	  bookingState.doctor = null;
+
+	  document.querySelectorAll('[data-hosp]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-hosp]').forEach(el => {
+		if (String(el.dataset.hosp) === String(hospId)) {
+		  el.classList.add('selected');
+		}
+	  });
+
+	  showStep(4);
+
+	  const c = document.getElementById('deptList');
+	  if (c) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-spinner fa-spin me-2"></i>
+			Loading departments...
+		  </div>
+		`;
+	  }
+
+	  try {
+		const deptSnap = await window.getDocs(
+		  window.collection(window.db, "hospitals", String(hospId), "departments")
+		);
+
+		Departments = deptSnap.docs.map(deptDoc => {
+		  const deptRaw = deptDoc.data();
+		  return {
+			...deptRaw,
+			docId: deptDoc.id,
+			id: deptRaw.id ?? deptDoc.id,
+			hospital_id: h.id
+		  };
+		});
+
+		console.log("Loaded departments for hospital:", h.name, Departments);
+
+		renderDepartments();
+	  } catch (error) {
+		console.error("Error loading departments:", error);
+		if (c) {
+		  c.innerHTML = `
+			<div class="col-12 text-danger p-3">
+			  <i class="fas fa-exclamation-circle me-2"></i>
+			  Failed to load departments.
+			</div>
+		  `;
+		}
+	  }
+	}
+	function renderDepartments() {
+	  const c = document.getElementById('deptList');
+	  if (!c) return;
+	  c.innerHTML = '';
+
+	  console.log("selected hospital =", bookingState.hospital);
+	  console.log("Departments length =", Departments.length);
+	  console.log("first 5 Departments =", Departments.slice(0, 5));
+
+	  if (!bookingState.hospital) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-info-circle me-2"></i>
+			Select the hospital first to view the departments.
+		  </div>
+		`;
+		return;
+	  }
+
+	  const matchedDepartments = Departments.filter(d =>
+		String(d.hospital_id) === String(bookingState.hospital.id)
+	  );
+
+	  console.log("matchedDepartments length =", matchedDepartments.length);
+	  console.log("matchedDepartments sample =", matchedDepartments.slice(0, 5));
+
+	  if (!matchedDepartments.length) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-exclamation-triangle me-2"></i>
+			There are no departments available for this hospital.
+		  </div>
+		`;
+		return;
+	  }
+
+	  matchedDepartments.forEach(d => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
+
+		const card = document.createElement('div');
+		card.className = 'card p-3 border';
+		card.dataset.dept = String(d.id);
+
+		card.innerHTML = `
+		  <div>
+			<strong>${escapeHtml(d.title)}</strong>
+			<div class="small text-muted">Base price: $${escapeHtml(d.basePrice)}</div>
+		  </div>
+		`;
+
+		card.addEventListener('click', () => {
+		  bookingState.department = d;
+		  bookingState.doctor = null;
+
+		  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
+		  card.classList.add('selected');
+
+		  showStep(5);
+		});
+
+		col.appendChild(card);
+		c.appendChild(col);
+	  });
+
+	  console.log("renderDepartments done");
+	}
+
+	function selectDepartment(deptId) {
+	  bookingState.department = Departments.find(d => d.id === deptId);
+	  bookingState.doctor = null;
+
+	  document.querySelectorAll('[data-dept]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-dept]').forEach(el => {
+		if (Number(el.dataset.dept) === deptId) el.classList.add('selected');
+	  });
+
+	  showStep(5);
+	}
+	async function loadDoctorsForSelectedDepartment() {
+	  if (!bookingState.hospital || !bookingState.department) return;
+
+	  const c = document.getElementById('docList');
+	  if (c) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-spinner fa-spin me-2"></i>
+			Loading doctors...
+		  </div>
+		`;
+	  }
+
+	  try {
+		const doctorsSnap = await window.getDocs(
+		  window.collection(
+			window.db,
+			"hospitals",
+			String(bookingState.hospital.docId),
+			"departments",
+			String(bookingState.department.docId),
+			"doctors"
+		  )
+		);
+
+		doctors = doctorsSnap.docs.map(docDoc => {
+		  const docRaw = docDoc.data();
+
+		  return {
+			...docRaw,
+			docId: docDoc.id,
+
+			// نخلي id هو المفتاح الثابت للدكتور إن وجد
+			id: docRaw.doctorKey ?? docRaw.id ?? docDoc.id,
+
+			// نخزنهم صراحة عشان نستخدمهم وقت الحجز
+			doctorKey: docRaw.doctorKey ?? docRaw.id ?? docDoc.id,
+			name: docRaw.name || docRaw.doctor_name || "",
+			email: (docRaw.email || "").trim().toLowerCase(),
+			slotDuration: docRaw.slotDuration || 30,
+
+			hospital_id: bookingState.hospital.id,
+			dept_id: bookingState.department.id
+		  };
+		});
+
+		console.log("Loaded doctors:", doctors);
+		renderDoctors();
+	  } catch (error) {
+		console.error("Error loading doctors:", error);
+		if (c) {
+		  c.innerHTML = `
+			<div class="col-12 text-danger p-3">
+			  <i class="fas fa-exclamation-circle me-2"></i>
+			  Failed to load doctors.
+			</div>
+		  `;
+		}
+	  }
+	}
+	function renderDoctors() {
+	  const c = document.getElementById('docList');
+	  if (!c) return;
+	  c.innerHTML = '';
+
+	  if (!bookingState.hospital || !bookingState.department) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-info-circle me-2"></i>
+			Select the hospital and department first.
+		  </div>
+		`;
+		return;
+	  }
+
+	  if (!doctors.length) {
+		c.innerHTML = `
+		  <div class="col-12 text-muted p-3">
+			<i class="fas fa-exclamation-triangle me-2"></i>
+			No doctors available.
+		  </div>
+		`;
+		return;
+	  }
+
+	  doctors.forEach(doc => {
+		const col = document.createElement('div');
+		col.className = 'col-12 col-md-6';
+
+		const card = document.createElement('div');
+		card.className = 'card p-3 border';
+		card.dataset.doc = String(doc.id);
+
+		card.innerHTML = `
+		  <div>
+			<strong>${escapeHtml(doc.name || doc.doctor_name || "")}</strong>
+			<div class="small text-muted">
+			  Duration: ${escapeHtml(doc.slotDuration || 30)} min
+			</div>
+		  </div>
+		`;
+
+		card.addEventListener('click', () => selectDoctor(doc));
+
+		col.appendChild(card);
+		c.appendChild(col);
+	  });
+
+	  console.log("renderDoctors done");
+	}
+
+	function selectDoctor(doc) {
+	  if (!doc) return;
+
+	  console.log("DOCTOR SELECTED =>", doc);
+
+	  bookingState.doctor = doc;
+	  bookingState.date = null;
+	  bookingState.time = null;
+
+	  const base = Number(bookingState.department?.basePrice || 0);
+	  bookingState.price = bookingState.hasInsurance ? Math.round(base * 0.3) : base;
+
+	  document.querySelectorAll('[data-doc]').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll('[data-doc]').forEach(el => {
+		if (String(el.dataset.doc) === String(doc.id)) {
+		  el.classList.add('selected');
+		}
+	  });
+
+	  showStep(8);
+	}
+
+	function autoFillToday() {
+	  if (bookingState.date) return;
+
+	  const today = new Date();
+	  const yyyy = today.getFullYear();
+	  const mm = String(today.getMonth() + 1).padStart(2, '0');
+	  const dd = String(today.getDate()).padStart(2, '0');
+
+	  const val = `${yyyy}-${mm}-${dd}`;
+	  const input = document.getElementById('apptDate');
+
+	  if (input) input.value = val;
+	  bookingState.date = val;
+	}
+
+	function enforceDateMin() {
+	  const today = new Date();
+	  const yyyy = today.getFullYear();
+	  const mm = String(today.getMonth() + 1).padStart(2, '0');
+	  const dd = String(today.getDate()).padStart(2, '0');
+
+	  document.getElementById('apptDate').setAttribute('min', `${yyyy}-${mm}-${dd}`);
+	}
+
+	function loadTimeSlotsForSelectedDate() {
+	  console.log("loadTimeSlotsForSelectedDate => doctor:", bookingState.doctor);
+	  console.log("loadTimeSlotsForSelectedDate => date:", bookingState.date);
+
+	  const container = document.getElementById('slotsArea');
+	  if (!container) return;
+	  container.innerHTML = '';
+
+	  if (!bookingState.doctor || !bookingState.date) {
+		container.innerHTML = '<div class="text-muted p-2">Select the doctor and date to view times</div>';
+		return;
+	  }
+	  const slotMin = bookingState.doctor.slotDuration || 30;
+	  const startH = 9, endH = 17;
+	  const slots = [];
+
+	  for (let h = startH; h < endH; h++) {
+		for (let m = 0; m < 60; m += slotMin) {
+		  const hh = String(h).padStart(2, '0');
+		  const mmStr = String(m).padStart(2, '0');
+		  slots.push(`${hh}:${mmStr}`);
+		}
+	  }
+
+	  slots.forEach(s => {
+		const conflict = localBookings.some(b =>
+		  b.doctor_id === bookingState.doctor.id &&
+		  b.date === bookingState.date &&
+		  b.time === s
+		);
+
+		let isPastTime = false;
+		const now = new Date();
+
+		const selected = new Date(bookingState.date + "T" + s + ":00");
+		const today = new Date();
+
+		const isToday =
+		  selected.getFullYear() === today.getFullYear() &&
+		  selected.getMonth() === today.getMonth() &&
+		  selected.getDate() === today.getDate();
+
+		if (isToday && selected <= now) {
+		  isPastTime = true;
+		}
+
+		const btn = document.createElement('button');
+		btn.className = 'btn btn-outline-primary time-slot';
+		btn.dataset.time = s;
+		btn.textContent = s;
+
+		if (conflict) {
+		  btn.disabled = true;
+		  btn.textContent = s + ' (reserved)';
+		  btn.classList.add('disabled');
+		  btn.classList.remove('btn-outline-primary');
+		  btn.classList.add('btn-outline-danger');
+		}
+
+		if (isPastTime) {
+		  btn.disabled = true;
+		  btn.textContent = s + ' (expired)';
+		  btn.classList.add('disabled');
+		  btn.classList.remove('btn-outline-primary');
+		  btn.classList.add('btn-outline-secondary');
+		}
+
+		if (!conflict && !isPastTime) {
+		  btn.addEventListener('click', () => selectTimeSlot(s));
+		}
+
+		container.appendChild(btn);
+	  });
+	}
+
+	function selectTimeSlot(time) {
+	  bookingState.time = time;
+	  document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+	  document.querySelectorAll(`.time-slot[data-time="${time}"]`).forEach(el => el.classList.add('selected'));
+	  nextStep();
+	}
+
+	function updateSummaryCard() {
+	  const c = document.getElementById('summaryCard');
+	  if (!c) return;
+
+	  const html = `
+		<div class="row">
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-map-marker-alt me-1"></i> المحافظة</div><strong>${escapeHtml(bookingState.gov || '-')}</strong></div>
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-building me-1"></i> نوع المنشأة</div><strong>${escapeHtml(bookingState.facilityType || '-')}</strong></div>
+		</div>
+		<hr class="my-2">
+		<div class="row">
+		  <div class="col-12 mb-2"><div class="small text-muted"><i class="fas fa-hospital me-1"></i> المستشفى</div><strong>${escapeHtml(bookingState.hospital ? bookingState.hospital.name : '-')}</strong></div>
+		</div>
+		<div class="row">
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clipboard-list me-1"></i> القسم</div><strong>${escapeHtml(bookingState.department ? bookingState.department.title : '-')}</strong></div>
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-user-md me-1"></i> الطبيب</div><strong>${escapeHtml(bookingState.doctor ? bookingState.doctor.name : '-')}</strong></div>
+		</div>
+		<div class="row">
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-calendar-alt me-1"></i> التاريخ</div><strong>${escapeHtml(bookingState.date || '-')}</strong></div>
+		  <div class="col-6 mb-2"><div class="small text-muted"><i class="fas fa-clock me-1"></i> الوقت</div><strong>${escapeHtml(bookingState.time || '-')}</strong></div>
+		</div>
+		<hr class="my-2">
+		<div class="row align-items-center">
+		  <div class="col-6"><div class="small text-muted"><i class="fas fa-money-bill-wave me-1"></i> السعر النهائي</div><h4 class="mb-0 text-success">$${escapeHtml(bookingState.price || '-')}</h4></div>
+		  <div class="col-6 text-end small text-muted"><i class="fas fa-shield-alt me-1"></i> التأمين: ${bookingState.hasInsurance ? 'نعم' : 'لا'}</div>
+		</div>
+	  `;
+	  c.innerHTML = html;
+	}
+
+	function validateCurrentStep() {
+	  const s = bookingState.currentStep;
+
+	  if (s === 1 && !bookingState.gov) { alert('الرجاء اختيار المحافظة.'); return false; }
+	  if (s === 2 && !bookingState.facilityType) { alert('الرجاء اختيار نوع المنشأة.'); return false; }
+	  if (s === 3 && !bookingState.hospital) { alert('الرجاء اختيار المستشفى.'); return false; }
+	  if (s === 4 && !bookingState.department) { alert('الرجاء اختيار القسم.'); return false; }
+	  if (s === 5 && bookingState.hasInsurance === null) { alert('الرجاء الإجابة على سؤال التأمين.'); return false; }
+	  if (s === 6 && bookingState.hasInsurance && (!document.getElementById('insCompany').value || !document.getElementById('insPolicy').value)) { alert('الرجاء إدخال تفاصيل التأمين.'); return false; }
+	  if (s === 7 && !bookingState.doctor) { alert('الرجاء اختيار الطبيب.'); return false; }
+	  if (s === 8 && (!bookingState.date || !bookingState.time)) { alert('الرجاء اختيار التاريخ والوقت.'); return false; }
+
+	  if (s === 9) {
+		return validateCustomerData();
+	  }
+
+	  return true;
+	}
+
+	function validateCustomerData() {
+	  const name = document.getElementById('custName').value.trim();
+	  const email = document.getElementById('custEmail').value.trim();
+	  const phone = document.getElementById('custPhone').value.trim();
+
+	  const nameErr = document.getElementById('custNameError');
+	  const emailErr = document.getElementById('custEmailError');
+	  const phoneErr = document.getElementById('custPhoneError');
+
+	  nameErr.textContent = "";
+	  emailErr.textContent = "";
+	  phoneErr.textContent = "";
+
+	  let valid = true;
+
+	  if (!name) {
+		nameErr.textContent = "يرجى إدخال الاسم";
+		valid = false;
+	  }
+
+	  if (!email) {
+		emailErr.textContent = "يرجى إدخال الإيميل";
+		valid = false;
+	  } else if (!email.includes("@") || email.startsWith("@") || email.endsWith("@")) {
+		emailErr.textContent = "الإيميل غير صحيح، يجب أن يحتوي على @";
+		valid = false;
+	  }
+
+	  if (!phone) {
+		phoneErr.textContent = "يرجى إدخال رقم الهاتف";
+		valid = false;
+	  } else if (!/^[0-9]{10}$/.test(phone)) {
+		phoneErr.textContent = "رقم الهاتف يجب أن يكون 10 أرقام";
+		valid = false;
+	  }
+
+	  return valid;
+	}
+
+	function commitBooking() {
+	  if (!validateCurrentStep()) return;
+
+	  bookingState.customer.name = document.getElementById('custName').value.trim();
+	  bookingState.customer.email = document.getElementById('custEmail').value.trim();
+	  bookingState.customer.phone = document.getElementById('custPhone').value.trim();
+	  bookingState.customer.note = document.getElementById('custNote').value.trim();
+
+	  const payload = {
+		timestamp: new Date().toISOString(),
+		booking_id: 'B' + Date.now(),
+		status: 'PENDING',
+		gov: bookingState.gov,
+		hospital_name: bookingState.hospital.name,
+		department_title: bookingState.department.title,
+		doctor_name: bookingState.doctor.name,
+		date: bookingState.date,
+		time: bookingState.time,
+		price: bookingState.price,
+		customer_name: bookingState.customer.name,
+		customer_email: bookingState.customer.email,
+		customer_phone: bookingState.customer.phone,
+		customer_note: bookingState.customer.note,
+		doctor_id: bookingState.doctor.id
+	  };
+
+	  localBookings.push(payload);
+	  localStorage.setItem('localBookings', JSON.stringify(localBookings));
+	  console.log("saved booking payload =", payload);
+      renderBookings();
+	  document.getElementById('modalContent').innerHTML = `
+		<p>Your booking request has been sent successfully.</p>
+		<p><strong>Booking number:</strong> ${payload.booking_id}</p>
+		<p><strong>Date and time:</strong> ${payload.date} at ${payload.time}</p><br>
+		
+		<p><strong>Status:</strong> Pending approval</p>
+	  `;
+
+	  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+	  successModal.show();
+
+	  bookingState = {
+		currentStep: 1,
+		gov: null,
+		facilityType: null,
+		hospital: null,
+		department: null,
+		hasInsurance: null,
+		insuranceDetails: null,
+		doctor: null,
+		date: null,
+		time: null,
+		price: null,
+		customer: { name: null, email: null, phone: null, note: null }
+	  };
+
+	  goToLandingPage();
+	}
+
+	function nextStep() {
+	  if (!validateCurrentStep()) return;
+
+	  if (bookingState.currentStep === maxStep) {
+		confirmBooking();
+	  } else {
+		let targetStep = bookingState.currentStep + 1;
+		if (bookingState.currentStep === 5 && bookingState.hasInsurance === false) {
+		  targetStep = 7;
+		}
+		showStep(targetStep);
+	  }
+	}
+
+	// -------------------------------
+	// Page Display Management
+	// -------------------------------
+	function goToBookingApp() {
+	  document.getElementById('landingPage').classList.add('d-none');
+	  document.getElementById('bookingApp').classList.remove('d-none');
+
+	  document.getElementById('menuToggleBtn').classList.add('d-none');
+
+	  // 🔥 اخفاء My bookings
+	  document.getElementById('myBookingsBtn').classList.add('d-none');
+
+	  showStep(1);
+	}
+
+	function goToLandingPage() {
+	  document.getElementById('landingPage').classList.remove('d-none');
+	  document.getElementById('bookingApp').classList.add('d-none');
+
+	  document.getElementById('menuToggleBtn').classList.remove('d-none');
+
+	  // 🔥 اظهار My bookings
+	  document.getElementById('myBookingsBtn').classList.remove('d-none');
+
+	  bookingState = {
+		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
+		insuranceDetails:null, doctor:null, date:null, time:null, price:null,
+		customer:{name:null, email:null, phone:null, note:null}
+	  };
+
+	  renderGovernorates();
+	}
+
+	// -------------------------------
+	// Event Handlers
+	// -------------------------------
+	document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
+	document.getElementById('homeBtn').addEventListener('click', (e) => {
+	  e.preventDefault();
+	  goToLandingPage();
+	});
+
+	document.addEventListener('click', function(e){
+	  const govEl = e.target.closest('[data-gov]');
+	  if(govEl){ selectGovernorate(govEl.dataset.gov); return; }
+
+	  const typeEl = e.target.closest('[data-type]');
+	  if(typeEl){ selectFacilityType(typeEl.dataset.type); return; }
+
+	  const hospEl = e.target.closest('[data-hosp]');
+	  if(hospEl){ selectHospital(parseInt(hospEl.dataset.hosp,10)); return; }
+
+
+	  const docEl = e.target.closest('[data-doc]');
+	  if(docEl){ selectDoctor(parseInt(docEl.dataset.doc,10)); return; }
+
+	  const slotEl = e.target.closest('.time-slot');
+	  if(slotEl && !slotEl.disabled){ selectTimeSlot(slotEl.dataset.time); return; }
+	});
+
+	document.getElementById('apptDate').addEventListener('change', function(){
+	  bookingState.date = this.value;
+	  bookingState.time = null;
+	  loadTimeSlotsForSelectedDate();
+	});
+
+	document.getElementById('insNo').addEventListener('click', function(){
+	  bookingState.hasInsurance = false;
+	  bookingState.insuranceDetails = null;
+	  nextStep();
+	});
+
+	document.getElementById('insYes').addEventListener('click', function(){
+	  bookingState.hasInsurance = true;
+	  nextStep();
+	});
+
+	document.getElementById('insForm').addEventListener('submit', function(e){
+	  e.preventDefault();
+	  if(validateCurrentStep()){
+		bookingState.insuranceDetails = {
+		  company: document.getElementById('insCompany').value,
+		  policy: document.getElementById('insPolicy').value,
+		  note: document.getElementById('insNote').value
+		};
+		nextStep();
+	  }
+	});
+
+	document.getElementById('prevBtn').addEventListener('click', function(){
+	  if(bookingState.currentStep > 1){
+		let targetStep = bookingState.currentStep - 1;
+		if(bookingState.currentStep === 7 && bookingState.hasInsurance === false){
+		  targetStep = 5;
+		}
+		showStep(targetStep);
+	  }
+	});
+
+	document.getElementById('nextBtn').addEventListener('click', nextStep);
+
+	document.addEventListener('DOMContentLoaded', function(){
+	  goToLandingPage();
+	});
+
+	// تعطيل بعض العمليات
+	document.addEventListener('contextmenu', e => e.preventDefault());
+	document.addEventListener('selectstart', e => e.preventDefault());
+	document.addEventListener('dragstart', e => e.preventDefault());
+
+	// -------------------------------
+	// Code GPS
+	// -------------------------------
+	let userLat = null;
+	let userLng = null;
+	const loadingBox = document.getElementById("loadingBox");
+
+	window.onload = function() {
+	  if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(
+		  (position) => {
+			userLat = position.coords.latitude;
+			userLng = position.coords.longitude;
+			console.log("Your Location:", userLat, userLng);
+
+			if (loadingBox) {
+			  loadingBox.textContent = "✅ Your location has been successfully determined!";
+			  setTimeout(() => loadingBox.classList.add("hidden"), 1500);
+			}
+		  },
+		  (error) => {
+			console.error("Error getting location:", error.message);
+			if (loadingBox) {
+			  loadingBox.textContent = "⚠️ We were unable to locate you. Please ensure your GPS is enabled and location permissions are granted.";
+			  loadingBox.style.background = "#dc3545";
+			}
+		  },
+		  { enableHighAccuracy: true, timeout: 10000 }
+		);
+	  } else {
+		if (loadingBox) {
+		  loadingBox.textContent = "Your device does not support geolocation (GPS).";
+		  loadingBox.style.background = "#6c757d";
+		}
+	  }
+	};
+
+	function openDirections(hospitalName) {
+	  if (!userLat || !userLng) {
+		alert("⚠️ Your location has not yet been determined. Please wait a moment or activate GPS.");
+		return;
+	  }
+
+	  const destination = encodeURIComponent(hospitalName + " Jordan");
+	  const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destination}&travelmode=driving`;
+	  window.open(mapsUrl, "_blank");
+	}
+
+	// أزرار الطوارئ
+	document.getElementById("btn-call").addEventListener("click", () => {
+	  window.location.href = "tel:112";
+	});
+
+	document.getElementById("btn-custom").addEventListener("click", () => {
+	  const num = prompt("Enter number to call:");
+	  if (num) window.location.href = `tel:${num}`;
+	});
+
+	document.getElementById("btn-location").addEventListener("click", () => {
+	  if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(
+		  pos => {
+			const lat = pos.coords.latitude;
+			const lng = pos.coords.longitude;
+			const msg = `🚨 Emergency! My location:\nhttps://maps.google.com/?q=${lat},${lng}`;
+			const whatsapp = prompt("Enter WhatsApp number (with country code):");
+
+			if (whatsapp) {
+			  const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
+			  window.open(url, "_blank");
+			}
+		  },
+		  () => alert("Please enable GPS.")
+		);
+	  } else {
+		alert("Location not supported.");
+	  }
+	});
+
+	document.getElementById("btn-hospitals").addEventListener("click", () => {
+	  window.open("https://www.google.com/maps/search/hospitals+near+me", "_blank");
+	});
+	// -------------------------------
+	// Chat
+	// -------------------------------
+	document.addEventListener("DOMContentLoaded", () => {
+	  const chatToggle = document.getElementById("chat-toggle");
+	  const chatWidget = document.getElementById("chat-widget");
+	  const closeChat = document.getElementById("closeChat");
+
+	  const openReminderPanel = document.getElementById("openReminderPanel");
+	  const reminderPanel = document.getElementById("reminderPanel");
+	  const closeReminderPanel = document.getElementById("closeReminderPanel");
+
+	  const overlay = document.getElementById("overlay");
+
+	  const sendBtn = document.getElementById("send-btn");
+	  const userInput = document.getElementById("user-input");
+	  const chatBody = document.getElementById("chat-body");
+
+	  function closeAllPanels() {
+		chatWidget.classList.remove("active");
+		reminderPanel.classList.remove("active");
+		overlay.classList.remove("active");
+	  }
+
+	  if (chatToggle) {
+		chatToggle.addEventListener("click", () => {
+		  reminderPanel.classList.remove("active");
+		  chatWidget.classList.add("active");
+		  overlay.classList.add("active");
+		});
+	  }
+
+	  if (closeChat) {
+		closeChat.addEventListener("click", () => {
+		  chatWidget.classList.remove("active");
+		  if (!reminderPanel.classList.contains("active")) {
+			overlay.classList.remove("active");
+		  }
+		});
+	  }
+
+	  if (openReminderPanel) {
+		openReminderPanel.addEventListener("click", () => {
+		  chatWidget.classList.remove("active");
+		  reminderPanel.classList.add("active");
+		  overlay.classList.add("active");
+		});
+	  }
+
+	  if (closeReminderPanel) {
+		closeReminderPanel.addEventListener("click", () => {
+		  reminderPanel.classList.remove("active");
+		  if (!chatWidget.classList.contains("active")) {
+			overlay.classList.remove("active");
+		  }
+		});
+	  }
+
+	  if (overlay) {
+		overlay.addEventListener("click", () => {
+		  closeAllPanels();
+		});
+	  }
+
+	  async function askGemini(question) {
+		const response = await fetch("https://aprojectfortheministryofhealthjs-production.up.railway.app/api/chat", {
+		  method: "POST",
+		  headers: {
+			"Content-Type": "application/json"
+		  },
+		  body: JSON.stringify({ question })
+		});
+
+		const data = await response.json();
+
+		if (!response.ok) {
+		  throw new Error(data.answer || "حدث خطأ أثناء الاتصال بالسيرفر.");
+		}
+
+		return data.answer || "لم يصلني رد من السيرفر.";
+	  }
+
+	  function appendMessage(className, content) {
+		const div = document.createElement("div");
+		div.className = className;
+		div.textContent = content;
+		chatBody.appendChild(div);
+		chatBody.scrollTop = chatBody.scrollHeight;
+		return div;
+	  }
+
+	  async function handleSend() {
+		const question = userInput.value.trim();
+		if (!question) return;
+
+		sendBtn.disabled = true;
+		userInput.disabled = true;
+
+		appendMessage("user-message", question);
+		userInput.value = "";
+
+		const typingEl = appendMessage("typing", "جاري الكتابة...");
+
+		try {
+		  const answer = await askGemini(question);
+		  typingEl.remove();
+		  appendMessage("bot-message", answer);
+		} catch (err) {
+		  typingEl.remove();
+		  appendMessage("bot-message", err.message || "حدث خطأ غير متوقع.");
+		  console.error("Chat error:", err);
+		} finally {
+		  sendBtn.disabled = false;
+		  userInput.disabled = false;
+		  userInput.focus();
+		}
+	  }
+
+	  if (sendBtn) {
+		sendBtn.addEventListener("click", handleSend);
+	  }
+
+	  if (userInput) {
+		userInput.addEventListener("keydown", (e) => {
+		  if (e.key === "Enter") {
+			e.preventDefault();
+			handleSend();
+		  }
+		});
+	  }
+	});
+
+	// -------------------------------
+	// Reminder Panel
+	// -------------------------------
+	var editingId = null;
+	const panel = document.getElementById("reminderPanel");
+	const overlay = document.getElementById("overlay");
+	const openReminderBtn = document.getElementById("openReminderPanel");
+	const closeReminderBtn = document.getElementById("closeReminderPanel");
+
+	if (openReminderBtn) {
+	  openReminderBtn.addEventListener("click", () => {
+		panel.classList.add("active");
+		overlay.classList.add("active");
+	  });
+	}
+
+	if (closeReminderBtn) {
+	  closeReminderBtn.addEventListener("click", closePanel);
+	}
+
+	if (overlay) {
+	  overlay.addEventListener("click", closePanel);
+	}
+
+	function closePanel() {
+	  panel.classList.remove("active");
+	  overlay.classList.remove("active");
+	}
+
+	function showList() {
+	  document.getElementById("addForm").style.display = "none";
+	  document.getElementById("listView").style.display = "block";
+	  renderList();
+	}
+
+	function showForm() {
+	  document.getElementById("addForm").style.display = "block";
+	  document.getElementById("listView").style.display = "none";
+	  editingId = null;
+
+	  document.getElementById("taskName").value = "";
+	  document.getElementById("taskDate").value = "";
+	  document.getElementById("taskTime").value = "";
+	  document.getElementById("remindBefore").value = "60";
+	  document.getElementById("repeatType").value = "none";
+	}
+
+	function saveReminder() {
+	  const taskName = document.getElementById("taskName").value.trim();
+	  const taskDate = document.getElementById("taskDate").value;
+	  const taskTime = document.getElementById("taskTime").value;
+	  const remindBefore = document.getElementById("remindBefore").value;
+	  const repeatType = document.getElementById("repeatType").value;
+
+	  if (!taskName || !taskDate || !taskTime) {
+		alert("يرجى تعبئة اسم التنبيه والتاريخ والوقت.");
+		return;
+	  }
+
+	  let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+
+	  const reminder = {
+		id: editingId || Date.now(),
+		name: taskName,
+		date: taskDate,
+		time: taskTime,
+		before: remindBefore,
+		repeat: repeatType
+	  };
+
+	  if (editingId) {
+		reminders = reminders.map(r => r.id === editingId ? reminder : r);
+	  } else {
+		reminders.push(reminder);
+	  }
+
+	  localStorage.setItem("reminders", JSON.stringify(reminders));
+	  localStorage.removeItem(`notified_${reminder.id}_${reminder.date}_${reminder.time}`);
+	  editingId = null;
+
+	  alert("✅ تم الحفظ");
+	  showList();
+	}
+
+	function renderList() {
+	  const list = document.getElementById("remindersList");
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+
+	  list.innerHTML = "";
+
+	  if (reminders.length === 0) {
+		list.innerHTML = `<div style="text-align:center;color:#777;padding:12px;">لا يوجد منبهات محفوظة</div>`;
+		return;
+	  }
+
+	  reminders.forEach(r => {
+		list.innerHTML += `
+		  <div style="border:1px solid #ddd; padding:10px; margin:8px 0; border-radius:10px; background:#fff;">
+			<b>${r.name}</b><br>
+			⏰ ${r.time} | 📅 ${r.date}<br>
+			🔔 قبل ${r.before} دقيقة | 🔁 ${r.repeat}<br><br>
+			<button type="button" onclick="edit(${r.id})">✏️ تعديل</button>
+			<button type="button" onclick="del(${r.id})">🗑 حذف</button>
+		  </div>
+		`;
+	  });
+	}
+
+	function edit(id) {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const reminder = reminders.find(r => r.id === id);
+	  if (!reminder) return;
+
+	  editingId = id;
+	  document.getElementById("taskName").value = reminder.name;
+	  document.getElementById("taskDate").value = reminder.date;
+	  document.getElementById("taskTime").value = reminder.time;
+	  document.getElementById("remindBefore").value = reminder.before;
+	  document.getElementById("repeatType").value = reminder.repeat;
+
+	  document.getElementById("addForm").style.display = "block";
+	  document.getElementById("listView").style.display = "none";
+	}
+
+	function del(id) {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const reminderToDelete = reminders.find(r => r.id === id);
+
+	  const updated = reminders.filter(r => r.id !== id);
+	  localStorage.setItem("reminders", JSON.stringify(updated));
+
+	  if (reminderToDelete) {
+		localStorage.removeItem(`notified_${reminderToDelete.id}_${reminderToDelete.date}_${reminderToDelete.time}`);
+	  }
+
+	  renderList();
+	}
+
+	function requestNotificationPermission() {
+	  if ("Notification" in window && Notification.permission === "default") {
+		Notification.requestPermission();
+	  }
+	}
+
+	function getReminderNotifyTime(reminder) {
+	  const reminderDateTime = new Date(`${reminder.date}T${reminder.time}`);
+	  const beforeMinutes = Number(reminder.before || 0);
+	  return reminderDateTime.getTime() - (beforeMinutes * 60 * 1000);
+	}
+
+	function sendReminderNotification(reminder) {
+	  const title = "🔔 تذكير طبي";
+	  const body = `${reminder.name} - موعدك الساعة ${reminder.time}`;
+
+	  if ("Notification" in window && Notification.permission === "granted") {
+		new Notification(title, {
+		  body: body,
+		  icon: "https://i.pinimg.com/736x/5d/92/f0/5d92f02d4f3ac40b5a1e6cbe59d3740b.jpg"
+		});
+	  } else {
+		alert(`${title}\n${body}`);
+	  }
+	}
+
+	function checkReminders() {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const now = Date.now();
+
+	  reminders.forEach(reminder => {
+		const notifyTime = getReminderNotifyTime(reminder);
+		const notifiedKey = `notified_${reminder.id}_${reminder.date}_${reminder.time}`;
+
+		if (now >= notifyTime && !localStorage.getItem(notifiedKey)) {
+		  sendReminderNotification(reminder);
+		  localStorage.setItem(notifiedKey, "1");
+		}
+	  });
+	}
+
+	requestNotificationPermission();
+	checkReminders();
+	setInterval(checkReminders, 30000);
+	// -------------------------------
+	// booking 
+	// -------------------------------
+	function getStatusBadge(status) {
+	  const s = String(status || "").toUpperCase();
+
+	  if (s === "APPROVED") {
+		return `<span style="padding:4px 10px;border-radius:999px;background:#d4edda;color:#155724;font-weight:bold;">Approved</span>`;
+	  }
+
+	  if (s === "REJECTED") {
+		return `<span style="padding:4px 10px;border-radius:999px;background:#f8d7da;color:#721c24;font-weight:bold;">Rejected</span>`;
+	  }
+
+	  return `<span style="padding:4px 10px;border-radius:999px;background:#fff3cd;color:#856404;font-weight:bold;">Pending</span>`;
+	}
+
+	async function renderBookings() {
+	  console.log("🔥 renderBookings started");
+
+	  const bookingsBody = document.getElementById("bookingsListBody");
+	  if (!bookingsBody) return;
+
+	  bookingsBody.innerHTML = "Loading.";
+
+	  try {
+		let localBookings = JSON.parse(localStorage.getItem("localBookings") || "[]");
+
+		// حذف الحجوزات القديمة من localStorage
+		localBookings = localBookings.filter(isBookingStillValid);
+		localStorage.setItem("localBookings", JSON.stringify(localBookings));
+
+		const uid =
+		  auth.currentUser?.uid ||
+		  window.currentUserUid ||
+		  localStorage.getItem("currentUserUid");
+
+		let firebaseBookings = [];
+
+		if (uid) {
+		  console.log("UID used for bookings =", uid);
+		  console.log("auth.currentUser?.uid =", auth.currentUser?.uid);
+		  console.log("window.currentUserUid =", window.currentUserUid);
+		  console.log("localStorage currentUserUid =", localStorage.getItem("currentUserUid"));
+
+		  const snap = await window.getDocs(
+			window.collection(window.bookingsDb, "users", uid, "bookings")
+		  );
+
+		  console.log("Firebase bookings count =", snap.size);
+
+		  firebaseBookings = snap.docs.map(doc => ({
+			id: doc.id,
+			...doc.data()
+		  }));
+
+		  // فلترة الحجوزات القديمة من Firebase وقت العرض
+		  firebaseBookings = firebaseBookings.filter(isBookingStillValid);
+
+		  console.log("Firebase bookings data =", firebaseBookings);
+		} else {
+		  console.log("No UID found for renderBookings");
+		}
+
+		const allBookings = [...firebaseBookings];
+
+		localBookings.forEach(localItem => {
+		  const exists = allBookings.some(fb =>
+			String(fb.booking_id) === String(localItem.booking_id)
+		  );
+
+		  if (!exists) {
+			allBookings.push({
+			  ...localItem,
+			  isLocalOnly: true
+			});
+		  }
+		});
+
+		allBookings.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+
+		console.log("🔥 merged bookings:", allBookings);
+
+		if (!allBookings.length) {
+		  bookingsBody.innerHTML = "There are no current reservations.";
+		  return;
+		}
+
+		bookingsBody.innerHTML = allBookings.map(b => `
+		  <div style="border:1px solid #ddd; border-radius:12px; padding:12px; margin-bottom:10px; background:#fff;">
+			<div><strong>Booking number:</strong> ${b.booking_id || "-"}</div>
+			<div><strong>Doctor:</strong> ${b.doctor_name || "-"}</div>
+			<div><strong>Hospital:</strong> ${b.hospital_name || "-"}</div>
+			<div><strong>Department:</strong> ${b.department_title || "-"}</div>
+			<div><strong>Date and time:</strong> ${(b.date || "-")} ${(b.time || "-")}</div><br>
+			<div><strong>Status:</strong> ${getStatusBadge(b.status || "PENDING")}</div>
+			${b.isLocalOnly ? '<div style="margin-top:8px;font-size:12px;color:#777;">Saved locally</div>' : ''}
+		  </div>
+		`).join("");
+
+	  } catch (error) {
+		console.error("Error loading bookings:", error);
+		bookingsBody.innerHTML = "حدث خطأ أثناء تحميل الحجوزات.";
+	  }
+	}
+	const myBookingsBtn = document.getElementById("myBookingsBtn");
+
+	if (myBookingsBtn) {
+	  myBookingsBtn.addEventListener("click", async () => {
+		console.log("🔥 myBookingsBtn clicked");
+		await renderBookings();
+	  });
+	}
+	// -------------------------------
+	// Project Info Slideshow
+	// -------------------------------
+	let current = 0;
+	const steps = document.querySelectorAll(".project-info");
+
+	if (steps.length > 0) {
+	  steps.forEach((step, index) => {
+		step.classList.toggle("active", index === 0);
+	  });
+
+	  function showNext() {
+		steps[current].classList.remove("active");
+		current = (current + 1) % steps.length;
+		steps[current].classList.add("active");
+	  }
+
+	  setInterval(showNext, 10000);
+	}
+	
+	// حماية بسيطة
+	(function () {
+	  const stop = (e) => {
+		e.preventDefault();
+		return false;
+	  };
+
+	  ["contextmenu", "copy", "cut", "selectstart", "dragstart"].forEach(evt => {
+		document.addEventListener(evt, stop, { passive: false });
+	  });
+
+	  document.addEventListener("keydown", function (e) {
+		const k = e.key.toUpperCase();
+		if (
+		  (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(k)) ||
+		  (e.ctrlKey && ["U", "S"].includes(k))
+		) {
+		  e.preventDefault();
+		}
+	  });
+	})();
+	async function refreshBookings() {
+	  const container = document.getElementById("bookingsListBody");
+
+	  if (container) {
+		container.innerHTML = "🔄 Updating...";
+	  }
+
+	  try {
+		await renderBookings(); // هاي الدالة أصلاً عندك
+	  } catch (error) {
+		console.error("Refresh error:", error);
+		if (container) {
+		  container.innerHTML = "❌ Failed to refresh";
+		}
+	  }
+	}
+	function normalizeDateOnly(dateValue) {
+	  if (!dateValue) return null;
+
+	  const d = new Date(dateValue);
+	  if (isNaN(d.getTime())) return null;
+
+	  d.setHours(0, 0, 0, 0);
+	  return d;
+	}
+
+	function isBookingStillValid(booking) {
+	  const bookingDate = normalizeDateOnly(booking.date);
+	  if (!bookingDate) return true; // إذا التاريخ ناقص خليه يبين
+
+	  const today = new Date();
+	  today.setHours(0, 0, 0, 0);
+
+	  return bookingDate >= today;
+	}
+</script>
+<script>
+const translations = {
+  ar: {
+    page_title: "أمل",
+    app_name: "🏥 أمل",
+    my_bookings: "حجوزاتي",
+    start_booking: "ابدأ الحجز الآن",
+
+    welcome_title: "مرحباً بك في نظام أمل",
+    welcome_desc: "نظام أمل يساعدك على حجز موعدك الطبي بخطوات واضحة وسريعة، مع أدوات مساندة مفيدة مثل التنبيهات، المساعد الطبي، ووسائل الوصول السريع للخدمات الطارئة.",
+    welcome_li_1: "⭐ للعودة إلى الصفحة الرئيسية أثناء الحجز اضغط على شعار أمل",
+    welcome_li_2: "🚑 طلب إسعاف سريع عند الحاجة",
+    welcome_li_3: "📞 اتصال سريع بالجهة المناسبة",
+    welcome_li_4: "📍 مشاركة موقعك للوصول إليك بسهولة",
+    welcome_li_5: "🏥 البحث عن أقرب المستشفيات",
+    welcome_li_6: "🤖 مساعد طبي للإجابة عن استفساراتك العامة",
+    welcome_li_7: "🔔 تنبيهات لتذكيرك بالمواعيد المهمة",
+
+    step1_title: "الخطوة 1: اختيار المحافظة",
+    step1_desc: "ابدأ بتحديد المحافظة التي تريد الحجز داخلها، حتى يعرض لك النظام الجهات الطبية المتوفرة ضمن نفس المنطقة.",
+    step2_title: "الخطوة 2: اختيار نوع الجهة الطبية",
+    step2_desc: "اختر نوع الجهة التي تريد الحجز فيها، مثل مستشفى حكومي أو خاص أو عسكري أو مركز صحي، ليتم عرض الخيارات المناسبة لك بدقة.",
+    step3_title: "الخطوة 3: اختيار المستشفى أو المركز",
+    step3_desc: "ستظهر لك الجهات الطبية المتاحة حسب المحافظة ونوع الجهة المختار، ثم تختار المكان الأنسب لإتمام الحجز.",
+    step4_title: "الخطوة 4: اختيار القسم الطبي",
+    step4_desc: "اختر القسم المطلوب مثل الباطنية أو الأطفال أو العظام أو الأسنان، حتى يعرض لك النظام الأطباء المتوفرين في هذا التخصص.",
+    step5_title: "الخطوة 5: التأمين الصحي",
+    step5_desc: "حدّد ما إذا كان لديك تأمين صحي، لأن هذا الخيار قد يؤثر على البيانات المطلوبة وطريقة متابعة الحجز.",
+    step6_title: "الخطوة 6: إدخال بيانات التأمين",
+    step6_desc: "إذا كان لديك تأمين، أدخل البيانات المطلوبة حتى يتم حفظها مع الطلب بشكل صحيح.",
+    step6_li_1: "اسم شركة التأمين",
+    step6_li_2: "رقم وثيقة التأمين",
+    step6_li_3: "ملاحظات إضافية عند الحاجة",
+    step7_title: "الخطوة 7: اختيار الطبيب",
+    step7_desc: "ستظهر لك قائمة الأطباء المتاحين داخل القسم المختار، مع معلومات تساعدك على اختيار الطبيب المناسب قبل الانتقال للموعد.",
+    step8_title: "الخطوة 8: اختيار التاريخ والوقت",
+    step8_desc: "اختر اليوم المناسب ثم حدّد الوقت المتاح من القائمة، وبعدها ينتقل النظام بك مباشرة إلى خطوة المراجعة النهائية.",
+    step9_title: "الخطوة 9: مراجعة الحجز وتأكيده",
+    step9_desc_1: "في هذه المرحلة تظهر لك جميع تفاصيل الحجز لمراجعتها قبل الإرسال النهائي.",
+    step9_li_1: "المحافظة",
+    step9_li_2: "نوع الجهة الطبية",
+    step9_li_3: "اسم المستشفى أو المركز",
+    step9_li_4: "القسم الطبي",
+    step9_li_5: "اسم الطبيب",
+    step9_li_6: "التاريخ والوقت",
+    step9_li_7: "التكلفة النهائية إن وجدت",
+    step9_desc_2: "بعد ذلك تدخل بياناتك الشخصية وتضغط على زر تأكيد الحجز لإرسال الطلب بنجاح.",
+
+    chat_title: "المساعد الطبي",
+    chat_welcome: "مرحباً، أنا المساعد الطبي. اكتب سؤالك وسأحاول مساعدتك.",
+    chat_placeholder: "اكتب استفسارك الطبي هنا...",
+
+    emergency_request: "طلب إسعاف",
+    quick_call: "اتصال سريع",
+    send_location: "إرسال موقعي",
+    nearest_hospitals: "أقرب المستشفيات",
+    logout: "تسجيل الخروج",
+    reminders: "التنبيهات",
+
+    current_bookings: "حجوزاتي الحالية",
+    no_current_bookings: "لا توجد حجوزات حالية.",
+    close_btn: "إغلاق",
+    refresh_btn: "تحديث",
+
+    booking_title: "احجز موعدك بسهولة",
+    booking_subtitle: "اتبع الخطوات التالية لإتمام الحجز بشكل صحيح.",
+    book_step1: "اختر المحافظة",
+    book_step2: "اختر نوع الجهة الطبية",
+    book_step3: "المستشفيات والمراكز المتاحة",
+    book_step4: "اختر القسم الطبي",
+    book_step5: "هل لديك تأمين صحي؟",
+    book_step6: "بيانات التأمين",
+    book_step7: "اختر الطبيب",
+    book_step8: "اختر التاريخ والوقت",
+    book_step9: "مراجعة البيانات",
+
+    government_hospital: "مستشفى حكومي",
+    private_hospital: "مستشفى خاص",
+    health_center: "مركز صحي",
+    military_hospital: "مستشفى عسكري",
+
+    no_btn: "لا",
+    yes_btn: "نعم",
+    insurance_company: "اسم شركة التأمين",
+    policy_number: "رقم الوثيقة",
+    save_continue: "حفظ ومتابعة",
+
+    date_label: "التاريخ",
+    available_times: "الأوقات المتاحة",
+    step8_note: "بعد اختيار التاريخ والوقت سيتم نقلك مباشرة إلى خطوة المراجعة.",
+
+    patient_data: "بيانات المريض",
+    full_name: "الاسم الكامل",
+    email_label: "البريد الإلكتروني",
+    phone_label: "رقم الهاتف",
+    note_label: "ملاحظة",
+
+    prev_btn: "السابق",
+    next_btn: "التالي",
+
+    success_title: "تم إرسال طلب الحجز",
+
+    reminders_title: "🔔 التنبيهات الطبية",
+    reminder_name_placeholder: "اسم التنبيه",
+    before_hour: "قبل ساعة",
+    before_30: "قبل 30 دقيقة",
+    before_15: "قبل 15 دقيقة",
+    before_10: "قبل 10 دقائق",
+    before_5: "قبل 5 دقائق",
+    repeat_none: "بدون تكرار",
+    repeat_daily: "يومي",
+    repeat_weekly: "أسبوعي",
+    save_btn: "💾 حفظ",
+    my_reminders: "📋 منبهاتي",
+    add_btn: "➕ إضافة"
+  },
+
+  en: {
+    page_title: "Amal",
+    app_name: "🏥 Amal",
+    my_bookings: "My Bookings",
+    start_booking: "Start Booking Now",
+
+    welcome_title: "Welcome to Amal System",
+    welcome_desc: "Amal helps you book your medical appointment in clear and fast steps, with helpful tools such as reminders, a medical assistant, and quick access to emergency services.",
+    welcome_li_1: "⭐ To return to the home page during booking, click the Amal logo",
+    welcome_li_2: "🚑 Quick ambulance request when needed",
+    welcome_li_3: "📞 Quick call to the right contact",
+    welcome_li_4: "📍 Share your location for easier access",
+    welcome_li_5: "🏥 Search for nearest hospitals",
+    welcome_li_6: "🤖 Medical assistant for general questions",
+    welcome_li_7: "🔔 Reminders for important appointments",
+
+    step1_title: "Step 1: Choose Governorate",
+    step1_desc: "Start by selecting the governorate where you want to book, so the system shows available medical facilities in that area.",
+    step2_title: "Step 2: Choose Facility Type",
+    step2_desc: "Choose the type of facility you want to book in, such as government, private, military hospital, or health center.",
+    step3_title: "Step 3: Choose Hospital or Center",
+    step3_desc: "Available facilities will appear based on the selected governorate and type, then you choose the most suitable place.",
+    step4_title: "Step 4: Choose Medical Department",
+    step4_desc: "Choose the required department such as internal medicine, pediatrics, orthopedics, or dentistry to see available doctors.",
+    step5_title: "Step 5: Health Insurance",
+    step5_desc: "Specify whether you have health insurance, as this may affect the required data and booking process.",
+    step6_title: "Step 6: Enter Insurance Details",
+    step6_desc: "If you have insurance, enter the required details so they are saved correctly with the request.",
+    step6_li_1: "Insurance company name",
+    step6_li_2: "Policy number",
+    step6_li_3: "Additional notes if needed",
+    step7_title: "Step 7: Choose Doctor",
+    step7_desc: "A list of available doctors in the selected department will appear to help you choose the right doctor.",
+    step8_title: "Step 8: Choose Date and Time",
+    step8_desc: "Choose the suitable day, then select an available time, and the system will move you to the review step.",
+    step9_title: "Step 9: Review and Confirm Booking",
+    step9_desc_1: "At this stage, all booking details appear for final review before submission.",
+    step9_li_1: "Governorate",
+    step9_li_2: "Facility type",
+    step9_li_3: "Hospital or center name",
+    step9_li_4: "Medical department",
+    step9_li_5: "Doctor name",
+    step9_li_6: "Date and time",
+    step9_li_7: "Final cost if any",
+    step9_desc_2: "Then enter your personal details and press confirm booking to send the request successfully.",
+
+    chat_title: "Medical Assistant",
+    chat_welcome: "Hello, I am the medical assistant. Type your question and I will try to help.",
+    chat_placeholder: "Write your medical question here...",
+
+    emergency_request: "Ambulance Request",
+    quick_call: "Quick Call",
+    send_location: "Send My Location",
+    nearest_hospitals: "Nearest Hospitals",
+    logout: "Logout",
+    reminders: "Reminders",
+
+    current_bookings: "My Current Bookings",
+    no_current_bookings: "No current bookings.",
+    close_btn: "Close",
+    refresh_btn: "Refresh",
+
+    booking_title: "Book Your Appointment Easily",
+    booking_subtitle: "Follow the steps below to complete your booking correctly.",
+    book_step1: "Choose Governorate",
+    book_step2: "Choose Facility Type",
+    book_step3: "Available Hospitals and Centers",
+    book_step4: "Choose Medical Department",
+    book_step5: "Do you have health insurance?",
+    book_step6: "Insurance Details",
+    book_step7: "Choose Doctor",
+    book_step8: "Choose Date and Time",
+    book_step9: "Review Data",
+
+    government_hospital: "Government Hospital",
+    private_hospital: "Private Hospital",
+    health_center: "Health Center",
+    military_hospital: "Military Hospital",
+
+    no_btn: "No",
+    yes_btn: "Yes",
+    insurance_company: "Insurance Company Name",
+    policy_number: "Policy Number",
+    save_continue: "Save and Continue",
+
+    date_label: "Date",
+    available_times: "Available Times",
+    step8_note: "After choosing the date and time, you will be moved directly to the review step.",
+
+    patient_data: "Patient Data",
+    full_name: "Full Name",
+    email_label: "Email",
+    phone_label: "Phone Number",
+    note_label: "Note",
+
+    prev_btn: "Previous",
+    next_btn: "Next",
+
+    success_title: "Booking Request Sent",
+
+    reminders_title: "🔔 Medical Reminders",
+    reminder_name_placeholder: "Reminder name",
+    before_hour: "1 hour before",
+    before_30: "30 minutes before",
+    before_15: "15 minutes before",
+    before_10: "10 minutes before",
+    before_5: "5 minutes before",
+    repeat_none: "No repeat",
+    repeat_daily: "Daily",
+    repeat_weekly: "Weekly",
+    save_btn: "💾 Save",
+    my_reminders: "📋 My Reminders",
+    add_btn: "➕ Add"
+  }
+};
+
+function applyLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.title = translations[lang].page_title;
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  document.querySelectorAll("[data-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-placeholder");
+    if (translations[lang] && translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("siteLanguage") || "ar";
+  applyLanguage(savedLang);
+});
+</script>
+</body>
+</html>
