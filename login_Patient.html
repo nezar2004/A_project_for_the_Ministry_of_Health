@@ -597,179 +597,177 @@
   </style>
 </head>
 <body>
+<div class="auth-shell">
+  <!-- الجهة الجمالية -->
+  <div class="auth-side">
+    <div class="brand-wrap">
+      <div class="brand-badge" data-i18n="brand_badge">💚 نظام نبض الطبي</div>
+      <h1 class="brand-title" data-i18n="brand_title">بوابة المرضى</h1>
+      <p class="brand-subtitle" data-i18n="brand_subtitle">
+        سجّل دخولك للوصول إلى خدمات الحجز الطبية، متابعة المواعيد، وإدارة حسابك بسهولة
+        ضمن واجهة حديثة ومريحة وواضحة.
+      </p>
 
-  <div class="auth-shell">
-    <!-- الجهة الجمالية -->
-    <div class="auth-side">
-      <div class="brand-wrap">
-        <div class="brand-badge">💚 نظام نبض الطبي</div>
-        <h1 class="brand-title">بوابة المرضى</h1>
-        <p class="brand-subtitle">
-          سجّل دخولك للوصول إلى خدمات الحجز الطبية، متابعة المواعيد، وإدارة حسابك بسهولة
-          ضمن واجهة حديثة ومريحة وواضحة.
-        </p>
-
-        <div class="side-cards">
-          <div class="mini-card">
-            <strong>سهولة الاستخدام</strong>
-            <span>تنقل واضح بين تسجيل الدخول، إنشاء الحساب، واستعادة كلمة المرور.</span>
-          </div>
-
-          <div class="mini-card">
-            <strong>إدارة حجوزاتك بسهولة</strong>
-            <span>عرض، تعديل، أو إلغاء أي موعد بخطوات بسيطة ومن مكان واحد.</span>
-          </div>
-
-          <div class="mini-card">
-            <strong>ذكاء اصطناعي مدمج</strong>
-            <span>مساعد ذكي متوفر دائماً للإجابة على الأسئلة بدون انتظار.</span>
-          </div>
+      <div class="side-cards">
+        <div class="mini-card">
+          <strong data-i18n="card1_title">سهولة الاستخدام</strong>
+          <span data-i18n="card1_desc">تنقل واضح بين تسجيل الدخول، إنشاء الحساب، واستعادة كلمة المرور.</span>
         </div>
-      </div>
 
-      <div class="side-footer">
-        وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية
+        <div class="mini-card">
+          <strong data-i18n="card2_title">إدارة حجوزاتك بسهولة</strong>
+          <span data-i18n="card2_desc">عرض، تعديل، أو إلغاء أي موعد بخطوات بسيطة ومن مكان واحد.</span>
+        </div>
+
+        <div class="mini-card">
+          <strong data-i18n="card3_title">ذكاء اصطناعي مدمج</strong>
+          <span data-i18n="card3_desc">مساعد ذكي متوفر دائماً للإجابة على الأسئلة بدون انتظار.</span>
+        </div>
       </div>
     </div>
 
-    <!-- الجهة الرئيسية -->
-    <div class="auth-main">
-      <div class="container">
-
-        <!-- تسجيل الدخول -->
-        <div id="loginForm" class="form-card form-section">
-          <div class="form-top">
-            <div class="form-icon">👤</div>
-            <h2>تسجيل الدخول</h2>
-            <p class="subtitle">أدخل بياناتك للوصول إلى حساب المريض</p>
-          </div>
-
-          <div class="fields">
-            <div class="input-group">
-              <label class="input-label" for="loginNationalID">الرقم الوطني</label>
-              <input type="text" id="loginNationalID" placeholder="أدخل الرقم الوطني" maxlength="10">
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="loginPassword">كلمة المرور</label>
-              <div class="password-wrap">
-                <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
-                <button class="toggle-pass" onclick="togglePassword('loginPassword', this)">إظهار</button>
-              </div>
-            </div>
-
-            <div class="row-buttons">
-			  <button id="loginBtn" class="main-btn">تسجيل الدخول</button>
-			  <button id="loginBtn" class="secondary-btn" onclick="goHome()">الصفحة الرئيسية</button>
-			</div>
-          </div>
-
-          <div class="link-group">
-            <div class="link" onclick="showForm('registerForm')">إنشاء حساب جديد</div>
-            <div class="link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
-          </div>
-        </div>
-
-        <!-- إنشاء حساب -->
-        <div id="registerForm" class="form-card form-section hidden">
-          <div class="form-top">
-            <div class="form-icon">📝</div>
-            <h2>إنشاء حساب جديد</h2>
-            <p class="subtitle">املأ البيانات التالية لإنشاء حساب المريض</p>
-          </div>
-
-          <div class="fields">
-            <div class="input-group">
-              <label class="input-label" for="regFirstName">الاسم الأول</label>
-              <input type="text" id="regFirstName" placeholder="أدخل الاسم الأول">
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="regLastName">اسم العائلة</label>
-              <input type="text" id="regLastName" placeholder="أدخل اسم العائلة">
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="regNationalID">الرقم الوطني</label>
-              <input type="text" id="regNationalID" placeholder="الرقم الوطني (10 أرقام)" maxlength="10">
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="regEmail">البريد الإلكتروني</label>
-              <input type="email" id="regEmail" placeholder="أدخل البريد الإلكتروني">
-            </div>
-
-            <div class="input-group">
-              <label class="input-label">رقم الهاتف</label>
-              <div class="phone-row">
-                <select id="regCountryCode">
-                  <option value="+962">JO +962</option>
-                </select>
-                <input type="text" id="regPhone" placeholder="7XXXXXXXX">
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="regBirthday">تاريخ الميلاد</label>
-              <input type="date" id="regBirthday">
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="regGender">الجنس</label>
-              <select id="regGender">
-                <option value="">اختر الجنس</option>
-                <option value="male">ذكر</option>
-                <option value="female">أنثى</option>
-              </select>
-            </div>
-
-            <div class="input-group">
-              <label class="input-label" for="regPassword">كلمة المرور</label>
-              <div class="password-wrap">
-                <input type="password" id="regPassword" placeholder="أدخل كلمة المرور">
-                <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">إظهار</button>
-              </div>
-            </div>
-
-            <button id="registerBtn" class="main-btn">إنشاء الحساب</button>
-          </div>
-
-          <div class="link-group">
-            <div class="link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
-          </div>
-        </div>
-
-        <!-- نسيت كلمة المرور -->
-        <div id="forgotForm" class="form-card form-section hidden">
-          <div class="form-top">
-            <div class="form-icon">🔐</div>
-            <h2>استعادة كلمة المرور</h2>
-            <p class="subtitle">استرجاع الوصول إلى الحساب بخطوات بسيطة</p>
-          </div>
-
-          <p class="note">
-            أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني
-            المسجل في الحساب.
-          </p>
-
-          <div class="fields">
-            <div class="input-group">
-              <label class="input-label" for="forgotNationalID">الرقم الوطني</label>
-              <input type="text" id="forgotNationalID" placeholder="أدخل الرقم الوطني" maxlength="10">
-            </div>
-
-            <button id="forgotBtn" class="main-btn">إرسال رابط إعادة التعيين</button>
-          </div>
-
-          <div class="link-group">
-            <div class="link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
-          </div>
-        </div>
-
-      </div>
+    <div class="side-footer" data-i18n="side_footer">
+      وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية
     </div>
   </div>
 
+  <!-- الجهة الرئيسية -->
+  <div class="auth-main">
+    <div class="container">
+
+      <!-- تسجيل الدخول -->
+      <div id="loginForm" class="form-card form-section">
+        <div class="form-top">
+          <div class="form-icon">👤</div>
+          <h2 data-i18n="login_title">تسجيل الدخول</h2>
+          <p class="subtitle" data-i18n="login_subtitle">أدخل بياناتك للوصول إلى حساب المريض</p>
+        </div>
+
+        <div class="fields">
+          <div class="input-group">
+            <label class="input-label" for="loginNationalID" data-i18n="login_national_id_label">الرقم الوطني</label>
+            <input type="text" id="loginNationalID" data-placeholder="login_national_id_placeholder" placeholder="أدخل الرقم الوطني" maxlength="10">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="loginPassword" data-i18n="login_password_label">كلمة المرور</label>
+            <div class="password-wrap">
+              <input type="password" id="loginPassword" data-placeholder="login_password_placeholder" placeholder="أدخل كلمة المرور">
+              <button type="button" class="toggle-pass" data-i18n="show_btn" onclick="togglePassword('loginPassword', this)">إظهار</button>
+            </div>
+          </div>
+
+          <div class="row-buttons">
+            <button id="loginBtn" class="main-btn" data-i18n="login_btn">تسجيل الدخول</button>
+            <button id="goHomeBtn" class="secondary-btn" type="button" data-i18n="home_btn" onclick="goHome()">الصفحة الرئيسية</button>
+          </div>
+        </div>
+
+        <div class="link-group">
+          <div class="link" data-i18n="create_account_link" onclick="showForm('registerForm')">إنشاء حساب جديد</div>
+          <div class="link" data-i18n="forgot_password_link" onclick="showForm('forgotForm')">نسيت كلمة المرور؟</div>
+        </div>
+      </div>
+
+      <!-- إنشاء حساب -->
+      <div id="registerForm" class="form-card form-section hidden">
+        <div class="form-top">
+          <div class="form-icon">📝</div>
+          <h2 data-i18n="register_title">إنشاء حساب جديد</h2>
+          <p class="subtitle" data-i18n="register_subtitle">املأ البيانات التالية لإنشاء حساب المريض</p>
+        </div>
+
+        <div class="fields">
+          <div class="input-group">
+            <label class="input-label" for="regFirstName" data-i18n="first_name_label">الاسم الأول</label>
+            <input type="text" id="regFirstName" data-placeholder="first_name_placeholder" placeholder="أدخل الاسم الأول">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="regLastName" data-i18n="last_name_label">اسم العائلة</label>
+            <input type="text" id="regLastName" data-placeholder="last_name_placeholder" placeholder="أدخل اسم العائلة">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="regNationalID" data-i18n="register_national_id_label">الرقم الوطني</label>
+            <input type="text" id="regNationalID" data-placeholder="register_national_id_placeholder" placeholder="الرقم الوطني (10 أرقام)" maxlength="10">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="regEmail" data-i18n="email_label">البريد الإلكتروني</label>
+            <input type="email" id="regEmail" data-placeholder="email_placeholder" placeholder="أدخل البريد الإلكتروني">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" data-i18n="phone_label">رقم الهاتف</label>
+            <div class="phone-row">
+              <select id="regCountryCode">
+                <option value="+962">JO +962</option>
+              </select>
+              <input type="text" id="regPhone" data-placeholder="phone_placeholder" placeholder="7XXXXXXXX">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="regBirthday" data-i18n="birthday_label">تاريخ الميلاد</label>
+            <input type="date" id="regBirthday">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="regGender" data-i18n="gender_label">الجنس</label>
+            <select id="regGender">
+              <option value="" data-i18n="gender_placeholder">اختر الجنس</option>
+              <option value="male" data-i18n="male_option">ذكر</option>
+              <option value="female" data-i18n="female_option">أنثى</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="regPassword" data-i18n="register_password_label">كلمة المرور</label>
+            <div class="password-wrap">
+              <input type="password" id="regPassword" data-placeholder="register_password_placeholder" placeholder="أدخل كلمة المرور">
+              <button type="button" class="toggle-pass" data-i18n="show_btn" onclick="togglePassword('regPassword', this)">إظهار</button>
+            </div>
+          </div>
+
+          <button id="registerBtn" class="main-btn" data-i18n="register_btn">إنشاء الحساب</button>
+        </div>
+
+        <div class="link-group">
+          <div class="link" data-i18n="have_account_link" onclick="showForm('loginForm')">لديك حساب؟ سجل دخولك</div>
+        </div>
+      </div>
+
+      <!-- نسيت كلمة المرور -->
+      <div id="forgotForm" class="form-card form-section hidden">
+        <div class="form-top">
+          <div class="form-icon">🔐</div>
+          <h2 data-i18n="forgot_title">استعادة كلمة المرور</h2>
+          <p class="subtitle" data-i18n="forgot_subtitle">استرجاع الوصول إلى الحساب بخطوات بسيطة</p>
+        </div>
+
+        <p class="note" data-i18n="forgot_note">
+          أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني
+          المسجل في الحساب.
+        </p>
+
+        <div class="fields">
+          <div class="input-group">
+            <label class="input-label" for="forgotNationalID" data-i18n="forgot_national_id_label">الرقم الوطني</label>
+            <input type="text" id="forgotNationalID" data-placeholder="forgot_national_id_placeholder" placeholder="أدخل الرقم الوطني" maxlength="10">
+          </div>
+
+          <button id="forgotBtn" class="main-btn" data-i18n="forgot_btn">إرسال رابط إعادة التعيين</button>
+        </div>
+
+        <div class="link-group">
+          <div class="link" data-i18n="back_to_login_link" onclick="showForm('loginForm')">العودة لتسجيل الدخول</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import {
@@ -980,5 +978,146 @@
 	  window.location.href = "index.html"; // غيرها حسب اسم الصفحة الرئيسية عندك
 	};
   </script>
+<script>
+const translations = {
+  ar: {
+    page_title: "نظام نبض - وزارة الصحة",
+    brand_badge: "💚 نظام نبض الطبي",
+    brand_title: "بوابة المرضى",
+    brand_subtitle: "سجّل دخولك للوصول إلى خدمات الحجز الطبية، متابعة المواعيد، وإدارة حسابك بسهولة ضمن واجهة حديثة ومريحة وواضحة.",
+    card1_title: "سهولة الاستخدام",
+    card1_desc: "تنقل واضح بين تسجيل الدخول، إنشاء الحساب، واستعادة كلمة المرور.",
+    card2_title: "إدارة حجوزاتك بسهولة",
+    card2_desc: "عرض، تعديل، أو إلغاء أي موعد بخطوات بسيطة ومن مكان واحد.",
+    card3_title: "ذكاء اصطناعي مدمج",
+    card3_desc: "مساعد ذكي متوفر دائماً للإجابة على الأسئلة بدون انتظار.",
+    side_footer: "وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية",
+
+    login_title: "تسجيل الدخول",
+    login_subtitle: "أدخل بياناتك للوصول إلى حساب المريض",
+    login_national_id_label: "الرقم الوطني",
+    login_national_id_placeholder: "أدخل الرقم الوطني",
+    login_password_label: "كلمة المرور",
+    login_password_placeholder: "أدخل كلمة المرور",
+    show_btn: "إظهار",
+    hide_btn: "إخفاء",
+    login_btn: "تسجيل الدخول",
+    home_btn: "الصفحة الرئيسية",
+    create_account_link: "إنشاء حساب جديد",
+    forgot_password_link: "نسيت كلمة المرور؟",
+
+    register_title: "إنشاء حساب جديد",
+    register_subtitle: "املأ البيانات التالية لإنشاء حساب المريض",
+    first_name_label: "الاسم الأول",
+    first_name_placeholder: "أدخل الاسم الأول",
+    last_name_label: "اسم العائلة",
+    last_name_placeholder: "أدخل اسم العائلة",
+    register_national_id_label: "الرقم الوطني",
+    register_national_id_placeholder: "الرقم الوطني (10 أرقام)",
+    email_label: "البريد الإلكتروني",
+    email_placeholder: "أدخل البريد الإلكتروني",
+    phone_label: "رقم الهاتف",
+    phone_placeholder: "7XXXXXXXX",
+    birthday_label: "تاريخ الميلاد",
+    gender_label: "الجنس",
+    gender_placeholder: "اختر الجنس",
+    male_option: "ذكر",
+    female_option: "أنثى",
+    register_password_label: "كلمة المرور",
+    register_password_placeholder: "أدخل كلمة المرور",
+    register_btn: "إنشاء الحساب",
+    have_account_link: "لديك حساب؟ سجل دخولك",
+
+    forgot_title: "استعادة كلمة المرور",
+    forgot_subtitle: "استرجاع الوصول إلى الحساب بخطوات بسيطة",
+    forgot_note: "أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني المسجل في الحساب.",
+    forgot_national_id_label: "الرقم الوطني",
+    forgot_national_id_placeholder: "أدخل الرقم الوطني",
+    forgot_btn: "إرسال رابط إعادة التعيين",
+    back_to_login_link: "العودة لتسجيل الدخول"
+  },
+  en: {
+    page_title: "Nabd System - Ministry of Health",
+    brand_badge: "💚 Nabd Medical System",
+    brand_title: "Patient Portal",
+    brand_subtitle: "Sign in to access medical booking services, follow appointments, and manage your account easily through a modern, comfortable, and clear interface.",
+    card1_title: "Easy to Use",
+    card1_desc: "Clear navigation between sign in, account creation, and password recovery.",
+    card2_title: "Manage Your Bookings Easily",
+    card2_desc: "View, edit, or cancel any appointment in simple steps from one place.",
+    card3_title: "Built-in AI",
+    card3_desc: "A smart assistant is always available to answer questions without waiting.",
+    side_footer: "Jordan Ministry of Health — Nabd Digital Healthcare Platform",
+
+    login_title: "Sign In",
+    login_subtitle: "Enter your details to access the patient account",
+    login_national_id_label: "National ID",
+    login_national_id_placeholder: "Enter national ID",
+    login_password_label: "Password",
+    login_password_placeholder: "Enter password",
+    show_btn: "Show",
+    hide_btn: "Hide",
+    login_btn: "Sign In",
+    home_btn: "Home",
+    create_account_link: "Create New Account",
+    forgot_password_link: "Forgot Password?",
+
+    register_title: "Create New Account",
+    register_subtitle: "Fill in the following details to create a patient account",
+    first_name_label: "First Name",
+    first_name_placeholder: "Enter first name",
+    last_name_label: "Last Name",
+    last_name_placeholder: "Enter last name",
+    register_national_id_label: "National ID",
+    register_national_id_placeholder: "National ID (10 digits)",
+    email_label: "Email",
+    email_placeholder: "Enter email",
+    phone_label: "Phone Number",
+    phone_placeholder: "7XXXXXXXX",
+    birthday_label: "Date of Birth",
+    gender_label: "Gender",
+    gender_placeholder: "Select gender",
+    male_option: "Male",
+    female_option: "Female",
+    register_password_label: "Password",
+    register_password_placeholder: "Enter password",
+    register_btn: "Create Account",
+    have_account_link: "Already have an account? Sign in",
+
+    forgot_title: "Recover Password",
+    forgot_subtitle: "Restore access to your account in simple steps",
+    forgot_note: "Enter the national ID, and a password reset link will be sent to the email registered with the account.",
+    forgot_national_id_label: "National ID",
+    forgot_national_id_placeholder: "Enter national ID",
+    forgot_btn: "Send Reset Link",
+    back_to_login_link: "Back to Sign In"
+  }
+};
+
+function applyLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.title = translations[lang].page_title;
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  document.querySelectorAll("[data-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-placeholder");
+    if (translations[lang] && translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("siteLanguage") || "ar";
+  applyLanguage(savedLang);
+});
+</script>
 </body>
 </html>
