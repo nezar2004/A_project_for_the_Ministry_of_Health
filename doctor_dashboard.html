@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Doctor Secure Dashboard</title>
+  <title>لوحة الطبيب - نبض</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,12 +11,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link rel="stylesheet" href="doctor-style.css">
 </head>
-<body dir="rtl" lang="ar">
+<body>
   <div id="loadingOverlay" class="loading-overlay">
     <div class="loading-box">
       <div class="spinner"></div>
-      <h3 style="margin:0 0 8px; font-size:22px; font-weight:900;">جاري تجهيز لوحة الطبيب</h3>
-      <p style="margin:0; color:#64748b; line-height:1.7;">
+      <h3 data-i18n="loading_title" style="margin:0 0 8px; font-size:22px; font-weight:900;">جاري تجهيز لوحة الطبيب</h3>
+      <p data-i18n="loading_desc" style="margin:0; color:#64748b; line-height:1.7;">
         يتم تحميل بيانات الطبيب، الحجوزات الحالية، وأدوات متابعة المواعيد.
       </p>
     </div>
@@ -27,8 +27,8 @@
       <div class="brand">
         <div class="brand-icon"><i class="fa-solid fa-stethoscope"></i></div>
         <div>
-          <h1>لوحة التحكم</h1>
-          <p>متابعة مباشرة للحجوزات اليومية وحالة المواعيد</p>
+          <h1 data-i18n="sidebar_title">لوحة التحكم</h1>
+          <p data-i18n="sidebar_subtitle">متابعة مباشرة للحجوزات اليومية وحالة المواعيد</p>
         </div>
       </div>
 
@@ -38,50 +38,50 @@
             <img id="doctorAvatarImage" src="https://i.pinimg.com/1200x/5f/3f/6c/5f3f6c01a7a094a8e55ef2fceda485cc.jpg" alt="Doctor">
           </div>
           <div class="doctor-meta">
-            <h2 id="doctorName">جاري تحميل بيانات الطبيب...</h2>
-            <p id="doctorSubline">المستشفى · القسم · التخصص</p>
+            <h2 id="doctorName" data-i18n="doctor_loading">جاري تحميل بيانات الطبيب...</h2>
+            <p id="doctorSubline" data-i18n="doctor_subline">المستشفى · القسم · التخصص</p>
           </div>
         </div>
 
         <button id="availabilityButton" class="status-chip offline" type="button">
           <i class="fa-solid fa-circle"></i>
-          <span id="availabilityLabel">غير متصل</span>
+          <span id="availabilityLabel" data-i18n="offline">غير متصل</span>
         </button>
       </section>
 
       <div class="nav-group">
         <button class="nav-button active" data-sidebar-filter="ALL" type="button">
-          <span><i class="fa-solid fa-table-list" style="margin-left:8px;"></i>كل الحجوزات</span>
+          <span><i class="fa-solid fa-table-list" style="margin-left:8px;"></i><span data-i18n="nav_all">كل الحجوزات</span></span>
           <span class="nav-badge" id="countAll">0</span>
         </button>
 
         <button class="nav-button" data-sidebar-filter="PENDING" type="button">
-          <span><i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i>بانتظار المراجعة</span>
+          <span><i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i><span data-i18n="nav_pending">بانتظار المراجعة</span></span>
           <span class="nav-badge" id="countPending">0</span>
         </button>
 
         <button class="nav-button" data-sidebar-filter="APPROVED" type="button">
-          <span><i class="fa-solid fa-circle-check" style="margin-left:8px;"></i>تمت الموافقة</span>
+          <span><i class="fa-solid fa-circle-check" style="margin-left:8px;"></i><span data-i18n="nav_approved">تمت الموافقة</span></span>
           <span class="nav-badge" id="countApproved">0</span>
         </button>
 
         <button class="nav-button" data-sidebar-filter="REJECTED" type="button">
-          <span><i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i>مرفوضة</span>
+          <span><i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i><span data-i18n="nav_rejected">مرفوضة</span></span>
           <span class="nav-badge" id="countRejected">0</span>
         </button>
 
         <button class="nav-button" data-sidebar-filter="RESCHEDULED" type="button">
-          <span><i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i>أعيدت جدولتها</span>
+          <span><i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i><span data-i18n="nav_rescheduled">أعيدت جدولتها</span></span>
           <span class="nav-badge" id="countRescheduled">0</span>
         </button>
       </div>
 
       <div class="sidebar-bottom">
         <button id="refreshButton" class="soft-button" type="button">
-          <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i>تحديث الحجوزات
+          <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="refresh_bookings">تحديث الحجوزات</span>
         </button>
         <button id="logoutButton" class="ghost-button" type="button">
-          <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:8px;"></i>تسجيل الخروج
+          <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:8px;"></i><span data-i18n="logout">تسجيل الخروج</span>
         </button>
       </div>
     </aside>
@@ -90,8 +90,8 @@
       <section class="hero card">
         <div class="hero-top">
           <div class="hero-copy">
-            <h3>إدارة المواعيد الطبية بشكل أوضح وأسرع</h3>
-            <p>
+            <h3 data-i18n="hero_title">إدارة المواعيد الطبية بشكل أوضح وأسرع</h3>
+            <p data-i18n="hero_desc">
               راجع طلبات المرضى، وافق أو ارفض أو أعد جدولة الحجز بسهولة، وتابع مواعيدك اليومية
               من مكان واحد بشكل منظم وواضح.
             </p>
@@ -99,42 +99,42 @@
 
           <div class="hero-actions">
             <button id="heroRefreshButton" class="ghost-button" type="button">
-              <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i>مزامنة الآن
+              <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="sync_now">مزامنة الآن</span>
             </button>
             <button id="focusPendingButton" class="primary-button" type="button">
-              <i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i>عرض الطلبات المعلقة
+              <i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i><span data-i18n="show_pending">عرض الطلبات المعلقة</span>
             </button>
           </div>
         </div>
 
         <div id="liveBanner" class="live-banner">
           <i class="fa-solid fa-bolt" style="margin-left:8px; color:#2563eb;"></i>
-          <span id="liveBannerText">تم استلام تحديث مباشر</span>
+          <span id="liveBannerText" data-i18n="live_update">تم استلام تحديث مباشر</span>
         </div>
 
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-label">إجمالي الحجوزات</div>
+            <div class="stat-label" data-i18n="stat_all">إجمالي الحجوزات</div>
             <div class="stat-value" id="statAll">0</div>
-            <div class="stat-caption">جميع الحجوزات المرتبطة بحساب الطبيب</div>
+            <div class="stat-caption" data-i18n="stat_all_caption">جميع الحجوزات المرتبطة بحساب الطبيب</div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-label">بانتظار المراجعة</div>
+            <div class="stat-label" data-i18n="stat_pending">بانتظار المراجعة</div>
             <div class="stat-value" id="statPending">0</div>
-            <div class="stat-caption">طلبات تحتاج موافقة أو رفض أو إعادة جدولة</div>
+            <div class="stat-caption" data-i18n="stat_pending_caption">طلبات تحتاج موافقة أو رفض أو إعادة جدولة</div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-label">الحجوزات المؤكدة</div>
+            <div class="stat-label" data-i18n="stat_approved">الحجوزات المؤكدة</div>
             <div class="stat-value" id="statApproved">0</div>
-            <div class="stat-caption">المواعيد التي تمت الموافقة عليها</div>
+            <div class="stat-caption" data-i18n="stat_approved_caption">المواعيد التي تمت الموافقة عليها</div>
           </div>
 
           <div class="stat-card">
-            <div class="stat-label">مواعيد اليوم</div>
+            <div class="stat-label" data-i18n="stat_today">مواعيد اليوم</div>
             <div class="stat-value" id="statToday">0</div>
-            <div class="stat-caption">عدد الحجوزات المجدولة لهذا اليوم</div>
+            <div class="stat-caption" data-i18n="stat_today_caption">عدد الحجوزات المجدولة لهذا اليوم</div>
           </div>
         </div>
       </section>
@@ -142,34 +142,34 @@
       <section class="board card">
         <div class="board-top">
           <div class="board-title">
-            <h4>قائمة الحجوزات</h4>
-            <p>اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.</p>
+            <h4 data-i18n="board_title">قائمة الحجوزات</h4>
+            <p data-i18n="board_desc">اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.</p>
           </div>
 
           <div class="search-wrap">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input id="searchInput" type="text" placeholder="ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم" />
+            <input id="searchInput" type="text" data-placeholder="search_placeholder" placeholder="ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم" />
           </div>
         </div>
 
         <div class="filters">
-          <button class="filter-tab active" data-filter="ALL" type="button">الكل</button>
-          <button class="filter-tab" data-filter="PENDING" type="button">معلقة</button>
-          <button class="filter-tab" data-filter="APPROVED" type="button">موافق عليها</button>
-          <button class="filter-tab" data-filter="REJECTED" type="button">مرفوضة</button>
-          <button class="filter-tab" data-filter="RESCHEDULED" type="button">أعيدت جدولتها</button>
+          <button class="filter-tab active" data-filter="ALL" type="button" data-i18n="filter_all">الكل</button>
+          <button class="filter-tab" data-filter="PENDING" type="button" data-i18n="filter_pending">معلقة</button>
+          <button class="filter-tab" data-filter="APPROVED" type="button" data-i18n="filter_approved">موافق عليها</button>
+          <button class="filter-tab" data-filter="REJECTED" type="button" data-i18n="filter_rejected">مرفوضة</button>
+          <button class="filter-tab" data-filter="RESCHEDULED" type="button" data-i18n="filter_rescheduled">أعيدت جدولتها</button>
         </div>
 
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>المريض</th>
-                <th>المستشفى / القسم</th>
-                <th>التاريخ</th>
-                <th>الوقت</th>
-                <th>الحالة</th>
-                <th>الإجراء</th>
+                <th data-i18n="th_patient">المريض</th>
+                <th data-i18n="th_hospital_department">المستشفى / القسم</th>
+                <th data-i18n="th_date">التاريخ</th>
+                <th data-i18n="th_time">الوقت</th>
+                <th data-i18n="th_status">الحالة</th>
+                <th data-i18n="th_action">الإجراء</th>
               </tr>
             </thead>
             <tbody id="bookingsTableBody"></tbody>
@@ -184,8 +184,8 @@
   <aside id="bookingDrawer" class="drawer" aria-hidden="true">
     <div class="drawer-header">
       <div class="drawer-title">
-        <h5>تفاصيل الحجز</h5>
-        <p>تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.</p>
+        <h5 data-i18n="drawer_title">تفاصيل الحجز</h5>
+        <p data-i18n="drawer_desc">تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.</p>
       </div>
       <button id="closeDrawerButton" class="icon-button" type="button" aria-label="إغلاق نافذة التفاصيل">
         <i class="fa-solid fa-xmark"></i>
@@ -194,50 +194,50 @@
 
     <div class="drawer-body">
       <section class="detail-section">
-        <h6>بيانات المريض</h6>
+        <h6 data-i18n="patient_info">بيانات المريض</h6>
         <div class="detail-grid">
-          <div class="detail-item"><label>الاسم الكامل</label><div id="detailPatientName">-</div></div>
-          <div class="detail-item"><label>رقم الهاتف</label><div id="detailPatientPhone">-</div></div>
-          <div class="detail-item"><label>البريد الإلكتروني</label><div id="detailPatientEmail">-</div></div>
-          <div class="detail-item"><label>الحالة الحالية</label><div id="detailStatus">-</div></div>
+          <div class="detail-item"><label data-i18n="label_full_name">الاسم الكامل</label><div id="detailPatientName">-</div></div>
+          <div class="detail-item"><label data-i18n="label_phone">رقم الهاتف</label><div id="detailPatientPhone">-</div></div>
+          <div class="detail-item"><label data-i18n="label_email">البريد الإلكتروني</label><div id="detailPatientEmail">-</div></div>
+          <div class="detail-item"><label data-i18n="label_current_status">الحالة الحالية</label><div id="detailStatus">-</div></div>
         </div>
       </section>
 
       <section class="detail-section">
-        <h6>بيانات الموعد</h6>
+        <h6 data-i18n="appointment_info">بيانات الموعد</h6>
         <div class="detail-grid">
-          <div class="detail-item"><label>رقم الحجز</label><div id="detailBookingId">-</div></div>
-          <div class="detail-item"><label>المستشفى</label><div id="detailHospital">-</div></div>
-          <div class="detail-item"><label>القسم</label><div id="detailDepartment">-</div></div>
-          <div class="detail-item"><label>الطبيب</label><div id="detailDoctor">-</div></div>
-          <div class="detail-item"><label>التاريخ</label><div id="detailDate">-</div></div>
-          <div class="detail-item"><label>الوقت</label><div id="detailTime">-</div></div>
+          <div class="detail-item"><label data-i18n="label_booking_number">رقم الحجز</label><div id="detailBookingId">-</div></div>
+          <div class="detail-item"><label data-i18n="label_hospital">المستشفى</label><div id="detailHospital">-</div></div>
+          <div class="detail-item"><label data-i18n="label_department">القسم</label><div id="detailDepartment">-</div></div>
+          <div class="detail-item"><label data-i18n="label_doctor">الطبيب</label><div id="detailDoctor">-</div></div>
+          <div class="detail-item"><label data-i18n="label_date">التاريخ</label><div id="detailDate">-</div></div>
+          <div class="detail-item"><label data-i18n="label_time">الوقت</label><div id="detailTime">-</div></div>
         </div>
       </section>
 
       <section class="detail-section">
-        <h6>ملاحظة المريض</h6>
+        <h6 data-i18n="patient_note">ملاحظة المريض</h6>
         <div class="detail-item">
-          <label>التفاصيل الإضافية</label>
-          <div id="detailNote">لا توجد ملاحظات مضافة.</div>
+          <label data-i18n="additional_details">التفاصيل الإضافية</label>
+          <div id="detailNote" data-i18n="no_note">لا توجد ملاحظات مضافة.</div>
         </div>
       </section>
 
       <section class="detail-section">
-        <h6>إعادة جدولة الحجز</h6>
+        <h6 data-i18n="reschedule_title">إعادة جدولة الحجز</h6>
         <div class="field-grid">
           <div class="field">
-            <label for="rescheduleDate">التاريخ الجديد</label>
+            <label for="rescheduleDate" data-i18n="new_date">التاريخ الجديد</label>
             <input id="rescheduleDate" type="date" />
           </div>
           <div class="field">
-            <label for="rescheduleTime">الوقت الجديد</label>
+            <label for="rescheduleTime" data-i18n="new_time">الوقت الجديد</label>
             <input id="rescheduleTime" type="time" />
           </div>
         </div>
         <div class="field" style="margin-top:12px;">
-          <label for="rescheduleReason">سبب إعادة الجدولة أو رسالة للمريض</label>
-          <textarea id="rescheduleReason" placeholder="اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة"></textarea>
+          <label for="rescheduleReason" data-i18n="reschedule_reason_label">سبب إعادة الجدولة أو رسالة للمريض</label>
+          <textarea id="rescheduleReason" data-placeholder="reschedule_reason_placeholder" placeholder="اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة"></textarea>
         </div>
       </section>
     </div>
@@ -245,23 +245,22 @@
     <div class="drawer-footer">
       <div class="footer-actions">
         <button id="approveButton" class="primary-button" type="button">
-          <i class="fa-solid fa-circle-check" style="margin-left:8px;"></i>موافقة
+          <i class="fa-solid fa-circle-check" style="margin-left:8px;"></i><span data-i18n="approve">موافقة</span>
         </button>
         <button id="rejectButton" class="danger-button" type="button">
-          <i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i>رفض
+          <i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i><span data-i18n="reject">رفض</span>
         </button>
         <button id="rescheduleButton" class="soft-button" type="button">
-          <i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i>إعادة جدولة
+          <i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i><span data-i18n="reschedule">إعادة جدولة</span>
         </button>
       </div>
-      <div class="helper-text">
+      <div class="helper-text" data-i18n="helper_text">
         لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط.
       </div>
     </div>
   </aside>
 
   <div id="toastWrap" class="toast-wrap"></div>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -976,5 +975,178 @@
 
     boot();
   </script>
+<script>
+const translations = {
+  ar: {
+    page_title: "لوحة الطبيب - نبض",
+    loading_title: "جاري تجهيز لوحة الطبيب",
+    loading_desc: "يتم تحميل بيانات الطبيب، الحجوزات الحالية، وأدوات متابعة المواعيد.",
+    sidebar_title: "لوحة التحكم",
+    sidebar_subtitle: "متابعة مباشرة للحجوزات اليومية وحالة المواعيد",
+    doctor_loading: "جاري تحميل بيانات الطبيب...",
+    doctor_subline: "المستشفى · القسم · التخصص",
+    offline: "غير متصل",
+    online: "متاح",
+    nav_all: "كل الحجوزات",
+    nav_pending: "بانتظار المراجعة",
+    nav_approved: "تمت الموافقة",
+    nav_rejected: "مرفوضة",
+    nav_rescheduled: "أعيدت جدولتها",
+    refresh_bookings: "تحديث الحجوزات",
+    logout: "تسجيل الخروج",
+    hero_title: "إدارة المواعيد الطبية بشكل أوضح وأسرع",
+    hero_desc: "راجع طلبات المرضى، وافق أو ارفض أو أعد جدولة الحجز بسهولة، وتابع مواعيدك اليومية من مكان واحد بشكل منظم وواضح.",
+    sync_now: "مزامنة الآن",
+    show_pending: "عرض الطلبات المعلقة",
+    live_update: "تم استلام تحديث مباشر",
+    stat_all: "إجمالي الحجوزات",
+    stat_all_caption: "جميع الحجوزات المرتبطة بحساب الطبيب",
+    stat_pending: "بانتظار المراجعة",
+    stat_pending_caption: "طلبات تحتاج موافقة أو رفض أو إعادة جدولة",
+    stat_approved: "الحجوزات المؤكدة",
+    stat_approved_caption: "المواعيد التي تمت الموافقة عليها",
+    stat_today: "مواعيد اليوم",
+    stat_today_caption: "عدد الحجوزات المجدولة لهذا اليوم",
+    board_title: "قائمة الحجوزات",
+    board_desc: "اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.",
+    search_placeholder: "ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم",
+    filter_all: "الكل",
+    filter_pending: "معلقة",
+    filter_approved: "موافق عليها",
+    filter_rejected: "مرفوضة",
+    filter_rescheduled: "أعيدت جدولتها",
+    th_patient: "المريض",
+    th_hospital_department: "المستشفى / القسم",
+    th_date: "التاريخ",
+    th_time: "الوقت",
+    th_status: "الحالة",
+    th_action: "الإجراء",
+    drawer_title: "تفاصيل الحجز",
+    drawer_desc: "تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.",
+    patient_info: "بيانات المريض",
+    label_full_name: "الاسم الكامل",
+    label_phone: "رقم الهاتف",
+    label_email: "البريد الإلكتروني",
+    label_current_status: "الحالة الحالية",
+    appointment_info: "بيانات الموعد",
+    label_booking_number: "رقم الحجز",
+    label_hospital: "المستشفى",
+    label_department: "القسم",
+    label_doctor: "الطبيب",
+    label_date: "التاريخ",
+    label_time: "الوقت",
+    patient_note: "ملاحظة المريض",
+    additional_details: "التفاصيل الإضافية",
+    no_note: "لا توجد ملاحظات مضافة.",
+    reschedule_title: "إعادة جدولة الحجز",
+    new_date: "التاريخ الجديد",
+    new_time: "الوقت الجديد",
+    reschedule_reason_label: "سبب إعادة الجدولة أو رسالة للمريض",
+    reschedule_reason_placeholder: "اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة",
+    approve: "موافقة",
+    reject: "رفض",
+    reschedule: "إعادة جدولة",
+    helper_text: "لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط."
+  },
+  en: {
+    page_title: "Doctor Dashboard - Nabd",
+    loading_title: "Preparing Doctor Dashboard",
+    loading_desc: "Loading doctor data, current bookings, and appointment management tools.",
+    sidebar_title: "Dashboard",
+    sidebar_subtitle: "Direct overview of daily bookings and appointment status",
+    doctor_loading: "Loading doctor data...",
+    doctor_subline: "Hospital · Department · Specialty",
+    offline: "Offline",
+    online: "Available",
+    nav_all: "All Bookings",
+    nav_pending: "Pending Review",
+    nav_approved: "Approved",
+    nav_rejected: "Rejected",
+    nav_rescheduled: "Rescheduled",
+    refresh_bookings: "Refresh Bookings",
+    logout: "Logout",
+    hero_title: "Manage Medical Appointments More Clearly and Faster",
+    hero_desc: "Review patient requests, approve, reject, or reschedule bookings easily, and track daily appointments from one organized place.",
+    sync_now: "Sync Now",
+    show_pending: "Show Pending Requests",
+    live_update: "Live update received",
+    stat_all: "Total Bookings",
+    stat_all_caption: "All bookings linked to the doctor account",
+    stat_pending: "Pending Review",
+    stat_pending_caption: "Requests that need approval, rejection, or rescheduling",
+    stat_approved: "Confirmed Bookings",
+    stat_approved_caption: "Appointments that have been approved",
+    stat_today: "Today's Appointments",
+    stat_today_caption: "Number of bookings scheduled for today",
+    board_title: "Bookings List",
+    board_desc: "Click any row or the booking follow-up button to view full details and take the appropriate action.",
+    search_placeholder: "Search by patient name, phone, email, booking number, hospital, or department",
+    filter_all: "All",
+    filter_pending: "Pending",
+    filter_approved: "Approved",
+    filter_rejected: "Rejected",
+    filter_rescheduled: "Rescheduled",
+    th_patient: "Patient",
+    th_hospital_department: "Hospital / Department",
+    th_date: "Date",
+    th_time: "Time",
+    th_status: "Status",
+    th_action: "Action",
+    drawer_title: "Booking Details",
+    drawer_desc: "All booking information appears here after selecting a request from the list.",
+    patient_info: "Patient Information",
+    label_full_name: "Full Name",
+    label_phone: "Phone Number",
+    label_email: "Email",
+    label_current_status: "Current Status",
+    appointment_info: "Appointment Information",
+    label_booking_number: "Booking Number",
+    label_hospital: "Hospital",
+    label_department: "Department",
+    label_doctor: "Doctor",
+    label_date: "Date",
+    label_time: "Time",
+    patient_note: "Patient Note",
+    additional_details: "Additional Details",
+    no_note: "No notes were added.",
+    reschedule_title: "Reschedule Booking",
+    new_date: "New Date",
+    new_time: "New Time",
+    reschedule_reason_label: "Reason for rescheduling or message to patient",
+    reschedule_reason_placeholder: "Write a note explaining the reason for changing the appointment or any important instructions",
+    approve: "Approve",
+    reject: "Reject",
+    reschedule: "Reschedule",
+    helper_text: "Bookings cannot be deleted from this dashboard. The doctor can only approve, reject, or set a new appointment."
+  }
+};
+
+function applyLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.body.lang = lang;
+  document.body.dir = lang === "ar" ? "rtl" : "ltr";
+  document.title = translations[lang].page_title;
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  document.querySelectorAll("[data-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-placeholder");
+    if (translations[lang] && translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("siteLanguage") || "ar";
+  applyLanguage(savedLang);
+});
+</script>
 </body>
 </html>
