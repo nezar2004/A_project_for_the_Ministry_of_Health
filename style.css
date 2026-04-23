@@ -607,3 +607,50 @@ body {
 		font-size: 20px;
 	  }
 	}
+	.lang-bar {
+	  display: flex;
+	  justify-content: flex-end;
+	  margin-bottom: 10px;
+	}
+
+	.lang-buttons {
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 8px;
+	  background: rgba(255, 255, 255, 0.78);
+	  border: 1px solid rgba(255,255,255,0.9);
+	  backdrop-filter: blur(14px);
+	  padding: 8px;
+	  border-radius: 18px;
+	  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+	}
+
+	.lang-btn {
+	  border: 0;
+	  min-width: 58px;
+	  height: 42px;
+	  padding: 0 16px;
+	  border-radius: 12px;
+	  font-family: "Cairo", sans-serif;
+	  font-size: 14px;
+	  font-weight: 800;
+	  cursor: pointer;
+	  background: transparent;
+	  color: #28405d;
+	  transition: all 0.22s ease;
+	}
+
+	.lang-btn:hover {
+	  background: rgba(37, 99, 235, 0.10);
+	  color: #1d4ed8;
+	}
+
+	.lang-btn.active {
+	  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+	  color: #fff;
+	  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.22);
+	}
+
+	html[dir="ltr"] .lang-bar {
+	  justify-content: flex-end;
+	}
