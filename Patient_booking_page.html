@@ -1298,7 +1298,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  <button id="bookOtherBtn" class="btn btn-outline-main">
 		👤 حجز لشخص آخر
 	  </button>
-  </div>
+	</div>
+
+	</div> 
+
+	
 
 <div class="container-app d-none" id="bookingApp">
   <div class="panel-card">
@@ -1531,7 +1535,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   import { signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs, addDoc, query, where } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, addDoc, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   const authFirebaseConfig = {
     apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
@@ -1629,9 +1633,19 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  localStorage.setItem("currentUserUid", user.uid);
 	  localStorage.setItem("currentUserEmail", (user.email || "").trim().toLowerCase());
 
+	  const userDocRef = doc(getFirestore(authApp), "users", user.uid);
+	  const userDocSnap = await getDoc(userDocRef);
+
+	  if (userDocSnap.exists()) {
+		const userData = userDocSnap.data();
+
+		localStorage.setItem("userName", userData.name || "");
+		localStorage.setItem("userPhone", userData.phone || "");
+	  }
+
 	  await loadFirebaseData();
 	  await renderBookings();
-  });
+	});
 
   async function loadFirebaseData() {
     try {
@@ -1839,6 +1853,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	// Booking status
 	// -------------------------------
 	let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
+	let readyToConfirm = false;
 	let bookingMode = "self"; // self أو other
 	let bookingState = {
 	  currentStep: 1,
@@ -1859,20 +1874,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	document.getElementById("bookSelfBtn").onclick = () => {
 	  bookingMode = "self";
-
-	  document.getElementById("landingPage").classList.add("d-none");
-	  document.getElementById("bookingApp").classList.remove("d-none");
-
-	  showStep(1);
+	  goToBookingApp();
 	};
 
 	document.getElementById("bookOtherBtn").onclick = () => {
 	  bookingMode = "other";
-
-	  document.getElementById("landingPage").classList.add("d-none");
-	  document.getElementById("bookingApp").classList.remove("d-none");
-
-	  showStep(1);
+	  goToBookingApp();
 	};
 	// -------------------------------
 	// Helper Functions
@@ -1896,6 +1903,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  if (el) el.classList.remove('d-none');
 
 	  bookingState.currentStep = n;
+	  readyToConfirm = false;
 	  updateStepPills();
 	  updateNavButtons();
 
@@ -1913,20 +1921,35 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  }
 
 	  if (n === 9) {
-	  const nameInput = document.getElementById("custName");
-	  const emailInput = document.getElementById("custEmail");
-	  const phoneInput = document.getElementById("custPhone");
+		  updateSummaryCard();
+		  const nameInput = document.getElementById("custName");
+		  const emailInput = document.getElementById("custEmail");
+		  const phoneInput = document.getElementById("custPhone");
 
-	  if (bookingMode === "self") {
-		nameInput.value = localStorage.getItem("userName") || "";
-		emailInput.value = localStorage.getItem("currentUserEmail") || "";
-		phoneInput.value = localStorage.getItem("userPhone") || "";
-	  } else {
-		nameInput.value = "";
-		emailInput.value = "";
-		phoneInput.value = "";
-	  }
-	}
+		  if (bookingMode === "self") {
+			nameInput.value = localStorage.getItem("userName") || "";
+			emailInput.value = localStorage.getItem("currentUserEmail") || "";
+			let phone = localStorage.getItem("userPhone") || "";
+
+			// تنظيف الرقم
+			phone = phone.replace(/\s/g, "");     // حذف الفراغات
+			phone = phone.replace(/\+$/, "");     // حذف + إذا كان بالنهاية
+
+			// تحويل لصيغة محلية
+			if (phone.startsWith("+962")) {
+			  phone = "0" + phone.slice(4);
+			} else if (phone.startsWith("962")) {
+			  phone = "0" + phone.slice(3);
+			}
+
+			phoneInput.value = phone;
+			
+		  } else {
+			nameInput.value = "";
+			emailInput.value = "";
+			phoneInput.value = "";
+		  }
+		}
 	}
 	
 
@@ -2187,7 +2210,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	  console.log("renderDepartments done");
 	}
-
+	
 	function selectDepartment(deptId) {
 	  bookingState.department = Departments.find(d => d.id === deptId);
 	  bookingState.doctor = null;
@@ -2437,7 +2460,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  document.querySelectorAll(`.time-slot[data-time="${time}"]`).forEach(el => el.classList.add('selected'));
 	  nextStep();
 	}
-
+	
 	function updateSummaryCard() {
 	  const c = document.getElementById('summaryCard');
 	  if (!c) return;
@@ -2589,14 +2612,22 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  if (!validateCurrentStep()) return;
 
 	  if (bookingState.currentStep === maxStep) {
-		confirmBooking();
-	  } else {
-		let targetStep = bookingState.currentStep + 1;
-		if (bookingState.currentStep === 5 && bookingState.hasInsurance === false) {
-		  targetStep = 7;
+		if (!readyToConfirm) {
+		  readyToConfirm = true;
+		  return;
 		}
-		showStep(targetStep);
+
+		confirmBooking();
+		return;
 	  }
+
+	  let targetStep = bookingState.currentStep + 1;
+
+	  if (bookingState.currentStep === 5 && bookingState.hasInsurance === false) {
+		targetStep = 7;
+	  }
+
+	  showStep(targetStep);
 	}
 
 	// -------------------------------
@@ -2608,9 +2639,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	  document.getElementById('menuToggleBtn').classList.add('d-none');
 
-	  // 🔥 اخفاء My bookings
-	  document.getElementById('myBookingsBtn').classList.add('d-none');
+	  const myBookingsBtn = document.getElementById("myBookingsBtn");
+	  myBookingsBtn.classList.add("d-none");
+	  myBookingsBtn.closest("li").classList.add("d-none");
 
+	  renderGovernorates();
 	  showStep(1);
 	}
 
@@ -2620,8 +2653,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	  document.getElementById('menuToggleBtn').classList.remove('d-none');
 
-	  // 🔥 اظهار My bookings
-	  document.getElementById('myBookingsBtn').classList.remove('d-none');
+	  const myBookingsBtn = document.getElementById("myBookingsBtn");
+	  myBookingsBtn.classList.remove("d-none");
+	  myBookingsBtn.closest("li").classList.remove("d-none");
 
 	  bookingState = {
 		currentStep:1, gov:null, facilityType:null, hospital:null, department:null, hasInsurance:null,
@@ -2641,6 +2675,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  document.getElementById("landingPage").classList.add("d-none");
 	  document.getElementById("bookingApp").classList.remove("d-none");
 
+	  renderGovernorates();
 	  showStep(1);
 	};
 
@@ -2650,12 +2685,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  document.getElementById("landingPage").classList.add("d-none");
 	  document.getElementById("bookingApp").classList.remove("d-none");
 
+	  renderGovernorates();
 	  showStep(1);
 	};
-	document.getElementById('homeBtn').addEventListener('click', (e) => {
-	  e.preventDefault();
-	  goToLandingPage();
-	});
 
 	document.addEventListener('click', function(e){
 	  const govEl = e.target.closest('[data-gov]');
@@ -3230,6 +3262,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		await renderBookings();
 	  });
 	}
+	document.getElementById('homeBtn').addEventListener('click', (e) => {
+	  e.preventDefault();
+	  goToLandingPage();
+	});
 	// -------------------------------
 	// Project Info Slideshow
 	// -------------------------------
