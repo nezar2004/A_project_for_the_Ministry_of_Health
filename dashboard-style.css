@@ -1015,3 +1015,13 @@
     position: relative;
     z-index: 9999;
   }
+  /* 🔥 تصغير كامل للموبايل */
+  @media (max-width: 768px) {
+  
+    body {
+      transform: scale(0.9);
+      transform-origin: top center;
+      width: 111%; /* تعويض الفراغ */
+    }
+
+  }
