@@ -82,7 +82,7 @@
 			</button>
 			<button id="cancelAllBtn" class="danger-button" type="button">
 			  <i class="fa-solid fa-trash" style="margin-left:8px;"></i>
-			  إلغاء جميع الحجوزات
+			  <span data-i18n="cancel_all_bookings">إلغاء جميع الحجوزات</span>
 			</button>
 			<button id="logoutButton" class="ghost-button" type="button">
 			  <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:8px;"></i><span data-i18n="logout">تسجيل الخروج</span>
@@ -228,16 +228,23 @@
 		  </section>
 		  
 		  <section class="detail-section">
-			  <h6>ملاحظات الطبيب / التشخيص</h6>
+			  <h6 data-i18n="doctor_notes_title">ملاحظات الطبيب / التشخيص</h6>
 
 			  <div class="field">
-				<label for="doctorNotes">اكتب ملاحظات المراجعة أو التشخيص</label>
-				<textarea id="doctorNotes" placeholder="مثال: يعاني من صداع متكرر، تم وصف العلاج، يحتاج مراجعة بعد أسبوع..."></textarea>
+				<label for="doctorNotes" data-i18n="doctor_notes_label">
+				  اكتب ملاحظات المراجعة أو التشخيص
+				</label>
+
+				<textarea 
+				  id="doctorNotes"
+				  data-placeholder="doctor_notes_placeholder"
+				  placeholder="مثال: يعاني من صداع متكرر، تم وصف العلاج، يحتاج مراجعة بعد أسبوع...">
+				</textarea>
 			  </div>
 
 			  <button id="saveDoctorNotesBtn" class="primary-button" type="button" style="margin-top:12px;">
 				<i class="fa-solid fa-notes-medical" style="margin-left:8px;"></i>
-				حفظ الملاحظات
+				<span data-i18n="save_notes_btn">حفظ الملاحظات</span>
 			  </button>
 			</section>
 
@@ -1165,7 +1172,13 @@
 		approve: "موافقة",
 		reject: "رفض",
 		reschedule: "إعادة جدولة",
-		helper_text: "لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط."
+		helper_text: "لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط.",
+		doctor_notes_title: "ملاحظات الطبيب / التشخيص",
+		doctor_notes_label: "اكتب ملاحظات المراجعة أو التشخيص",
+		doctor_notes_placeholder: "مثال: يعاني من صداع متكرر، تم وصف العلاج، يحتاج مراجعة بعد أسبوع...",
+		save_notes_btn: "حفظ الملاحظات",
+		notes_empty: "لا توجد ملاحظات طبية مضافة.",
+		cancel_all_bookings: "إلغاء جميع الحجوزات",
 	  },
 	  en: {
 		page_title: "Doctor Dashboard - Amal",
@@ -1236,7 +1249,13 @@
 		approve: "Approve",
 		reject: "Reject",
 		reschedule: "Reschedule",
-		helper_text: "Bookings cannot be deleted from this dashboard. The doctor can only approve, reject, or set a new appointment."
+		helper_text: "Bookings cannot be deleted from this dashboard. The doctor can only approve, reject, or set a new appointment.",
+		doctor_notes_title: "Doctor Notes / Diagnosis",
+		doctor_notes_label: "Write diagnosis or medical notes",
+		doctor_notes_placeholder: "Example: Patient has frequent headaches, medication prescribed, follow-up in one week...",
+		save_notes_btn: "Save Notes",
+		notes_empty: "No medical notes added.",
+		cancel_all_bookings: "Cancel All Bookings",
 	  }
 	};
 
