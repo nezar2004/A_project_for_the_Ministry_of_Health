@@ -977,6 +977,37 @@
 	window.goHome = function () {
 	  window.location.href = "index.html"; // غيرها حسب اسم الصفحة الرئيسية عندك
 	};
+	let checkTimeout;
+
+	const regNationalIDInput = document.getElementById("regNationalID");
+
+	regNationalIDInput.addEventListener("input", () => {
+	  clearTimeout(checkTimeout);
+
+	  const nationalID = regNationalIDInput.value.trim();
+
+	  // بس يفحص لما يصير 10 أرقام
+	  if (nationalID.length !== 10) return;
+
+	  checkTimeout = setTimeout(async () => {
+		if (!isValidNationalID(nationalID)) {
+		  alert("الرقم الوطني يجب أن يكون 10 أرقام");
+		  return;
+		}
+
+		try {
+		  const existingUser = await getUserByNationalID(nationalID);
+
+		  if (existingUser) {
+			alert("❌ هذا الرقم الوطني مستخدم مسبقاً");
+			regNationalIDInput.value = "";
+			regNationalIDInput.focus();
+		  }
+		} catch (err) {
+		  console.log(err);
+		}
+	  }, 500); // انتظر نص ثانية بعد آخر كتابة
+	});
   </script>
 <script>
 const translations = {
