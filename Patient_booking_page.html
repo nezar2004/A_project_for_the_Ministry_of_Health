@@ -1290,12 +1290,15 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     </div>
   </div>
 
-  <div class="text-center mb-3">
-    <button id="startBookingBtn" class="btn btn-main btn-lg">
-      <i class="fas fa-stethoscope me-2"></i> <span data-i18n="start_booking">ابدأ الحجز الآن</span>
-    </button>
+  <div class="text-center mb-3 d-flex gap-2 justify-content-center">
+	  <button id="bookSelfBtn" class="btn btn-main">
+		🧑 حجز لنفسي
+	  </button>
+
+	  <button id="bookOtherBtn" class="btn btn-outline-main">
+		👤 حجز لشخص آخر
+	  </button>
   </div>
-</div>
 
 <div class="container-app d-none" id="bookingApp">
   <div class="panel-card">
@@ -1588,7 +1591,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	}
 
 	window.saveBookingToFirebase = saveBookingToFirebase;
-	
+  
   const authApp = initializeApp(authFirebaseConfig);
   const dataApp = initializeApp(firebaseConfig, "dataApp");
   const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
@@ -1729,6 +1732,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	// -------------------------------
 	async function confirmBooking() {
 	  try {
+
+		// 🔥 هذا أهم جزء — حطه هون
+		if (
+		  !document.getElementById("custName").value.trim() ||
+		  !document.getElementById("custEmail").value.trim() ||
+		  !document.getElementById("custPhone").value.trim()
+		) {
+		  alert("❌ لازم تعبي بيانات المريض قبل تأكيد الحجز");
+		  return;
+		}
+
 		const payload = {
 		  booking_id: "B" + Date.now(),
 		  status: "PENDING",
@@ -1779,12 +1793,12 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		};
 
 		goToLandingPage();
+
 	  } catch (error) {
 		console.error("confirmBooking error:", error);
 		alert("حدث خطأ أثناء حفظ الحجز");
 	  }
 	}
-
 	const governorates = [
 	  'Amman', 'Irbid', 'Zarqa', 'Balqa', 'Karak', 'Maan',
 	  'Tafila', 'Jerash', 'Ajloun', 'Madaba', 'Aqaba', 'Mafraq'
@@ -1825,7 +1839,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	// Booking status
 	// -------------------------------
 	let localBookings = JSON.parse(localStorage.getItem('localBookings') || '[]');
-
+	let bookingMode = "self"; // self أو other
 	let bookingState = {
 	  currentStep: 1,
 	  gov: null,
@@ -1843,6 +1857,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 	const maxStep = 9;
 
+	document.getElementById("bookSelfBtn").onclick = () => {
+	  bookingMode = "self";
+
+	  document.getElementById("landingPage").classList.add("d-none");
+	  document.getElementById("bookingApp").classList.remove("d-none");
+
+	  showStep(1);
+	};
+
+	document.getElementById("bookOtherBtn").onclick = () => {
+	  bookingMode = "other";
+
+	  document.getElementById("landingPage").classList.add("d-none");
+	  document.getElementById("bookingApp").classList.remove("d-none");
+
+	  showStep(1);
+	};
 	// -------------------------------
 	// Helper Functions
 	// -------------------------------
@@ -1881,8 +1912,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 		loadTimeSlotsForSelectedDate();
 	  }
 
-	  if (n === 9 && bookingState.time) updateSummaryCard();
+	  if (n === 9) {
+	  const nameInput = document.getElementById("custName");
+	  const emailInput = document.getElementById("custEmail");
+	  const phoneInput = document.getElementById("custPhone");
+
+	  if (bookingMode === "self") {
+		nameInput.value = localStorage.getItem("userName") || "";
+		emailInput.value = localStorage.getItem("currentUserEmail") || "";
+		phoneInput.value = localStorage.getItem("userPhone") || "";
+	  } else {
+		nameInput.value = "";
+		emailInput.value = "";
+		phoneInput.value = "";
+	  }
 	}
+	}
+	
 
 	function updateStepPills() {
 	  document.querySelectorAll('.step-pill').forEach(p => {
@@ -2589,7 +2635,23 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	// -------------------------------
 	// Event Handlers
 	// -------------------------------
-	document.getElementById('startBookingBtn').addEventListener('click', goToBookingApp);
+	document.getElementById("bookSelfBtn").onclick = () => {
+	  bookingMode = "self";
+
+	  document.getElementById("landingPage").classList.add("d-none");
+	  document.getElementById("bookingApp").classList.remove("d-none");
+
+	  showStep(1);
+	};
+
+	document.getElementById("bookOtherBtn").onclick = () => {
+	  bookingMode = "other";
+
+	  document.getElementById("landingPage").classList.add("d-none");
+	  document.getElementById("bookingApp").classList.remove("d-none");
+
+	  showStep(1);
+	};
 	document.getElementById('homeBtn').addEventListener('click', (e) => {
 	  e.preventDefault();
 	  goToLandingPage();
