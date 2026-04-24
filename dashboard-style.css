@@ -856,7 +856,6 @@
 	  html, body {
 		width: 100%;
 		max-width: 100%;
-		overflow-x: hidden;
 	  }
 
 	  .shell {
@@ -1016,16 +1015,17 @@
     z-index: 9999;
   }
   /* 🔥 تصغير كامل للموبايل */
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
 
-    body {
-      overflow-x: auto;
+	  html, body {
+		overflow-x: auto !important; /* مهم */
+	  }
+
+	  .shell {
+		min-width: 800px;
+		transform: scale(0.95);
+		transform-origin: top left;
+	  }
+
+	
     }
-
-    .shell {
-      min-width: 800px; /* جرب 700 / 750 حسب ما بدك */
-      transform: scale(0.95);
-      transform-origin: top left;
-    }
-
-  }
