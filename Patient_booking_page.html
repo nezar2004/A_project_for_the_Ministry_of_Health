@@ -1,4 +1,3 @@
-<!-- update -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3507,6 +3506,136 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("siteLanguage") || "ar";
   applyLanguage(savedLang);
 });
+</script>
+<script>
+	function playReminderSound() {
+	  const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+	  audio.volume = 1;
+	  audio.play().catch(() => {
+		console.log("الصوت يحتاج ضغطة من المستخدم أول مرة");
+	  });
+	}
+
+	function showReminderPopup(reminder) {
+	  const box = document.createElement("div");
+	  box.style.cssText = `
+		position: fixed;
+		top: 90px;
+		left: 20px;
+		z-index: 999999;
+		background: white;
+		color: #18362f;
+		padding: 18px 22px;
+		border-radius: 18px;
+		box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+		border: 1px solid #cdeee3;
+		max-width: 320px;
+		font-family: Cairo, sans-serif;
+	  `;
+
+	  box.innerHTML = `
+		<strong style="color:#1b6f57;font-size:18px;">🔔 تنبيه طبي</strong>
+		<p style="margin:10px 0 0;color:#18362f;">
+		  ${reminder.name}<br>
+		  📅 ${reminder.date} — ⏰ ${reminder.time}
+		</p>
+		<button onclick="this.parentElement.remove()" style="
+		  margin-top:12px;
+		  width:100%;
+		  border:none;
+		  border-radius:12px;
+		  padding:10px;
+		  background:#49cfa7;
+		  color:white;
+		  font-weight:700;
+		  cursor:pointer;
+		">تم</button>
+	  `;
+
+	  document.body.appendChild(box);
+	}
+
+	function checkRemindersOnAppOpen() {
+	  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+	  const now = new Date();
+
+	  reminders.forEach(reminder => {
+		const reminderTime = new Date(`${reminder.date}T${reminder.time}`);
+		const beforeMinutes = Number(reminder.before || 0);
+
+		const alertTime = new Date(reminderTime.getTime() - beforeMinutes * 60000);
+
+		const notifiedKey = `notified_${reminder.id}_${reminder.date}_${reminder.time}`;
+
+		if (now >= alertTime && now <= reminderTime && !localStorage.getItem(notifiedKey)) {
+		  playReminderSound();
+		  showReminderPopup(reminder);
+		  localStorage.setItem(notifiedKey, "true");
+		}
+	  });
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+	  checkRemindersOnAppOpen();
+	  setInterval(checkRemindersOnAppOpen, 30000);
+	});
+</script>
+<script>
+async function setupEmergencyContacts() {
+  let contacts = JSON.parse(localStorage.getItem("emergencyContacts") || "[]");
+
+  if (contacts.length) {
+    showEmergencyContacts(contacts);
+    return;
+  }
+
+  if (!("contacts" in navigator && "ContactsManager" in window)) {
+    alert("جهازك لا يدعم اختيار جهات الاتصال.");
+    return;
+  }
+
+  try {
+    const picked = await navigator.contacts.select(["name", "tel"], {
+      multiple: true
+    });
+
+    contacts = picked
+      .filter(c => c.tel && c.tel.length)
+      .slice(0, 3)
+      .map(c => ({
+        name: c.name?.[0] || "جهة طوارئ",
+        phone: c.tel[0]
+      }));
+
+    if (!contacts.length) {
+      alert("لم يتم اختيار أي رقم.");
+      return;
+    }
+
+    localStorage.setItem("emergencyContacts", JSON.stringify(contacts));
+    showEmergencyContacts(contacts);
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function showEmergencyContacts(contacts) {
+  let text = "اختر رقم للاتصال:\n\n";
+
+  contacts.forEach((c, i) => {
+    text += `${i + 1}- ${c.name} : ${c.phone}\n`;
+  });
+
+  const choice = prompt(text);
+  const index = Number(choice) - 1;
+
+  if (contacts[index]) {
+    window.location.href = "tel:" + contacts[index].phone;
+  }
+}
+
+document.getElementById("btn-custom").onclick = setupEmergencyContacts;
 </script>
 </body>
 </html>
