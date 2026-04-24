@@ -2716,10 +2716,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 	  window.location.href = "tel:112";
 	});
 
-	document.getElementById("btn-custom").addEventListener("click", () => {
-	  const num = prompt("Enter number to call:");
-	  if (num) window.location.href = `tel:${num}`;
-	});
 
 	document.getElementById("btn-location").addEventListener("click", () => {
 	  if (navigator.geolocation) {
@@ -3589,11 +3585,6 @@ async function setupEmergencyContacts() {
     return;
   }
 
-  if (!("contacts" in navigator && "ContactsManager" in window)) {
-    alert("جهازك لا يدعم اختيار جهات الاتصال.");
-    return;
-  }
-
   try {
     const picked = await navigator.contacts.select(["name", "tel"], {
       multiple: true
@@ -3607,16 +3598,13 @@ async function setupEmergencyContacts() {
         phone: c.tel[0]
       }));
 
-    if (!contacts.length) {
-      alert("لم يتم اختيار أي رقم.");
-      return;
-    }
+    if (!contacts.length) return;
 
     localStorage.setItem("emergencyContacts", JSON.stringify(contacts));
     showEmergencyContacts(contacts);
 
   } catch (err) {
-    console.log(err);
+    console.log("تم الإلغاء أو لم يتم اختيار جهات اتصال", err);
   }
 }
 
@@ -3635,7 +3623,7 @@ function showEmergencyContacts(contacts) {
   }
 }
 
-document.getElementById("btn-custom").onclick = setupEmergencyContacts;
+document.getElementById("btn-custom").addEventListener("click", setupEmergencyContacts);
 </script>
 </body>
 </html>
