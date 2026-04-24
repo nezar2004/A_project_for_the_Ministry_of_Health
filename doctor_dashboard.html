@@ -1,1270 +1,1271 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>لوحة الطبيب - أمل</title>
+	<!DOCTYPE html>
+	<html lang="ar" dir="rtl">
+	<head>
+	  <meta charset="UTF-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	  <title>لوحة الطبيب - أمل</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <link rel="stylesheet" href="doctor-style.css">
-</head>
-<body>
-  <div id="loadingOverlay" class="loading-overlay">
-    <div class="loading-box">
-      <div class="spinner"></div>
-      <h3 data-i18n="loading_title" style="margin:0 0 8px; font-size:22px; font-weight:900;">جاري تجهيز لوحة الطبيب</h3>
-      <p data-i18n="loading_desc" style="margin:0; color:#64748b; line-height:1.7;">
-        يتم تحميل بيانات الطبيب، الحجوزات الحالية، وأدوات متابعة المواعيد.
-      </p>
-    </div>
-  </div>
+	  <link rel="preconnect" href="https://fonts.googleapis.com">
+	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+	  <link rel="stylesheet" href="doctor-style.css">
+	</head>
+	<body>
+	  <div id="loadingOverlay" class="loading-overlay">
+		<div class="loading-box">
+		  <div class="spinner"></div>
+		  <h3 data-i18n="loading_title" style="margin:0 0 8px; font-size:22px; font-weight:900;">جاري تجهيز لوحة الطبيب</h3>
+		  <p data-i18n="loading_desc" style="margin:0; color:#64748b; line-height:1.7;">
+			يتم تحميل بيانات الطبيب، الحجوزات الحالية، وأدوات متابعة المواعيد.
+		  </p>
+		</div>
+	  </div>
 
-  <div class="shell">
-    <aside class="sidebar card">
-      <div class="brand">
-        <div class="brand-icon"><i class="fa-solid fa-stethoscope"></i></div>
-        <div>
-          <h1 data-i18n="sidebar_title">لوحة التحكم</h1>
-          <p data-i18n="sidebar_subtitle">متابعة مباشرة للحجوزات اليومية وحالة المواعيد</p>
-        </div>
-      </div>
-
-      <section class="doctor-panel">
-        <div class="doctor-top">
-          <div class="avatar">
-            <img id="doctorAvatarImage" src="https://i.pinimg.com/1200x/5f/3f/6c/5f3f6c01a7a094a8e55ef2fceda485cc.jpg" alt="Doctor">
-          </div>
-          <div class="doctor-meta">
-            <h2 id="doctorName" data-i18n="doctor_loading">جاري تحميل بيانات الطبيب...</h2>
-            <p id="doctorSubline" data-i18n="doctor_subline">المستشفى · القسم · التخصص</p>
-          </div>
-        </div>
-
-        <button id="availabilityButton" class="status-chip offline" type="button">
-          <i class="fa-solid fa-circle"></i>
-          <span id="availabilityLabel" data-i18n="offline">غير متصل</span>
-        </button>
-      </section>
-
-      <div class="nav-group">
-        <button class="nav-button active" data-sidebar-filter="ALL" type="button">
-          <span><i class="fa-solid fa-table-list" style="margin-left:8px;"></i><span data-i18n="nav_all">كل الحجوزات</span></span>
-          <span class="nav-badge" id="countAll">0</span>
-        </button>
-
-        <button class="nav-button" data-sidebar-filter="PENDING" type="button">
-          <span><i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i><span data-i18n="nav_pending">بانتظار المراجعة</span></span>
-          <span class="nav-badge" id="countPending">0</span>
-        </button>
-
-        <button class="nav-button" data-sidebar-filter="APPROVED" type="button">
-          <span><i class="fa-solid fa-circle-check" style="margin-left:8px;"></i><span data-i18n="nav_approved">تمت الموافقة</span></span>
-          <span class="nav-badge" id="countApproved">0</span>
-        </button>
-
-        <button class="nav-button" data-sidebar-filter="REJECTED" type="button">
-          <span><i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i><span data-i18n="nav_rejected">مرفوضة</span></span>
-          <span class="nav-badge" id="countRejected">0</span>
-        </button>
-
-        <button class="nav-button" data-sidebar-filter="RESCHEDULED" type="button">
-          <span><i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i><span data-i18n="nav_rescheduled">أعيدت جدولتها</span></span>
-          <span class="nav-badge" id="countRescheduled">0</span>
-        </button>
-      </div>
-
-      <div class="sidebar-bottom">
-        <button id="refreshButton" class="soft-button" type="button">
-          <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="refresh_bookings">تحديث الحجوزات</span>
-        </button>
-		<button id="cancelAllBtn" class="danger-button" type="button">
-		  <i class="fa-solid fa-trash" style="margin-left:8px;"></i>
-		  إلغاء جميع الحجوزات
-		</button>
-        <button id="logoutButton" class="ghost-button" type="button">
-          <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:8px;"></i><span data-i18n="logout">تسجيل الخروج</span>
-        </button>
-      </div>
-    </aside>
-
-    <main class="main">
-      <section class="hero card">
-        <div class="hero-top">
-          <div class="hero-copy">
-            <h3 data-i18n="hero_title">إدارة المواعيد الطبية بشكل أوضح وأسرع</h3>
-            <p data-i18n="hero_desc">
-              راجع طلبات المرضى، وافق أو ارفض أو أعد جدولة الحجز بسهولة، وتابع مواعيدك اليومية
-              من مكان واحد بشكل منظم وواضح.
-            </p>
-          </div>
-
-          <div class="hero-actions">
-            <button id="heroRefreshButton" class="ghost-button" type="button">
-              <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="sync_now">مزامنة الآن</span>
-            </button>
-            <button id="focusPendingButton" class="primary-button" type="button">
-              <i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i><span data-i18n="show_pending">عرض الطلبات المعلقة</span>
-            </button>
-          </div>
-        </div>
-
-        <div id="liveBanner" class="live-banner">
-          <i class="fa-solid fa-bolt" style="margin-left:8px; color:#2563eb;"></i>
-          <span id="liveBannerText" data-i18n="live_update">تم استلام تحديث مباشر</span>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label" data-i18n="stat_all">إجمالي الحجوزات</div>
-            <div class="stat-value" id="statAll">0</div>
-            <div class="stat-caption" data-i18n="stat_all_caption">جميع الحجوزات المرتبطة بحساب الطبيب</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label" data-i18n="stat_pending">بانتظار المراجعة</div>
-            <div class="stat-value" id="statPending">0</div>
-            <div class="stat-caption" data-i18n="stat_pending_caption">طلبات تحتاج موافقة أو رفض أو إعادة جدولة</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label" data-i18n="stat_approved">الحجوزات المؤكدة</div>
-            <div class="stat-value" id="statApproved">0</div>
-            <div class="stat-caption" data-i18n="stat_approved_caption">المواعيد التي تمت الموافقة عليها</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-label" data-i18n="stat_today">مواعيد اليوم</div>
-            <div class="stat-value" id="statToday">0</div>
-            <div class="stat-caption" data-i18n="stat_today_caption">عدد الحجوزات المجدولة لهذا اليوم</div>
-          </div>
-        </div>
-      </section>
-
-      <section class="board card">
-        <div class="board-top">
-          <div class="board-title">
-            <h4 data-i18n="board_title">قائمة الحجوزات</h4>
-            <p data-i18n="board_desc">اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.</p>
-          </div>
-
-          <div class="search-wrap">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input id="searchInput" type="text" data-placeholder="search_placeholder" placeholder="ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم" />
-          </div>
-        </div>
-
-        <div class="filters">
-          <button class="filter-tab active" data-filter="ALL" type="button" data-i18n="filter_all">الكل</button>
-          <button class="filter-tab" data-filter="PENDING" type="button" data-i18n="filter_pending">معلقة</button>
-          <button class="filter-tab" data-filter="APPROVED" type="button" data-i18n="filter_approved">موافق عليها</button>
-          <button class="filter-tab" data-filter="REJECTED" type="button" data-i18n="filter_rejected">مرفوضة</button>
-          <button class="filter-tab" data-filter="RESCHEDULED" type="button" data-i18n="filter_rescheduled">أعيدت جدولتها</button>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th data-i18n="th_patient">المريض</th>
-                <th data-i18n="th_hospital_department">المستشفى / القسم</th>
-                <th data-i18n="th_date">التاريخ</th>
-                <th data-i18n="th_time">الوقت</th>
-                <th data-i18n="th_status">الحالة</th>
-                <th data-i18n="th_action">الإجراء</th>
-              </tr>
-            </thead>
-            <tbody id="bookingsTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <div id="drawerBackdrop" class="drawer-backdrop"></div>
-
-  <aside id="bookingDrawer" class="drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <div class="drawer-title">
-        <h5 data-i18n="drawer_title">تفاصيل الحجز</h5>
-        <p data-i18n="drawer_desc">تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.</p>
-      </div>
-      <button id="closeDrawerButton" class="icon-button" type="button" aria-label="إغلاق نافذة التفاصيل">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
-
-    <div class="drawer-body">
-      <section class="detail-section">
-        <h6 data-i18n="patient_info">بيانات المريض</h6>
-        <div class="detail-grid">
-          <div class="detail-item"><label data-i18n="label_full_name">الاسم الكامل</label><div id="detailPatientName">-</div></div>
-          <div class="detail-item"><label data-i18n="label_phone">رقم الهاتف</label><div id="detailPatientPhone">-</div></div>
-          <div class="detail-item"><label data-i18n="label_email">البريد الإلكتروني</label><div id="detailPatientEmail">-</div></div>
-          <div class="detail-item"><label data-i18n="label_current_status">الحالة الحالية</label><div id="detailStatus">-</div></div>
-        </div>
-      </section>
-
-      <section class="detail-section">
-        <h6 data-i18n="appointment_info">بيانات الموعد</h6>
-        <div class="detail-grid">
-          <div class="detail-item"><label data-i18n="label_booking_number">رقم الحجز</label><div id="detailBookingId">-</div></div>
-          <div class="detail-item"><label data-i18n="label_hospital">المستشفى</label><div id="detailHospital">-</div></div>
-          <div class="detail-item"><label data-i18n="label_department">القسم</label><div id="detailDepartment">-</div></div>
-          <div class="detail-item"><label data-i18n="label_doctor">الطبيب</label><div id="detailDoctor">-</div></div>
-          <div class="detail-item"><label data-i18n="label_date">التاريخ</label><div id="detailDate">-</div></div>
-          <div class="detail-item"><label data-i18n="label_time">الوقت</label><div id="detailTime">-</div></div>
-        </div>
-      </section>
-
-      <section class="detail-section">
-        <h6 data-i18n="patient_note">ملاحظة المريض</h6>
-        <div class="detail-item">
-          <label data-i18n="additional_details">التفاصيل الإضافية</label>
-          <div id="detailNote" data-i18n="no_note">لا توجد ملاحظات مضافة.</div>
-        </div>
-      </section>
-	  
-	  <section class="detail-section">
-		  <h6>ملاحظات الطبيب / التشخيص</h6>
-
-		  <div class="field">
-			<label for="doctorNotes">اكتب ملاحظات المراجعة أو التشخيص</label>
-			<textarea id="doctorNotes" placeholder="مثال: يعاني من صداع متكرر، تم وصف العلاج، يحتاج مراجعة بعد أسبوع..."></textarea>
+	  <div class="shell">
+		<aside class="sidebar card">
+		  <div class="brand">
+			<div class="brand-icon"><i class="fa-solid fa-stethoscope"></i></div>
+			<div>
+			  <h1 data-i18n="sidebar_title">لوحة التحكم</h1>
+			  <p data-i18n="sidebar_subtitle">متابعة مباشرة للحجوزات اليومية وحالة المواعيد</p>
+			</div>
 		  </div>
 
-		  <button id="saveDoctorNotesBtn" class="primary-button" type="button" style="margin-top:12px;">
-			<i class="fa-solid fa-notes-medical" style="margin-left:8px;"></i>
-			حفظ الملاحظات
+		  <section class="doctor-panel">
+			<div class="doctor-top">
+			  <div class="avatar">
+				<img id="doctorAvatarImage" src="https://i.pinimg.com/1200x/5f/3f/6c/5f3f6c01a7a094a8e55ef2fceda485cc.jpg" alt="Doctor">
+			  </div>
+			  <div class="doctor-meta">
+				<h2 id="doctorName" data-i18n="doctor_loading">جاري تحميل بيانات الطبيب...</h2>
+				<p id="doctorSubline" data-i18n="doctor_subline">المستشفى · القسم · التخصص</p>
+			  </div>
+			</div>
+
+			<button id="availabilityButton" class="status-chip offline" type="button">
+			  <i class="fa-solid fa-circle"></i>
+			  <span id="availabilityLabel" data-i18n="offline">غير متصل</span>
+			</button>
+		  </section>
+
+		  <div class="nav-group">
+			<button class="nav-button active" data-sidebar-filter="ALL" type="button">
+			  <span><i class="fa-solid fa-table-list" style="margin-left:8px;"></i><span data-i18n="nav_all">كل الحجوزات</span></span>
+			  <span class="nav-badge" id="countAll">0</span>
+			</button>
+
+			<button class="nav-button" data-sidebar-filter="PENDING" type="button">
+			  <span><i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i><span data-i18n="nav_pending">بانتظار المراجعة</span></span>
+			  <span class="nav-badge" id="countPending">0</span>
+			</button>
+
+			<button class="nav-button" data-sidebar-filter="APPROVED" type="button">
+			  <span><i class="fa-solid fa-circle-check" style="margin-left:8px;"></i><span data-i18n="nav_approved">تمت الموافقة</span></span>
+			  <span class="nav-badge" id="countApproved">0</span>
+			</button>
+
+			<button class="nav-button" data-sidebar-filter="REJECTED" type="button">
+			  <span><i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i><span data-i18n="nav_rejected">مرفوضة</span></span>
+			  <span class="nav-badge" id="countRejected">0</span>
+			</button>
+
+			<button class="nav-button" data-sidebar-filter="RESCHEDULED" type="button">
+			  <span><i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i><span data-i18n="nav_rescheduled">أعيدت جدولتها</span></span>
+			  <span class="nav-badge" id="countRescheduled">0</span>
+			</button>
+		  </div>
+
+		  <div class="sidebar-bottom">
+			<button id="refreshButton" class="soft-button" type="button">
+			  <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="refresh_bookings">تحديث الحجوزات</span>
+			</button>
+			<button id="cancelAllBtn" class="danger-button" type="button">
+			  <i class="fa-solid fa-trash" style="margin-left:8px;"></i>
+			  إلغاء جميع الحجوزات
+			</button>
+			<button id="logoutButton" class="ghost-button" type="button">
+			  <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:8px;"></i><span data-i18n="logout">تسجيل الخروج</span>
+			</button>
+		  </div>
+		</aside>
+
+		<main class="main">
+		  <section class="hero card">
+			<div class="hero-top">
+			  <div class="hero-copy">
+				<h3 data-i18n="hero_title">إدارة المواعيد الطبية بشكل أوضح وأسرع</h3>
+				<p data-i18n="hero_desc">
+				  راجع طلبات المرضى، وافق أو ارفض أو أعد جدولة الحجز بسهولة، وتابع مواعيدك اليومية
+				  من مكان واحد بشكل منظم وواضح.
+				</p>
+			  </div>
+
+			  <div class="hero-actions">
+				<button id="heroRefreshButton" class="ghost-button" type="button">
+				  <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="sync_now">مزامنة الآن</span>
+				</button>
+				<button id="focusPendingButton" class="primary-button" type="button">
+				  <i class="fa-solid fa-hourglass-half" style="margin-left:8px;"></i><span data-i18n="show_pending">عرض الطلبات المعلقة</span>
+				</button>
+			  </div>
+			</div>
+
+			<div id="liveBanner" class="live-banner">
+			  <i class="fa-solid fa-bolt" style="margin-left:8px; color:#2563eb;"></i>
+			  <span id="liveBannerText" data-i18n="live_update">تم استلام تحديث مباشر</span>
+			</div>
+
+			<div class="stats-grid">
+			  <div class="stat-card">
+				<div class="stat-label" data-i18n="stat_all">إجمالي الحجوزات</div>
+				<div class="stat-value" id="statAll">0</div>
+				<div class="stat-caption" data-i18n="stat_all_caption">جميع الحجوزات المرتبطة بحساب الطبيب</div>
+			  </div>
+
+			  <div class="stat-card">
+				<div class="stat-label" data-i18n="stat_pending">بانتظار المراجعة</div>
+				<div class="stat-value" id="statPending">0</div>
+				<div class="stat-caption" data-i18n="stat_pending_caption">طلبات تحتاج موافقة أو رفض أو إعادة جدولة</div>
+			  </div>
+
+			  <div class="stat-card">
+				<div class="stat-label" data-i18n="stat_approved">الحجوزات المؤكدة</div>
+				<div class="stat-value" id="statApproved">0</div>
+				<div class="stat-caption" data-i18n="stat_approved_caption">المواعيد التي تمت الموافقة عليها</div>
+			  </div>
+
+			  <div class="stat-card">
+				<div class="stat-label" data-i18n="stat_today">مواعيد اليوم</div>
+				<div class="stat-value" id="statToday">0</div>
+				<div class="stat-caption" data-i18n="stat_today_caption">عدد الحجوزات المجدولة لهذا اليوم</div>
+			  </div>
+			</div>
+		  </section>
+
+		  <section class="board card">
+			<div class="board-top">
+			  <div class="board-title">
+				<h4 data-i18n="board_title">قائمة الحجوزات</h4>
+				<p data-i18n="board_desc">اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.</p>
+			  </div>
+
+			  <div class="search-wrap">
+				<i class="fa-solid fa-magnifying-glass"></i>
+				<input id="searchInput" type="text" data-placeholder="search_placeholder" placeholder="ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم" />
+			  </div>
+			</div>
+
+			<div class="filters">
+			  <button class="filter-tab active" data-filter="ALL" type="button" data-i18n="filter_all">الكل</button>
+			  <button class="filter-tab" data-filter="PENDING" type="button" data-i18n="filter_pending">معلقة</button>
+			  <button class="filter-tab" data-filter="APPROVED" type="button" data-i18n="filter_approved">موافق عليها</button>
+			  <button class="filter-tab" data-filter="REJECTED" type="button" data-i18n="filter_rejected">مرفوضة</button>
+			  <button class="filter-tab" data-filter="RESCHEDULED" type="button" data-i18n="filter_rescheduled">أعيدت جدولتها</button>
+			</div>
+
+			<div class="table-wrap">
+			  <table>
+				<thead>
+				  <tr>
+					<th data-i18n="th_patient">المريض</th>
+					<th data-i18n="th_hospital_department">المستشفى / القسم</th>
+					<th data-i18n="th_date">التاريخ</th>
+					<th data-i18n="th_time">الوقت</th>
+					<th data-i18n="th_status">الحالة</th>
+					<th data-i18n="th_action">الإجراء</th>
+				  </tr>
+				</thead>
+				<tbody id="bookingsTableBody"></tbody>
+			  </table>
+			</div>
+		  </section>
+		</main>
+	  </div>
+
+	  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+
+	  <aside id="bookingDrawer" class="drawer" aria-hidden="true">
+		<div class="drawer-header">
+		  <div class="drawer-title">
+			<h5 data-i18n="drawer_title">تفاصيل الحجز</h5>
+			<p data-i18n="drawer_desc">تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.</p>
+		  </div>
+		  <button id="closeDrawerButton" class="icon-button" type="button" aria-label="إغلاق نافذة التفاصيل">
+			<i class="fa-solid fa-xmark"></i>
 		  </button>
-		</section>
+		</div>
 
-      <section class="detail-section">
-        <h6 data-i18n="reschedule_title">إعادة جدولة الحجز</h6>
-        <div class="field-grid">
-          <div class="field">
-            <label for="rescheduleDate" data-i18n="new_date">التاريخ الجديد</label>
-            <input id="rescheduleDate" type="date" />
-          </div>
-          <div class="field">
-            <label for="rescheduleTime" data-i18n="new_time">الوقت الجديد</label>
-            <input id="rescheduleTime" type="time" />
-          </div>
-        </div>
-        <div class="field" style="margin-top:12px;">
-          <label for="rescheduleReason" data-i18n="reschedule_reason_label">سبب إعادة الجدولة أو رسالة للمريض</label>
-          <textarea id="rescheduleReason" data-placeholder="reschedule_reason_placeholder" placeholder="اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة"></textarea>
-        </div>
-      </section>
-    </div>
+		<div class="drawer-body">
+		  <section class="detail-section">
+			<h6 data-i18n="patient_info">بيانات المريض</h6>
+			<div class="detail-grid">
+			  <div class="detail-item"><label data-i18n="label_full_name">الاسم الكامل</label><div id="detailPatientName">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_phone">رقم الهاتف</label><div id="detailPatientPhone">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_email">البريد الإلكتروني</label><div id="detailPatientEmail">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_current_status">الحالة الحالية</label><div id="detailStatus">-</div></div>
+			</div>
+		  </section>
 
-    <div class="drawer-footer">
-      <div class="footer-actions">
-        <button id="approveButton" class="primary-button" type="button">
-          <i class="fa-solid fa-circle-check" style="margin-left:8px;"></i><span data-i18n="approve">موافقة</span>
-        </button>
-        <button id="rejectButton" class="danger-button" type="button">
-          <i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i><span data-i18n="reject">رفض</span>
-        </button>
-        <button id="rescheduleButton" class="soft-button" type="button">
-          <i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i><span data-i18n="reschedule">إعادة جدولة</span>
-        </button>
-      </div>
-      <div class="helper-text" data-i18n="helper_text">
-        لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط.
-      </div>
-    </div>
-  </aside>
+		  <section class="detail-section">
+			<h6 data-i18n="appointment_info">بيانات الموعد</h6>
+			<div class="detail-grid">
+			  <div class="detail-item"><label data-i18n="label_booking_number">رقم الحجز</label><div id="detailBookingId">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_hospital">المستشفى</label><div id="detailHospital">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_department">القسم</label><div id="detailDepartment">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_doctor">الطبيب</label><div id="detailDoctor">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_date">التاريخ</label><div id="detailDate">-</div></div>
+			  <div class="detail-item"><label data-i18n="label_time">الوقت</label><div id="detailTime">-</div></div>
+			</div>
+		  </section>
 
-  <div id="toastWrap" class="toast-wrap"></div>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      getDoc,
-      updateDoc,
-      doc,
-      query,
-      where,
-      serverTimestamp,
-      setDoc,
-      onSnapshot
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+		  <section class="detail-section">
+			<h6 data-i18n="patient_note">ملاحظة المريض</h6>
+			<div class="detail-item">
+			  <label data-i18n="additional_details">التفاصيل الإضافية</label>
+			  <div id="detailNote" data-i18n="no_note">لا توجد ملاحظات مضافة.</div>
+			</div>
+		  </section>
+		  
+		  <section class="detail-section">
+			  <h6>ملاحظات الطبيب / التشخيص</h6>
 
-    const doctorFirebaseConfig = {
-	  apiKey: "AIzaSyClPA_4ZjzUrnERb_k-6yBtgb9AB7QIryA",
-	  authDomain: "dataofhosp.firebaseapp.com",
-	  projectId: "dataofhosp",
-	  storageBucket: "dataofhosp.firebasestorage.app",
-	  messagingSenderId: "908860921572",
-	  appId: "1:908860921572:web:1fce145520ef5ecd7b7ef1"
-	};
+			  <div class="field">
+				<label for="doctorNotes">اكتب ملاحظات المراجعة أو التشخيص</label>
+				<textarea id="doctorNotes" placeholder="مثال: يعاني من صداع متكرر، تم وصف العلاج، يحتاج مراجعة بعد أسبوع..."></textarea>
+			  </div>
 
-    const bookingsFirebaseConfig = {
-      apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
-      authDomain: "dataofdoctor.firebaseapp.com",
-      projectId: "dataofdoctor",
-      storageBucket: "dataofdoctor.firebasestorage.app",
-      messagingSenderId: "305140405001",
-      appId: "1:305140405001:web:7e54658907133ef9ff39d8"
-    };
+			  <button id="saveDoctorNotesBtn" class="primary-button" type="button" style="margin-top:12px;">
+				<i class="fa-solid fa-notes-medical" style="margin-left:8px;"></i>
+				حفظ الملاحظات
+			  </button>
+			</section>
 
-    const authApp = initializeApp(doctorFirebaseConfig);
-    const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
-    const auth = getAuth(authApp);
-    const bookingsDb = getFirestore(bookingsApp);
+		  <section class="detail-section">
+			<h6 data-i18n="reschedule_title">إعادة جدولة الحجز</h6>
+			<div class="field-grid">
+			  <div class="field">
+				<label for="rescheduleDate" data-i18n="new_date">التاريخ الجديد</label>
+				<input id="rescheduleDate" type="date" />
+			  </div>
+			  <div class="field">
+				<label for="rescheduleTime" data-i18n="new_time">الوقت الجديد</label>
+				<input id="rescheduleTime" type="time" />
+			  </div>
+			</div>
+			<div class="field" style="margin-top:12px;">
+			  <label for="rescheduleReason" data-i18n="reschedule_reason_label">سبب إعادة الجدولة أو رسالة للمريض</label>
+			  <textarea id="rescheduleReason" data-placeholder="reschedule_reason_placeholder" placeholder="اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة"></textarea>
+			</div>
+		  </section>
+		</div>
 
-    const state = {
-      authUser: null,
-      doctorProfile: null,
-      doctorId: null,
-      bookings: [],
-      activeFilter: "ALL",
-      searchTerm: "",
-      selectedBooking: null,
-      loading: true,
-      unsubscribeBookings: null,
-      hasLiveBooted: false,
-      lastSeenIds: new Set()
-    };
+		<div class="drawer-footer">
+		  <div class="footer-actions">
+			<button id="approveButton" class="primary-button" type="button">
+			  <i class="fa-solid fa-circle-check" style="margin-left:8px;"></i><span data-i18n="approve">موافقة</span>
+			</button>
+			<button id="rejectButton" class="danger-button" type="button">
+			  <i class="fa-solid fa-circle-xmark" style="margin-left:8px;"></i><span data-i18n="reject">رفض</span>
+			</button>
+			<button id="rescheduleButton" class="soft-button" type="button">
+			  <i class="fa-solid fa-calendar-days" style="margin-left:8px;"></i><span data-i18n="reschedule">إعادة جدولة</span>
+			</button>
+		  </div>
+		  <div class="helper-text" data-i18n="helper_text">
+			لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط.
+		  </div>
+		</div>
+	  </aside>
 
-    const manualDoctorFallback = {
-      doctor_id: null,
-      name: "Doctor",
-      hospital_name: "Not linked yet",
-      department_title: "Not linked yet",
-      specialty: "General",
-      available: false,
-      email: ""
-    };
+	  <div id="toastWrap" class="toast-wrap"></div>
+	  <script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+		import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+		import {
+		  getFirestore,
+		  collection,
+		  getDocs,
+		  getDoc,
+		  updateDoc,
+		  doc,
+		  query,
+		  where,
+		  serverTimestamp,
+		  setDoc,
+		  onSnapshot
+		} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const elements = {
-      loadingOverlay: document.getElementById("loadingOverlay"),
-      doctorAvatarImage: document.getElementById("doctorAvatarImage"),
-      doctorName: document.getElementById("doctorName"),
-      doctorSubline: document.getElementById("doctorSubline"),
-      availabilityButton: document.getElementById("availabilityButton"),
-      availabilityLabel: document.getElementById("availabilityLabel"),
-      refreshButton: document.getElementById("refreshButton"),
-      heroRefreshButton: document.getElementById("heroRefreshButton"),
-      focusPendingButton: document.getElementById("focusPendingButton"),
-      logoutButton: document.getElementById("logoutButton"),
-      searchInput: document.getElementById("searchInput"),
-      bookingsTableBody: document.getElementById("bookingsTableBody"),
-      drawer: document.getElementById("bookingDrawer"),
-      drawerBackdrop: document.getElementById("drawerBackdrop"),
-      closeDrawerButton: document.getElementById("closeDrawerButton"),
-      approveButton: document.getElementById("approveButton"),
-      rejectButton: document.getElementById("rejectButton"),
-      rescheduleButton: document.getElementById("rescheduleButton"),
-      rescheduleDate: document.getElementById("rescheduleDate"),
-      rescheduleTime: document.getElementById("rescheduleTime"),
-      rescheduleReason: document.getElementById("rescheduleReason"),
-      toastWrap: document.getElementById("toastWrap"),
-      liveBanner: document.getElementById("liveBanner"),
-      liveBannerText: document.getElementById("liveBannerText"),
-      statAll: document.getElementById("statAll"),
-      statPending: document.getElementById("statPending"),
-      statApproved: document.getElementById("statApproved"),
-      statToday: document.getElementById("statToday"),
-      countAll: document.getElementById("countAll"),
-      countPending: document.getElementById("countPending"),
-      countApproved: document.getElementById("countApproved"),
-      countRejected: document.getElementById("countRejected"),
-      countRescheduled: document.getElementById("countRescheduled"),
-      detailPatientName: document.getElementById("detailPatientName"),
-      detailPatientPhone: document.getElementById("detailPatientPhone"),
-      detailPatientEmail: document.getElementById("detailPatientEmail"),
-      detailStatus: document.getElementById("detailStatus"),
-      detailBookingId: document.getElementById("detailBookingId"),
-      detailHospital: document.getElementById("detailHospital"),
-      detailDepartment: document.getElementById("detailDepartment"),
-      detailDoctor: document.getElementById("detailDoctor"),
-      detailDate: document.getElementById("detailDate"),
-      detailTime: document.getElementById("detailTime"),
-      detailNote: document.getElementById("detailNote")
-	  doctorNotes: document.getElementById("doctorNotes"),
-	  saveDoctorNotesBtn: document.getElementById("saveDoctorNotesBtn")
-    };
+		const doctorFirebaseConfig = {
+		  apiKey: "AIzaSyClPA_4ZjzUrnERb_k-6yBtgb9AB7QIryA",
+		  authDomain: "dataofhosp.firebaseapp.com",
+		  projectId: "dataofhosp",
+		  storageBucket: "dataofhosp.firebasestorage.app",
+		  messagingSenderId: "908860921572",
+		  appId: "1:908860921572:web:1fce145520ef5ecd7b7ef1"
+		};
 
-    function escapeHtml(value) {
-      if (value === null || value === undefined) return "";
-      return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+		const bookingsFirebaseConfig = {
+		  apiKey: "AIzaSyAWuDnORw-xm8ayXcL5s_Mq06NsSlMEinU",
+		  authDomain: "dataofdoctor.firebaseapp.com",
+		  projectId: "dataofdoctor",
+		  storageBucket: "dataofdoctor.firebasestorage.app",
+		  messagingSenderId: "305140405001",
+		  appId: "1:305140405001:web:7e54658907133ef9ff39d8"
+		};
 
-    function getInitials(name = "Doctor") {
-      return String(name)
-        .trim()
-        .split(/\s+/)
-        .slice(0, 2)
-        .map(part => part[0]?.toUpperCase() || "")
-        .join("") || "DR";
-    }
+		const authApp = initializeApp(doctorFirebaseConfig);
+		const bookingsApp = initializeApp(bookingsFirebaseConfig, "bookingsApp");
+		const auth = getAuth(authApp);
+		const bookingsDb = getFirestore(bookingsApp);
 
-    function normalizeStatus(status) {
-      const s = String(status || "PENDING").trim().toUpperCase();
-      if (["APPROVED", "REJECTED", "RESCHEDULED", "PENDING"].includes(s)) return s;
-      return "PENDING";
-    }
+		const state = {
+		  authUser: null,
+		  doctorProfile: null,
+		  doctorId: null,
+		  bookings: [],
+		  activeFilter: "ALL",
+		  searchTerm: "",
+		  selectedBooking: null,
+		  loading: true,
+		  unsubscribeBookings: null,
+		  hasLiveBooted: false,
+		  lastSeenIds: new Set()
+		};
 
-    function statusBadge(status) {
-      const normalized = normalizeStatus(status);
-      if (normalized === "APPROVED") return `<span class="status-badge status-approved"><i class="fa-solid fa-circle-check"></i>Approved</span>`;
-      if (normalized === "REJECTED") return `<span class="status-badge status-rejected"><i class="fa-solid fa-circle-xmark"></i>Rejected</span>`;
-      if (normalized === "RESCHEDULED") return `<span class="status-badge status-rescheduled"><i class="fa-solid fa-calendar-days"></i>Rescheduled</span>`;
-      return `<span class="status-badge status-pending"><i class="fa-solid fa-hourglass-half"></i>Pending</span>`;
-    }
-
-    function todayDateString() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const d = String(now.getDate()).padStart(2, "0");
-      return `${y}-${m}-${d}`;
-    }
-
-    function setLoading(isLoading) {
-      state.loading = isLoading;
-      elements.loadingOverlay.classList.toggle("hidden", !isLoading);
-    }
-
-    function showToast(title, message) {
-      const toast = document.createElement("div");
-      toast.className = "toast";
-      toast.innerHTML = `<strong>${escapeHtml(title)}</strong><span>${escapeHtml(message)}</span>`;
-      elements.toastWrap.appendChild(toast);
-      setTimeout(() => toast.remove(), 3200);
-    }
-
-    function showLiveBanner(message) {
-      elements.liveBannerText.textContent = message;
-      elements.liveBanner.style.display = "block";
-      clearTimeout(showLiveBanner._timer);
-      showLiveBanner._timer = setTimeout(() => {
-        elements.liveBanner.style.display = "none";
-      }, 2600);
-    }
-
-    function setActiveFilter(filter) {
-      state.activeFilter = filter;
-
-      document.querySelectorAll(".filter-tab").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.filter === filter);
-      });
-
-      document.querySelectorAll(".nav-button[data-sidebar-filter]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.sidebarFilter === filter);
-      });
-
-      renderBookingsTable();
-    }
-
-    function bookingMatchesDoctor(booking) {
-      if (!state.doctorProfile || !state.authUser) return false;
-
-      const bookingDoctorId = String(booking.doctor_id || "");
-      const bookingDoctorEmail = String(booking.doctor_email || "").trim().toLowerCase();
-      const bookingDoctorName = String(booking.doctor_name || booking.doctorName || "").trim().toLowerCase();
-
-      const doctorId = String(state.doctorProfile.doctor_id || state.doctorId || "");
-      const doctorEmail = String(state.authUser.email || state.doctorProfile.email || "").trim().toLowerCase();
-      const doctorName = String(state.doctorProfile.name || "").trim().toLowerCase();
-      const userUid = String(state.authUser.uid || "");
-      const profileUid = String(state.doctorProfile.user_uid || "");
-
-      return (
-        (doctorId && bookingDoctorId === doctorId) ||
-        (doctorEmail && bookingDoctorEmail === doctorEmail) ||
-        (doctorName && bookingDoctorName === doctorName) ||
-        (profileUid && bookingDoctorId === profileUid) ||
-        (userUid && bookingDoctorId === userUid)
-      );
-    }
-
-    function getFilteredBookings() {
-      const term = state.searchTerm.trim().toLowerCase();
-
-      return state.bookings.filter(booking => {
-        const matchesStatus = state.activeFilter === "ALL" || normalizeStatus(booking.status) === state.activeFilter;
-        if (!matchesStatus) return false;
-
-        if (!term) return true;
-
-        const haystack = [
-          booking.booking_id,
-          booking.customer_name,
-          booking.customer_email,
-          booking.customer_phone,
-          booking.hospital_name,
-          booking.department_title,
-          booking.doctor_name,
-          booking.date,
-          booking.time,
-          booking.status
-        ].join(" ").toLowerCase();
-
-        return haystack.includes(term);
-      });
-    }
-	function getDoctorWorkplaces() {
-	  const hospitals = [...new Set(
-		state.bookings
-		  .map(b => String(b.hospital_name || b.hospitalName || "").trim())
-		  .filter(Boolean)
-	  )];
-
-	  const departments = [...new Set(
-		state.bookings
-		  .map(b => String(b.department_title || b.departmentName || "").trim())
-		  .filter(Boolean)
-	  )];
-
-	  return { hospitals, departments };
-	}
-    function updateDoctorCard() {
-	  const profile = state.doctorProfile || manualDoctorFallback;
-
-	  const name =
-		profile.name ||
-		profile.doctor_name ||
-		profile.doctorName ||
-		"Doctor";
-
-	  const specialty =
-		profile.specialty ||
-		profile.department_title ||
-		profile.departmentName ||
-		"General";
-
-	  const available = !!profile.available;
-
-	  const { hospitals, departments } = getDoctorWorkplaces();
-
-	  const hospitalsText = hospitals.length
-		? hospitals.join(" | ")
-		: (profile.hospital_name || profile.hospitalName || "Hospital not assigned");
-
-	  const departmentsText = departments.length
-		? departments.join(" | ")
-		: (profile.department_title || profile.departmentName || "Department not assigned");
-
-	  elements.doctorName.textContent = name;
-	  elements.doctorSubline.textContent = `${hospitalsText} · ${departmentsText} · ${specialty}`;
-
-	  elements.availabilityButton.classList.toggle("online", available);
-	  elements.availabilityButton.classList.toggle("offline", !available);
-	  elements.availabilityLabel.textContent = available ? "Available" : "Offline";
-	}
-
-    function renderBookingsTable() {
-      const rows = getFilteredBookings();
-
-      if (!rows.length) {
-        elements.bookingsTableBody.innerHTML = `
-          <tr>
-            <td colspan="6">
-              <div class="empty-state">
-                <i class="fa-solid fa-calendar-xmark"></i>
-                <div style="font-weight:900; font-size:18px; color:#0f172a; margin-bottom:6px;">No bookings match the current view</div>
-                <div>Try changing the filter, searching with another keyword, or waiting for a live update.</div>
-              </div>
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      elements.bookingsTableBody.innerHTML = rows.map(booking => {
-        const patientName = escapeHtml(booking.customer_name || "Unknown patient");
-        const patientEmail = escapeHtml(booking.customer_email || "No email");
-        const hospital = escapeHtml(booking.hospital_name || "-");
-        const department = escapeHtml(booking.department_title || "-");
-        const bookingDate = escapeHtml(booking.date || "-");
-        const bookingTime = escapeHtml(booking.time || "-");
-        const initials = getInitials(booking.customer_name || "PT");
-
-        return `
-          <tr data-booking-id="${escapeHtml(booking.id)}" class="booking-row">
-            <td>
-              <div class="patient-cell">
-                <div class="patient-avatar">${escapeHtml(initials)}</div>
-                <div class="patient-info">
-                  <strong>${patientName}</strong>
-                  <span>${patientEmail}</span>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="doctor-inline">
-                <strong>${hospital}</strong>
-                <span>${department}</span>
-              </div>
-            </td>
-            <td>${bookingDate}</td>
-            <td>${bookingTime}</td>
-            <td>${statusBadge(booking.status)}</td>
-            <td>
-              <div class="action-row">
-                <button class="mini-button primary open-details-button" data-id="${escapeHtml(booking.id)}" type="button">Booking Confirming</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join("");
-    }
-
-    function fillDrawer(booking) {
-	  elements.detailPatientName.textContent = booking.customer_name || booking.customerName || "-";
-	  elements.detailPatientPhone.textContent = booking.customer_phone || booking.customerPhone || "-";
-	  elements.detailPatientEmail.textContent = booking.customer_email || booking.customerEmail || "-";
-	  elements.detailStatus.innerHTML = statusBadge(booking.status);
-	  elements.detailBookingId.textContent = booking.booking_id || booking.bookingId || booking.id || "-";
-	  elements.detailHospital.textContent = booking.hospital_name || booking.hospitalName || "-";
-	  elements.detailDepartment.textContent = booking.department_title || booking.departmentName || "-";
-	  elements.detailDoctor.textContent = booking.doctor_name || booking.doctorName || state.doctorProfile?.name || "-";
-	  elements.detailDate.textContent = booking.date || "-";
-	  elements.detailTime.textContent = booking.time || "-";
-	  elements.detailNote.textContent = booking.customer_note || booking.customerNote || "No note was added.";
-	  elements.rescheduleDate.value = booking.date || "";
-	  elements.rescheduleTime.value = booking.time || "";
-	  elements.rescheduleReason.value = booking.reschedule_reason || "";
-	  elements.doctorNotes.value = booking.doctor_notes || "";
-	}
-
-    function openDrawer(bookingId) {
-      const booking = state.bookings.find(item => item.id === bookingId);
-      if (!booking) return;
-      state.selectedBooking = booking;
-      fillDrawer(booking);
-      elements.drawer.classList.add("active");
-      elements.drawerBackdrop.classList.add("active");
-      elements.drawer.setAttribute("aria-hidden", "false");
-    }
-
-    function closeDrawer() {
-      state.selectedBooking = null;
-      elements.drawer.classList.remove("active");
-      elements.drawerBackdrop.classList.remove("active");
-      elements.drawer.setAttribute("aria-hidden", "true");
-    }
-
-    async function findDoctorProfile(user) {
-	  const normalizedEmail = String(user.email || "").trim().toLowerCase();
-
-	  const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
-
-	  const doctorBookings = bookingsSnap.docs
-		.map(d => ({ id: d.id, ...d.data() }))
-		.filter(item =>
-		  String(item.doctor_email || item.doctorEmail || "")
-			.trim()
-			.toLowerCase() === normalizedEmail
-		);
-
-	  if (doctorBookings.length) {
-		const latestBooking = doctorBookings.sort((a, b) => {
-		  const aTime = a.updatedAt?.seconds || a.createdAt?.seconds || 0;
-		  const bTime = b.updatedAt?.seconds || b.createdAt?.seconds || 0;
-		  return bTime - aTime;
-		})[0];
-
-		return {
-		  doctor_id: latestBooking.doctor_id || latestBooking.doctorKey || user.uid,
-		  name: latestBooking.doctor_name || latestBooking.doctorName || "Doctor",
-		  hospital_name: latestBooking.hospital_name || latestBooking.hospitalName || "Hospital not assigned",
-		  department_title: latestBooking.department_title || latestBooking.departmentName || "Department not assigned",
-		  specialty: latestBooking.specialty || latestBooking.department_title || latestBooking.departmentName || "General",
+		const manualDoctorFallback = {
+		  doctor_id: null,
+		  name: "Doctor",
+		  hospital_name: "Not linked yet",
+		  department_title: "Not linked yet",
+		  specialty: "General",
 		  available: false,
-		  email: normalizedEmail,
-		  user_uid: user.uid
-		};
-	  }
-
-	  return {
-		doctor_id: user.uid,
-		name: user.displayName || "Doctor",
-		hospital_name: "Hospital not assigned",
-		department_title: "Department not assigned",
-		specialty: "General",
-		available: false,
-		email: normalizedEmail,
-		user_uid: user.uid
-	  };
-	}
-
-    async function ensureDoctorProfileDocument(user, profile) {
-	  if (!user?.uid) return;
-
-	  const realName =
-		profile.name ||
-		profile.doctor_name ||
-		profile.doctorName ||
-		user.displayName ||
-		"";
-
-	  const ref = doc(bookingsDb, "doctors", user.uid);
-
-	  const baseProfile = {
-		doctor_id: profile.doctor_id || profile.doctorKey || profile.id || user.uid,
-		name: realName || "Doctor",
-		email: String(user.email || "").trim().toLowerCase(),
-		hospital_name: profile.hospital_name || profile.hospitalName || "Hospital not assigned",
-		department_title: profile.department_title || profile.departmentName || "Department not assigned",
-		specialty: profile.specialty || profile.department_title || profile.departmentName || "General",
-		available: !!profile.available,
-		user_uid: user.uid,
-		role: "doctor",
-		updatedAt: serverTimestamp()
-	  };
-
-	  await setDoc(ref, baseProfile, { merge: true });
-	}
-
-    function subscribeToBookings() {
-      if (state.unsubscribeBookings) {
-        state.unsubscribeBookings();
-        state.unsubscribeBookings = null;
-      }
-
-      state.unsubscribeBookings = onSnapshot(collection(bookingsDb, "allBookings"), (snapshot) => {
-        const rawBookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-        const filtered = rawBookings
-          .filter(bookingMatchesDoctor)
-          .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
-
-        const currentIds = new Set(filtered.map(item => item.id));
-
-        if (state.hasLiveBooted) {
-          const newItems = filtered.filter(item => !state.lastSeenIds.has(item.id));
-          if (newItems.length) {
-            showToast("New booking", `${newItems.length} new booking request${newItems.length > 1 ? "s have" : " has"} arrived.`);
-            showLiveBanner(`${newItems.length} new booking request${newItems.length > 1 ? "s" : ""} received in real time.`);
-          } else if (snapshot.docChanges().some(change => change.type === "modified")) {
-            showLiveBanner("A booking was updated in real time.");
-          }
-        }
-
-        state.bookings = filtered;
-        state.lastSeenIds = currentIds;
-        state.hasLiveBooted = true;
-		updateDoctorCard();
-        updateStats();
-        renderBookingsTable();
-
-        if (state.selectedBooking) {
-          const refreshed = state.bookings.find(item => item.id === state.selectedBooking.id);
-          if (refreshed) {
-            state.selectedBooking = refreshed;
-            fillDrawer(refreshed);
-          }
-        }
-
-        setLoading(false);
-      }, (error) => {
-        console.error("Realtime subscription error:", error);
-        setLoading(false);
-        showToast("Live updates failed", error.message || "Could not subscribe to booking updates.");
-      });
-    }
-	function updateStats() {
-	  const bookings = state.bookings;
-
-	  const counts = {
-		all: bookings.length,
-		pending: bookings.filter(b => normalizeStatus(b.status) === "PENDING").length,
-		approved: bookings.filter(b => normalizeStatus(b.status) === "APPROVED").length,
-		rejected: bookings.filter(b => normalizeStatus(b.status) === "REJECTED").length,
-		rescheduled: bookings.filter(b => normalizeStatus(b.status) === "RESCHEDULED").length,
-		today: bookings.filter(b => String(b.date || "") === todayDateString()).length
-	  };
-
-	  elements.statAll.textContent = counts.all;
-	  elements.statPending.textContent = counts.pending;
-	  elements.statApproved.textContent = counts.approved;
-	  elements.statToday.textContent = counts.today;
-
-	  elements.countAll.textContent = counts.all;
-	  elements.countPending.textContent = counts.pending;
-	  elements.countApproved.textContent = counts.approved;
-	  elements.countRejected.textContent = counts.rejected;
-	  elements.countRescheduled.textContent = counts.rescheduled;
-	}
-		async function refreshDashboard(showMessage = false) {
-      setLoading(true);
-      try {
-        if (!state.authUser) throw new Error("No authenticated user");
-
-        state.doctorProfile = await findDoctorProfile(state.authUser);
-        state.doctorId = state.doctorProfile.doctor_id || state.authUser.uid;
-
-        if (!state.doctorProfile.user_uid || state.doctorProfile.user_uid !== state.authUser.uid) {
-          state.doctorProfile.user_uid = state.authUser.uid;
-        }
-
-			
-        updateDoctorCard();
-        subscribeToBookings();
-
-        if (showMessage) {
-          showToast("Dashboard synced", "Latest booking data has been loaded successfully.");
-        }
-      } catch (error) {
-        console.error("Dashboard refresh error:", error);
-        setLoading(false);
-        showToast("Loading error", error.message || "Unable to refresh the doctor dashboard.");
-      }
-    }
-
-    async function updateAvailability() {
-	  if (!state.authUser || !state.doctorProfile) return;
-
-	  try {
-		const nextValue = !state.doctorProfile.available;
-		const ref = doc(bookingsDb, "doctors", state.authUser.uid);
-
-		
-		await setDoc(ref, {
-		  available: nextValue,
-		  updatedAt: serverTimestamp()
-		}, { merge: true });
-
-		state.doctorProfile.available = nextValue;
-		updateDoctorCard();
-
-		showToast("Status updated", nextValue ? "Doctor is now available." : "Doctor is now offline.");
-	  } catch (error) {
-		console.error("Availability update error:", error);
-		showToast("Update failed", error.message);
-	  }
-	}
-
-    async function updateBookingStatus(status, extra = {}) {
-	  const booking = state.selectedBooking;
-	  if (!booking) {
-		showToast("No booking selected", "Open a booking first, then apply an action.");
-		return;
-	  }
-
-	  try {
-		const payload = {
-		  status,
-		  updatedAt: serverTimestamp(),
-		  reviewed_by_uid: state.authUser?.uid || null,
-		  reviewed_by_name: state.doctorProfile?.name || "Doctor",
-		  ...extra
+		  email: ""
 		};
 
-		
-		const bookingRef = doc(bookingsDb, "allBookings", booking.id);
-		await updateDoc(bookingRef, payload);
+		const elements = {
+		  loadingOverlay: document.getElementById("loadingOverlay"),
+		  doctorAvatarImage: document.getElementById("doctorAvatarImage"),
+		  doctorName: document.getElementById("doctorName"),
+		  doctorSubline: document.getElementById("doctorSubline"),
+		  availabilityButton: document.getElementById("availabilityButton"),
+		  availabilityLabel: document.getElementById("availabilityLabel"),
+		  refreshButton: document.getElementById("refreshButton"),
+		  heroRefreshButton: document.getElementById("heroRefreshButton"),
+		  focusPendingButton: document.getElementById("focusPendingButton"),
+		  logoutButton: document.getElementById("logoutButton"),
+		  searchInput: document.getElementById("searchInput"),
+		  bookingsTableBody: document.getElementById("bookingsTableBody"),
+		  drawer: document.getElementById("bookingDrawer"),
+		  drawerBackdrop: document.getElementById("drawerBackdrop"),
+		  closeDrawerButton: document.getElementById("closeDrawerButton"),
+		  approveButton: document.getElementById("approveButton"),
+		  rejectButton: document.getElementById("rejectButton"),
+		  rescheduleButton: document.getElementById("rescheduleButton"),
+		  rescheduleDate: document.getElementById("rescheduleDate"),
+		  rescheduleTime: document.getElementById("rescheduleTime"),
+		  rescheduleReason: document.getElementById("rescheduleReason"),
+		  toastWrap: document.getElementById("toastWrap"),
+		  liveBanner: document.getElementById("liveBanner"),
+		  liveBannerText: document.getElementById("liveBannerText"),
+		  statAll: document.getElementById("statAll"),
+		  statPending: document.getElementById("statPending"),
+		  statApproved: document.getElementById("statApproved"),
+		  statToday: document.getElementById("statToday"),
+		  countAll: document.getElementById("countAll"),
+		  countPending: document.getElementById("countPending"),
+		  countApproved: document.getElementById("countApproved"),
+		  countRejected: document.getElementById("countRejected"),
+		  countRescheduled: document.getElementById("countRescheduled"),
+		  detailPatientName: document.getElementById("detailPatientName"),
+		  detailPatientPhone: document.getElementById("detailPatientPhone"),
+		  detailPatientEmail: document.getElementById("detailPatientEmail"),
+		  detailStatus: document.getElementById("detailStatus"),
+		  detailBookingId: document.getElementById("detailBookingId"),
+		  detailHospital: document.getElementById("detailHospital"),
+		  detailDepartment: document.getElementById("detailDepartment"),
+		  detailDoctor: document.getElementById("detailDoctor"),
+		  detailDate: document.getElementById("detailDate"),
+		  detailTime: document.getElementById("detailTime"),
+		  detailNote: document.getElementById("detailNote"),
+		  doctorNotes: document.getElementById("doctorNotes"),
+		  saveDoctorNotesBtn: document.getElementById("saveDoctorNotesBtn")
+		};
 
-		
-		if (booking.user_uid && booking.source_booking_doc_id) {
-		  const userBookingRef = doc(
-			bookingsDb,
-			"users",
-			booking.user_uid,
-			"bookings",
-			booking.source_booking_doc_id
-		  );
-
-		  await updateDoc(userBookingRef, payload);
+		function escapeHtml(value) {
+		  if (value === null || value === undefined) return "";
+		  return String(value)
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/\"/g, "&quot;")
+			.replace(/'/g, "&#039;");
 		}
 
-		state.bookings = state.bookings.map(item =>
-		  item.id === booking.id ? { ...item, ...payload } : item
-		);
-
-		const updated = state.bookings.find(item => item.id === booking.id);
-		state.selectedBooking = updated;
-		fillDrawer(updated);
-		updateStats();
-		renderBookingsTable();
-		showToast("Booking updated", `The booking status is now ${status.toLowerCase()}.`);
-	  } catch (error) {
-		console.error("Booking action error:", error);
-		showToast("Action failed", error.message || "The booking could not be updated.");
-	  }
-	}
-
-    async function approveSelectedBooking() {
-      await updateBookingStatus("APPROVED", {
-        approvedAt: serverTimestamp()
-      });
-    }
-
-    async function rejectSelectedBooking() {
-      await updateBookingStatus("REJECTED", {
-        rejectedAt: serverTimestamp()
-      });
-    }
-
-    async function rescheduleSelectedBooking() {
-      const newDate = elements.rescheduleDate.value;
-      const newTime = elements.rescheduleTime.value;
-      const reason = elements.rescheduleReason.value.trim();
-
-      if (!newDate || !newTime) {
-        showToast("Missing values", "Please choose both a new date and a new time.");
-        return;
-      }
-
-      await updateBookingStatus("RESCHEDULED", {
-        date: newDate,
-        time: newTime,
-        reschedule_reason: reason,
-        rescheduledAt: serverTimestamp()
-      });
-    }
-	async function saveDoctorNotes() {
-	  const booking = state.selectedBooking;
-
-	  if (!booking) {
-		showToast("لا يوجد حجز", "افتح حجز المريض أولاً ثم أضف الملاحظات.");
-		return;
-	  }
-
-	  const notes = elements.doctorNotes.value.trim();
-
-	  if (!notes) {
-		showToast("الملاحظات فارغة", "اكتب ملاحظة أو تشخيص قبل الحفظ.");
-		return;
-	  }
-
-	  try {
-		const payload = {
-		  doctor_notes: notes,
-		  doctor_notes_updatedAt: serverTimestamp(),
-		  doctor_notes_by_uid: state.authUser?.uid || null,
-		  doctor_notes_by_name: state.doctorProfile?.name || "Doctor"
-		};
-
-		const bookingRef = doc(bookingsDb, "allBookings", booking.id);
-		await updateDoc(bookingRef, payload);
-
-		if (booking.user_uid && booking.source_booking_doc_id) {
-		  const userBookingRef = doc(
-			bookingsDb,
-			"users",
-			booking.user_uid,
-			"bookings",
-			booking.source_booking_doc_id
-		  );
-
-		  await updateDoc(userBookingRef, payload);
+		function getInitials(name = "Doctor") {
+		  return String(name)
+			.trim()
+			.split(/\s+/)
+			.slice(0, 2)
+			.map(part => part[0]?.toUpperCase() || "")
+			.join("") || "DR";
 		}
 
-		state.selectedBooking = {
-		  ...state.selectedBooking,
-		  ...payload,
-		  doctor_notes: notes
-		};
+		function normalizeStatus(status) {
+		  const s = String(status || "PENDING").trim().toUpperCase();
+		  if (["APPROVED", "REJECTED", "RESCHEDULED", "PENDING"].includes(s)) return s;
+		  return "PENDING";
+		}
 
-		state.bookings = state.bookings.map(item =>
-		  item.id === booking.id ? { ...item, ...payload, doctor_notes: notes } : item
-		);
+		function statusBadge(status) {
+		  const normalized = normalizeStatus(status);
+		  if (normalized === "APPROVED") return `<span class="status-badge status-approved"><i class="fa-solid fa-circle-check"></i>Approved</span>`;
+		  if (normalized === "REJECTED") return `<span class="status-badge status-rejected"><i class="fa-solid fa-circle-xmark"></i>Rejected</span>`;
+		  if (normalized === "RESCHEDULED") return `<span class="status-badge status-rescheduled"><i class="fa-solid fa-calendar-days"></i>Rescheduled</span>`;
+		  return `<span class="status-badge status-pending"><i class="fa-solid fa-hourglass-half"></i>Pending</span>`;
+		}
 
-		showToast("تم الحفظ", "تم حفظ ملاحظات الطبيب بنجاح.");
-	  } catch (error) {
-		console.error(error);
-		showToast("خطأ", "تعذر حفظ ملاحظات الطبيب.");
-	  }
-	}
-    function wireEvents() {
-      elements.availabilityButton.addEventListener("click", updateAvailability);
-      elements.refreshButton.addEventListener("click", () => refreshDashboard(true));
-      elements.heroRefreshButton.addEventListener("click", () => refreshDashboard(true));
-      elements.focusPendingButton.addEventListener("click", () => setActiveFilter("PENDING"));
+		function todayDateString() {
+		  const now = new Date();
+		  const y = now.getFullYear();
+		  const m = String(now.getMonth() + 1).padStart(2, "0");
+		  const d = String(now.getDate()).padStart(2, "0");
+		  return `${y}-${m}-${d}`;
+		}
 
-      elements.logoutButton.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-          window.location.href = "doctor_login.html";
-        } catch (error) {
-          console.error("Logout error:", error);
-          showToast("Logout failed", error.message || "Could not sign out the current user.");
-        }
-      });
+		function setLoading(isLoading) {
+		  state.loading = isLoading;
+		  elements.loadingOverlay.classList.toggle("hidden", !isLoading);
+		}
 
-      elements.searchInput.addEventListener("input", (event) => {
-        state.searchTerm = event.target.value || "";
-        renderBookingsTable();
-      });
+		function showToast(title, message) {
+		  const toast = document.createElement("div");
+		  toast.className = "toast";
+		  toast.innerHTML = `<strong>${escapeHtml(title)}</strong><span>${escapeHtml(message)}</span>`;
+		  elements.toastWrap.appendChild(toast);
+		  setTimeout(() => toast.remove(), 3200);
+		}
 
-      document.querySelectorAll(".filter-tab").forEach(button => {
-        button.addEventListener("click", () => setActiveFilter(button.dataset.filter));
-      });
+		function showLiveBanner(message) {
+		  elements.liveBannerText.textContent = message;
+		  elements.liveBanner.style.display = "block";
+		  clearTimeout(showLiveBanner._timer);
+		  showLiveBanner._timer = setTimeout(() => {
+			elements.liveBanner.style.display = "none";
+		  }, 2600);
+		}
 
-      document.querySelectorAll(".nav-button[data-sidebar-filter]").forEach(button => {
-        button.addEventListener("click", () => setActiveFilter(button.dataset.sidebarFilter));
-      });
+		function setActiveFilter(filter) {
+		  state.activeFilter = filter;
 
-      elements.bookingsTableBody.addEventListener("click", (event) => {
-        const openButton = event.target.closest(".open-details-button");
-        if (openButton) {
-          openDrawer(openButton.dataset.id);
-          return;
-        }
-
-        const row = event.target.closest(".booking-row");
-        if (row?.dataset.bookingId) {
-          openDrawer(row.dataset.bookingId);
-        }
-      });
-
-      elements.closeDrawerButton.addEventListener("click", closeDrawer);
-      elements.drawerBackdrop.addEventListener("click", closeDrawer);
-      elements.approveButton.addEventListener("click", approveSelectedBooking);
-      elements.rejectButton.addEventListener("click", rejectSelectedBooking);
-      elements.rescheduleButton.addEventListener("click", rescheduleSelectedBooking);
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeDrawer();
-      });
-    }
-
-    async function boot() {
-      wireEvents();
-
-      onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-          window.location.href = "doctor_login.html";
-          return;
-        }
-
-        state.authUser = user;
-        await refreshDashboard(false);
-      });
-    }
-
-    boot();
-	document.getElementById("cancelAllBtn").onclick = async () => {
-	  if (!state.bookings.length) {
-		showToast("لا يوجد حجوزات", "ما في حجوزات لإلغائها");
-		return;
-	  }
-
-	  const confirmAction = confirm("هل أنت متأكد من إلغاء جميع الحجوزات؟");
-
-	  if (!confirmAction) return;
-
-	  try {
-		for (const booking of state.bookings) {
-		  const bookingRef = doc(bookingsDb, "allBookings", booking.id);
-
-		  await updateDoc(bookingRef, {
-			status: "REJECTED",
-			updatedAt: serverTimestamp(),
-			rejected_by_all: true
+		  document.querySelectorAll(".filter-tab").forEach(btn => {
+			btn.classList.toggle("active", btn.dataset.filter === filter);
 		  });
 
-		  // تحديث نسخة المستخدم
-		  if (booking.user_uid && booking.source_booking_doc_id) {
-			const userBookingRef = doc(
-			  bookingsDb,
-			  "users",
-			  booking.user_uid,
-			  "bookings",
-			  booking.source_booking_doc_id
+		  document.querySelectorAll(".nav-button[data-sidebar-filter]").forEach(btn => {
+			btn.classList.toggle("active", btn.dataset.sidebarFilter === filter);
+		  });
+
+		  renderBookingsTable();
+		}
+
+		function bookingMatchesDoctor(booking) {
+		  if (!state.doctorProfile || !state.authUser) return false;
+
+		  const bookingDoctorId = String(booking.doctor_id || "");
+		  const bookingDoctorEmail = String(booking.doctor_email || "").trim().toLowerCase();
+		  const bookingDoctorName = String(booking.doctor_name || booking.doctorName || "").trim().toLowerCase();
+
+		  const doctorId = String(state.doctorProfile.doctor_id || state.doctorId || "");
+		  const doctorEmail = String(state.authUser.email || state.doctorProfile.email || "").trim().toLowerCase();
+		  const doctorName = String(state.doctorProfile.name || "").trim().toLowerCase();
+		  const userUid = String(state.authUser.uid || "");
+		  const profileUid = String(state.doctorProfile.user_uid || "");
+
+		  return (
+			(doctorId && bookingDoctorId === doctorId) ||
+			(doctorEmail && bookingDoctorEmail === doctorEmail) ||
+			(doctorName && bookingDoctorName === doctorName) ||
+			(profileUid && bookingDoctorId === profileUid) ||
+			(userUid && bookingDoctorId === userUid)
+		  );
+		}
+
+		function getFilteredBookings() {
+		  const term = state.searchTerm.trim().toLowerCase();
+
+		  return state.bookings.filter(booking => {
+			const matchesStatus = state.activeFilter === "ALL" || normalizeStatus(booking.status) === state.activeFilter;
+			if (!matchesStatus) return false;
+
+			if (!term) return true;
+
+			const haystack = [
+			  booking.booking_id,
+			  booking.customer_name,
+			  booking.customer_email,
+			  booking.customer_phone,
+			  booking.hospital_name,
+			  booking.department_title,
+			  booking.doctor_name,
+			  booking.date,
+			  booking.time,
+			  booking.status
+			].join(" ").toLowerCase();
+
+			return haystack.includes(term);
+		  });
+		}
+		function getDoctorWorkplaces() {
+		  const hospitals = [...new Set(
+			state.bookings
+			  .map(b => String(b.hospital_name || b.hospitalName || "").trim())
+			  .filter(Boolean)
+		  )];
+
+		  const departments = [...new Set(
+			state.bookings
+			  .map(b => String(b.department_title || b.departmentName || "").trim())
+			  .filter(Boolean)
+		  )];
+
+		  return { hospitals, departments };
+		}
+		function updateDoctorCard() {
+		  const profile = state.doctorProfile || manualDoctorFallback;
+
+		  const name =
+			profile.name ||
+			profile.doctor_name ||
+			profile.doctorName ||
+			"Doctor";
+
+		  const specialty =
+			profile.specialty ||
+			profile.department_title ||
+			profile.departmentName ||
+			"General";
+
+		  const available = !!profile.available;
+
+		  const { hospitals, departments } = getDoctorWorkplaces();
+
+		  const hospitalsText = hospitals.length
+			? hospitals.join(" | ")
+			: (profile.hospital_name || profile.hospitalName || "Hospital not assigned");
+
+		  const departmentsText = departments.length
+			? departments.join(" | ")
+			: (profile.department_title || profile.departmentName || "Department not assigned");
+
+		  elements.doctorName.textContent = name;
+		  elements.doctorSubline.textContent = `${hospitalsText} · ${departmentsText} · ${specialty}`;
+
+		  elements.availabilityButton.classList.toggle("online", available);
+		  elements.availabilityButton.classList.toggle("offline", !available);
+		  elements.availabilityLabel.textContent = available ? "Available" : "Offline";
+		}
+
+		function renderBookingsTable() {
+		  const rows = getFilteredBookings();
+
+		  if (!rows.length) {
+			elements.bookingsTableBody.innerHTML = `
+			  <tr>
+				<td colspan="6">
+				  <div class="empty-state">
+					<i class="fa-solid fa-calendar-xmark"></i>
+					<div style="font-weight:900; font-size:18px; color:#0f172a; margin-bottom:6px;">No bookings match the current view</div>
+					<div>Try changing the filter, searching with another keyword, or waiting for a live update.</div>
+				  </div>
+				</td>
+			  </tr>
+			`;
+			return;
+		  }
+
+		  elements.bookingsTableBody.innerHTML = rows.map(booking => {
+			const patientName = escapeHtml(booking.customer_name || "Unknown patient");
+			const patientEmail = escapeHtml(booking.customer_email || "No email");
+			const hospital = escapeHtml(booking.hospital_name || "-");
+			const department = escapeHtml(booking.department_title || "-");
+			const bookingDate = escapeHtml(booking.date || "-");
+			const bookingTime = escapeHtml(booking.time || "-");
+			const initials = getInitials(booking.customer_name || "PT");
+
+			return `
+			  <tr data-booking-id="${escapeHtml(booking.id)}" class="booking-row">
+				<td>
+				  <div class="patient-cell">
+					<div class="patient-avatar">${escapeHtml(initials)}</div>
+					<div class="patient-info">
+					  <strong>${patientName}</strong>
+					  <span>${patientEmail}</span>
+					</div>
+				  </div>
+				</td>
+				<td>
+				  <div class="doctor-inline">
+					<strong>${hospital}</strong>
+					<span>${department}</span>
+				  </div>
+				</td>
+				<td>${bookingDate}</td>
+				<td>${bookingTime}</td>
+				<td>${statusBadge(booking.status)}</td>
+				<td>
+				  <div class="action-row">
+					<button class="mini-button primary open-details-button" data-id="${escapeHtml(booking.id)}" type="button">Booking Confirming</button>
+				  </div>
+				</td>
+			  </tr>
+			`;
+		  }).join("");
+		}
+
+		function fillDrawer(booking) {
+		  elements.detailPatientName.textContent = booking.customer_name || booking.customerName || "-";
+		  elements.detailPatientPhone.textContent = booking.customer_phone || booking.customerPhone || "-";
+		  elements.detailPatientEmail.textContent = booking.customer_email || booking.customerEmail || "-";
+		  elements.detailStatus.innerHTML = statusBadge(booking.status);
+		  elements.detailBookingId.textContent = booking.booking_id || booking.bookingId || booking.id || "-";
+		  elements.detailHospital.textContent = booking.hospital_name || booking.hospitalName || "-";
+		  elements.detailDepartment.textContent = booking.department_title || booking.departmentName || "-";
+		  elements.detailDoctor.textContent = booking.doctor_name || booking.doctorName || state.doctorProfile?.name || "-";
+		  elements.detailDate.textContent = booking.date || "-";
+		  elements.detailTime.textContent = booking.time || "-";
+		  elements.detailNote.textContent = booking.customer_note || booking.customerNote || "No note was added.";
+		  elements.rescheduleDate.value = booking.date || "";
+		  elements.rescheduleTime.value = booking.time || "";
+		  elements.rescheduleReason.value = booking.reschedule_reason || "";
+		  elements.doctorNotes.value = booking.doctor_notes || "";
+		}
+
+		function openDrawer(bookingId) {
+		  const booking = state.bookings.find(item => item.id === bookingId);
+		  if (!booking) return;
+		  state.selectedBooking = booking;
+		  fillDrawer(booking);
+		  elements.drawer.classList.add("active");
+		  elements.drawerBackdrop.classList.add("active");
+		  elements.drawer.setAttribute("aria-hidden", "false");
+		}
+
+		function closeDrawer() {
+		  state.selectedBooking = null;
+		  elements.drawer.classList.remove("active");
+		  elements.drawerBackdrop.classList.remove("active");
+		  elements.drawer.setAttribute("aria-hidden", "true");
+		}
+
+		async function findDoctorProfile(user) {
+		  const normalizedEmail = String(user.email || "").trim().toLowerCase();
+
+		  const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
+
+		  const doctorBookings = bookingsSnap.docs
+			.map(d => ({ id: d.id, ...d.data() }))
+			.filter(item =>
+			  String(item.doctor_email || item.doctorEmail || "")
+				.trim()
+				.toLowerCase() === normalizedEmail
 			);
 
-			await updateDoc(userBookingRef, {
-			  status: "REJECTED",
-			  updatedAt: serverTimestamp()
-			});
+		  if (doctorBookings.length) {
+			const latestBooking = doctorBookings.sort((a, b) => {
+			  const aTime = a.updatedAt?.seconds || a.createdAt?.seconds || 0;
+			  const bTime = b.updatedAt?.seconds || b.createdAt?.seconds || 0;
+			  return bTime - aTime;
+			})[0];
+
+			return {
+			  doctor_id: latestBooking.doctor_id || latestBooking.doctorKey || user.uid,
+			  name: latestBooking.doctor_name || latestBooking.doctorName || "Doctor",
+			  hospital_name: latestBooking.hospital_name || latestBooking.hospitalName || "Hospital not assigned",
+			  department_title: latestBooking.department_title || latestBooking.departmentName || "Department not assigned",
+			  specialty: latestBooking.specialty || latestBooking.department_title || latestBooking.departmentName || "General",
+			  available: false,
+			  email: normalizedEmail,
+			  user_uid: user.uid
+			};
+		  }
+
+		  return {
+			doctor_id: user.uid,
+			name: user.displayName || "Doctor",
+			hospital_name: "Hospital not assigned",
+			department_title: "Department not assigned",
+			specialty: "General",
+			available: false,
+			email: normalizedEmail,
+			user_uid: user.uid
+		  };
+		}
+
+		async function ensureDoctorProfileDocument(user, profile) {
+		  if (!user?.uid) return;
+
+		  const realName =
+			profile.name ||
+			profile.doctor_name ||
+			profile.doctorName ||
+			user.displayName ||
+			"";
+
+		  const ref = doc(bookingsDb, "doctors", user.uid);
+
+		  const baseProfile = {
+			doctor_id: profile.doctor_id || profile.doctorKey || profile.id || user.uid,
+			name: realName || "Doctor",
+			email: String(user.email || "").trim().toLowerCase(),
+			hospital_name: profile.hospital_name || profile.hospitalName || "Hospital not assigned",
+			department_title: profile.department_title || profile.departmentName || "Department not assigned",
+			specialty: profile.specialty || profile.department_title || profile.departmentName || "General",
+			available: !!profile.available,
+			user_uid: user.uid,
+			role: "doctor",
+			updatedAt: serverTimestamp()
+		  };
+
+		  await setDoc(ref, baseProfile, { merge: true });
+		}
+
+		function subscribeToBookings() {
+		  if (state.unsubscribeBookings) {
+			state.unsubscribeBookings();
+			state.unsubscribeBookings = null;
+		  }
+
+		  state.unsubscribeBookings = onSnapshot(collection(bookingsDb, "allBookings"), (snapshot) => {
+			const rawBookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+			const filtered = rawBookings
+			  .filter(bookingMatchesDoctor)
+			  .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+
+			const currentIds = new Set(filtered.map(item => item.id));
+
+			if (state.hasLiveBooted) {
+			  const newItems = filtered.filter(item => !state.lastSeenIds.has(item.id));
+			  if (newItems.length) {
+				showToast("New booking", `${newItems.length} new booking request${newItems.length > 1 ? "s have" : " has"} arrived.`);
+				showLiveBanner(`${newItems.length} new booking request${newItems.length > 1 ? "s" : ""} received in real time.`);
+			  } else if (snapshot.docChanges().some(change => change.type === "modified")) {
+				showLiveBanner("A booking was updated in real time.");
+			  }
+			}
+
+			state.bookings = filtered;
+			state.lastSeenIds = currentIds;
+			state.hasLiveBooted = true;
+			updateDoctorCard();
+			updateStats();
+			renderBookingsTable();
+
+			if (state.selectedBooking) {
+			  const refreshed = state.bookings.find(item => item.id === state.selectedBooking.id);
+			  if (refreshed) {
+				state.selectedBooking = refreshed;
+				fillDrawer(refreshed);
+			  }
+			}
+
+			setLoading(false);
+		  }, (error) => {
+			console.error("Realtime subscription error:", error);
+			setLoading(false);
+			showToast("Live updates failed", error.message || "Could not subscribe to booking updates.");
+		  });
+		}
+		function updateStats() {
+		  const bookings = state.bookings;
+
+		  const counts = {
+			all: bookings.length,
+			pending: bookings.filter(b => normalizeStatus(b.status) === "PENDING").length,
+			approved: bookings.filter(b => normalizeStatus(b.status) === "APPROVED").length,
+			rejected: bookings.filter(b => normalizeStatus(b.status) === "REJECTED").length,
+			rescheduled: bookings.filter(b => normalizeStatus(b.status) === "RESCHEDULED").length,
+			today: bookings.filter(b => String(b.date || "") === todayDateString()).length
+		  };
+
+		  elements.statAll.textContent = counts.all;
+		  elements.statPending.textContent = counts.pending;
+		  elements.statApproved.textContent = counts.approved;
+		  elements.statToday.textContent = counts.today;
+
+		  elements.countAll.textContent = counts.all;
+		  elements.countPending.textContent = counts.pending;
+		  elements.countApproved.textContent = counts.approved;
+		  elements.countRejected.textContent = counts.rejected;
+		  elements.countRescheduled.textContent = counts.rescheduled;
+		}
+			async function refreshDashboard(showMessage = false) {
+		  setLoading(true);
+		  try {
+			if (!state.authUser) throw new Error("No authenticated user");
+
+			state.doctorProfile = await findDoctorProfile(state.authUser);
+			state.doctorId = state.doctorProfile.doctor_id || state.authUser.uid;
+
+			if (!state.doctorProfile.user_uid || state.doctorProfile.user_uid !== state.authUser.uid) {
+			  state.doctorProfile.user_uid = state.authUser.uid;
+			}
+
+				
+			updateDoctorCard();
+			subscribeToBookings();
+
+			if (showMessage) {
+			  showToast("Dashboard synced", "Latest booking data has been loaded successfully.");
+			}
+		  } catch (error) {
+			console.error("Dashboard refresh error:", error);
+			setLoading(false);
+			showToast("Loading error", error.message || "Unable to refresh the doctor dashboard.");
 		  }
 		}
 
-		showToast("تم الإلغاء", "تم إلغاء جميع الحجوزات بنجاح");
+		async function updateAvailability() {
+		  if (!state.authUser || !state.doctorProfile) return;
 
-	  } catch (err) {
-		console.error(err);
-		showToast("خطأ", "فشل في إلغاء الحجوزات");
+		  try {
+			const nextValue = !state.doctorProfile.available;
+			const ref = doc(bookingsDb, "doctors", state.authUser.uid);
+
+			
+			await setDoc(ref, {
+			  available: nextValue,
+			  updatedAt: serverTimestamp()
+			}, { merge: true });
+
+			state.doctorProfile.available = nextValue;
+			updateDoctorCard();
+
+			showToast("Status updated", nextValue ? "Doctor is now available." : "Doctor is now offline.");
+		  } catch (error) {
+			console.error("Availability update error:", error);
+			showToast("Update failed", error.message);
+		  }
+		}
+
+		async function updateBookingStatus(status, extra = {}) {
+		  const booking = state.selectedBooking;
+		  if (!booking) {
+			showToast("No booking selected", "Open a booking first, then apply an action.");
+			return;
+		  }
+
+		  try {
+			const payload = {
+			  status,
+			  updatedAt: serverTimestamp(),
+			  reviewed_by_uid: state.authUser?.uid || null,
+			  reviewed_by_name: state.doctorProfile?.name || "Doctor",
+			  ...extra
+			};
+
+			
+			const bookingRef = doc(bookingsDb, "allBookings", booking.id);
+			await updateDoc(bookingRef, payload);
+
+			
+			if (booking.user_uid && booking.source_booking_doc_id) {
+			  const userBookingRef = doc(
+				bookingsDb,
+				"users",
+				booking.user_uid,
+				"bookings",
+				booking.source_booking_doc_id
+			  );
+
+			  await updateDoc(userBookingRef, payload);
+			}
+
+			state.bookings = state.bookings.map(item =>
+			  item.id === booking.id ? { ...item, ...payload } : item
+			);
+
+			const updated = state.bookings.find(item => item.id === booking.id);
+			state.selectedBooking = updated;
+			fillDrawer(updated);
+			updateStats();
+			renderBookingsTable();
+			showToast("Booking updated", `The booking status is now ${status.toLowerCase()}.`);
+		  } catch (error) {
+			console.error("Booking action error:", error);
+			showToast("Action failed", error.message || "The booking could not be updated.");
+		  }
+		}
+
+		async function approveSelectedBooking() {
+		  await updateBookingStatus("APPROVED", {
+			approvedAt: serverTimestamp()
+		  });
+		}
+
+		async function rejectSelectedBooking() {
+		  await updateBookingStatus("REJECTED", {
+			rejectedAt: serverTimestamp()
+		  });
+		}
+
+		async function rescheduleSelectedBooking() {
+		  const newDate = elements.rescheduleDate.value;
+		  const newTime = elements.rescheduleTime.value;
+		  const reason = elements.rescheduleReason.value.trim();
+
+		  if (!newDate || !newTime) {
+			showToast("Missing values", "Please choose both a new date and a new time.");
+			return;
+		  }
+
+		  await updateBookingStatus("RESCHEDULED", {
+			date: newDate,
+			time: newTime,
+			reschedule_reason: reason,
+			rescheduledAt: serverTimestamp()
+		  });
+		}
+		async function saveDoctorNotes() {
+		  const booking = state.selectedBooking;
+
+		  if (!booking) {
+			showToast("لا يوجد حجز", "افتح حجز المريض أولاً ثم أضف الملاحظات.");
+			return;
+		  }
+
+		  const notes = elements.doctorNotes.value.trim();
+
+		  if (!notes) {
+			showToast("الملاحظات فارغة", "اكتب ملاحظة أو تشخيص قبل الحفظ.");
+			return;
+		  }
+
+		  try {
+			const payload = {
+			  doctor_notes: notes,
+			  doctor_notes_updatedAt: serverTimestamp(),
+			  doctor_notes_by_uid: state.authUser?.uid || null,
+			  doctor_notes_by_name: state.doctorProfile?.name || "Doctor"
+			};
+
+			const bookingRef = doc(bookingsDb, "allBookings", booking.id);
+			await updateDoc(bookingRef, payload);
+
+			if (booking.user_uid && booking.source_booking_doc_id) {
+			  const userBookingRef = doc(
+				bookingsDb,
+				"users",
+				booking.user_uid,
+				"bookings",
+				booking.source_booking_doc_id
+			  );
+
+			  await updateDoc(userBookingRef, payload);
+			}
+
+			state.selectedBooking = {
+			  ...state.selectedBooking,
+			  ...payload,
+			  doctor_notes: notes
+			};
+
+			state.bookings = state.bookings.map(item =>
+			  item.id === booking.id ? { ...item, ...payload, doctor_notes: notes } : item
+			);
+
+			showToast("تم الحفظ", "تم حفظ ملاحظات الطبيب بنجاح.");
+		  } catch (error) {
+			console.error(error);
+			showToast("خطأ", "تعذر حفظ ملاحظات الطبيب.");
+		  }
+		}
+		function wireEvents() {
+		  elements.availabilityButton.addEventListener("click", updateAvailability);
+		  elements.refreshButton.addEventListener("click", () => refreshDashboard(true));
+		  elements.heroRefreshButton.addEventListener("click", () => refreshDashboard(true));
+		  elements.focusPendingButton.addEventListener("click", () => setActiveFilter("PENDING"));
+
+		  elements.logoutButton.addEventListener("click", async () => {
+			try {
+			  await signOut(auth);
+			  window.location.href = "doctor_login.html";
+			} catch (error) {
+			  console.error("Logout error:", error);
+			  showToast("Logout failed", error.message || "Could not sign out the current user.");
+			}
+		  });
+
+		  elements.searchInput.addEventListener("input", (event) => {
+			state.searchTerm = event.target.value || "";
+			renderBookingsTable();
+		  });
+
+		  document.querySelectorAll(".filter-tab").forEach(button => {
+			button.addEventListener("click", () => setActiveFilter(button.dataset.filter));
+		  });
+
+		  document.querySelectorAll(".nav-button[data-sidebar-filter]").forEach(button => {
+			button.addEventListener("click", () => setActiveFilter(button.dataset.sidebarFilter));
+		  });
+
+		  elements.bookingsTableBody.addEventListener("click", (event) => {
+			const openButton = event.target.closest(".open-details-button");
+			if (openButton) {
+			  openDrawer(openButton.dataset.id);
+			  return;
+			}
+
+			const row = event.target.closest(".booking-row");
+			if (row?.dataset.bookingId) {
+			  openDrawer(row.dataset.bookingId);
+			}
+		  });
+
+		  elements.closeDrawerButton.addEventListener("click", closeDrawer);
+		  elements.drawerBackdrop.addEventListener("click", closeDrawer);
+		  elements.approveButton.addEventListener("click", approveSelectedBooking);
+		  elements.rejectButton.addEventListener("click", rejectSelectedBooking);
+		  elements.rescheduleButton.addEventListener("click", rescheduleSelectedBooking);
+		  elements.saveDoctorNotesBtn.addEventListener("click", saveDoctorNotes);
+
+		  document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") closeDrawer();
+		  });
+		}
+
+		async function boot() {
+		  wireEvents();
+
+		  onAuthStateChanged(auth, async (user) => {
+			if (!user) {
+			  window.location.href = "doctor_login.html";
+			  return;
+			}
+
+			state.authUser = user;
+			await refreshDashboard(false);
+		  });
+		}
+
+		boot();
+		document.getElementById("cancelAllBtn").onclick = async () => {
+		  if (!state.bookings.length) {
+			showToast("لا يوجد حجوزات", "ما في حجوزات لإلغائها");
+			return;
+		  }
+
+		  const confirmAction = confirm("هل أنت متأكد من إلغاء جميع الحجوزات؟");
+
+		  if (!confirmAction) return;
+
+		  try {
+			for (const booking of state.bookings) {
+			  const bookingRef = doc(bookingsDb, "allBookings", booking.id);
+
+			  await updateDoc(bookingRef, {
+				status: "REJECTED",
+				updatedAt: serverTimestamp(),
+				rejected_by_all: true
+			  });
+
+			  // تحديث نسخة المستخدم
+			  if (booking.user_uid && booking.source_booking_doc_id) {
+				const userBookingRef = doc(
+				  bookingsDb,
+				  "users",
+				  booking.user_uid,
+				  "bookings",
+				  booking.source_booking_doc_id
+				);
+
+				await updateDoc(userBookingRef, {
+				  status: "REJECTED",
+				  updatedAt: serverTimestamp()
+				});
+			  }
+			}
+
+			showToast("تم الإلغاء", "تم إلغاء جميع الحجوزات بنجاح");
+
+		  } catch (err) {
+			console.error(err);
+			showToast("خطأ", "فشل في إلغاء الحجوزات");
+		  }
+		};
+	  </script>
+	<script>
+	const translations = {
+	  ar: {
+		page_title: "لوحة الطبيب - أمل",
+		loading_title: "جاري تجهيز لوحة الطبيب",
+		loading_desc: "يتم تحميل بيانات الطبيب، الحجوزات الحالية، وأدوات متابعة المواعيد.",
+		sidebar_title: "لوحة التحكم",
+		sidebar_subtitle: "متابعة مباشرة للحجوزات اليومية وحالة المواعيد",
+		doctor_loading: "جاري تحميل بيانات الطبيب...",
+		doctor_subline: "المستشفى · القسم · التخصص",
+		offline: "غير متصل",
+		online: "متاح",
+		nav_all: "كل الحجوزات",
+		nav_pending: "بانتظار المراجعة",
+		nav_approved: "تمت الموافقة",
+		nav_rejected: "مرفوضة",
+		nav_rescheduled: "أعيدت جدولتها",
+		refresh_bookings: "تحديث الحجوزات",
+		logout: "تسجيل الخروج",
+		hero_title: "إدارة المواعيد الطبية بشكل أوضح وأسرع",
+		hero_desc: "راجع طلبات المرضى، وافق أو ارفض أو أعد جدولة الحجز بسهولة، وتابع مواعيدك اليومية من مكان واحد بشكل منظم وواضح.",
+		sync_now: "مزامنة الآن",
+		show_pending: "عرض الطلبات المعلقة",
+		live_update: "تم استلام تحديث مباشر",
+		stat_all: "إجمالي الحجوزات",
+		stat_all_caption: "جميع الحجوزات المرتبطة بحساب الطبيب",
+		stat_pending: "بانتظار المراجعة",
+		stat_pending_caption: "طلبات تحتاج موافقة أو رفض أو إعادة جدولة",
+		stat_approved: "الحجوزات المؤكدة",
+		stat_approved_caption: "المواعيد التي تمت الموافقة عليها",
+		stat_today: "مواعيد اليوم",
+		stat_today_caption: "عدد الحجوزات المجدولة لهذا اليوم",
+		board_title: "قائمة الحجوزات",
+		board_desc: "اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.",
+		search_placeholder: "ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم",
+		filter_all: "الكل",
+		filter_pending: "معلقة",
+		filter_approved: "موافق عليها",
+		filter_rejected: "مرفوضة",
+		filter_rescheduled: "أعيدت جدولتها",
+		th_patient: "المريض",
+		th_hospital_department: "المستشفى / القسم",
+		th_date: "التاريخ",
+		th_time: "الوقت",
+		th_status: "الحالة",
+		th_action: "الإجراء",
+		drawer_title: "تفاصيل الحجز",
+		drawer_desc: "تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.",
+		patient_info: "بيانات المريض",
+		label_full_name: "الاسم الكامل",
+		label_phone: "رقم الهاتف",
+		label_email: "البريد الإلكتروني",
+		label_current_status: "الحالة الحالية",
+		appointment_info: "بيانات الموعد",
+		label_booking_number: "رقم الحجز",
+		label_hospital: "المستشفى",
+		label_department: "القسم",
+		label_doctor: "الطبيب",
+		label_date: "التاريخ",
+		label_time: "الوقت",
+		patient_note: "ملاحظة المريض",
+		additional_details: "التفاصيل الإضافية",
+		no_note: "لا توجد ملاحظات مضافة.",
+		reschedule_title: "إعادة جدولة الحجز",
+		new_date: "التاريخ الجديد",
+		new_time: "الوقت الجديد",
+		reschedule_reason_label: "سبب إعادة الجدولة أو رسالة للمريض",
+		reschedule_reason_placeholder: "اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة",
+		approve: "موافقة",
+		reject: "رفض",
+		reschedule: "إعادة جدولة",
+		helper_text: "لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط."
+	  },
+	  en: {
+		page_title: "Doctor Dashboard - Amal",
+		loading_title: "Preparing Doctor Dashboard",
+		loading_desc: "Loading doctor data, current bookings, and appointment management tools.",
+		sidebar_title: "Dashboard",
+		sidebar_subtitle: "Direct overview of daily bookings and appointment status",
+		doctor_loading: "Loading doctor data...",
+		doctor_subline: "Hospital · Department · Specialty",
+		offline: "Offline",
+		online: "Available",
+		nav_all: "All Bookings",
+		nav_pending: "Pending Review",
+		nav_approved: "Approved",
+		nav_rejected: "Rejected",
+		nav_rescheduled: "Rescheduled",
+		refresh_bookings: "Refresh Bookings",
+		logout: "Logout",
+		hero_title: "Manage Medical Appointments More Clearly and Faster",
+		hero_desc: "Review patient requests, approve, reject, or reschedule bookings easily, and track daily appointments from one organized place.",
+		sync_now: "Sync Now",
+		show_pending: "Show Pending Requests",
+		live_update: "Live update received",
+		stat_all: "Total Bookings",
+		stat_all_caption: "All bookings linked to the doctor account",
+		stat_pending: "Pending Review",
+		stat_pending_caption: "Requests that need approval, rejection, or rescheduling",
+		stat_approved: "Confirmed Bookings",
+		stat_approved_caption: "Appointments that have been approved",
+		stat_today: "Today's Appointments",
+		stat_today_caption: "Number of bookings scheduled for today",
+		board_title: "Bookings List",
+		board_desc: "Click any row or the booking follow-up button to view full details and take the appropriate action.",
+		search_placeholder: "Search by patient name, phone, email, booking number, hospital, or department",
+		filter_all: "All",
+		filter_pending: "Pending",
+		filter_approved: "Approved",
+		filter_rejected: "Rejected",
+		filter_rescheduled: "Rescheduled",
+		th_patient: "Patient",
+		th_hospital_department: "Hospital / Department",
+		th_date: "Date",
+		th_time: "Time",
+		th_status: "Status",
+		th_action: "Action",
+		drawer_title: "Booking Details",
+		drawer_desc: "All booking information appears here after selecting a request from the list.",
+		patient_info: "Patient Information",
+		label_full_name: "Full Name",
+		label_phone: "Phone Number",
+		label_email: "Email",
+		label_current_status: "Current Status",
+		appointment_info: "Appointment Information",
+		label_booking_number: "Booking Number",
+		label_hospital: "Hospital",
+		label_department: "Department",
+		label_doctor: "Doctor",
+		label_date: "Date",
+		label_time: "Time",
+		patient_note: "Patient Note",
+		additional_details: "Additional Details",
+		no_note: "No notes were added.",
+		reschedule_title: "Reschedule Booking",
+		new_date: "New Date",
+		new_time: "New Time",
+		reschedule_reason_label: "Reason for rescheduling or message to patient",
+		reschedule_reason_placeholder: "Write a note explaining the reason for changing the appointment or any important instructions",
+		approve: "Approve",
+		reject: "Reject",
+		reschedule: "Reschedule",
+		helper_text: "Bookings cannot be deleted from this dashboard. The doctor can only approve, reject, or set a new appointment."
 	  }
 	};
-  </script>
-<script>
-const translations = {
-  ar: {
-    page_title: "لوحة الطبيب - أمل",
-    loading_title: "جاري تجهيز لوحة الطبيب",
-    loading_desc: "يتم تحميل بيانات الطبيب، الحجوزات الحالية، وأدوات متابعة المواعيد.",
-    sidebar_title: "لوحة التحكم",
-    sidebar_subtitle: "متابعة مباشرة للحجوزات اليومية وحالة المواعيد",
-    doctor_loading: "جاري تحميل بيانات الطبيب...",
-    doctor_subline: "المستشفى · القسم · التخصص",
-    offline: "غير متصل",
-    online: "متاح",
-    nav_all: "كل الحجوزات",
-    nav_pending: "بانتظار المراجعة",
-    nav_approved: "تمت الموافقة",
-    nav_rejected: "مرفوضة",
-    nav_rescheduled: "أعيدت جدولتها",
-    refresh_bookings: "تحديث الحجوزات",
-    logout: "تسجيل الخروج",
-    hero_title: "إدارة المواعيد الطبية بشكل أوضح وأسرع",
-    hero_desc: "راجع طلبات المرضى، وافق أو ارفض أو أعد جدولة الحجز بسهولة، وتابع مواعيدك اليومية من مكان واحد بشكل منظم وواضح.",
-    sync_now: "مزامنة الآن",
-    show_pending: "عرض الطلبات المعلقة",
-    live_update: "تم استلام تحديث مباشر",
-    stat_all: "إجمالي الحجوزات",
-    stat_all_caption: "جميع الحجوزات المرتبطة بحساب الطبيب",
-    stat_pending: "بانتظار المراجعة",
-    stat_pending_caption: "طلبات تحتاج موافقة أو رفض أو إعادة جدولة",
-    stat_approved: "الحجوزات المؤكدة",
-    stat_approved_caption: "المواعيد التي تمت الموافقة عليها",
-    stat_today: "مواعيد اليوم",
-    stat_today_caption: "عدد الحجوزات المجدولة لهذا اليوم",
-    board_title: "قائمة الحجوزات",
-    board_desc: "اضغط على أي صف أو على زر متابعة الحجز لعرض التفاصيل الكاملة واتخاذ الإجراء المناسب.",
-    search_placeholder: "ابحث باسم المريض أو الهاتف أو البريد أو رقم الحجز أو المستشفى أو القسم",
-    filter_all: "الكل",
-    filter_pending: "معلقة",
-    filter_approved: "موافق عليها",
-    filter_rejected: "مرفوضة",
-    filter_rescheduled: "أعيدت جدولتها",
-    th_patient: "المريض",
-    th_hospital_department: "المستشفى / القسم",
-    th_date: "التاريخ",
-    th_time: "الوقت",
-    th_status: "الحالة",
-    th_action: "الإجراء",
-    drawer_title: "تفاصيل الحجز",
-    drawer_desc: "تظهر هنا جميع بيانات الحجز بعد اختيار أي طلب من القائمة.",
-    patient_info: "بيانات المريض",
-    label_full_name: "الاسم الكامل",
-    label_phone: "رقم الهاتف",
-    label_email: "البريد الإلكتروني",
-    label_current_status: "الحالة الحالية",
-    appointment_info: "بيانات الموعد",
-    label_booking_number: "رقم الحجز",
-    label_hospital: "المستشفى",
-    label_department: "القسم",
-    label_doctor: "الطبيب",
-    label_date: "التاريخ",
-    label_time: "الوقت",
-    patient_note: "ملاحظة المريض",
-    additional_details: "التفاصيل الإضافية",
-    no_note: "لا توجد ملاحظات مضافة.",
-    reschedule_title: "إعادة جدولة الحجز",
-    new_date: "التاريخ الجديد",
-    new_time: "الوقت الجديد",
-    reschedule_reason_label: "سبب إعادة الجدولة أو رسالة للمريض",
-    reschedule_reason_placeholder: "اكتب ملاحظة توضح للمريض سبب تغيير الموعد أو أي تعليمات مهمة",
-    approve: "موافقة",
-    reject: "رفض",
-    reschedule: "إعادة جدولة",
-    helper_text: "لا يمكن حذف الحجز من هذه اللوحة. المتاح للطبيب هو الموافقة أو الرفض أو تحديد موعد جديد فقط."
-  },
-  en: {
-    page_title: "Doctor Dashboard - Amal",
-    loading_title: "Preparing Doctor Dashboard",
-    loading_desc: "Loading doctor data, current bookings, and appointment management tools.",
-    sidebar_title: "Dashboard",
-    sidebar_subtitle: "Direct overview of daily bookings and appointment status",
-    doctor_loading: "Loading doctor data...",
-    doctor_subline: "Hospital · Department · Specialty",
-    offline: "Offline",
-    online: "Available",
-    nav_all: "All Bookings",
-    nav_pending: "Pending Review",
-    nav_approved: "Approved",
-    nav_rejected: "Rejected",
-    nav_rescheduled: "Rescheduled",
-    refresh_bookings: "Refresh Bookings",
-    logout: "Logout",
-    hero_title: "Manage Medical Appointments More Clearly and Faster",
-    hero_desc: "Review patient requests, approve, reject, or reschedule bookings easily, and track daily appointments from one organized place.",
-    sync_now: "Sync Now",
-    show_pending: "Show Pending Requests",
-    live_update: "Live update received",
-    stat_all: "Total Bookings",
-    stat_all_caption: "All bookings linked to the doctor account",
-    stat_pending: "Pending Review",
-    stat_pending_caption: "Requests that need approval, rejection, or rescheduling",
-    stat_approved: "Confirmed Bookings",
-    stat_approved_caption: "Appointments that have been approved",
-    stat_today: "Today's Appointments",
-    stat_today_caption: "Number of bookings scheduled for today",
-    board_title: "Bookings List",
-    board_desc: "Click any row or the booking follow-up button to view full details and take the appropriate action.",
-    search_placeholder: "Search by patient name, phone, email, booking number, hospital, or department",
-    filter_all: "All",
-    filter_pending: "Pending",
-    filter_approved: "Approved",
-    filter_rejected: "Rejected",
-    filter_rescheduled: "Rescheduled",
-    th_patient: "Patient",
-    th_hospital_department: "Hospital / Department",
-    th_date: "Date",
-    th_time: "Time",
-    th_status: "Status",
-    th_action: "Action",
-    drawer_title: "Booking Details",
-    drawer_desc: "All booking information appears here after selecting a request from the list.",
-    patient_info: "Patient Information",
-    label_full_name: "Full Name",
-    label_phone: "Phone Number",
-    label_email: "Email",
-    label_current_status: "Current Status",
-    appointment_info: "Appointment Information",
-    label_booking_number: "Booking Number",
-    label_hospital: "Hospital",
-    label_department: "Department",
-    label_doctor: "Doctor",
-    label_date: "Date",
-    label_time: "Time",
-    patient_note: "Patient Note",
-    additional_details: "Additional Details",
-    no_note: "No notes were added.",
-    reschedule_title: "Reschedule Booking",
-    new_date: "New Date",
-    new_time: "New Time",
-    reschedule_reason_label: "Reason for rescheduling or message to patient",
-    reschedule_reason_placeholder: "Write a note explaining the reason for changing the appointment or any important instructions",
-    approve: "Approve",
-    reject: "Reject",
-    reschedule: "Reschedule",
-    helper_text: "Bookings cannot be deleted from this dashboard. The doctor can only approve, reject, or set a new appointment."
-  }
-};
 
-function applyLanguage(lang) {
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-  document.body.lang = lang;
-  document.body.dir = lang === "ar" ? "rtl" : "ltr";
-  document.title = translations[lang].page_title;
+	function applyLanguage(lang) {
+	  document.documentElement.lang = lang;
+	  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+	  document.body.lang = lang;
+	  document.body.dir = lang === "ar" ? "rtl" : "ltr";
+	  document.title = translations[lang].page_title;
 
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (translations[lang] && translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
-  });
+	  document.querySelectorAll("[data-i18n]").forEach(el => {
+		const key = el.getAttribute("data-i18n");
+		if (translations[lang] && translations[lang][key]) {
+		  el.textContent = translations[lang][key];
+		}
+	  });
 
-  document.querySelectorAll("[data-placeholder]").forEach(el => {
-    const key = el.getAttribute("data-placeholder");
-    if (translations[lang] && translations[lang][key]) {
-      el.placeholder = translations[lang][key];
-    }
-  });
-}
+	  document.querySelectorAll("[data-placeholder]").forEach(el => {
+		const key = el.getAttribute("data-placeholder");
+		if (translations[lang] && translations[lang][key]) {
+		  el.placeholder = translations[lang][key];
+		}
+	  });
+	}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("siteLanguage") || "ar";
-  applyLanguage(savedLang);
-});
-</script>
-</body>
-</html>
+	document.addEventListener("DOMContentLoaded", () => {
+	  const savedLang = localStorage.getItem("siteLanguage") || "ar";
+	  applyLanguage(savedLang);
+	});
+	</script>
+	</body>
+	</html>
