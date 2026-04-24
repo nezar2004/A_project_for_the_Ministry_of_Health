@@ -1017,11 +1017,15 @@
   }
   /* 🔥 تصغير كامل للموبايل */
   @media (max-width: 768px) {
-  
+
     body {
-      transform: scale(0.9);
-      transform-origin: top center;
-      width: 111%; /* تعويض الفراغ */
+      overflow-x: auto;
+    }
+
+    .shell {
+      min-width: 800px; /* جرب 700 / 750 حسب ما بدك */
+      transform: scale(0.95);
+      transform-origin: top left;
     }
 
   }
