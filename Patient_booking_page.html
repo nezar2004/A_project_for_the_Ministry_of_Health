@@ -1290,13 +1290,13 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     </div>
   </div>
 
-  <div class="text-center mb-3 d-flex gap-2 justify-content-center">
-	  <button id="bookSelfBtn" class="btn btn-main">
-		🧑 حجز لنفسي
+	<div class="text-center mb-3 d-flex gap-2 justify-content-center">
+	  <button id="bookSelfBtn" class="btn btn-main" data-i18n="book_self">
+		🧑 <span data-i18n="book_self">حجز لنفسي</span>
 	  </button>
 
-	  <button id="bookOtherBtn" class="btn btn-outline-main">
-		👤 حجز لشخص آخر
+	  <button id="bookOtherBtn" class="btn btn-outline-main" data-i18n="book_other">
+		👤 <span data-i18n="book_other">حجز لشخص آخر</span>
 	  </button>
 	</div>
 
@@ -3346,6 +3346,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 <script>
 const translations = {
   ar: {
+	book_self: "حجز لنفسي",
+	book_other: "حجز لشخص آخر",
     page_title: "أمل",
     app_name: "🏥 أمل",
     my_bookings: "حجوزاتي",
@@ -3461,6 +3463,8 @@ const translations = {
   },
 
   en: {
+	book_self: "Book for Myself",
+	book_other: "Book for Someone Else",
     page_title: "Amal",
     app_name: "🏥 Amal",
     my_bookings: "My Bookings",
