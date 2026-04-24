@@ -1,4 +1,4 @@
-<!DOCTYPE html><!-- update -->
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -80,6 +80,10 @@
         <button id="refreshButton" class="soft-button" type="button">
           <i class="fa-solid fa-rotate-right" style="margin-left:8px;"></i><span data-i18n="refresh_bookings">تحديث الحجوزات</span>
         </button>
+		<button id="cancelAllBtn" class="danger-button" type="button">
+		  <i class="fa-solid fa-trash" style="margin-left:8px;"></i>
+		  إلغاء جميع الحجوزات
+		</button>
         <button id="logoutButton" class="ghost-button" type="button">
           <i class="fa-solid fa-arrow-right-from-bracket" style="margin-left:8px;"></i><span data-i18n="logout">تسجيل الخروج</span>
         </button>
@@ -974,6 +978,50 @@
     }
 
     boot();
+	document.getElementById("cancelAllBtn").onclick = async () => {
+	  if (!state.bookings.length) {
+		showToast("لا يوجد حجوزات", "ما في حجوزات لإلغائها");
+		return;
+	  }
+
+	  const confirmAction = confirm("هل أنت متأكد من إلغاء جميع الحجوزات؟");
+
+	  if (!confirmAction) return;
+
+	  try {
+		for (const booking of state.bookings) {
+		  const bookingRef = doc(bookingsDb, "allBookings", booking.id);
+
+		  await updateDoc(bookingRef, {
+			status: "REJECTED",
+			updatedAt: serverTimestamp(),
+			rejected_by_all: true
+		  });
+
+		  // تحديث نسخة المستخدم
+		  if (booking.user_uid && booking.source_booking_doc_id) {
+			const userBookingRef = doc(
+			  bookingsDb,
+			  "users",
+			  booking.user_uid,
+			  "bookings",
+			  booking.source_booking_doc_id
+			);
+
+			await updateDoc(userBookingRef, {
+			  status: "REJECTED",
+			  updatedAt: serverTimestamp()
+			});
+		  }
+		}
+
+		showToast("تم الإلغاء", "تم إلغاء جميع الحجوزات بنجاح");
+
+	  } catch (err) {
+		console.error(err);
+		showToast("خطأ", "فشل في إلغاء الحجوزات");
+	  }
+	};
   </script>
 <script>
 const translations = {
