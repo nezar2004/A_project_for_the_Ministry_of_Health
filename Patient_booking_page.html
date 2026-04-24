@@ -1754,7 +1754,13 @@
 
 
 	document.getElementById("btn-hospitals").addEventListener("click", () => {
-		
+	  if (!userLat || !userLng) {
+		alert("📍 استنى شوي لحد ما يتم تحديد موقعك");
+		return;
+	  }
+
+	  const url = `https://www.google.com/maps/search/hospitals/@${userLat},${userLng},14z`;
+	  window.open(url, "_blank");
 	});
 	// -------------------------------
 	// Chat
