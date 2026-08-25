@@ -298,6 +298,7 @@
 		  doc,
 		  query,
 		  where,
+		  limit,
 		  serverTimestamp,
 		  setDoc,
 		  onSnapshot
@@ -668,7 +669,11 @@
 		async function findDoctorProfile(user) {
 		  const normalizedEmail = String(user.email || "").trim().toLowerCase();
 
-		  const bookingsSnap = await getDocs(collection(bookingsDb, "allBookings"));
+		  const bookingsSnap = await getDocs(query(
+			collection(bookingsDb, "allBookings"),
+			where("doctor_email", "==", normalizedEmail),
+			limit(1)
+		  ));
 
 		  const doctorBookings = bookingsSnap.docs
 			.map(d => ({ id: d.id, ...d.data() }))
@@ -743,7 +748,19 @@
 			state.unsubscribeBookings = null;
 		  }
 
-		  state.unsubscribeBookings = onSnapshot(collection(bookingsDb, "allBookings"), (snapshot) => {
+		  const doctorEmail = String(state.authUser?.email || "").trim().toLowerCase();
+		  if (!doctorEmail) {
+			setLoading(false);
+			showToast("تعذر تحميل الحجوزات", "لا يوجد بريد إلكتروني مرتبط بحساب الطبيب.");
+			return;
+		  }
+
+		  const doctorBookingsQuery = query(
+			collection(bookingsDb, "allBookings"),
+			where("doctor_email", "==", doctorEmail)
+		  );
+
+		  state.unsubscribeBookings = onSnapshot(doctorBookingsQuery, (snapshot) => {
 			const rawBookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 			const filtered = rawBookings
 			  .filter(bookingMatchesDoctor)
