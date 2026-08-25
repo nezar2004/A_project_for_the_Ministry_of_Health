@@ -645,8 +645,8 @@
 
         <div class="fields">
           <div class="input-group">
-            <label class="input-label" for="loginNationalID" data-i18n="login_national_id_label">الرقم الوطني</label>
-            <input type="text" id="loginNationalID" data-placeholder="login_national_id_placeholder" placeholder="أدخل الرقم الوطني" maxlength="10">
+            <label class="input-label" for="loginEmail" data-i18n="login_national_id_label">البريد الإلكتروني</label>
+            <input type="email" id="loginEmail" data-placeholder="login_national_id_placeholder" placeholder="أدخل البريد الإلكتروني" autocomplete="email">
           </div>
 
           <div class="input-group">
@@ -747,14 +747,13 @@
         </div>
 
         <p class="note" data-i18n="forgot_note">
-          أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني
-          المسجل في الحساب.
+          أدخل بريدك الإلكتروني، وسيتم إرسال رابط آمن لإعادة تعيين كلمة المرور.
         </p>
 
         <div class="fields">
           <div class="input-group">
-            <label class="input-label" for="forgotNationalID" data-i18n="forgot_national_id_label">الرقم الوطني</label>
-            <input type="text" id="forgotNationalID" data-placeholder="forgot_national_id_placeholder" placeholder="أدخل الرقم الوطني" maxlength="10">
+            <label class="input-label" for="forgotEmail" data-i18n="forgot_national_id_label">البريد الإلكتروني</label>
+            <input type="email" id="forgotEmail" data-placeholder="forgot_national_id_placeholder" placeholder="أدخل البريد الإلكتروني" autocomplete="email">
           </div>
 
           <button id="forgotBtn" class="main-btn" data-i18n="forgot_btn">إرسال رابط إعادة التعيين</button>
@@ -780,13 +779,7 @@
     import {
       getFirestore,
       doc,
-      setDoc,
-      getDoc,
-      collection,
-      query,
-      where,
-      getDocs,
-      limit
+      setDoc
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -832,22 +825,6 @@
       return countryCode + (cleaned.startsWith("0") ? cleaned.substring(1) : cleaned);
     }
 
-    async function getUserByNationalID(nationalID) {
-      const q = query(
-        collection(db, "users"),
-        where("nationalID", "==", nationalID),
-        limit(1)
-      );
-
-      const snapshot = await getDocs(q);
-
-      if (snapshot.empty) {
-        return null;
-      }
-
-      return snapshot.docs[0];
-    }
-
     document.getElementById("registerBtn").onclick = async () => {
       const firstName = document.getElementById("regFirstName").value.trim();
       const lastName = document.getElementById("regLastName").value.trim();
@@ -880,12 +857,6 @@
       }
 
       try {
-        const existingUser = await getUserByNationalID(nationalID);
-        if (existingUser) {
-          alert("هذا الرقم الوطني مستخدم مسبقاً");
-          return;
-        }
-
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const uid = userCredential.user.uid;
 
@@ -913,101 +884,50 @@
     };
 
     document.getElementById("loginBtn").onclick = async () => {
-      const nationalID = document.getElementById("loginNationalID").value.trim();
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
       const password = document.getElementById("loginPassword").value;
 
-      if (!nationalID || !password) {
-        alert("يرجى إدخال الرقم الوطني وكلمة المرور");
+      if (!email || !password) {
+        alert("يرجى إدخال البريد الإلكتروني وكلمة المرور");
         return;
       }
 
-      if (!isValidNationalID(nationalID)) {
-        alert("الرقم الوطني غير صحيح");
+      if (!isValidEmail(email)) {
+        alert("البريد الإلكتروني غير صحيح");
         return;
       }
 
       try {
-        const userDoc = await getUserByNationalID(nationalID);
-
-        if (!userDoc) {
-          alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
-          return;
-        }
-
-        const userData = userDoc.data();
-        const email = userData.email;
-
         await signInWithEmailAndPassword(auth, email, password);
         window.location.href = "Patient_booking_page.html";
       } catch (err) {
-        alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
+        alert("❌ البريد الإلكتروني أو كلمة المرور غير صحيحة");
       }
     };
 
     document.getElementById("forgotBtn").onclick = async () => {
-      const nationalID = document.getElementById("forgotNationalID").value.trim();
+      const email = document.getElementById("forgotEmail").value.trim().toLowerCase();
 
-      if (!nationalID) {
-        alert("يرجى إدخال الرقم الوطني");
+      if (!email) {
+        alert("يرجى إدخال البريد الإلكتروني");
         return;
       }
 
-      if (!isValidNationalID(nationalID)) {
-        alert("الرقم الوطني يجب أن يكون 10 أرقام");
+      if (!isValidEmail(email)) {
+        alert("البريد الإلكتروني غير صحيح");
         return;
       }
 
       try {
-        const userDoc = await getUserByNationalID(nationalID);
-
-        if (!userDoc) {
-          alert("لا يوجد حساب مرتبط بهذا الرقم الوطني");
-          return;
-        }
-
-        const userData = userDoc.data();
-        const email = userData.email;
-
         await sendPasswordResetEmail(auth, email);
-        alert("✅ تم إرسال رابط إعادة تعيين كلمة المرور إلى الإيميل: " + email);
+        alert("✅ إذا كان البريد مسجلاً فسيصلك رابط إعادة التعيين.");
       } catch (err) {
-        alert("⚠️ تعذر إرسال رابط إعادة التعيين: " + err.message);
+        alert("⚠️ تعذر إرسال رابط إعادة التعيين الآن.");
       }
     };
 	window.goHome = function () {
 	  window.location.href = "index.html"; // غيرها حسب اسم الصفحة الرئيسية عندك
 	};
-	let checkTimeout;
-
-	const regNationalIDInput = document.getElementById("regNationalID");
-
-	regNationalIDInput.addEventListener("input", () => {
-	  clearTimeout(checkTimeout);
-
-	  const nationalID = regNationalIDInput.value.trim();
-
-	  // بس يفحص لما يصير 10 أرقام
-	  if (nationalID.length !== 10) return;
-
-	  checkTimeout = setTimeout(async () => {
-		if (!isValidNationalID(nationalID)) {
-		  alert("الرقم الوطني يجب أن يكون 10 أرقام");
-		  return;
-		}
-
-		try {
-		  const existingUser = await getUserByNationalID(nationalID);
-
-		  if (existingUser) {
-			alert("❌ هذا الرقم الوطني مستخدم مسبقاً");
-			regNationalIDInput.value = "";
-			regNationalIDInput.focus();
-		  }
-		} catch (err) {
-		  console.log(err);
-		}
-	  }, 500); // انتظر نص ثانية بعد آخر كتابة
-	});
   </script>
 <script>
 const translations = {
@@ -1026,8 +946,8 @@ const translations = {
 
     login_title: "تسجيل الدخول",
     login_subtitle: "أدخل بياناتك للوصول إلى حساب المريض",
-    login_national_id_label: "الرقم الوطني",
-    login_national_id_placeholder: "أدخل الرقم الوطني",
+    login_national_id_label: "البريد الإلكتروني",
+    login_national_id_placeholder: "أدخل البريد الإلكتروني",
     login_password_label: "كلمة المرور",
     login_password_placeholder: "أدخل كلمة المرور",
     show_btn: "إظهار",
@@ -1061,9 +981,9 @@ const translations = {
 
     forgot_title: "استعادة كلمة المرور",
     forgot_subtitle: "استرجاع الوصول إلى الحساب بخطوات بسيطة",
-    forgot_note: "أدخل الرقم الوطني، وسيتم إرسال رابط إعادة تعيين كلمة المرور إلى البريد الإلكتروني المسجل في الحساب.",
-    forgot_national_id_label: "الرقم الوطني",
-    forgot_national_id_placeholder: "أدخل الرقم الوطني",
+    forgot_note: "أدخل بريدك الإلكتروني، وسيتم إرسال رابط آمن لإعادة تعيين كلمة المرور.",
+    forgot_national_id_label: "البريد الإلكتروني",
+    forgot_national_id_placeholder: "أدخل البريد الإلكتروني",
     forgot_btn: "إرسال رابط إعادة التعيين",
     back_to_login_link: "العودة لتسجيل الدخول"
   },
@@ -1082,8 +1002,8 @@ const translations = {
 
     login_title: "Sign In",
     login_subtitle: "Enter your details to access the patient account",
-    login_national_id_label: "National ID",
-    login_national_id_placeholder: "Enter national ID",
+    login_national_id_label: "Email address",
+    login_national_id_placeholder: "Enter your email address",
     login_password_label: "Password",
     login_password_placeholder: "Enter password",
     show_btn: "Show",
@@ -1117,9 +1037,9 @@ const translations = {
 
     forgot_title: "Recover Password",
     forgot_subtitle: "Restore access to your account in simple steps",
-    forgot_note: "Enter the national ID, and a password reset link will be sent to the email registered with the account.",
-    forgot_national_id_label: "National ID",
-    forgot_national_id_placeholder: "Enter national ID",
+    forgot_note: "Enter your email address and we will send a secure password reset link.",
+    forgot_national_id_label: "Email address",
+    forgot_national_id_placeholder: "Enter your email address",
     forgot_btn: "Send Reset Link",
     back_to_login_link: "Back to Sign In"
   }
