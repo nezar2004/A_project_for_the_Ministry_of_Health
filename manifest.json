@@ -1,0 +1,12 @@
+{
+  "name": "أمل للخدمات الصحية",
+  "short_name": "أمل",
+  "description": "منصة لتنظيم المواعيد والخدمات الصحية",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f8ff",
+  "theme_color": "#2563eb"
+}

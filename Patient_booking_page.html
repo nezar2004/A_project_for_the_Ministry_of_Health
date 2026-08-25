@@ -572,8 +572,8 @@
 	  window.currentUserEmail = (user.email || "").trim().toLowerCase();
 	  window.currentUserUid = user.uid;
 
-	  localStorage.setItem("currentUserUid", user.uid);
-	  localStorage.setItem("currentUserEmail", (user.email || "").trim().toLowerCase());
+	  window.currentUserUid = user.uid;
+	  window.currentUserEmail = (user.email || "").trim().toLowerCase();
 
 	  const userDocRef = doc(getFirestore(authApp), "users", user.uid);
 	  const userDocSnap = await getDoc(userDocRef);
@@ -581,8 +581,8 @@
 	  if (userDocSnap.exists()) {
 		const userData = userDocSnap.data();
 
-		localStorage.setItem("userName", userData.name || "");
-		localStorage.setItem("userPhone", userData.phone || "");
+		window.currentUserName = userData.name || "";
+		window.currentUserPhone = userData.phone || "";
 	  }
 
 	  await loadFirebaseData();
@@ -869,9 +869,9 @@
 		  const phoneInput = document.getElementById("custPhone");
 
 		  if (bookingMode === "self") {
-			nameInput.value = localStorage.getItem("userName") || "";
-			emailInput.value = localStorage.getItem("currentUserEmail") || "";
-			let phone = localStorage.getItem("userPhone") || "";
+			nameInput.value = window.currentUserName || "";
+			emailInput.value = window.currentUserEmail || "";
+			let phone = window.currentUserPhone || "";
 
 			// تنظيف الرقم
 			phone = phone.replace(/\s/g, "");     // حذف الفراغات
@@ -2108,19 +2108,11 @@
 		localBookings = localBookings.filter(isBookingStillValid);
 		localStorage.setItem("localBookings", JSON.stringify(localBookings));
 
-		const uid =
-		  auth.currentUser?.uid ||
-		  window.currentUserUid ||
-		  localStorage.getItem("currentUserUid");
+		const uid = auth.currentUser?.uid || window.currentUserUid;
 
 		let firebaseBookings = [];
 
 		if (uid) {
-		  console.log("UID used for bookings =", uid);
-		  console.log("auth.currentUser?.uid =", auth.currentUser?.uid);
-		  console.log("window.currentUserUid =", window.currentUserUid);
-		  console.log("localStorage currentUserUid =", localStorage.getItem("currentUserUid"));
-
 		  const snap = await window.getDocs(
 			window.collection(window.bookingsDb, "users", uid, "bookings")
 		  );
@@ -2166,11 +2158,11 @@
 
 		bookingsBody.innerHTML = allBookings.map(b => `
 		  <div style="border:1px solid #ddd; border-radius:12px; padding:12px; margin-bottom:10px; background:#fff;">
-			<div><strong>Booking number:</strong> ${b.booking_id || "-"}</div>
-			<div><strong>Doctor:</strong> ${b.doctor_name || "-"}</div>
-			<div><strong>Hospital:</strong> ${b.hospital_name || "-"}</div>
-			<div><strong>Department:</strong> ${b.department_title || "-"}</div>
-			<div><strong>Date and time:</strong> ${(b.date || "-")} ${(b.time || "-")}</div><br>
+			<div><strong>Booking number:</strong> ${escapeHtml(b.booking_id || "-")}</div>
+			<div><strong>Doctor:</strong> ${escapeHtml(b.doctor_name || "-")}</div>
+			<div><strong>Hospital:</strong> ${escapeHtml(b.hospital_name || "-")}</div>
+			<div><strong>Department:</strong> ${escapeHtml(b.department_title || "-")}</div>
+			<div><strong>Date and time:</strong> ${escapeHtml(b.date || "-")} ${escapeHtml(b.time || "-")}</div><br>
 			<div><strong>Status:</strong> ${getStatusBadge(b.status || "PENDING")}</div>
 			${b.isLocalOnly ? '<div style="margin-top:8px;font-size:12px;color:#777;">Saved locally</div>' : ''}
 		  </div>

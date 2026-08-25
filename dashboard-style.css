@@ -1014,18 +1014,10 @@
     position: relative;
     z-index: 9999;
   }
-  /* 🔥 تصغير كامل للموبايل */
-    @media (max-width: 768px) {
-
-	  html, body {
-		overflow-x: auto !important; /* مهم */
-	  }
-
-	  .shell {
-		min-width: 800px;
-		transform: scale(0.95);
-		transform-origin: top left;
-	  }
-
-	
-    }
+  /* Mobile tables scroll inside their container; the page itself stays responsive. */
+  @media (max-width: 768px) {
+    html, body { overflow-x: hidden !important; }
+    .shell { min-width: 0; transform: none; transform-origin: initial; }
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { min-width: 760px; }
+  }
