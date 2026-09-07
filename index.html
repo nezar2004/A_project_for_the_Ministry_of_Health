@@ -910,7 +910,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js")
+  navigator.serviceWorker.register("service-worker.js?v=3")
     .then(() => console.log("SW registered"))
     .catch(err => console.log("SW error:", err));
 }
