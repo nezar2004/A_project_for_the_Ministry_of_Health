@@ -1,4 +1,4 @@
-const CACHE_NAME = "amal-shell-v2";
+const CACHE_NAME = "amal-shell-v3";
 const SHELL_FILES = [
   "./",
   "./index.html",
