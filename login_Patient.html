@@ -779,13 +779,10 @@
     import {
       getFirestore,
       doc,
-      setDoc,
-      collection,
-      query,
-      where,
-      getDocs,
-      limit
+      setDoc
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
@@ -799,6 +796,7 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const patientLogin = httpsCallable(getFunctions(app, "us-central1"), "patientLogin");
 
     window.showForm = (id) => {
       document.querySelectorAll(".container > div").forEach(div => div.classList.add("hidden"));
@@ -830,21 +828,15 @@
       return countryCode + (cleaned.startsWith("0") ? cleaned.substring(1) : cleaned);
     }
 
-    async function getUserByNationalID(nationalID) {
-      const q = query(
-        collection(db, "users"),
-        where("nationalID", "==", nationalID),
-        limit(1)
-      );
-
-      const snapshot = await getDocs(q);
-      return snapshot.empty ? null : snapshot.docs[0];
+    function normalizeNationalID(value) {
+      return value.trim().replace(/[٠-٩]/g, c => String(c.charCodeAt(0) - 1632))
+        .replace(/[۰-۹]/g, c => String(c.charCodeAt(0) - 1776));
     }
 
     document.getElementById("registerBtn").onclick = async () => {
       const firstName = document.getElementById("regFirstName").value.trim();
       const lastName = document.getElementById("regLastName").value.trim();
-      const nationalID = document.getElementById("regNationalID").value.trim();
+      const nationalID = normalizeNationalID(document.getElementById("regNationalID").value);
       const email = document.getElementById("regEmail").value.trim().toLowerCase();
       const countryCode = document.getElementById("regCountryCode").value;
       const phone = document.getElementById("regPhone").value.trim();
@@ -900,7 +892,7 @@
     };
 
     document.getElementById("loginBtn").onclick = async () => {
-      const nationalID = document.getElementById("loginNationalID").value.trim();
+      const nationalID = normalizeNationalID(document.getElementById("loginNationalID").value);
       const password = document.getElementById("loginPassword").value;
 
       if (!nationalID || !password) {
@@ -913,19 +905,29 @@
         return;
       }
 
+      const button = document.getElementById("loginBtn");
+      if (button.disabled) return;
+      button.disabled = true;
       try {
-        const userDoc = await getUserByNationalID(nationalID);
-
-        if (!userDoc) {
-          alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
-          return;
-        }
-
-        const email = userDoc.data().email;
-        await signInWithEmailAndPassword(auth, email, password);
+        const result = await patientLogin({ nationalID, password });
+        await signInWithEmailAndPassword(auth, result.data.email, password);
         window.location.href = "Patient_booking_page.html";
       } catch (err) {
-        alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
+        const messages = {
+          "functions/unauthenticated": "❌ الرقم الوطني أو كلمة المرور غير صحيحة",
+          "auth/invalid-credential": "❌ الرقم الوطني أو كلمة المرور غير صحيحة",
+          "auth/wrong-password": "❌ الرقم الوطني أو كلمة المرور غير صحيحة",
+          "auth/user-not-found": "❌ الرقم الوطني أو كلمة المرور غير صحيحة",
+          "functions/invalid-argument": "يرجى إدخال رقم وطني صحيح من 10 أرقام وكلمة المرور",
+          "functions/resource-exhausted": "محاولات دخول كثيرة. انتظر 15 دقيقة ثم حاول مجددًا.",
+          "auth/too-many-requests": "محاولات دخول كثيرة. حاول لاحقًا.",
+          "functions/failed-precondition": "هذا الحساب يتطلب تحققًا إضافيًا. تواصل مع الدعم.",
+          "auth/multi-factor-auth-required": "هذا الحساب يتطلب تحققًا إضافيًا. تواصل مع الدعم.",
+          "auth/network-request-failed": "تعذر الاتصال. تحقق من الإنترنت وحاول مجددًا."
+        };
+        alert(messages[err.code] || "تعذر الاتصال بخدمة تسجيل الدخول الآن. حاول لاحقًا أو تواصل مع الدعم.");
+      } finally {
+        button.disabled = false;
       }
     };
 
