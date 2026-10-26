@@ -595,13 +595,15 @@
 	  color: #132238;
 	} */
   </style>
+<script src="amal-core.js"></script>
+<link rel="stylesheet" href="amal-accessibility.css?v=4">
 </head>
 <body>
 <div class="auth-shell">
   <!-- الجهة الجمالية -->
   <div class="auth-side">
     <div class="brand-wrap">
-      <div class="brand-badge" data-i18n="brand_badge">💚 نظام نبض الطبي</div>
+      <div class="brand-badge" data-i18n="brand_badge">💚 أمل الطبي</div>
       <h1 class="brand-title" data-i18n="brand_title">بوابة المرضى</h1>
       <p class="brand-subtitle" data-i18n="brand_subtitle">
         سجّل دخولك للوصول إلى خدمات الحجز الطبية، متابعة المواعيد، وإدارة حسابك بسهولة
@@ -616,18 +618,18 @@
 
         <div class="mini-card">
           <strong data-i18n="card2_title">إدارة حجوزاتك بسهولة</strong>
-          <span data-i18n="card2_desc">عرض، تعديل، أو إلغاء أي موعد بخطوات بسيطة ومن مكان واحد.</span>
+          <span data-i18n="card2_desc">عرض مواعيدك ومتابعة موافقة الطبيب أو تغيير الموعد.</span>
         </div>
 
         <div class="mini-card">
           <strong data-i18n="card3_title">ذكاء اصطناعي مدمج</strong>
-          <span data-i18n="card3_desc">مساعد ذكي متوفر دائماً للإجابة على الأسئلة بدون انتظار.</span>
+          <span data-i18n="card3_desc">مساعد توعوي للإجابة عن الأسئلة الصحية العامة.</span>
         </div>
       </div>
     </div>
 
     <div class="side-footer" data-i18n="side_footer">
-      وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية
+      وزارة الصحة الأردنية — منصة أمل الرقمية للرعاية الصحية
     </div>
   </div>
 
@@ -645,8 +647,8 @@
 
         <div class="fields">
           <div class="input-group">
-            <label class="input-label" for="loginNationalID" data-i18n="login_national_id_label">الرقم الوطني</label>
-            <input type="text" id="loginNationalID" data-placeholder="login_national_id_placeholder" placeholder="أدخل الرقم الوطني" maxlength="10" inputmode="numeric" autocomplete="username">
+            <label class="input-label" for="loginNationalID" data-i18n="login_national_id_label">البريد الإلكتروني</label>
+            <input type="email" id="loginNationalID" data-placeholder="login_national_id_placeholder" placeholder="أدخل البريد الإلكتروني" autocomplete="username" inputmode="email">
           </div>
 
           <div class="input-group">
@@ -767,332 +769,7 @@
     </div>
   </div>
 </div>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      sendPasswordResetEmail
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-    import {
-      getFirestore,
-      doc,
-      setDoc,
-      collection,
-      query,
-      where,
-      getDocs,
-      limit
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4l0BaiwsxguCFPWBEF_5xoUv45PWjHqk",
-      authDomain: "nabdapp-3a077.firebaseapp.com",
-      projectId: "nabdapp-3a077",
-      storageBucket: "nabdapp-3a077.appspot.com",
-      messagingSenderId: "675031985272",
-      appId: "1:675031985272:web:5f86cc21c28062cd65d18d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    window.showForm = (id) => {
-      document.querySelectorAll(".container > div").forEach(div => div.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
-    };
-
-    window.togglePassword = (inputId, btn) => {
-      const input = document.getElementById(inputId);
-      if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "إخفاء";
-      } else {
-        input.type = "password";
-        btn.textContent = "إظهار";
-      }
-    };
-
-    function isValidNationalID(nid) {
-      const cleaned = nid.trim();
-      return cleaned.length === 10 && /^[0-9]+$/.test(cleaned);
-    }
-
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-    }
-
-    function normalizePhone(countryCode, phone) {
-      const cleaned = phone.trim();
-      return countryCode + (cleaned.startsWith("0") ? cleaned.substring(1) : cleaned);
-    }
-
-    async function getUserByNationalID(nationalID) {
-      const q = query(
-        collection(db, "users"),
-        where("nationalID", "==", nationalID),
-        limit(1)
-      );
-
-      const snapshot = await getDocs(q);
-      return snapshot.empty ? null : snapshot.docs[0];
-    }
-
-    document.getElementById("registerBtn").onclick = async () => {
-      const firstName = document.getElementById("regFirstName").value.trim();
-      const lastName = document.getElementById("regLastName").value.trim();
-      const nationalID = document.getElementById("regNationalID").value.trim();
-      const email = document.getElementById("regEmail").value.trim().toLowerCase();
-      const countryCode = document.getElementById("regCountryCode").value;
-      const phone = document.getElementById("regPhone").value.trim();
-      const birthday = document.getElementById("regBirthday").value;
-      const gender = document.getElementById("regGender").value;
-      const password = document.getElementById("regPassword").value;
-
-      if (!firstName || !lastName || !nationalID || !email || !phone || !birthday || !gender || !password) {
-        alert("يرجى تعبئة جميع الحقول");
-        return;
-      }
-
-      if (!isValidNationalID(nationalID)) {
-        alert("الرقم الوطني يجب أن يكون 10 أرقام");
-        return;
-      }
-
-      if (!isValidEmail(email)) {
-        alert("يرجى إدخال بريد إلكتروني صحيح");
-        return;
-      }
-
-      if (password.length < 6) {
-        alert("كلمة المرور يجب أن تكون 6 أحرف أو أكثر");
-        return;
-      }
-
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const uid = userCredential.user.uid;
-
-        await setDoc(doc(db, "users", uid), {
-          firstName,
-          lastName,
-          name: firstName + " " + lastName,
-          nationalID,
-          email,
-          phone: normalizePhone(countryCode, phone),
-          birthday,
-          gender,
-          createdAt: new Date().toISOString()
-        });
-
-        alert("✅ تم إنشاء الحساب بنجاح");
-        window.location.href = "login_Patient.html";
-      } catch (err) {
-        if (err.code === "auth/email-already-in-use") {
-          alert("هذا البريد الإلكتروني مستخدم مسبقاً");
-        } else {
-          alert("⚠️ حدث خطأ أثناء إنشاء الحساب: " + err.message);
-        }
-      }
-    };
-
-    document.getElementById("loginBtn").onclick = async () => {
-      const nationalID = document.getElementById("loginNationalID").value.trim();
-      const password = document.getElementById("loginPassword").value;
-
-      if (!nationalID || !password) {
-        alert("يرجى إدخال الرقم الوطني وكلمة المرور");
-        return;
-      }
-
-      if (!isValidNationalID(nationalID)) {
-        alert("الرقم الوطني غير صحيح");
-        return;
-      }
-
-      try {
-        const userDoc = await getUserByNationalID(nationalID);
-
-        if (!userDoc) {
-          alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
-          return;
-        }
-
-        const email = userDoc.data().email;
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "Patient_booking_page.html";
-      } catch (err) {
-        alert("❌ الرقم الوطني أو كلمة المرور غير صحيحة");
-      }
-    };
-
-    document.getElementById("forgotBtn").onclick = async () => {
-      const email = document.getElementById("forgotEmail").value.trim().toLowerCase();
-
-      if (!email) {
-        alert("يرجى إدخال البريد الإلكتروني");
-        return;
-      }
-
-      if (!isValidEmail(email)) {
-        alert("البريد الإلكتروني غير صحيح");
-        return;
-      }
-
-      try {
-        await sendPasswordResetEmail(auth, email);
-        alert("✅ إذا كان البريد مسجلاً فسيصلك رابط إعادة التعيين.");
-      } catch (err) {
-        alert("⚠️ تعذر إرسال رابط إعادة التعيين الآن.");
-      }
-    };
-	window.goHome = function () {
-	  window.location.href = "index.html"; // غيرها حسب اسم الصفحة الرئيسية عندك
-	};
-  </script>
-<script>
-const translations = {
-  ar: {
-    page_title: "نظام نبض - وزارة الصحة",
-    brand_badge: "💚 نظام نبض الطبي",
-    brand_title: "بوابة المرضى",
-    brand_subtitle: "سجّل دخولك للوصول إلى خدمات الحجز الطبية، متابعة المواعيد، وإدارة حسابك بسهولة ضمن واجهة حديثة ومريحة وواضحة.",
-    card1_title: "سهولة الاستخدام",
-    card1_desc: "تنقل واضح بين تسجيل الدخول، إنشاء الحساب، واستعادة كلمة المرور.",
-    card2_title: "إدارة حجوزاتك بسهولة",
-    card2_desc: "عرض، تعديل، أو إلغاء أي موعد بخطوات بسيطة ومن مكان واحد.",
-    card3_title: "ذكاء اصطناعي مدمج",
-    card3_desc: "مساعد ذكي متوفر دائماً للإجابة على الأسئلة بدون انتظار.",
-    side_footer: "وزارة الصحة الأردنية — منصة نبض الرقمية للرعاية الصحية",
-
-    login_title: "تسجيل الدخول",
-    login_subtitle: "أدخل بياناتك للوصول إلى حساب المريض",
-    login_national_id_label: "الرقم الوطني",
-    login_national_id_placeholder: "أدخل الرقم الوطني",
-    login_password_label: "كلمة المرور",
-    login_password_placeholder: "أدخل كلمة المرور",
-    show_btn: "إظهار",
-    hide_btn: "إخفاء",
-    login_btn: "تسجيل الدخول",
-    home_btn: "الصفحة الرئيسية",
-    create_account_link: "إنشاء حساب جديد",
-    forgot_password_link: "نسيت كلمة المرور؟",
-
-    register_title: "إنشاء حساب جديد",
-    register_subtitle: "املأ البيانات التالية لإنشاء حساب المريض",
-    first_name_label: "الاسم الأول",
-    first_name_placeholder: "أدخل الاسم الأول",
-    last_name_label: "اسم العائلة",
-    last_name_placeholder: "أدخل اسم العائلة",
-    register_national_id_label: "الرقم الوطني",
-    register_national_id_placeholder: "الرقم الوطني (10 أرقام)",
-    email_label: "البريد الإلكتروني",
-    email_placeholder: "أدخل البريد الإلكتروني",
-    phone_label: "رقم الهاتف",
-    phone_placeholder: "7XXXXXXXX",
-    birthday_label: "تاريخ الميلاد",
-    gender_label: "الجنس",
-    gender_placeholder: "اختر الجنس",
-    male_option: "ذكر",
-    female_option: "أنثى",
-    register_password_label: "كلمة المرور",
-    register_password_placeholder: "أدخل كلمة المرور",
-    register_btn: "إنشاء الحساب",
-    have_account_link: "لديك حساب؟ سجل دخولك",
-
-    forgot_title: "استعادة كلمة المرور",
-    forgot_subtitle: "استرجاع الوصول إلى الحساب بخطوات بسيطة",
-    forgot_note: "أدخل بريدك الإلكتروني، وسيتم إرسال رابط آمن لإعادة تعيين كلمة المرور.",
-    forgot_national_id_label: "البريد الإلكتروني",
-    forgot_national_id_placeholder: "أدخل البريد الإلكتروني",
-    forgot_btn: "إرسال رابط إعادة التعيين",
-    back_to_login_link: "العودة لتسجيل الدخول"
-  },
-  en: {
-    page_title: "Amal System - Ministry of Health",
-    brand_badge: "💚 Amal Medical System",
-    brand_title: "Patient Portal",
-    brand_subtitle: "Sign in to access medical booking services, follow appointments, and manage your account easily through a modern, comfortable, and clear interface.",
-    card1_title: "Easy to Use",
-    card1_desc: "Clear navigation between sign in, account creation, and password recovery.",
-    card2_title: "Manage Your Bookings Easily",
-    card2_desc: "View, edit, or cancel any appointment in simple steps from one place.",
-    card3_title: "Built-in AI",
-    card3_desc: "A smart assistant is always available to answer questions without waiting.",
-    side_footer: "Jordan Ministry of Health — Amal Digital Healthcare Platform",
-
-    login_title: "Sign In",
-    login_subtitle: "Enter your details to access the patient account",
-    login_national_id_label: "National ID",
-    login_national_id_placeholder: "Enter national ID",
-    login_password_label: "Password",
-    login_password_placeholder: "Enter password",
-    show_btn: "Show",
-    hide_btn: "Hide",
-    login_btn: "Sign In",
-    home_btn: "Home",
-    create_account_link: "Create New Account",
-    forgot_password_link: "Forgot Password?",
-
-    register_title: "Create New Account",
-    register_subtitle: "Fill in the following details to create a patient account",
-    first_name_label: "First Name",
-    first_name_placeholder: "Enter first name",
-    last_name_label: "Last Name",
-    last_name_placeholder: "Enter last name",
-    register_national_id_label: "National ID",
-    register_national_id_placeholder: "National ID (10 digits)",
-    email_label: "Email",
-    email_placeholder: "Enter email",
-    phone_label: "Phone Number",
-    phone_placeholder: "7XXXXXXXX",
-    birthday_label: "Date of Birth",
-    gender_label: "Gender",
-    gender_placeholder: "Select gender",
-    male_option: "Male",
-    female_option: "Female",
-    register_password_label: "Password",
-    register_password_placeholder: "Enter password",
-    register_btn: "Create Account",
-    have_account_link: "Already have an account? Sign in",
-
-    forgot_title: "Recover Password",
-    forgot_subtitle: "Restore access to your account in simple steps",
-    forgot_note: "Enter your email address and we will send a secure password reset link.",
-    forgot_national_id_label: "Email address",
-    forgot_national_id_placeholder: "Enter your email address",
-    forgot_btn: "Send Reset Link",
-    back_to_login_link: "Back to Sign In"
-  }
-};
-
-function applyLanguage(lang) {
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-  document.title = translations[lang].page_title;
-
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (translations[lang] && translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
-  });
-
-  document.querySelectorAll("[data-placeholder]").forEach(el => {
-    const key = el.getAttribute("data-placeholder");
-    if (translations[lang] && translations[lang][key]) {
-      el.placeholder = translations[lang][key];
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("siteLanguage") || "ar";
-  applyLanguage(savedLang);
-});
-</script>
+  <script type="module" src="patient-auth.js"></script>
+<script src="patient-i18n.js"></script>
 </body>
 </html>

@@ -1,0 +1,23 @@
+/* Shared access and responsive fixes, loaded after page styles. */
+:focus-visible { outline: 3px solid #1d4ed8 !important; outline-offset: 3px; }
+button, [role="button"], input, select { min-height: 44px; }
+button.card { width: 100%; text-align: start; font: inherit; cursor: pointer; }
+.booking-summary { border: 1px solid #d1d5db; border-radius: 12px; padding: 14px; margin-block: 10px; background: white; }
+.status-pill { display: inline-block; padding: 4px 10px; border-radius: 16px; background: #e5eefb; color: #153b70; }
+.chat-body { white-space: pre-wrap; overflow-wrap: anywhere; }
+.reminder-help { font-size: .875rem; padding: 8px; line-height: 1.6; }
+html, body, input, textarea { -webkit-user-select: text !important; user-select: text !important; }
+#chat-widget:not(.active), #reminderPanel:not(.active), .drawer:not(.active) { visibility: hidden; }
+#chat-widget.active, #reminderPanel.active, .drawer.active { visibility: visible; }
+#chat-widget, #reminderPanel { width: min(360px, 100vw) !important; max-width: 100vw !important; }
+html[dir="ltr"] .fa-arrow-left, html[dir="ltr"] .fa-arrow-right { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) {
+ *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+:root { --primary: #14664f; --primary-dark: #11543f; }
+.auth-side { background: linear-gradient(135deg, #145c46, #176b55) !important; }
+.auth-side .brand-subtitle, .auth-side .mini-card span, .auth-side .side-footer { color: #fff; }
+.form-card .input-label, .form-card .title, .toggle-pass, .text-link { color: #145c46; }
+.main-btn { background: #176b55 !important; color: #fff !important; }
+input::placeholder, textarea::placeholder { color: #64748b !important; opacity: 1; }
