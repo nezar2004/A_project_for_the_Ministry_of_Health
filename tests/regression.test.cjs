@@ -126,14 +126,15 @@ test("reminder names are rendered as text rather than executable markup",async()
   assert.ok(w.document.getElementById("remindersList").textContent.includes("<img"));
   dom.window.close();
 });
-test("patient login uses email without querying private profiles before authentication",async()=>{
+test("national ID login uses verified server lookup without public profile queries",async()=>{
   const dom=new JSDOM(read("login_Patient.html"),{url:"https://example.test/",runScripts:"outside-only"});
   const w=dom.window,ctx=dom.getInternalVMContext();w.alert=()=>{};let profileReads=0,signInEmail;
   Object.assign(w,{initializeApp:()=>({}),getAuth:()=>({}),getFirestore:()=>({}),getDocs:async()=>{profileReads++;return{empty:true}},collection:()=>({}),query:()=>({}),where:()=>({}),limit:()=>({}),doc:()=>({}),setDoc:async()=>{},createUserWithEmailAndPassword:async()=>{},sendPasswordResetEmail:async()=>{},signInWithEmailAndPassword:async(_auth,email)=>{signInEmail=email;throw Error("test rejects navigation")}});
   vm.runInContext(read("amal-core.js"),ctx);
   const module=[...w.document.querySelectorAll("script")].find(s=>s.type==="module");
   vm.runInContext("(function(){"+stripImports(module.getAttribute("src") ? read(module.getAttribute("src")) : module.textContent)+"})()",ctx);
-  w.document.getElementById("loginNationalID").value="PATIENT@example.test";
+  w.AbortSignal=AbortSignal;w.fetch=async(_url,options)=>{const body=JSON.parse(options.body);assert.equal(body.nationalID,"1234567890");assert.equal(body.password,"test-password");return{ok:true,json:async()=>({email:"patient@example.test"})}};
+  w.document.getElementById("loginNationalID").value="1234567890";
   w.document.getElementById("loginPassword").value="test-password";
   await w.document.getElementById("loginBtn").onclick();
   assert.equal(signInEmail,"patient@example.test");assert.equal(profileReads,0);

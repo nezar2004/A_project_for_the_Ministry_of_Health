@@ -123,26 +123,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
     };
 
     document.getElementById("loginBtn").onclick = async () => {
-      const email = document.getElementById("loginNationalID").value.trim().toLowerCase();
-      const password = document.getElementById("loginPassword").value;
-
-      if (!email || !password) {
-        alert("يرجى إدخال البريد الإلكتروني وكلمة المرور");
-        return;
-      }
-
-      if (!isValidEmail(email)) {
-        alert(Amal.text("البريد الإلكتروني غير صحيح", "Enter a valid email address"));
-        return;
-      }
-
+      const nationalID=document.getElementById("loginNationalID").value.trim();
+      const password=document.getElementById("loginPassword").value;
+      if(!isValidNationalID(nationalID)||!password){alert(Amal.text("أدخل الرقم الوطني من 10 أرقام وكلمة المرور", "Enter your 10-digit national ID and password"));return;}
+      const button=document.getElementById("loginBtn");if(button.disabled)return;button.disabled=true;
       try {
-        document.getElementById("loginBtn").disabled = true;
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "Patient_booking_page.html";
-      } catch (err) {
-        alert(Amal.text("البريد الإلكتروني أو كلمة المرور غير صحيحة", "Email or password is incorrect"));
-      } finally { document.getElementById("loginBtn").disabled = false; }
+        const response=await fetch("https://amal-medical-assistant.onrender.com/api/patient-login",{method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",signal:AbortSignal.timeout(90000),body:JSON.stringify({nationalID,password})});
+        const result=await response.json();if(!response.ok)throw new Error(result.answer||"Login failed");
+        await signInWithEmailAndPassword(auth,result.email,password);
+        window.location.href="Patient_booking_page.html";
+      }catch(error){alert(Amal.text("تعذر الدخول. تحقق من الرقم الوطني وكلمة المرور، أو حاول بعد دقيقة.","Unable to sign in. Check your national ID and password, or retry in a minute."));}
+      finally{button.disabled=false;}
     };
 
     document.getElementById("forgotBtn").onclick = async () => {
