@@ -1,0 +1,9 @@
+rules_version = '2';
+// Booking documents, copies, interval reservations, doctor profiles, and doctorAccess ACLs
+// are served only by the authenticated backend. Admin SDK access is controlled by IAM.
+// No browser identity, including a claimed doctor/admin role, can directly read or write them.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} { allow read, write: if false; }
+  }
+}

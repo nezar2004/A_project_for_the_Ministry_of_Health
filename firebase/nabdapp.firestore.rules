@@ -1,12 +1,33 @@
 rules_version = '2';
+// User profiles remain in nabdapp-3a077. No role or permission fields are client-writable.
+// Required fields: bounded name parts/name, nationalID, email, phone, birthday, gender, createdAt.
+// Existing string createdAt values remain readable; new profiles use server timestamps.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
-      allow create: if request.auth != null
-                    && request.auth.uid == userId
-                    && request.resource.data.email == request.auth.token.email;
-      allow get, update, delete: if request.auth != null && request.auth.uid == userId;
+    function signedIn() { return request.auth != null; }
+    function owner(uid) { return signedIn() && request.auth.uid == uid; }
+    function text(value, max) { return value is string && value.size() > 0 && value.size() <= max; }
+    function validUser(data) {
+      return data.keys().hasAll(['firstName','lastName','name','nationalID','email','phone','birthday','gender','createdAt'])
+        && data.keys().hasOnly(['firstName','lastName','name','nationalID','email','phone','birthday','gender','createdAt'])
+        && text(data.firstName,80) && text(data.lastName,80)
+        && text(data.name,161) && data.name == data.firstName + ' ' + data.lastName
+        && text(data.nationalID,10) && data.nationalID.matches('^[0-9]{10}$')
+        && text(data.email,254) && data.email == request.auth.token.email
+        && text(data.phone,16) && data.phone.matches('^[+][1-9][0-9]{6,14}$')
+        && text(data.birthday,10) && data.birthday.matches('^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$')
+        && data.gender in ['male','female']
+        && (data.createdAt is timestamp || (data.createdAt is string && data.createdAt.size() <= 32));
+    }
+    match /users/{uid} {
+      allow get: if owner(uid);
       allow list: if false;
+      allow create: if owner(uid) && validUser(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+      allow update: if owner(uid) && validUser(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.nationalID == resource.data.nationalID;
+      allow delete: if owner(uid);
     }
     match /{document=**} { allow read, write: if false; }
   }

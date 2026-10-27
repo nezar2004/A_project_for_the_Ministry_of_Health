@@ -25,7 +25,7 @@
       --radius-xl: 28px;
       --radius-lg: 18px;
       --radius-md: 14px;
-    } 
+    }
 
     * {
       box-sizing: border-box;
@@ -524,6 +524,8 @@
       }
     } */
   </style>
+<link rel="stylesheet" href="amal-accessibility.css?v=4">
+<script src="amal-core.js"></script>
 </head>
 <body>
 <div class="auth-shell">
@@ -597,11 +599,11 @@
               البريد الإلكتروني
             </label>
 
-            <input 
-              id="doctorEmail" 
-              type="email" 
+            <input
+              id="doctorEmail"
+              type="email"
               data-placeholder="email_placeholder"
-              placeholder="doctor@example.com" 
+              placeholder="doctor@example.com"
               required
             >
           </div>
@@ -612,17 +614,17 @@
             </label>
 
             <div class="password-wrap">
-              <input 
-                id="doctorPassword" 
-                type="password" 
+              <input
+                id="doctorPassword"
+                type="password"
                 data-placeholder="password_placeholder"
-                placeholder="أدخل كلمة المرور" 
+                placeholder="أدخل كلمة المرور"
                 required
               >
 
-              <button 
-                type="button" 
-                class="toggle-pass" 
+              <button
+                type="button"
+                class="toggle-pass"
                 data-i18n="show"
                 onclick="togglePassword('doctorPassword', this)">
                 إظهار
@@ -649,298 +651,7 @@
     </div>
   </div>
 </div>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-  const doctorFirebaseConfig = {
-    apiKey: "AIzaSyClPA_4ZjzUrnERb_k-6yBtgb9AB7QIryA",
-    authDomain: "dataofhosp.firebaseapp.com",
-    projectId: "dataofhosp",
-    storageBucket: "dataofhosp.firebasestorage.app",
-    messagingSenderId: "908860921572",
-    appId: "1:908860921572:web:1fce145520ef5ecd7b7ef1"
-  };
-
-  const doctorApp = initializeApp(doctorFirebaseConfig);
-  const auth = getAuth(doctorApp);
-  const db = getFirestore(doctorApp);
-
-  const form = document.getElementById("doctorLoginForm");
-  const emailInput = document.getElementById("doctorEmail");
-  const passwordInput = document.getElementById("doctorPassword");
-  const loginError = document.getElementById("loginError");
-  const loginSuccess = document.getElementById("loginSuccess");
-  const goHomeBtn = document.getElementById("goHomeBtn");
-
-  window.togglePassword = function (inputId, btn) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-
-    if (input.type === "password") {
-      input.type = "text";
-      if (btn) btn.textContent = "إخفاء";
-    } else {
-      input.type = "password";
-      if (btn) btn.textContent = "إظهار";
-    }
-  };
-
-  function showError(message) {
-    if (!loginError || !loginSuccess) return;
-    loginError.textContent = message;
-    loginError.style.display = "block";
-    loginSuccess.style.display = "none";
-  }
-
-  function showSuccess(message) {
-    if (!loginError || !loginSuccess) return;
-    loginSuccess.textContent = message;
-    loginSuccess.style.display = "block";
-    loginError.style.display = "none";
-  }
-
-  function hideMessages() {
-    if (loginError) loginError.style.display = "none";
-    if (loginSuccess) loginSuccess.style.display = "none";
-  }
-
-  function normalizeEmail(email) {
-    return String(email || "").trim().toLowerCase();
-  }
-
-  async function findDoctorByEmail(email) {
-    const hospitalsSnap = await getDocs(collection(db, "hospitals"));
-
-    for (const hospitalDoc of hospitalsSnap.docs) {
-      const hospitalData = hospitalDoc.data();
-
-      const departmentsSnap = await getDocs(
-        collection(db, "hospitals", hospitalDoc.id, "departments")
-      );
-
-      for (const deptDoc of departmentsSnap.docs) {
-        const deptData = deptDoc.data();
-
-        const doctorsSnap = await getDocs(
-          collection(db, "hospitals", hospitalDoc.id, "departments", deptDoc.id, "doctors")
-        );
-
-        for (const doctorDoc of doctorsSnap.docs) {
-          const doctorData = doctorDoc.data();
-          const doctorEmail = normalizeEmail(doctorData.email);
-
-          if (doctorEmail === email) {
-            return {
-              uid: "",
-              email: doctorEmail,
-              doctorDocId: doctorDoc.id,
-              doctorId: doctorData.id ?? doctorDoc.id,
-              doctorKey: doctorData.doctorKey || "",
-              name: doctorData.name || "",
-              hospitalDocId: hospitalDoc.id,
-              hospitalId: hospitalData.id ?? hospitalDoc.id,
-              hospitalName: doctorData.hospitalName || hospitalData.name || "",
-              departmentDocId: deptDoc.id,
-              departmentId: deptData.id ?? deptDoc.id,
-              departmentTitle: doctorData.departmentName || deptData.title || "",
-              hospitalType: doctorData.hospitalType || hospitalData.type || "",
-              slotDuration: doctorData.slotDuration || 0
-            };
-          }
-        }
-      }
-    }
-
-    return null;
-  }
-
-  async function saveDoctorSession(user, doctorData) {
-    const sessionData = {
-      uid: user.uid,
-      email: normalizeEmail(user.email),
-      doctorDocId: doctorData.doctorDocId,
-      doctorId: doctorData.doctorId,
-      doctorKey: doctorData.doctorKey,
-      name: doctorData.name,
-      hospitalDocId: doctorData.hospitalDocId,
-      hospitalId: doctorData.hospitalId,
-      hospitalName: doctorData.hospitalName,
-      departmentDocId: doctorData.departmentDocId,
-      departmentId: doctorData.departmentId,
-      departmentTitle: doctorData.departmentTitle,
-      hospitalType: doctorData.hospitalType,
-      slotDuration: doctorData.slotDuration
-    };
-
-    sessionStorage.setItem("doctorAuth", JSON.stringify(sessionData));
-  }
-
-  async function handleDoctorLogin(user) {
-    const email = normalizeEmail(user.email);
-    const doctorData = await findDoctorByEmail(email);
-
-    if (!doctorData) {
-      throw new Error("doctor-not-found-in-firestore");
-    }
-
-    await saveDoctorSession(user, doctorData);
-  }
-
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) return;
-
-    try {
-      await handleDoctorLogin(user);
-      window.location.href = "doctor_dashboard.html";
-    } catch (error) {
-      console.error("Auto login error:", error);
-    }
-  });
-
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const email = normalizeEmail(emailInput?.value);
-      const password = passwordInput?.value || "";
-
-      hideMessages();
-
-      if (!email || !password) {
-        showError("يرجى إدخال البريد الإلكتروني وكلمة المرور");
-        return;
-      }
-
-      try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        await handleDoctorLogin(cred.user);
-
-        showSuccess("تم تسجيل الدخول بنجاح");
-        setTimeout(() => {
-          window.location.href = "doctor_dashboard.html";
-        }, 600);
-      } catch (error) {
-        console.error("Doctor login error:", error);
-
-        if (error.code === "auth/invalid-credential") {
-          showError("الإيميل أو كلمة المرور غير صحيحة");
-        } else if (error.code === "auth/user-not-found") {
-          showError("هذا الحساب غير موجود");
-        } else if (error.code === "auth/wrong-password") {
-          showError("كلمة المرور غير صحيحة");
-        } else if (error.code === "auth/invalid-email") {
-          showError("صيغة البريد الإلكتروني غير صحيحة");
-        } else if (error.message === "doctor-not-found-in-firestore") {
-          showError("تم تسجيل الدخول لكن هذا الدكتور غير موجود داخل قاعدة بيانات الدكاترة");
-        } else {
-          showError("حدث خطأ أثناء تسجيل الدخول");
-        }
-      }
-    });
-  }
-
-  if (goHomeBtn) {
-    goHomeBtn.addEventListener("click", () => {
-      window.location.href = "index.html";
-    });
-  }
-</script>
-<script>
-const translations = {
-  ar: {
-    page_title: "تسجيل دخول الطبيب - أمل",
-    brand_badge: "💚 نظام أمل الطبي",
-    brand_title: "بوابة الأطباء",
-    brand_subtitle: "سجّل دخولك للوصول إلى لوحة الطبيب، متابعة حجوزات المرضى، وإدارة مواعيدك بسهولة ضمن واجهة حديثة وسريعة وواضحة.",
-
-    card1_title: "إدارة أسرع للمواعيد",
-    card1_desc: "تأكيد، رفض، أو تعديل أي موعد مباشرة من لوحة واحدة بدون تعقيد.",
-
-    card2_title: "أرشفة تلقائية",
-    card2_desc: "يتم حفظ وتنظيم الحجوزات القديمة تلقائياً لسهولة الرجوع إليها لاحقاً.",
-
-    card3_title: "عرض إحصائي مبسط",
-    card3_desc: "استعراض مبسّط للبيانات يتيح لك فهم الحالات بنظرة واحدة.",
-
-    footer: "وزارة الصحة الأردنية — منصة أمل الرقمية للرعاية الصحية",
-
-    login_title: "تسجيل دخول الطبيب",
-    login_sub: "أدخل البريد الإلكتروني وكلمة المرور للوصول إلى لوحة التحكم",
-
-    email_label: "البريد الإلكتروني",
-    email_placeholder: "doctor@example.com",
-
-    password_label: "كلمة المرور",
-    password_placeholder: "أدخل كلمة المرور",
-    show: "إظهار",
-    hide: "إخفاء",
-
-    login_btn: "تسجيل الدخول",
-    home_btn: "الصفحة الرئيسية"
-  },
-
-  en: {
-    page_title: "Doctor Login - Amal",
-    brand_badge: "💚 Amal Health System",
-    brand_title: "Doctor Portal",
-    brand_subtitle: "Log in to access your dashboard, manage appointments, and track patient bookings easily through a modern interface.",
-
-    card1_title: "Faster Appointment Management",
-    card1_desc: "Approve, reject, or edit appointments from one simple dashboard.",
-
-    card2_title: "Automatic Archiving",
-    card2_desc: "All past bookings are saved and organized automatically.",
-
-    card3_title: "Simple Statistics View",
-    card3_desc: "Quick data insights to understand cases at a glance.",
-
-    footer: "Jordan Ministry of Health — Amal Digital Platform",
-
-    login_title: "Doctor Login",
-    login_sub: "Enter your email and password to access the dashboard",
-
-    email_label: "Email",
-    email_placeholder: "doctor@example.com",
-
-    password_label: "Password",
-    password_placeholder: "Enter password",
-    show: "Show",
-    hide: "Hide",
-
-    login_btn: "Login",
-    home_btn: "Home"
-  }
-};
-
-function applyLanguage(lang) {
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-  document.title = translations[lang].page_title;
-
-  // نصوص عادية
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
-  });
-
-  // placeholders
-  document.querySelectorAll("[data-placeholder]").forEach(el => {
-    const key = el.getAttribute("data-placeholder");
-    if (translations[lang][key]) {
-      el.placeholder = translations[lang][key];
-    }
-  });
-}
-
-// تحميل اللغة من الصفحة الرئيسية
-document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("siteLanguage") || "ar";
-  applyLanguage(savedLang);
-});
-</script>
+<script type="module" src="doctor-auth.js"></script>
+<script src="doctor-login-i18n.js"></script>
 </body>
 </html>

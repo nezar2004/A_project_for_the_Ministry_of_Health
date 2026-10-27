@@ -1,0 +1,6 @@
+{
+  "firestore": {
+    "rules": "firebase/dataofdoctor.firestore.rules",
+    "indexes": "firebase/firestore.indexes.json"
+  }
+}
