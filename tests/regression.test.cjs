@@ -65,7 +65,7 @@ async function bookingDOM() {
   w.bookingsDb={};
   w.collection=(...args)=>args;
   w.getDocs=async()=>({docs:[]});
-  w.AmalBooking={forDoctor:async()=>[],create:async()=> "saved"};
+  w.AmalBooking={forDoctor:async()=>[],listMine:async()=>[],create:async()=> "saved"};
   vm.runInContext(read("amal-core.js"),ctx);
   for(const script of [...w.document.querySelectorAll("script")]) {
     if(script.type === "module")continue;
@@ -126,65 +126,6 @@ test("reminder names are rendered as text rather than executable markup",async()
   assert.ok(w.document.getElementById("remindersList").textContent.includes("<img"));
   dom.window.close();
 });
-function storeHarness() {
-  const data=new Map(); let n=0,failPath=null,queue=Promise.resolve();
-  function doc(...parts){if(parts.length===1 && parts[0]?.path)return {path:parts[0].path+"/"+(++n),id:String(n)}; const result=parts.slice(1).join("/");return{path:result,id:result.split("/").at(-1)}}
-  const snap=ref=>({exists:()=>data.has(ref.path),data:()=>structuredClone(data.get(ref.path))});
-  const window={};
-  const ctx=vm.createContext({window,Amal:A,console,
-    collection:(_db,...p)=>({path:p.join("/")}),doc,
-    query:(col,...filters)=>({col,filters}),
-    where:(key,op,value)=>({key,op,value}),
-    getDocs:async q=>({docs:[...data].filter(([p,v])=>p.startsWith(q.col.path+"/") && p.split("/").length===q.col.path.split("/").length+1 && q.filters.every(f=>v[f.key]===f.value)).map(([p,v])=>({id:p.split("/").at(-1),data:()=>structuredClone(v)}))}),
-    serverTimestamp:()=>({seconds:1}),
-    runTransaction:async(_db,fn)=>{
-      const run=queue.then(async()=>{
-        const writes=[];let started=false;
-        const tx={get:async ref=>{if(started)throw Error("read after write");return snap(ref)},set:(r,v,options)=>{started=true;if(r.path===failPath)throw Error("write rejected");writes.push([r,v,options?.merge])},update:(r,v)=>{started=true;if(r.path===failPath)throw Error("write rejected");writes.push([r,v,true])}};
-        await fn(tx);
-        for(const [r,v,merge]of writes)data.set(r.path,structuredClone(merge?{...data.get(r.path),...v}:v));
-      });
-      queue=run.catch(()=>{});return run;
-    }});
-  vm.runInContext(stripImports(read("booking-store.js")),ctx);
-  window.AmalBooking.init({}, {currentUser:{uid:"patient",email:"patient@example.test"}});
-  return {store:window.AmalBooking,data,fail:(p)=>failPath=p};
-}
-const payload={doctor_id:"doctor",doctor_email:"doctor@example.test",date:"2099-01-01",time:"09:00",slot_duration:45,status:"PENDING",booking_id:"test"};
-test("two concurrent patients cannot reserve the same doctor/time",async()=>{
-  const {store,data}=storeHarness();
-  const results=await Promise.allSettled([store.create(payload),store.create(payload)]);
-  assert.equal(results.filter(r=>r.status==="fulfilled").length,1);
-  assert.equal([...data.keys()].filter(p=>p.startsWith("allBookings/")).length,1);
-});
-test("failed mirrored write rolls back the booking and reservation",async()=>{
-  const h=storeHarness();h.fail("users/patient/bookings/1");
-  await assert.rejects(h.store.create(payload));
-  assert.equal(h.data.size,0);
-});
-test("cancelling releases the slot and atomically updates patient and doctor copies",async()=>{
-  const {store,data}=storeHarness();
-  const id=await store.create(payload);
-  await store.update({...payload,id},{status:"CANCELLED"});
-  assert.equal(data.get("allBookings/"+id).status,"CANCELLED");
-  assert.equal(data.get("users/patient/bookings/"+id).status,"CANCELLED");
-  await store.create({...payload,booking_id:"replacement"});
-});
-test("rescheduling refuses an occupied interval and preserves the original appointment",async()=>{
-  const {store,data}=storeHarness();
-  const first=await store.create(payload);
-  await store.create({...payload,time:"10:00",booking_id:"other"});
-  await assert.rejects(store.update({...payload,id:first},{date:payload.date,time:"10:15",status:"RESCHEDULED"}));
-  assert.equal(data.get("allBookings/"+first).time,"09:00");
-});
-test("changing a booking releases its old day and reserves its new day",async()=>{
-  const {store,data}=storeHarness();const id=await store.create(payload);
-  await store.update({...payload,id},{date:"2099-01-02",status:"RESCHEDULED"});
-  const old=data.get("appointmentSlots/"+A.lockId("doctor@example.test","2099-01-01"));
-  assert.equal(Object.keys(old.entries).length,0);
-  await store.create({...payload,booking_id:"replacement"});
-});
-
 test("patient login uses email without querying private profiles before authentication",async()=>{
   const dom=new JSDOM(read("login_Patient.html"),{url:"https://example.test/",runScripts:"outside-only"});
   const w=dom.window,ctx=dom.getInternalVMContext();w.alert=()=>{};let profileReads=0,signInEmail;
@@ -219,7 +160,7 @@ async function doctorDOM() {
   w.alert=()=>{};w.confirm=()=>true;w.setInterval=()=>0;w.setTimeout=()=>0;
   const auth={currentUser:{uid:"doctor",email:"doctor@example.test"}};
   Object.assign(w,{initializeApp:()=>({}),getAuth:()=>auth,getFirestore:()=>({}),onAuthStateChanged:()=>{},signOut:async()=>{},collection:()=>({}),doc:(...p)=>({path:p.slice(1).join("/")}),getDoc:async()=>({exists:()=>false}),getDocs:async()=>({docs:[]}),query:()=>({}),where:()=>({}),limit:()=>({}),setDoc:async()=>{},updateDoc:async()=>{},serverTimestamp:()=>({seconds:1}),onSnapshot:()=>()=>{},writeBatch:()=>({update(){},set(){},commit:async()=>{}})});
-  w.AmalBooking={init(){},update:async()=>{}};
+  w.AmalBooking={init(){},update:async()=>{},profile:async()=>({name:"Catalog doctor",available:true}),subscribe:()=>()=>{}};
   vm.runInContext(read("amal-core.js"),ctx);
   const module=[...w.document.querySelectorAll("script")].find(s=>s.type==="module");
   vm.runInContext("(function(){"+stripImports(module.getAttribute("src") ? read(module.getAttribute("src")) : module.textContent)+";window.testDoctor={state,updateBookingStatus,rescheduleSelectedBooking,saveDoctorNotes,findDoctorProfile};})()",ctx);
@@ -244,4 +185,4 @@ test("doctor cannot reschedule an appointment into the past",async()=>{
 
 test("all cached shell files exist",()=>{for(const m of read("service-worker.js").matchAll(/"\.\/([^"?]+)"/g))assert.ok(fs.existsSync(path.join(root,m[1])),m[1]);});
 
-test("doctor profile uses the verified catalog and retains saved availability",async()=>{const {dom,w}=await doctorDOM();w.sessionStorage.setItem("doctorAuth",JSON.stringify({uid:"doctor",email:"doctor@example.test",hospitalDocId:"h",departmentDocId:"dept",doctorDocId:"d"}));w.getDoc=async ref=>({exists:()=>true,data:()=>ref.path.startsWith("hospitals/")?{email:"doctor@example.test",name:"Catalog doctor",id:"d"}:{available:true}});const profile=await w.testDoctor.findDoctorProfile({uid:"doctor",email:"doctor@example.test"});assert.equal(profile.name,"Catalog doctor");assert.equal(profile.available,true);dom.window.close();});
+test("doctor profile delegates to the authenticated backend",async()=>{const {dom,w}=await doctorDOM();let called=false;w.AmalBooking.profile=async()=>{called=true;return{name:"Catalog doctor",available:true}};const profile=await w.testDoctor.findDoctorProfile({uid:"doctor",email:"doctor@example.test"});assert.equal(called,true);assert.equal(profile.available,true);dom.window.close();});

@@ -10,6 +10,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
       getFirestore,
       doc,
       setDoc,
+      serverTimestamp,
       collection,
       query,
       where,
@@ -107,7 +108,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
           phone: normalizePhone(countryCode, phone),
           birthday,
           gender,
-          createdAt: new Date().toISOString()
+          createdAt: serverTimestamp()
         });
 
         alert("✅ تم إنشاء الحساب بنجاح");

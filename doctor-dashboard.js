@@ -381,33 +381,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 		  elements.drawer.setAttribute("aria-hidden", "true");
 		}
 
-		async function findDoctorProfile(user) {
-  const email = String(user.email || "").trim().toLowerCase();
-  let session;
-  try { session = JSON.parse(sessionStorage.getItem("doctorAuth") || "null"); } catch { session = null; }
-  if (!session || session.uid !== user.uid || String(session.email || "").toLowerCase() !== email) {
-    window.location.href = "doctor_login.html";
-    throw new Error(Amal.text("يرجى تسجيل دخول الطبيب مجددًا.", "Please sign in through the doctor portal again."));
-  }
-  const catalog = getFirestore(authApp);
-  const catalogRef = doc(catalog, "hospitals", String(session.hospitalDocId), "departments", String(session.departmentDocId), "doctors", String(session.doctorDocId));
-  const verified = await getDoc(catalogRef);
-  if (!verified.exists() || String(verified.data().email || "").trim().toLowerCase() !== email) {
-    throw new Error(Amal.text("تعذر التحقق من سجل الطبيب.", "The doctor record could not be verified."));
-  }
-  const doctor = verified.data();
-  const saved = await getDoc(doc(bookingsDb, "doctors", user.uid));
-  return {
-    doctor_id: doctor.doctorKey || doctor.id || session.doctorId,
-    name: doctor.name || doctor.doctor_name || session.name || "Doctor",
-    hospital_name: doctor.hospitalName || session.hospitalName || "",
-    department_title: doctor.departmentName || session.departmentTitle || "",
-    specialty: doctor.specialty || session.departmentTitle || "",
-    available: saved.exists() ? !!saved.data().available : !!doctor.available,
-    slot_duration: Number(doctor.slotDuration) || 30,
-    email, user_uid: user.uid
-  };
-}
+		async function findDoctorProfile(_user) { return window.AmalBooking.profile(); }
 
 		function subscribeToBookings() {
 		  if (state.unsubscribeBookings) {
@@ -427,7 +401,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 			where("doctor_email", "==", doctorEmail)
 		  );
 
-		  state.unsubscribeBookings = onSnapshot(doctorBookingsQuery, (snapshot) => {
+		  state.unsubscribeBookings = window.AmalBooking.subscribe((snapshot) => {
 			const rawBookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 			const filtered = rawBookings
 			  .filter(bookingMatchesDoctor)
@@ -526,10 +500,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 			const ref = doc(bookingsDb, "doctors", state.authUser.uid);
 
 
-			await setDoc(ref, {
-			  available: nextValue,
-			  updatedAt: serverTimestamp()
-			}, { merge: true });
+			await window.AmalBooking.setAvailability(nextValue);
 
 			state.doctorProfile.available = nextValue;
 			updateDoctorCard();
@@ -616,10 +587,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
     elements.saveDoctorNotesBtn.disabled = true;
     try {
       const payload = { doctor_notes: notes, doctor_notes_updatedAt: serverTimestamp(), doctor_notes_by_uid: state.authUser.uid, doctor_notes_by_name: state.doctorProfile?.name || "Doctor" };
-      const batch = writeBatch(bookingsDb);
-      batch.update(doc(bookingsDb, "allBookings", booking.id), payload);
-      if (booking.user_uid && booking.source_booking_doc_id) batch.set(doc(bookingsDb, "users", booking.user_uid, "bookings", booking.source_booking_doc_id), payload, { merge: true });
-      await batch.commit();
+      await window.AmalBooking.update(booking, { doctor_notes: notes });
       showToast(Amal.text("تم الحفظ", "Saved"), Amal.text("تم حفظ الملاحظات.", "Notes saved."));
     } catch {
       showToast(Amal.text("تعذر الحفظ", "Could not save"), Amal.text("حاول مرة أخرى.", "Please try again."));

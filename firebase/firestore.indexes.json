@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "allBookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "doctor_email",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

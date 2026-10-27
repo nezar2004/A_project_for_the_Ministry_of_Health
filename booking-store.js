@@ -1,67 +1,53 @@
-import { collection, doc, getDoc, getDocs, query, where, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-let db, auth;
-function init(database, authentication) { db = database; auth = authentication; }
-const busyMessage = () => Amal.text("هذا الموعد حُجز للتو. اختر وقتًا آخر.", "This appointment was just reserved. Choose another time.");
-async function forDoctor(email) {
-  const snap = await getDocs(query(collection(db, "allBookings"), where("doctor_email", "==", String(email).trim().toLowerCase())));
-  return snap.docs.map(d => ({ ...d.data(), id: d.id }));
-}
-function lockRef(doctorId, date) { return doc(db, "appointmentSlots", Amal.lockId(doctorId, date)); }
-function checkEntries(entries, booking, ignoreId) {
-  return Object.entries(entries).some(([id, value]) => id !== ignoreId && Amal.occupied({ ...value, doctor_id: booking.doctor_id }, booking.doctor_id, booking.date, booking.time, booking.slot_duration));
-}
-async function create(payload) {
-  const user = auth.currentUser;
+let auth;
+const API = "https://amal-medical-assistant.onrender.com/api";
+function init(_database, authentication) { auth = authentication; }
+async function request(path, options = {}) {
+  const user = auth?.currentUser;
   if (!user) throw new Error(Amal.text("سجل الدخول أولًا.", "Sign in first."));
-  const booking = { ...payload, slot_duration: Number(payload.slot_duration) || 30, user_uid: user.uid, user_email: String(user.email || "").toLowerCase(), doctor_email: String(payload.doctor_email || "").trim().toLowerCase() };
-  if (!booking.doctor_id || !booking.doctor_email || !booking.date || !booking.time) throw new Error(Amal.text("بيانات الموعد غير مكتملة.", "Appointment details are incomplete."));
-  const existing = await forDoctor(booking.doctor_email);
-  if (existing.some(b => Amal.occupied({ ...b, doctor_id: booking.doctor_id }, booking.doctor_id, booking.date, booking.time, booking.slot_duration))) throw new Error(busyMessage());
-  const main = doc(collection(db, "allBookings"));
-  const mirror = doc(db, "users", user.uid, "bookings", main.id);
-  const day = lockRef(booking.doctor_email, booking.date);
-  const saved = { ...booking, booking_id: booking.booking_id || main.id, source_booking_doc_id: mirror.id };
-  await runTransaction(db, async tx => {
-    const daySnap = await tx.get(day);
-    const entries = daySnap.exists() ? daySnap.data().entries || {} : {};
-    if (checkEntries(entries, saved, main.id)) throw new Error(busyMessage());
-    const entry = { doctor_id: saved.doctor_id, date: saved.date, time: saved.time, slot_duration: saved.slot_duration, status: saved.status };
-    tx.set(day, { entries: { ...entries, [main.id]: entry }, updatedAt: serverTimestamp() });
-    tx.set(main, saved);
-    tx.set(mirror, saved);
+  const token = await user.getIdToken();
+  const response = await fetch(API + path, {
+    ...options, cache:"no-store", signal:AbortSignal.timeout(90000),
+    headers:{"Content-Type":"application/json",Authorization:"Bearer "+token,...options.headers}
   });
-  return main.id;
+  const data = await response.json().catch(()=>{throw new Error(Amal.text("الخدمة تستيقظ. أعد المحاولة بعد دقيقة.", "The service is starting. Retry in a minute."))});
+  if (auth?.currentUser?.uid !== user.uid) throw new Error(Amal.text("تغيّر الحساب. أعد فتح الصفحة.", "Account changed. Reload the page."));
+  if (!response.ok) throw new Error(data.answer || Amal.text("تعذر إتمام العملية.", "The request could not be completed."));
+  return data;
 }
-async function update(booking, patch) {
-  if (!auth.currentUser) throw new Error(Amal.text("سجل الدخول أولًا.", "Sign in first."));
-  const main = doc(db, "allBookings", booking.id);
-  const intended = { ...booking, ...patch };
-  if (Amal.occupies(intended)) {
-    const existing = await forDoctor(booking.doctor_email);
-    if (existing.some(b => b.id !== booking.id && Amal.occupied({ ...b, doctor_id: intended.doctor_id }, intended.doctor_id, intended.date, intended.time, intended.slot_duration))) throw new Error(busyMessage());
+async function listMine() {
+  const bookings=[];let cursor="";
+  do {
+    const page=await request("/bookings"+(cursor?"?cursor="+encodeURIComponent(cursor):""));
+    bookings.push(...page.bookings);cursor=page.nextCursor;
+  }while(cursor);
+  return bookings;
+}
+async function forDoctor(email,date) {
+  const params=new URLSearchParams({doctor_email:email,date});
+  return (await request("/bookings/availability?"+params)).bookings;
+}
+async function create(payload) { return (await request("/bookings",{method:"POST",body:JSON.stringify(payload)})).id; }
+async function update(booking,patch) {
+  const allowed={};
+  for(const key of ["status","date","time","reschedule_reason","doctor_notes"])if(key in patch)allowed[key]=patch[key];
+  allowed.expected={date:booking.date,time:booking.time,status:booking.status};
+  return request("/bookings/"+encodeURIComponent(booking.id),{method:"PATCH",body:JSON.stringify(allowed)});
+}
+function subscribe(onData,onError) {
+  let stopped=false,running=false,prior=new Map();
+  async function refresh() {
+    if(stopped||running||document.hidden)return;
+    running=true;
+    try{
+      const records=await listMine();if(stopped)return;
+      const changes=records.filter(b=>prior.get(b.id)!==JSON.stringify(b)).map(b=>({type:prior.has(b.id)?"modified":"added"}));
+      prior=new Map(records.map(b=>[b.id,JSON.stringify(b)]));
+      onData({docs:records.map(b=>({id:b.id,data:()=>b})),docChanges:()=>changes});
+    }catch(error){if(!stopped)onError?.(error)}finally{running=false}
   }
-  await runTransaction(db, async tx => {
-    const currentSnap = await tx.get(main);
-    if (!currentSnap.exists()) throw new Error(Amal.text("الحجز غير موجود.", "Booking no longer exists."));
-    const current = currentSnap.data();
-    if (current.date !== booking.date || current.time !== booking.time || current.status !== booking.status) throw new Error(Amal.text("تغيّر الحجز، حدّث القائمة وحاول مجددًا.", "Booking changed. Refresh and try again."));
-    const next = { ...current, ...patch, updatedAt: serverTimestamp() };
-    const oldRef = lockRef(current.doctor_email || current.doctor_id, current.date);
-    const newRef = lockRef(next.doctor_email || next.doctor_id, next.date);
-    const oldSnap = await tx.get(oldRef);
-    const newSnap = newRef.path === oldRef.path ? oldSnap : await tx.get(newRef);
-    const oldEntries = { ...(oldSnap.exists() ? oldSnap.data().entries || {} : {}) };
-    const newEntries = newRef.path === oldRef.path ? oldEntries : { ...(newSnap.exists() ? newSnap.data().entries || {} : {}) };
-    delete oldEntries[booking.id];
-    if (Amal.occupies(next)) {
-      if (checkEntries(newEntries, next, booking.id)) throw new Error(busyMessage());
-      newEntries[booking.id] = { doctor_id: next.doctor_id, date: next.date, time: next.time, slot_duration: Number(next.slot_duration) || 30, status: next.status };
-    } else delete newEntries[booking.id];
-    tx.set(oldRef, { entries: oldEntries, updatedAt: serverTimestamp() });
-    if (newRef.path !== oldRef.path) tx.set(newRef, { entries: newEntries, updatedAt: serverTimestamp() });
-    tx.update(main, { ...patch, updatedAt: serverTimestamp() });
-    if (current.user_uid && current.source_booking_doc_id) tx.set(doc(db, "users", current.user_uid, "bookings", current.source_booking_doc_id), { ...patch, updatedAt: serverTimestamp() }, { merge: true });
-  });
+  refresh();const interval=setInterval(refresh,20000);
+  const visibility=()=>{if(!document.hidden)refresh()};
+  document.addEventListener("visibilitychange",visibility);
+  return()=>{stopped=true;clearInterval(interval);document.removeEventListener("visibilitychange",visibility)};
 }
-window.AmalBooking = { init, create, update, forDoctor };
+window.AmalBooking = {init,create,update,forDoctor,listMine,subscribe,profile:()=>request("/doctor/profile"),setAvailability:available=>request("/doctor/profile",{method:"PATCH",body:JSON.stringify({available})})};

@@ -25,7 +25,7 @@ function normalizeFacilityType(type) {
     try {
       const doctor = bookingState.doctor;
       const payload = {
-        booking_id: "B" + crypto.randomUUID(),
+        booking_id: bookingState.requestId || (bookingState.requestId = "B" + crypto.randomUUID()),
         status: "PENDING",
         gov: bookingState.gov || "",
         country: Amal.settings.country,
@@ -39,6 +39,7 @@ function normalizeFacilityType(type) {
         doctor_name: doctor.name || doctor.doctor_name || "",
         doctor_id: Amal.doctorKey(doctor),
         doctor_email: String(doctor.email || "").trim().toLowerCase(),
+        doctor_doc_id: String(doctor.docId || ""),
         slot_duration: Number(doctor.slotDuration) || 30,
         date: bookingState.date,
         time: bookingState.time,
@@ -626,7 +627,7 @@ function normalizeFacilityType(type) {
     if (!doctor || !date) return;
     container.textContent = Amal.text("جاري التحقق من المواعيد...", "Checking appointments...");
     try {
-      const bookings = await window.AmalBooking.forDoctor(doctor.email);
+      const bookings = await window.AmalBooking.forDoctor(doctor.email, date);
       if (version !== slotLoadVersion || doctor !== bookingState.doctor || date !== bookingState.date) return;
       doctorDayBookings = bookings;
       container.replaceChildren();
@@ -1271,8 +1272,8 @@ function normalizeFacilityType(type) {
     try {
       const uid = window.auth?.currentUser?.uid;
       if (!uid) { body.textContent = Amal.text("سجل الدخول لعرض حجوزاتك.", "Sign in to view your bookings."); return; }
-      const snap = await window.getDocs(window.collection(window.bookingsDb, "users", uid, "bookings"));
-      const bookings = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      const savedBookings = await window.AmalBooking.listMine();
+      const bookings = savedBookings
         .filter(b => !b.user_uid || b.user_uid === uid)
         .sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
       if (uid !== window.auth?.currentUser?.uid) return;
