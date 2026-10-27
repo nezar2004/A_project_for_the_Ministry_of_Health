@@ -14,8 +14,8 @@ const translations = {
 
     login_title: "تسجيل الدخول",
     login_subtitle: "أدخل بياناتك للوصول إلى حساب المريض",
-    login_national_id_label: "البريد الإلكتروني",
-    login_national_id_placeholder: "أدخل البريد الإلكتروني",
+    login_national_id_label: "الرقم الوطني",
+    login_national_id_placeholder: "الرقم الوطني (10 أرقام)",
     login_password_label: "كلمة المرور",
     login_password_placeholder: "أدخل كلمة المرور",
     show_btn: "إظهار",
@@ -70,8 +70,8 @@ const translations = {
 
     login_title: "Sign In",
     login_subtitle: "Enter your details to access the patient account",
-    login_national_id_label: "Email address",
-    login_national_id_placeholder: "Enter your email address",
+    login_national_id_label: "National ID",
+    login_national_id_placeholder: "National ID (10 digits)",
     login_password_label: "Password",
     login_password_placeholder: "Enter password",
     show_btn: "Show",

@@ -1,1 +1,1 @@
-if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js?v=4").catch(() => {}); }
+if ("serviceWorker" in navigator) { navigator.serviceWorker.register("service-worker.js?v=5").catch(() => {}); }

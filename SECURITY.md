@@ -1,6 +1,6 @@
 # Security notes
 
-- Patient sign-in and password reset use email directly; the national ID is no longer queried before authentication.
+- Patient sign-in uses national ID and password. The trusted server performs a bounded exact national ID lookup and verifies the password with Firebase before returning the account email. Client profile enumeration stays denied. Password reset uses email. The dedicated server has read-only access to patient profiles for this lookup.
 - Patient profile documents are intended to be readable only by their owner.
 - The doctor dashboard queries bookings by the authenticated doctor's email instead of downloading the full collection.
 - The hospitals database is a public, read-only catalog in the proposed rules.
