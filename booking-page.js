@@ -1008,7 +1008,7 @@ function normalizeFacilityType(type) {
 
 	  async function askGemini(question) {
 		const response = await fetch("https://amal-medical-assistant.onrender.com/api/chat", {
-          signal: AbortSignal.timeout(90000),
+          signal: AbortSignal.timeout(120000),
 		  method: "POST",
 		  headers: {
 			"Content-Type": "application/json"
@@ -1016,7 +1016,7 @@ function normalizeFacilityType(type) {
 		  body: JSON.stringify({ question, language: Amal.language() })
 		});
 
-		const data = await response.json();
+		const data = await response.json().catch(() => ({answer: Amal.text("الخدمة تتأخر بالاستجابة. حاول بعد قليل.", "The service is taking longer to respond. Please retry shortly.")}));
 
 		if (!response.ok) {
 		  throw new Error(data.answer || "حدث خطأ أثناء الاتصال بالسيرفر.");
@@ -1052,7 +1052,8 @@ function normalizeFacilityType(type) {
 		  appendMessage("bot-message", answer);
 		} catch (err) {
 		  typingEl.remove();
-		  appendMessage("bot-message", err.message || "حدث خطأ غير متوقع.");
+		  userInput.value = question;
+          appendMessage("bot-message", ["AbortError","TimeoutError"].includes(err.name) ? Amal.text("تأخر الاتصال بالمساعد. سؤالك محفوظ؛ حاول الإرسال بعد قليل.", "The assistant timed out. Your question is preserved; retry shortly.") : (err.message || Amal.text("تعذر الاتصال بالمساعد.", "Unable to reach the assistant.")));
 		  console.error("Chat error:", err);
 		} finally {
 		  sendBtn.disabled = false;
