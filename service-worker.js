@@ -1,4 +1,4 @@
-const CACHE_NAME = "amal-shell-v5";
+const CACHE_NAME = "amal-shell-v6";
 const SHELL_FILES = ["./", "./index.html", "./main-style.css", "./login_Patient.html", "./doctor_login.html", "./login_style.css", "./Patient_booking_page.html", "./booking-style.css", "./doctor_dashboard.html", "./dashboard-style.css", "./amal-core.js", "./booking-store.js", "./amal-ui.js", "./amal-accessibility.css", "./manifest.json", "./icon.svg", "./index-page.js", "./index-i18n.js", "./pwa.js", "./patient-data.js", "./booking-page.js", "./booking-i18n.js", "./reminder-popups.js", "./emergency-contacts.js", "./doctor-dashboard.js", "./doctor-i18n.js", "./doctor-auth.js", "./doctor-login-i18n.js", "./patient-auth.js", "./patient-i18n.js"];
 self.addEventListener("install", event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL_FILES))); self.skipWaiting(); });
 self.addEventListener("activate", event => {

@@ -187,3 +187,12 @@ test("doctor cannot reschedule an appointment into the past",async()=>{
 test("all cached shell files exist",()=>{for(const m of read("service-worker.js").matchAll(/"\.\/([^"?]+)"/g))assert.ok(fs.existsSync(path.join(root,m[1])),m[1]);});
 
 test("doctor profile delegates to the authenticated backend",async()=>{const {dom,w}=await doctorDOM();let called=false;w.AmalBooking.profile=async()=>{called=true;return{name:"Catalog doctor",available:true}};const profile=await w.testDoctor.findDoctorProfile({uid:"doctor",email:"doctor@example.test"});assert.equal(called,true);assert.equal(profile.available,true);dom.window.close();});
+
+test('chat failure preserves the question and prevents duplicate in-flight sends',async()=>{
+ const {dom,w}=await bookingDOM();w.AbortSignal=AbortSignal;let resolve,calls=0;
+ w.fetch=()=>{calls++;return new Promise(done=>resolve=done)};
+ const input=w.document.getElementById('user-input'),send=w.document.getElementById('send-btn');input.value='Test question';send.click();send.click();assert.equal(calls,1);assert.equal(send.disabled,true);
+ resolve({ok:false,json:async()=>({answer:'Service temporarily unavailable'})});
+ await new Promise(done=>setImmediate(done));await new Promise(done=>setImmediate(done));
+ assert.equal(input.value,'Test question');assert.equal(send.disabled,false);assert.equal(input.disabled,false);assert.ok(w.document.getElementById('chat-body').textContent.includes('Service temporarily unavailable'));dom.window.close();
+});
