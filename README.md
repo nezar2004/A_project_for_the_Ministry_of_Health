@@ -16,52 +16,140 @@
   </p>
 </div>
 
-## About the project
+## عن مشروع أمل
 
-Amal brings the healthcare directory, appointment booking, and appointment follow-up into one bilingual web app. Patients can browse providers by governorate, facility, and specialty. Authorized doctors can manage appointments assigned to them from a separate dashboard.
+**أمل** مشروع تخرّج في تخصص نظم المعلومات الحاسوبية في جامعة اليرموك. يجمع دليل المنشآت الصحية وحجز المواعيد ومتابعتها في تطبيق ويب واحد، بواجهتين منفصلتين للمريض والطبيب. الفكرة هي أن المريض يستطيع الوصول إلى القسم والطبيب المناسبين ثم تقديم طلب حجز ومتابعة نتيجته من حسابه.
 
-This repository contains the web interface for an academic prototype. The companion backend handles protected booking operations and the health awareness assistant.
+- **المريض:** يسجّل حسابًا، يبحث عن منشأة وطبيب، يطلب موعدًا، ويتابع حالة الحجز.
+- **الطبيب المخوّل:** يدخل إلى لوحة خاصة، يراجع الحجوزات المعيّنة له، ويؤكدها أو يغيّر موعدها أو يلغيها.
+- **المستودع الحالي:** يحتوي على واجهة أمل. منطق الحجز والمساعد الصحي موجودان في [مستودع السيرفر](https://github.com/nezar2004/A_project_for_the_Ministry_of_Healthjs).
 
-## What Amal offers
+## محتويات الدليل
 
-| Area | Features |
+- [مسار المريض](#مسار-المريض)
+- [مسار الطبيب](#مسار-الطبيب)
+- [أدوات المريض](#أدوات-المريض)
+- [بنية النظام](#بنية-النظام)
+- [خدمات السيرفر](#خدمات-السيرفر)
+- [ملفات المشروع](#ملفات-المشروع)
+- [التشغيل والاختبارات](#التشغيل-والاختبارات)
+- [الإعداد والنشر](#الإعداد-والنشر)
+
+## مسار المريض
+
+1. **إنشاء الحساب.** يسجّل المريض بياناته الأساسية، ومنها الرقم الوطني والبريد الإلكتروني ورقم الهاتف. تدير Firebase Authentication حساب الدخول، ويُحفظ ملف المريض في Firestore.
+2. **تسجيل الدخول.** يستخدم المريض الرقم الوطني وكلمة المرور. يحدد السيرفر الحساب المرتبط بالرقم ويتحقق من بيانات الدخول، ثم تستخدم الواجهة Firebase لإكمال تسجيل الدخول. استعادة كلمة المرور تتم عبر البريد الإلكتروني.
+3. **البحث عن مقدم الخدمة.** يختار المريض المحافظة ونوع المنشأة، ثم المنشأة والقسم والطبيب. تُحمّل بيانات الأقسام والأطباء حسب الاختيارات.
+4. **اختيار موعد.** تعرض الواجهة الأوقات المتاحة وفق دوام الطبيب والحجوزات القائمة. يستطيع المريض إدخال بيانات التأمين اختياريًا، والحجز لنفسه أو لشخص آخر.
+5. **مراجعة الطلب وإرساله.** يراجع المريض الموعد وبيانات المستفيد والتكلفة المعروضة. يعيد السيرفر التحقق من الموعد والبيانات، ويحسب التكلفة من بيانات القسم. إذا تعارض الموعد مع حجز آخر، يطلب اختيار وقت مختلف.
+6. **متابعة النتيجة.** يظهر الطلب في سجل حجوزات المريض بحالة **قيد المراجعة**. بعد مراجعة الطبيب، تظهر الحالة الجديدة والموعد المعدّل إن تغيّر.
+
+## مسار الطبيب
+
+يدخل الطبيب بالبريد الإلكتروني وكلمة المرور من صفحة منفصلة. يتحقق السيرفر من صلاحية الحساب، ثم يعرض الحجوزات الخاصة بالطبيب فقط. تعرض اللوحة إحصاءات الحجوزات وتتيح البحث والتصفية حسب الحالة.
+
+يستطيع الطبيب تأكيد الحجز، رفضه، تغيير الموعد وإضافة سبب للتغيير، حفظ ملاحظاته، وتحديث حالة توفره. تتيح اللوحة أيضًا إلغاء الحجوزات القادمة دفعة واحدة، ويتحقق السيرفر من صلاحية تعديل كل حجز على حدة.
+
+| الحالة | معناها في أمل |
 | --- | --- |
-| Patient accounts | Registration, sign-in using a national ID and password, and password recovery by email |
-| Provider directory | Browse facilities by governorate and type, then choose a department and doctor |
-| Appointment booking | Choose an available time, enter optional insurance details, and book for yourself or another person |
-| Booking history | See appointment status and follow changes after a doctor reviews the request |
-| Doctor dashboard | Review assigned bookings, update availability, approve, reject, reschedule, cancel, and add notes |
-| Patient tools | Health awareness assistant, browser reminders, and emergency contacts on supported devices |
-| Language and access | Arabic and English, right-to-left layout in Arabic, accessibility controls, and an installable web app on supported browsers |
+| `PENDING` | تم تسجيل الطلب وهو بانتظار مراجعة الطبيب |
+| `APPROVED` | أكد الطبيب الحجز |
+| `RESCHEDULED` | غيّر الطبيب تاريخ الحجز أو وقته |
+| `REJECTED` | رفض الطبيب الطلب |
+| `CANCELLED` | أُلغي الحجز |
 
-New bookings start as **Pending**. The backend checks the doctor's schedule and prevents overlapping appointments before saving a request. Doctors can then review it from their dashboard.
+## أدوات المريض
 
-## How it works
+- **المساعد الصحي.** يستقبل أسئلة للتوعية الصحية العامة بالعربية أو الإنجليزية. ترسل الواجهة السؤال إلى سيرفر أمل، ويتولى السيرفر الاتصال بـ Google Gemini. عند تعذّر الرد، يستطيع المستخدم إعادة المحاولة.
+- **التذكيرات.** يمكن إنشاء تذكير بتاريخ ووقت وإشعار مسبق وتكراره يوميًا أو أسبوعيًا. تُحفظ التذكيرات محليًا في المتصفح حسب حساب المريض. يعمل التحقق من وقت التذكير أثناء فتح صفحة التطبيق.
+- **جهات اتصال الطوارئ.** يستطيع المستخدم اختيار ما يصل إلى ثلاث جهات على الأجهزة والمتصفحات الداعمة لاختيار جهات الاتصال. تبقى القائمة على الجهاز.
+- **اللغة وإمكانية الوصول.** يدعم التطبيق العربية باتجاه من اليمين إلى اليسار والإنجليزية، ويضم أدوات لتسهيل الاستخدام. يمكن تثبيته كتطبيق ويب على المتصفحات الداعمة، ويتطلب تسجيل الدخول والحجز اتصالًا بالإنترنت.
 
-| Layer | Technology and role |
+## بنية النظام
+
+```text
+Patient / Doctor
+       |
+       v
+Amal Web UI (GitHub Pages)
+       |-- Firebase Authentication
+       |-- Firestore provider catalog
+       |-- Browser storage (reminders and emergency contacts)
+       |
+       v
+Amal API (Node.js + Express on Render)
+       |-- Firestore (bookings, slot reservations, and doctor access)
+       |-- Patient lookup for national-ID sign-in
+       '-- Google Gemini (health awareness)
+```
+
+| نطاق البيانات | ما يُحفظ فيه |
 | --- | --- |
-| Frontend | HTML, CSS, and JavaScript. GitHub Pages hosts the web interface |
-| Authentication | Firebase Authentication manages sign-in for patients and doctors |
-| Data | Cloud Firestore stores patient profiles, the provider directory, and booking records |
-| Backend | Node.js and Express on Render validate requests, enforce access, and handle booking updates |
-| Assistant | Google Gemini provides general health awareness through the backend |
-| Browser storage | Reminders and emergency contacts stay on the device |
+| حسابات وملفات المرضى | بيانات تسجيل الدخول عبر Firebase Authentication وملف كل مريض في Firestore |
+| دليل المنشآت | المنشآت، الأقسام، الأطباء، وجداول العمل المستخدمة لاختيار الموعد |
+| الحجوزات والصلاحيات | سجل الحجز الأساسي، نسخة سجل المريض، حجوزات الفترات الزمنية، وصلاحيات الأطباء |
 
-The assistant provides general health information. Appointment decisions and clinical care remain with qualified healthcare professionals.
+يحفظ السيرفر الحجز ونسخة المريض والفترة المحجوزة ضمن معاملة واحدة. عند تغيير الموعد، يفحص الفترة الجديدة ويحدّث السجلات المرتبطة معًا. يُفرج عن الفترة عند رفض الحجز أو إلغائه. لا تعرض خدمة الأوقات المتاحة بيانات المرضى.
 
-## Explore the source
+## خدمات السيرفر
 
-| File | Purpose |
+| الطلب | الاستخدام |
 | --- | --- |
-| [index.html](./index.html) | Landing page |
-| [login_Patient.html](./login_Patient.html) | Patient registration and sign-in |
-| [Patient_booking_page.html](./Patient_booking_page.html) | Booking, history, and patient tools |
-| [doctor_login.html](./doctor_login.html) | Doctor sign-in |
-| [doctor_dashboard.html](./doctor_dashboard.html) | Doctor appointment management |
-| [firebase/](./firebase/) | Firebase rules and configuration resources |
-| [tests/](./tests/) | Project tests |
+| `POST /api/patient-login` | التحقق من الرقم الوطني وكلمة المرور لتسجيل دخول المريض |
+| `GET /api/bookings/availability` | معرفة الفترات المشغولة للطبيب في يوم محدد |
+| `GET /api/bookings` | عرض الحجوزات حسب حساب المريض أو الطبيب |
+| `POST /api/bookings` | إنشاء طلب حجز جديد |
+| `PATCH /api/bookings/:id` | تحديث الحجز من حساب الطبيب المخوّل |
+| `GET /api/doctor/profile` | عرض ملف الطبيب وحالة توفره |
+| `PATCH /api/doctor/profile` | تعديل حالة توفر الطبيب |
+| `POST /api/chat` | إرسال سؤال إلى المساعد الصحي |
+| `GET /health` و`GET /api/booking-health` | فحص جاهزية السيرفر وخدمة الحجز |
 
-See [ROLLOUT.md](./ROLLOUT.md) for deployment and [SECURITY.md](./SECURITY.md) for access and security details.
+تستخدم مسارات الحجز والطبيب رمز Firebase للتحقق من هوية صاحب الطلب. يتحقق السيرفر أيضًا من ملكية الحجز أو صلاحية الطبيب قبل السماح بالوصول إليه أو تحديثه.
+
+## ملفات المشروع
+
+| الملف | وظيفته |
+| --- | --- |
+| [index.html](./index.html) | الصفحة الرئيسية وروابط الدخول إلى خدمات المرضى والأطباء |
+| [login_Patient.html](./login_Patient.html) و[patient-auth.js](./patient-auth.js) | تسجيل المريض والدخول واستعادة كلمة المرور |
+| [Patient_booking_page.html](./Patient_booking_page.html) و[booking-page.js](./booking-page.js) | خطوات الحجز وسجل المواعيد وأدوات المريض |
+| [booking-store.js](./booking-store.js) | طلبات الحجز من الواجهة إلى السيرفر |
+| [doctor_login.html](./doctor_login.html) و[doctor-auth.js](./doctor-auth.js) | تسجيل دخول الطبيب |
+| [doctor_dashboard.html](./doctor_dashboard.html) و[doctor-dashboard.js](./doctor-dashboard.js) | عرض الحجوزات وإدارتها |
+| [amal-core.js](./amal-core.js) و[amal-ui.js](./amal-ui.js) | أدوات مشتركة لحساب المواعيد وعرض الواجهة |
+| [emergency-contacts.js](./emergency-contacts.js) و[reminder-popups.js](./reminder-popups.js) | جهات اتصال الطوارئ وإشعارات التذكير |
+| [manifest.json](./manifest.json) و[service-worker.js](./service-worker.js) | تثبيت تطبيق الويب وتخزين ملفات الواجهة مؤقتًا |
+| [firebase/](./firebase/) و[tests/](./tests/) | قواعد الوصول وملفات الاختبار |
+
+## التشغيل والاختبارات
+
+لتشغيل واجهة المشروع محليًا، استنسخ المستودع ثم شغّل خادم ملفات ثابتة. هذا المثال يستخدم Python:
+
+```bash
+git clone https://github.com/nezar2004/A_project_for_the_Ministry_of_Health.git
+cd A_project_for_the_Ministry_of_Health
+python -m http.server 8080
+```
+
+افتح [localhost:8080](http://localhost:8080). هذا يشغّل صفحات الواجهة. لاختبار الدخول والحجز مع سيرفر محلي، جهّز Firebase والسيرفر واضبط عناوين طلبات الواجهة على السيرفر المحلي، وأضف أصل الواجهة إلى قائمة `ALLOWED_ORIGINS`.
+
+اختبارات الواجهة وقواعد Firestore:
+
+```bash
+npm ci
+npm test
+npm run test:rules
+```
+
+يحتاج اختبار القواعد إلى Java لتشغيل محاكي Firestore. لتشغيل اختبارات السيرفر، نفّذ `npm ci` ثم `npm test` داخل مستودع السيرفر باستخدام Node.js 22 أو أحدث.
+
+## الإعداد والنشر
+
+- **الواجهة على GitHub Pages.** يُنشر الموقع من مستودع الواجهة. [افتح النسخة المنشورة](https://nezar2004.github.io/A_project_for_the_Ministry_of_Health/).
+- **السيرفر على Render.** أمر تثبيت الاعتماديات هو `npm ci` وأمر التشغيل `npm start`. يقرأ السيرفر المنفذ من `PORT`.
+- **Firebase.** جهّز تسجيل الدخول وقواعد Firestore وفهارسه وفق خطوات النشر. راجع [دليل النشر](./ROLLOUT.md) و[دليل الصلاحيات](./SECURITY.md).
+- **متغيرات السيرفر.** اضبط `ALLOWED_ORIGINS` للسماح بعناوين الواجهة، واحفظ `GOOGLE_API_KEY` للمساعد الصحي و`FIREBASE_SERVICE_ACCOUNT_JSON` لخدمات الحجز ضمن إعدادات السيرفر. يمكن تحديد نموذج Gemini عبر `GEMINI_MODEL`. احتفظ بقيم المفاتيح وبيانات الخدمة خارج ملفات المستودع.
 
 ---
 
